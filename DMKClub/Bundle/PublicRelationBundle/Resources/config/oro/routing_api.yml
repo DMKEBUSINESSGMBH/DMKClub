@@ -1,0 +1,3 @@
+dmkclub_pr_api:
+    resource:     "@DMKClubPublicRelationBundle/Controller/Api/Rest/PublicRelationController.php"
+    type:         rest

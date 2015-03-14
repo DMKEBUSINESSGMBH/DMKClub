@@ -1,0 +1,7 @@
+parameters:
+#    dmk_club_public_relation.example.class: DMKClub\Bundle\PublicRelationBundle\Example
+
+services:
+#    dmk_club_public_relation.example:
+#        class: %dmk_club_public_relation.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

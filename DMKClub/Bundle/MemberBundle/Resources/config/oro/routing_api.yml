@@ -1,0 +1,3 @@
+dmkclub_member_bundle_member_api:
+    resource:     "@DMKClubMemberBundle/Controller/Api/Rest/MemberController.php"
+    type:         rest

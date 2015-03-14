@@ -1,0 +1,19 @@
+{% if resource_granted('dmkclub_sponsor_view') and sponsors|length > 0 %}
+    <div class="widget-content">
+        <!--div class="pull-right label label-info orocrm-channel-lifetime-value-label">
+            <b>{{ 'orocrm.sales.b2bcustomer.lifetime.label'|trans}}: {{ orocrm_channel_account_lifetime(account, channel)|oro_format_currency }}</b>
+        </div-->
+        {% set tabs = [] %}
+        {% for sponsor in sponsors %}
+            {% set tabs = tabs|merge([
+                {
+                    'alias': 'dmkclub_sponsor_info_sponsor_' ~ sponsor.id ~ '_channel_' ~ channel.id,
+                    'widgetType': 'block',
+                    'label': sponsor.name,
+                    'url': path('dmkclub_sponsor_widget_sponsor_info', {'id': sponsor.id, 'channelId': channel.id})
+                }
+            ]) %}
+        {% endfor %}
+        {{ tabPanel(tabs) }}
+    </div>
+{% endif %}

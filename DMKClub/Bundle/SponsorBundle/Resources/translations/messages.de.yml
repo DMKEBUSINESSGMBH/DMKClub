@@ -1,0 +1,34 @@
+dmkclub.controller.sponsor.saved.message: Sponsor successfully saved
+
+
+dmkclub:
+    sponsor_information:     Informationen zum Sponsor
+    sponsor:
+        entity_label:        Sponsor
+        entity_plural_label: Sponsoren
+        entity_description:  Represent sponsor of club
+        id.label:            Id
+        owner.label:         Owner
+        name.label:          Name
+        is_active.label:     Ist aktiv
+        postal_address.label: Postanschrift
+        account.label:       Account
+        contact.label:       Kontakt
+        organization.label:  Organisation
+        category:
+          entity_label:             Kategorie
+          entity_plural_label:      Kategorien
+          entity_description:       Art des Sponsors
+        channel_type.sponsor.label: Sponsor
+        form.choose_category:       Kategorie auswählen
+        contract:
+          entity_label:             Vertrag
+          entity_plural_label:      Verträge
+          entity_description:       Sponsoring-Verträge
+    datagrid:
+        actions:
+            view:
+                label: View
+        columns:
+            id:         ID
+            name:       Name

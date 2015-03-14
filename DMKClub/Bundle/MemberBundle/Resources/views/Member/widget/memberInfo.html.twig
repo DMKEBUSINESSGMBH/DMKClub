@@ -1,0 +1,28 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroAddressBundle::macros.html.twig' as address %}
+{# 
+Einzeltemplate für ein Mitglied.
+Wird im Account verwendet
+ #}
+
+
+
+<div class="widget-content row-fluid ">
+    <div class="responsive-cell form-horizontal">
+        {% set member_name_link %}
+            <a href="{{ path('dmkclub_member_view', {'id':member.id}) }}">
+                {{ member.name|escape }}
+            </a>
+        {% endset %}
+        {{ UI.renderHtmlProperty('dmkclub.member.name.label'|trans, member_name_link) }}
+
+        {%- if resource_granted('orocrm_contact_view') and member.contact -%}
+            {% set contactView = '<a href="' ~ path('orocrm_contact_view', {'id': member.contact.id}) ~ '">' ~ member.contact|oro_format_name|escape ~ '</a>' %}
+        {%- else -%}
+            {% set contactView = member.contact ? member.contact|oro_format_name : '' %}
+        {%- endif -%}
+
+        {{ UI.renderHtmlProperty('orocrm.sales.lead.contact.label'|trans, contactView) }}
+
+    </div>
+</div>

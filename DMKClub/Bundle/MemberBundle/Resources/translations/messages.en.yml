@@ -1,0 +1,24 @@
+"Website ID: %websiteId%, Stores: %storesList%": "Website ID: %websiteId%, Stores: %storesList%"
+
+dmkclub:
+    member:
+        entity_label:        Member
+        entity_plural_label: Members
+        entity_description:  Represent member of club
+        id.label:            Id
+        owner.label:         Owner
+        name.label:          Name
+        member_code.label:   Club ID
+        is_active.label:     Is active
+        contact.label:       Contact
+        postal_address.label:  Postal Address
+        organization.label:  Organization
+        start_date.label:    Joining
+        end_date.label:      Resignation
+        channel_type.member.label: Club member
+
+    active: Active
+    inactive: Inactive
+    member_information: Member Information
+    general_information: General Information
+    entity_number: %entityName% %entityNumber%

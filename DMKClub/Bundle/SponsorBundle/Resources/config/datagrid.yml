@@ -1,0 +1,145 @@
+datagrid:
+    dmkclub-sponsors-grid:
+        extended_entity_name: %dmkclub.sponsor.entity.class%
+        source:
+            type: orm
+            acl_resource: orocrm_contact_view
+            query:
+                select:
+                    - s.id
+                    - s.name
+                    - cat.name As category
+                    - c.firstName
+                    - c.lastName
+                    - s.createdAt
+                    - s.updatedAt
+                from:
+                    - { table: %dmkclub.sponsor.entity.class%, alias: s }
+                join:
+                    left:
+                        - { join: s.contact, alias: c }
+                        - { join: s.category, alias: cat }
+        columns:
+            name:
+                label:         dmkclub.sponsor.name.label
+            category:
+                label:         dmkclub.sponsor.category.entity_label
+            lastName:
+                label:         orocrm.contact.last_name.label
+            firstName:
+                label:         orocrm.contact.first_name.label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      dmkclub_sponsor_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_sponsor_update
+                params:     [ id ]
+            delete_link:
+                type:       url
+                route:      dmkclub_api_delete_sponsor
+                params:     [ id ]
+        sorters:
+            columns:
+                name:
+                    data_name: s.name
+                category:
+                    data_name: cat.name
+                lastName:
+                    data_name: c.lastName
+                firstName:
+                    data_name: c.firstName
+                createdAt:
+                    data_name: s.createdAt
+                updatedAt:
+                    data_name: s.updatedAt
+            default:
+                name:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: s.name
+                category:
+                    type: entity
+                    data_name: cat.name
+                    options:
+                        field_options:
+                            class: DMKClubSponsorBundle:Category
+                            property: name
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                createdAt:
+                    type:      datetime
+                    data_name: s.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: s.updatedAt
+                    enabled: false
+        actions:
+            view:
+                type: navigate
+                acl_resource: dmkclub_sponsor_view
+                label: oro.grid.action.view
+                icon: eye-open
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                acl_resource: dmkclub_sponsor_update
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+            delete:
+                type: delete
+                acl_resource: dmkclub_sponsor_delete
+                label: oro.grid.action.delete
+                icon: trash
+                link: delete_link
+    dmkclub-sponsorcategories-select-grid:
+        extended_entity_name: %dmkclub.sponsorcategory.entity.class%
+        source:
+            type: orm
+            acl_resource: orocrm_contact_view
+            query:
+                select:
+                    - c.id
+                    - c.name
+                    - c.createdAt
+                    - c.updatedAt
+                from:
+                    - { table: %dmkclub.sponsorcategory.entity.class%, alias: c }
+        columns:
+            name:
+                label:         dmkclub.sponsor.name.label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+        sorters:
+            columns:
+                name:
+                    data_name: c.name
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: c.name
+                

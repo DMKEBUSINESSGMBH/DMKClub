@@ -1,0 +1,54 @@
+parameters:
+    dmkclub.member.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberType
+    dmkclub.member.form.type.api.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberApiType
+    dmkclub.member.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler
+
+    dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
+
+services:
+    dmkclub.member.form.type:
+        class: %dmkclub.member.form.type.class%
+        tags:
+            - { name: form.type, alias: dmkclub_member_member }
+
+    dmkclub.member.form.type.api:
+        class: %dmkclub.member.form.type.api.class%
+        tags:
+            - { name: form.type, alias: dmkclub_member_member_api }
+
+    dmkclub.member.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - "dmkclub_member_form"
+            - "dmkclub_member_member"
+
+    dmkclub.member.form.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - "member"
+            - "dmkclub_member_member_api"
+
+    dmkclub.member.form.handler:
+        class: %dmkclub.member.form.handler.class%
+        scope: request
+        arguments:
+            - @dmkclub.member.form
+            - @request
+            - @doctrine.orm.entity_manager
+
+    dmkclub.member.form.handler.api:
+        class: %dmkclub.member.form.handler.class%
+        scope: request
+        arguments:
+            - @dmkclub.member.form.api
+            - @request
+            - @doctrine.orm.entity_manager
+
+    dmkclub.form.type.member_select:
+        class: %dmkclub.form.type.member_select.class%
+        tags:
+            - { name: form.type, alias: "dmkclub_member_member_select" }

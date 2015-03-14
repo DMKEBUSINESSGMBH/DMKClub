@@ -1,0 +1,74 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+
+{% set fullname = entity.name %}
+{% oro_title_set({params : {"%sponsor.name%": fullname} }) %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('dmkclub_sponsor_index')) }}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('dmkclub_sponsor_update', { 'id': entity.id }),
+            'entity_label': 'dmkclub.sponsor.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('dmkclub_sponsor_index'),
+        'indexLabel': 'dmkclub.sponsor.entity_plural_label'|trans,
+        'entityTitle': fullname
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+    <li>
+        <div class="pull-right label label-info orocrm-channel-lifetime-value-label">
+        Stats
+        </div>
+    </li>
+{% endblock stats %}
+
+{% block content_data %}
+    {% set sponsorInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url':         path('dmkclub_sponsor_widget_info', {id: entity.id})
+        }) }}
+    {% endset %}
+
+    {% set generalSubBlocks = [{'data' : [sponsorInformationWidget]}] %}
+
+    {# set sponsorAddressBookWidget %}
+        <div class="responsive-cell">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'contentClasses': [],
+                'url': path('dmkclub_sponsor_address_book', {id: entity.id}),
+                'title': 'Address Book'|trans
+            }) }}
+        </div>
+    {% endset %}
+    {% set generalSubBlocks = generalSubBlocks|merge([{'data': [sponsorAddressBookWidget]}]) #}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'class': 'active',
+            'subblocks': generalSubBlocks
+        },
+        {
+            'title': 'dmkclub.sponsor.contract.entity_plural_label'|trans,
+            'subblocks': [
+            ]
+        }
+    ] %}
+
+    {% set id = 'dmkclubSponsorView' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}

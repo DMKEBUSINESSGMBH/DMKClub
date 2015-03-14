@@ -1,0 +1,80 @@
+datagrid:
+    dmkclub-members-grid:
+        extended_entity_name: %dmkclub.member.entity.class%
+        source:
+            type: orm
+            acl_resource: orocrm_contact_view
+            query:
+                select:
+                    - m.id
+                    - c.firstName
+                    - c.lastName
+                    - m.createdAt
+                    - m.updatedAt
+                from:
+                    - { table: %dmkclub.member.entity.class%, alias: m }
+                join:
+                    left:
+                        - { join: m.contact, alias: c }
+        columns:
+            firstName:
+                label:         orocrm.contact.first_name.label
+            lastName:
+                label:         orocrm.contact.last_name.label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      dmkclub_member_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_member_update
+                params:     [ id ]
+        sorters:
+            columns:
+                lastName:
+                    data_name: c.lastName
+                firstName:
+                    data_name: c.firstName
+                createdAt:
+                    data_name: m.createdAt
+                updatedAt:
+                    data_name: m.updatedAt
+            default:
+                name:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                createdAt:
+                    type:      datetime
+                    data_name: m.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: m.updatedAt
+                    enabled: false
+        actions:
+            view:
+                type: navigate
+                acl_resource: dmkclub_member_view
+                label: oro.grid.action.view
+                icon: eye-open
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                acl_resource: dmkclub_member_update
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link

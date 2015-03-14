@@ -1,0 +1,23 @@
+
+dmkclub:
+    member:
+        entity_label:        Vereinsmitglied
+        entity_plural_label: Vereinsmitglieder
+        entity_description:  Mitgliedschaft im Verein
+        id.label:            Id
+        owner.label:         Owner
+        name.label:          Name
+        member_code.label:   Mitgliedsnummer
+        is_active.label:     Ist aktiv
+        contact.label:       Kontakt
+        postal_address.label:  Postadresse
+        organization.label:  Organisation
+        start_date.label:    Eintrittsdatum
+        end_date.label:      Austrittsdatum
+        channel_type.member.label: Vereinsverwaltung
+
+    active: Aktiv
+    inactive: Inaktiv
+    member_information: Mitglieds-Information
+    general_information: Allgemeine Informationen
+    entity_number: %entityName% %entityNumber%

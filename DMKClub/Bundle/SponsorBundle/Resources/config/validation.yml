@@ -1,0 +1,10 @@
+DMKClub\Bundle\SponsorBundle\Entity\Sponsor:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        contact:
+            - NotBlank: ~
+        account:
+            - NotBlank: ~

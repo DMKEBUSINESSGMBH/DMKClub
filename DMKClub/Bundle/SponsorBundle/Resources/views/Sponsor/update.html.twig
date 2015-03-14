@@ -1,0 +1,135 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
+
+{% set fullname = entity.name|default('N/A') %}
+{# set fullname = entity|oro_format_name|default('N/A') #}
+{% oro_title_set({ params : {"%sponsor.name%": fullname} }) %}
+
+{% set formAction = form.vars.value.id ? path('dmkclub_sponsor_update', { 'id': form.vars.value.id }) : path('dmkclub_sponsor_create')  %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {% block stylesheets %}
+        {{ form_stylesheet(form) }}
+    {% endblock %}
+{% endblock %}
+
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {% if form.vars.value.id %}
+	    {{ UI.cancelButton(path('dmkclub_sponsor_view', { 'id': form.vars.value.id })) }}
+    {% else %}
+	    {{ UI.cancelButton(path('dmkclub_sponsor_index')) }}
+    {% endif %}
+	{% set html = UI.saveAndCloseButton() %}
+    {% if form.vars.value.id or resource_granted('dmkclub_sponsor_update') %}
+        {% set html = html ~ UI.saveAndStayButton() %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('dmkclub_sponsor_index'),
+            'indexLabel': 'dmkclub.sponsor.entity_plural_label'|trans,
+            'entityTitle': entity.name
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'dmkclub.sponsor.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <div class="pull-left">
+        {% if entity.isActive == true %}
+            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'dmkclub.active'|trans }}</div>
+        {% else %}
+            <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'dmkclub.inactive'|trans }}</div>
+        {% endif %}
+    </div>
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% set id = 'sponsor-profile' %}
+
+    {% set formFields = [] %}
+
+    {% set formFields = formFields|merge([
+        form_row(form.name),
+        form_row(form.dataChannel),
+        form_row(form.category),
+
+        form_row(form.account),
+        form_row(form.contact),
+        form_row(form.isActive),
+    ]) %}
+    {% if form.owner is defined %}
+        {% set formFields = formFields|merge([form_row(form.owner)]) %}
+    {% endif %}
+
+
+    {% set dataBlocks = [{
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': 'dmkclub.sponsor_information'|trans,
+                    'data': formFields
+                },
+                {
+                    'title': 'Tags'|trans,
+                    'data': [
+                       form_row(form.tags),
+                    ]
+                },
+            ]
+        }]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge( [{
+        'title' : 'Addresses'|trans,
+        'subblocks': [
+            {
+                'title': 'orocrm.sales.b2bcustomer.billing_address.label'|trans,
+                'data': [form_widget(form.billingAddress)]
+            },
+            {
+                'title': 'dmkclub.sponsor.postal_address.label'|trans,
+                'data': [form_widget(form.postalAddress)]
+            },
+        ]
+    }] ) %}
+
+    {% if form.additional is defined and form.additional.children|length > 0 %}
+        {% set additionalData = [] %}
+        {% for value in form.additional %}
+            {% set additionalData = additionalData|merge([form_row(value)]) %}
+        {% endfor %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% set data =
+        {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'dataBlocks': dataBlocks,
+        }
+    %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -1,0 +1,8 @@
+placeholders:
+    # Anzeige des Mitglieds im Account, wird per Konvention gefunden
+    orocrm_account_channel_info_member:
+        items:
+            dmkclub_member_channel_info: ~
+items:
+    dmkclub_member_channel_info:
+        action: DMKClubMemberBundle:Member:accountMemberInfo

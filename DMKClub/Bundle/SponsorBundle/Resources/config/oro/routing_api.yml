@@ -1,0 +1,3 @@
+dmkclub_sponsor_api:
+    resource:     "@DMKClubSponsorBundle/Controller/Api/Rest/SponsorController.php"
+    type:         rest

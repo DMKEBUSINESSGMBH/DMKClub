@@ -1,0 +1,2 @@
+bundles:
+    - { name: DMKClub\Bundle\PublicRelationBundle\DMKClubPublicRelationBundle, priority: 200 }

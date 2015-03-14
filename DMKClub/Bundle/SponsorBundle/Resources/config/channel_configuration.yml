@@ -1,0 +1,16 @@
+orocrm_channel:
+   entity_data:
+       -
+          name: DMKClub\Bundle\SponsorBundle\Entity\Sponsor
+          dependent:
+              - DMKClub\Bundle\SponsorBundle\Entity\Category
+          navigation_items:
+              - application_menu.customers_tab.dmkclub_sponsor
+
+   channel_types:
+        sponsor:
+            label: dmkclub.sponsor.channel_type.sponsor.label
+            entities:
+                - DMKClub\Bundle\SponsorBundle\Entity\Sponsor
+                - DMKClub\Bundle\SponsorBundle\Entity\Category
+            customer_identity: DMKClub\Bundle\SponsorBundle\Entity\Sponsor

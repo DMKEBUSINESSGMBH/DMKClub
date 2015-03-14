@@ -1,0 +1,33 @@
+parameters:
+    dmkclub.sponsor.entity.class:               DMKClub\Bundle\SponsorBundle\Entity\Sponsor
+    dmkclub.sponsorcategory.entity.class:       DMKClub\Bundle\SponsorBundle\Entity\Category
+    dmkclub_sponsor.sponsor.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+
+services:
+    dmkclub_sponsor.sponsor.manager:
+        class: %dmkclub_sponsor.sponsor.manager.api.class%
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %dmkclub.sponsor.entity.class%
+            - @doctrine.orm.entity_manager
+
+    # Sponsor API
+    dmkclub_sponsor.sponsor.manager.api:
+        class: %dmkclub_sponsor.sponsor.manager.api.class%
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %dmkclub.sponsor.entity.class%
+            - @doctrine.orm.entity_manager
+
+
+    dmkclub_sponsor.form.autocomplete.category.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %dmkclub.sponsorcategory.entity.class%
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: sponsorcategories, acl_resource: dmkclub_sponsorcategory_view }
+
+#    dmk_club_sponsor.example:
+#        class: %dmk_club_sponsor.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

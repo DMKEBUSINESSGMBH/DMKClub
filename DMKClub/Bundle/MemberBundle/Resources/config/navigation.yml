@@ -1,0 +1,21 @@
+oro_menu_config:
+    items:
+        dmkclub_member:
+            label:   'dmkclub.member.entity_plural_label'
+            route:   'dmkclub_member_index'
+            display: false
+            extras:
+                routes:      ['/^dmkclub_member_(index|view)$/']
+                position:    210
+                description: 'dmkclub.member.entity_plural_label'
+
+    tree:
+        application_menu:
+            children:
+                customers_tab:
+                    children:
+                        dmkclub_member: ~
+
+oro_titles:
+    dmkclub_member_index: ~
+    dmkclub_member_view:  %%member.name%%

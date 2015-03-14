@@ -1,0 +1,10 @@
+DMKClub\Bundle\MemberBundle\Entity\Member:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        contact:
+            - NotBlank: ~
+        memberCode:
+            - NotBlank: ~

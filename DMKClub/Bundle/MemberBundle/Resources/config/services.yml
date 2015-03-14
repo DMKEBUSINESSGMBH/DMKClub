@@ -1,0 +1,13 @@
+parameters:
+    dmkclub.member.entity.class:                                       DMKClub\Bundle\MemberBundle\Entity\Member
+#    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
+    # datagrid helpers
+    dmkclub.country.datagrid_helper.class:                           Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
+
+services:
+#    dmk_club_member.example:
+#        class: %dmk_club_member.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    dmkclub.country.datagrid_helper:
+        class: %dmkclub.country.datagrid_helper.class%

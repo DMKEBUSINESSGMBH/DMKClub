@@ -1,0 +1,18 @@
+dmkclub_member_bundle:
+    resource:     "@DMKClubMemberBundle/Controller"
+    type:         annotation
+    prefix:       /dmkclub
+
+#oro_crm_magento_dashboard:
+#    resource:     "@DMKClubMemberBundle/Controller/Dashboard"
+#    type:         annotation
+#    prefix:       /dashboard
+
+dmkclub_member_bundle_api:
+    resource: "@DMKClubMemberBundle/Resources/config/oro/routing_api.yml"
+    type: rest
+    prefix:       api/rest/{version}
+    requirements:
+        version:  latest|v1
+    defaults:
+        version:  latest

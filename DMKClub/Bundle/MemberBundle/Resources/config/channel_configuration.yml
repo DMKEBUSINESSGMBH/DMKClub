@@ -1,0 +1,13 @@
+orocrm_channel:
+   entity_data:
+       -
+          name: DMKClub\Bundle\MemberBundle\Entity\Member
+          navigation_items:
+              - application_menu.customers_tab.dmkclub_member
+
+   channel_types:
+        member:
+            label: dmkclub.member.channel_type.member.label
+            entities:
+                - DMKClub\Bundle\MemberBundle\Entity\Member
+            customer_identity: DMKClub\Bundle\MemberBundle\Entity\Member
