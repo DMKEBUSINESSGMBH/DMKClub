@@ -1,0 +1,13 @@
+dmkclub:
+    publicrelation:
+        prcontact:
+            entity_label:        P/R Contact
+            entity_plural_label: P/R Contacts
+            entity_description:  Represents public relation contact
+            id.label:            Id
+            owner.label:         Owner
+            name.label:          Name
+            contact.label:       Contact
+            postal_address.label:  Postal Address
+            organization.label:  Organization
+            channel_type.prcontact.label: P/R Contact

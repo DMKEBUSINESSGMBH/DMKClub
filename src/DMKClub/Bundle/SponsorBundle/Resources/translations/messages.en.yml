@@ -12,19 +12,30 @@ dmkclub:
         name.label:          Name
         is_active.label:     Is active
         postal_address.label: Postal address
+        billing_address.label: Billing address
+        category.label:       Category
         account.label:       Account
         contact.label:       Contact
+        start_date.label:  Start date
+        end_date.label:  End date
         organization.label:  Organization
+        data_channel.label:  Data channel
         category:
           entity_label:             Category
           entity_plural_label:      Categories
           entity_description:  Represent type of sponsor
+          id.label:            Id
+          name.label:          Name
+          organization.label:  Organization
+          owner.label:         Owner
         channel_type.sponsor.label: Sponsor
         form.choose_category: Choose category
         contract:
           entity_label:             Contract
           entity_plural_label:      Contracts
           entity_description:       Sponsoring contract
+          organization.label:  Organization
+          owner.label:         Owner
     datagrid:
         actions:
             view:

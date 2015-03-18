@@ -12,9 +12,14 @@ dmkclub:
         name.label:          Name
         is_active.label:     Ist aktiv
         postal_address.label: Postanschrift
+        billing_address.label: Rechnungsanschrift
+        category.label:       Kategorie
         account.label:       Account
         contact.label:       Kontakt
+        start_date.label:  Startdatum
+        end_date.label:  Enddatum
         organization.label:  Organisation
+        data_channel.label:  Data channel
         category:
           entity_label:             Kategorie
           entity_plural_label:      Kategorien
