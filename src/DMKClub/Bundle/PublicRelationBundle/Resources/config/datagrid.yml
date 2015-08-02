@@ -1,0 +1,127 @@
+datagrid:
+    dmkclub-prcontacts-grid:
+        extended_entity_name: %dmkclub.prcontact.entity.class%
+        source:
+            type: orm
+            acl_resource: dmkclub_prcontact_view
+            query:
+                select:
+                    - prc.id
+                    - prc.name
+                    - cat.name As category
+                    - prc.createdAt
+                    - prc.updatedAt
+                from:
+                    - { table: %dmkclub.prcontact.entity.class%, alias: prc }
+                join:
+                    left:
+                        - { join: prc.category, alias: cat }
+        columns:
+            name:
+                label:         dmkclub.prcontact.name.label
+            category:
+                label:         dmkclub.prcategory.entity_label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      dmkclub_prcontact_view
+                params:     [ id ]
+#            update_link:
+#                type:       url
+#                route:      dmkclub_prcontact_update
+#                params:     [ id ]
+#            delete_link:
+#                type:       url
+#                route:      dmkclub_api_delete_prcontact
+#                params:     [ id ]
+        sorters:
+            columns:
+                name:
+                    data_name: prc.name
+                category:
+                    data_name: cat.name
+                createdAt:
+                    data_name: prc.createdAt
+                updatedAt:
+                    data_name: prc.updatedAt
+            default:
+                name:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: prc.name
+                category:
+                    type: entity
+                    data_name: cat.name
+                    options:
+                        field_options:
+                            class: DMKClubSponsorBundle:Category
+                            property: name
+                createdAt:
+                    type:      datetime
+                    data_name: prc.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: prc.updatedAt
+                    enabled: false
+        actions:
+            view:
+                type: navigate
+                acl_resource: dmkclub_prcontact_view
+                label: oro.grid.action.view
+                icon: eye-open
+                link: view_link
+                rowAction: true
+#            update:
+#                type: navigate
+#                acl_resource: dmkclub_sponsor_update
+#                label: oro.grid.action.update
+#                icon: edit
+#                link: update_link
+#            delete:
+#                type: delete
+#                acl_resource: dmkclub_sponsor_delete
+#                label: oro.grid.action.delete
+#                icon: trash
+#                link: delete_link
+#    dmkclub-sponsorcategories-select-grid:
+#        extended_entity_name: %dmkclub.sponsorcategory.entity.class%
+#        source:
+#            type: orm
+#            acl_resource: orocrm_contact_view
+#            query:
+#                select:
+#                    - c.id
+#                    - c.name
+#                    - c.createdAt
+#                    - c.updatedAt
+#                from:
+#                    - { table: %dmkclub.sponsorcategory.entity.class%, alias: c }
+#        columns:
+#            name:
+#                label:         dmkclub.sponsor.name.label
+#            createdAt:
+#                label:         oro.ui.created_at
+#                frontend_type: datetime
+#            updatedAt:
+#                label:         oro.ui.updated_at
+#                frontend_type: datetime
+#        properties:
+#            id: ~
+#        sorters:
+#            columns:
+#                name:
+#                    data_name: c.name
+#        filters:
+#            columns:
+#                name:
+#                    type: string
+#                    data_name: c.name

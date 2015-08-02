@@ -1,0 +1,26 @@
+oro_menu_config:
+    items:
+        dmkclub_prcontact:
+            label:   'dmkclub.publicrelation.prcontact.entity_plural_label'
+            route:   'dmkclub_prcontact_index'
+            display: false
+            extras:
+                routes:      ['/^dmkclub_prcontact_(index|view)$/']
+                position:    210
+                description: 'dmkclub.publicrelation.prcontact.entity_plural_description'
+
+    tree:
+        application_menu:
+            children:
+                customers_tab:
+                    children:
+                        dmkclub_prcontact: ~
+
+oro_titles:
+    dmkclub_prcontact_index: ~
+    dmkclub_prcontact_view:  '%%prcontact.name%%'
+    dmkclub_prcontact_create: 'Create P/R Contact'
+    dmkclub_prcontact_update: '%%prcontact.name%% - Edit'
+#    dmkclub_sponsorcategory_create: 'Create Category'
+#    dmkclub_sponsorcategory_update: '%%sponsorcategory.name%% - Edit'
+    

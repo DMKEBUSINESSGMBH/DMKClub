@@ -1,0 +1,16 @@
+orocrm_channel:
+   entity_data:
+       -
+          name: DMKClub\Bundle\PublicRelationBundle\Entity\PRContact
+          dependent:
+              - DMKClub\Bundle\PublicRelationBundle\Entity\PRCategory
+          navigation_items:
+              - application_menu.customers_tab.dmkclub_prcontact
+
+   channel_types:
+        prcontact:
+            label: dmkclub.publicrelation.channel_type.publicrelation.label
+            entities:
+                - DMKClub\Bundle\PublicRelationBundle\Entity\PRContact
+                - DMKClub\Bundle\PublicRelationBundle\Entity\PRCategory
+            customer_identity: DMKClub\Bundle\PublicRelationBundle\Entity\PRContact

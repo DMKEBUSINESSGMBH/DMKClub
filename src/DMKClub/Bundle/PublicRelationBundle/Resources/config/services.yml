@@ -1,5 +1,6 @@
 parameters:
-#    dmk_club_public_relation.example.class: DMKClub\Bundle\PublicRelationBundle\Example
+    dmkclub.prcontact.entity.class: DMKClub\Bundle\PublicRelationBundle\Entity\PRContact
+    dmkclub.prcategory.entity.class:       DMKClub\Bundle\PublicRelationBundle\Entity\PRCategory
 
 services:
 #    dmk_club_public_relation.example:

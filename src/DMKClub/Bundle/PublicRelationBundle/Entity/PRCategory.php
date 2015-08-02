@@ -15,23 +15,19 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
-use DMKClub\Bundle\SponsorBundle\Model\ExtendCategory;
-use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRContact;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
-use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
+use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRCategory;
 
 /**
- * Class P/R Contact
+ * Class P/R Category
  *
- * @package DMKClub\Bundle\DMKClubPublicRelationBundle\Entity
+ * @package DMKClub\Bundle\PublicRelationBundle\Entity
  *
- * @ORM\Entity(repositoryClass="DMKClub\Bundle\PublicRelationBundle\Entity\Repository\PRContactRepository")
- * @ORM\Table(name="dmkclub_prcontact")
+ * @ORM\Entity(repositoryClass="DMKClub\Bundle\PublicRelationBundle\Entity\Repository\PRCategoryRepository")
+ * @ORM\Table(name="dmkclub_prcategory")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
- *      routeName="dmkclub_prcontact_index",
- *      routeView="dmkclub_prcontact_view",
+ *      routeName="dmkclub_prcategory_index",
+ *      routeView="dmkclub_prcategory_view",
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-user-md"
@@ -48,8 +44,8 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  *              "group_name"=""
  *          },
  *          "form"={
- *              "form_type"="dmkclub_prcontact_select",
- *              "grid_name"="dmkclub-prcontact-select-grid"
+ *              "form_type"="dmkclub_prcategory_select",
+ *              "grid_name"="dmkclub-prcategories-select-grid"
  *          },
  *          "dataaudit"={
  *              "auditable"=true
@@ -59,8 +55,7 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  * @Oro\Loggable
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
-class PRContact extends ExtendPRContact implements /*Taggable,*/ ChannelAwareInterface, CustomerIdentityInterface {
-	use ChannelEntityTrait;
+class PRCategory extends ExtendPRCategory {
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
 	*/
@@ -102,32 +97,6 @@ class PRContact extends ExtendPRContact implements /*Taggable,*/ ChannelAwareInt
 	 */
 	protected $name;
 
-	/**
-	 * @var Collection
-	 *
-	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\PublicRelationBundle\Entity\PRCategory")
-	 * @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="SET NULL")
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "dataaudit"={
-	 *              "auditable"=true
-	 *          },
-	 *          "importexport"={
-	 *              "order"=230,
-	 *              "short"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $category;
-
-	/**
-	 * @var Account
-	 *
-	 * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
-	 * @ORM\JoinColumn(name="account_id", referencedColumnName="id", onDelete="SET NULL")
-	 */
-	protected $account;
 
 	/**
 	 * @var \DateTime $createdAt
@@ -228,45 +197,6 @@ class PRContact extends ExtendPRContact implements /*Taggable,*/ ChannelAwareInt
 	public function getName()
 	{
 		return $this->name;
-	}
-
-	/**
-	 * Gets the Category related to contact
-	 *
-	 * @return PRCategory
-	 */
-	public function getCategory()
-	{
-		return $this->category;
-	}
-
-	/**
-	 * Add specified Category
-	 *
-	 * @param PRCategory $category
-	 *
-	 * @return PRContact
-	 */
-	public function setCategory(PRCategory $category) {
-		$this->category = $category;
-		return $this;
-	}
-	/**
-	 * @param Account $account
-	 *
-	 * @return Customer
-	 */
-	public function setAccount($account) {
-		$this->account = $account;
-
-		return $this;
-	}
-
-	/**
-	 * @return Account
-	 */
-	public function getAccount() {
-		return $this->account;
 	}
 
 	/**

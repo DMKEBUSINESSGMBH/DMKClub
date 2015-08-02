@@ -384,7 +384,7 @@ class Sponsor extends ExtendSponsor implements Taggable, ChannelAwareInterface, 
     /**
      * @param bool $isActive
      *
-     * @return Customer
+     * @return Sponsor
      */
     public function setIsActive($isActive)
     {
@@ -424,7 +424,7 @@ class Sponsor extends ExtendSponsor implements Taggable, ChannelAwareInterface, 
     {
     	return $this->postalAddress;
     }
-    
+
     /**
      * @param Address $address
      */
