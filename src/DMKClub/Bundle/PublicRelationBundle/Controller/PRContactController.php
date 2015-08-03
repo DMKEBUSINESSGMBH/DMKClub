@@ -54,4 +54,47 @@ class PRContactController extends Controller {
 	public function createAction() {
 		return $this->update ( new PRContact() );
 	}
+
+    /**
+     * Update p/r contact form
+     * @Route("/update/{id}", name="dmkclub_prcontact_update", requirements={"id"="\d+"}, defaults={"id"=0})
+     *
+     * @Template
+     * @Acl(
+     *      id="dmkclub_prcontact_update",
+     *      type="entity",
+     *      permission="EDIT",
+     *      class="DMKClubPublicRelationBundle:PRContact"
+     * )
+     */
+    public function updateAction(PRContact $entity)
+    {
+    	return $this->update($entity);
+    }
+
+    /**
+     * @param PRContact $entity
+     *
+     * @return array
+     */
+    protected function update(PRContact $entity) {
+    	return $this->get('oro_form.model.update_handler')->handleUpdate(
+    			$entity,
+    			$this->get('dmkclub.prcontact.form'),
+    			function (PRContact $entity) {
+    				return array(
+    						'route' => 'dmkclub_prcontact_update',
+    						'parameters' => array('id' => $entity->getId())
+    				);
+    			},
+    			function (PRContact $entity) {
+    				return array(
+    						'route' => 'dmkclub_prcontact_view',
+    						'parameters' => array('id' => $entity->getId())
+    				);
+    			},
+    			$this->get('translator')->trans('dmkclub.publicrelation.prcontact.saved.message'),
+    			$this->get('dmkclub.prcontact.form.handler')
+    	);
+    }
 }

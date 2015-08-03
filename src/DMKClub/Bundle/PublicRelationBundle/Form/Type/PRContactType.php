@@ -22,7 +22,7 @@ class PRContactType extends AbstractType {
     protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
     	$builder
 
-        ->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
+        ->add('name', 'text', array('required' => true, 'label' => 'dmkclub.prcontact.name.label'))
 
     	->add('owner')
     	->add('organization')
@@ -60,20 +60,20 @@ class PRContactType extends AbstractType {
         		'required' => true,
         		'label'    => 'orocrm.sales.b2bcustomer.data_channel.label',
         		'entities' => [
-	        		'DMKClub\\Bundle\\SponsorBundle\\Entity\\Sponsor'
+	        		'DMKClub\\Bundle\\PublicRelationBundle\\Entity\\PRContact'
 	        		],
         		]
         );
 
-        // sponsor categories
-        $builder->add(
-        		'category',
-        		'dmkclub_sponsorcategory_select',
-        		array(
-                   'label'    => 'dmkclub.sponsor.category.entity_label',
-                   'required' => false,
-        		)
-        );
+//         // categories
+//         $builder->add(
+//         		'category',
+//         		'dmkclub_sponsorcategory_select',
+//         		array(
+//                    'label'    => 'dmkclub.sponsor.category.entity_label',
+//                    'required' => false,
+//         		)
+//         );
 
     }
     /**
@@ -94,6 +94,6 @@ class PRContactType extends AbstractType {
      */
     public function getName()
     {
-        return 'dmkclub_pr_contact';
+        return 'dmkclub_prcontact';
     }
 }

@@ -18,4 +18,7 @@ dmkclub:
             entity_description:  Represents public relation category
             id.label:            Id
             name.label:          Name
+
+dmkclub.publicrelation.prcontact.saved.message: P/R Contact saved
+
             
