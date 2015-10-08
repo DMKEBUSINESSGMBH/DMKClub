@@ -3,6 +3,7 @@ parameters:
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
     dmkclub.country.datagrid_helper.class:                           Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
+    dmkclub.member.status_provider.class:               DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider
 
 services:
 #    dmk_club_member.example:
@@ -10,4 +11,9 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
 
     dmkclub.country.datagrid_helper:
-        class: %dmkclub.country.datagrid_helper.class%
+        class: "%dmkclub.country.datagrid_helper.class%"
+
+    dmkclub.member.status_provider:
+        class: "%dmkclub.member.status_provider.class%"
+        arguments:
+            - @translator

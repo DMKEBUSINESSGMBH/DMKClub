@@ -4,6 +4,7 @@ parameters:
     dmkclub.member.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler
 
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
+    dmkclub.form.type.member_status.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberStatusType
 
 services:
     dmkclub.member.form.type:
@@ -52,3 +53,10 @@ services:
         class: %dmkclub.form.type.member_select.class%
         tags:
             - { name: form.type, alias: "dmkclub_member_member_select" }
+
+    dmkclub.form.type.member_status:
+        class: %dmkclub.form.type.member_status.class%
+        arguments:
+            - @dmkclub.member.status_provider
+        tags:
+            - { name: form.type, alias: dmkclub_memberstatus }

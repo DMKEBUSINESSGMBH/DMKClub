@@ -14,10 +14,7 @@ class DMKClubMemberBundle implements Migration
 {
 
 	/**
-	 * OptionField für Mitgliedsstatus:
-	 * - kein Mitglied
-	 * - aktives Mitglied
-	 * - Ex-Mitglied
+	 * Add Account and DataChannel
 	 *
 	 * @inheritdoc
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -25,12 +22,12 @@ class DMKClubMemberBundle implements Migration
 	public function up(Schema $schema, QueryBag $queries)
 	{
 		$table = $schema->getTable('dmkclub_member');
-        $table->addColumn('account_id', 'integer', ['notnull' => false]);
+		$table->addColumn('account_id', 'integer', ['notnull' => false]);
 		$table->addColumn('data_channel_id', 'integer', ['notnull' => false]);
 		$table->addIndex(['account_id'], 'IDX_6A79FCCD9B6B5FBA', []);
 		$table->addIndex(['data_channel_id'], 'IDX_6A79FCCDBDC09B73', []);
-		
-        $table->addForeignKeyConstraint(
+
+		$table->addForeignKeyConstraint(
             $schema->getTable('orocrm_account'),
             ['account_id'],
             ['id'],

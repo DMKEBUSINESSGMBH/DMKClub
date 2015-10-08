@@ -16,8 +16,16 @@ dmkclub:
         start_date.label:    Joining
         end_date.label:      Resignation
         channel_type.member.label: Club member
+        status.label: Status
+        status.proposal: Proposal
+        status.active: Active
+        status.terminated: Terminated
+        
+        form.choose_status: Choose a member status
+
         message.saved: Member saved
         fees.label: Membership fee
+
     active: Active
     inactive: Inactive
     member_information: Member Information

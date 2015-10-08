@@ -17,39 +17,37 @@ class MemberType extends AbstractType
         $this->buildPlainFields($builder, $options);
         $this->buildRelationFields($builder, $options);
     }
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
-    	$builder
-    	->add('memberCode', 'text', array('required' => true, 'label' => 'dmkclub.member.member_code.label'))
-    	->add('startDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.start_date.label'))
-    	->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.end_date.label'))
-
-        ->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
-
-    	->add('isActive')
-    	->add('owner')
-    	->add('organization')
-    	;
-        $builder->add(
-            'contact',
-            'orocrm_contact_select',
-            [
-                'label'    => 'orocrm.sales.b2bcustomer.contact.label',
-                'required' => true,
-            ]
-        );
-    	$builder->add(
-            'postalAddress',
-            'oro_address',
-            [
-                'cascade_validation' => true,
-                'required'           => false
-            ]
-        );
-    }
+	/**
+	 * @param FormBuilderInterface $builder
+	 * @param array $options
+	 */
+	protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
+		$builder
+			->add('memberCode', 'text', array('required' => true, 'label' => 'dmkclub.member.member_code.label'))
+			->add('startDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.start_date.label'))
+			->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.end_date.label'))
+			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
+			->add('isActive')
+			->add('owner')
+			->add('organization')
+		;
+		$builder->add(
+					'contact',
+					'orocrm_contact_select',
+					[
+							'label'    => 'orocrm.sales.b2bcustomer.contact.label',
+							'required' => true,
+					]
+				);
+			$builder->add(
+					'postalAddress',
+					'oro_address',
+					[
+							'cascade_validation' => true,
+							'required'           => false
+					]
+				);
+		}
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -69,7 +67,7 @@ class MemberType extends AbstractType
         				],
         		]
         );
-        
+
     }
     /**
      * @param OptionsResolverInterface $resolver

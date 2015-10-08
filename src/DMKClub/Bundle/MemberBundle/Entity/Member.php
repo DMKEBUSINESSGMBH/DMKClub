@@ -204,6 +204,23 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     protected $isActive = false;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=20, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Oro\Versioned
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $status;
+
+
+    /**
      * @var Address $postalAddress
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
@@ -233,7 +250,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $account;
-    
+
     /**
      * @var Organization
      *
@@ -342,6 +359,21 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     }
 
     /**
+     * @return string
+     */
+    public function getStatus() {
+    	return $this->status;
+    }
+
+    /**
+     *
+     * @param string $value
+     */
+    public function setStatus($value) {
+    	$this->status = $value;
+    }
+
+    /**
      * @return Address
      */
     public function getPostalAddress()
@@ -403,17 +435,17 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      */
     public function setAccount($account) {
     	$this->account = $account;
-    
+
     	return $this;
     }
-    
+
     /**
      * @return Account
      */
     public function getAccount() {
     	return $this->account;
     }
-    
+
     /**
      * Set memberCode
      *

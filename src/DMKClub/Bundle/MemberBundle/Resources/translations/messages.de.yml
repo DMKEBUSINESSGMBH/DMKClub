@@ -15,8 +15,16 @@ dmkclub:
         start_date.label:    Eintrittsdatum
         end_date.label:      Austrittsdatum
         channel_type.member.label: Vereinsverwaltung
+        status.label: Status
+        status.proposal: Antragsteller
+        status.active: Laufende Mitgliedschaft
+        status.terminated: Beendete Mitgliedschaft
+
+        form.choose_status: Wählen Sie einen Mitgliedsstatus
+
         message.saved: Member saved
         fees.label: Mitgliedsbeiträge
+
     active: Aktiv
     inactive: Inaktiv
     member_information: Mitglieds-Information
