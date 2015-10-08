@@ -1,0 +1,103 @@
+
+{#
+	Alias für attibuteRow (fehlendes "r")
+#}
+{% macro attributeRow(title, value, additionalData) %}
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ UI.attibuteRow(title, value, additionalData) }}
+{% endmacro %}
+
+{#
+    Render row with boolean attribute
+#}
+{% macro attributeRowBoolean(title, value, additionalData) %}
+  {% macro value_bool(value) %}
+		{% if value %}
+			<i class="icon-ok">{{ 'dmkclub.basics.label.yes'|trans }}</i>
+		{% else %}
+			<i class="icon-ban-circle">{{ 'dmkclub.basics.label.no'|trans }}</i>
+		{% endif %}
+  {% endmacro %}
+
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ UI.attibuteRow(title, _self.value_bool(value), additionalData) }}
+{% endmacro %}
+
+{#
+    Render property with boolean attribute
+#}
+{% macro renderPropertyBoolean(title, value) %}
+  {% macro value_bool(value) %}
+		{% if value %}
+			<i class="icon-ok"> {{ 'dmkclub.basics.label.yes'|trans }}</i>
+		{% else %}
+			<i class="icon-ban-circle"> {{ 'dmkclub.basics.label.no'|trans }}</i>
+		{% endif %}
+  {% endmacro %}
+
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ UI.renderHtmlProperty(title, _self.value_bool(value)|raw) }}
+{% endmacro %}
+
+
+{% macro attributeInEuro(title, value, additionalData) %}
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ UI.attibuteRow(title, [value|number_format(2, ',', '.')]|merge([' €'])|join, additionalData) }}
+{% endmacro %}
+
+{% macro attributeInPercent(title, value, additionalData) %}
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ UI.attibuteRow(title, [value|number_format(4, ',', '.')]|merge([' %'])|join, additionalData) }}
+{% endmacro %}
+
+{% macro attributeInDays(title, value, additionalData) %}
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ UI.attibuteRow(title, [value|number_format(0, ',', '.')]|merge(['Days'|trans])|join(' '), additionalData) }}
+{% endmacro %}
+
+{% macro attributeWithText(title, value, text, additionalData) %}
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ UI.attibuteRow(title, [value]|merge([text])|join(' '), additionalData) }}
+{% endmacro %}
+
+{#
+    Zahlen werden absolut angezeigt
+    negative Werte werden rot positive grün dargestellt, Rest inherited
+#}
+{% macro coloredNumber(number) %}
+    {% set classNumber = number < 0
+        ? 'text-error'
+        : number > 0
+            ? 'text-success'
+            : ''
+    %}
+
+    <span class="{{ classNumber }}">
+        {{ number|abs }}
+    </span>
+{% endmacro %}
+
+{#
+    Renders a given file size value in Byte to a human readable format
+#}
+{% macro bytesToSize(bytes) %}
+{% spaceless %}
+    {% set kilobyte = 1024 %}
+    {% set megabyte = kilobyte * 1024 %}
+    {% set gigabyte = megabyte * 1024 %}
+    {% set terabyte = gigabyte * 1024 %}
+
+    {% if bytes < kilobyte %}
+        {{ bytes ~ ' B' }}
+    {% elseif bytes < megabyte %}
+        {{ (bytes / kilobyte)|number_format(2, '.') ~ ' KB' }}
+    {% elseif bytes < gigabyte %}
+        {{ (bytes / megabyte)|number_format(2, '.') ~ ' MB' }}
+    {% elseif bytes < terabyte %}
+        {{ (bytes / gigabyte)|number_format(2, '.') ~ ' GB' }}
+    {% else %}
+        {{ (bytes / terabyte)|number_format(2, '.') ~ ' TB' }}
+    {% endif %}
+{% endspaceless %}
+{% endmacro %}
+
