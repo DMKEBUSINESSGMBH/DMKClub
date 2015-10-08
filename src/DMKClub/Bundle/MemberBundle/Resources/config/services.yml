@@ -1,9 +1,10 @@
 parameters:
-    dmkclub.member.entity.class:                                       DMKClub\Bundle\MemberBundle\Entity\Member
+    dmkclub.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
-    dmkclub.country.datagrid_helper.class:                           Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
-    dmkclub.member.status_provider.class:               DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider
+    dmkclub.country.datagrid_helper.class:          Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
+    dmkclub.member.status_provider.class:           DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider
+    dmkclub.member.twig.class:                      DMKClub\Bundle\MemberBundle\Twig\MemberExtension
 
 services:
 #    dmk_club_member.example:
@@ -16,4 +17,9 @@ services:
     dmkclub.member.status_provider:
         class: "%dmkclub.member.status_provider.class%"
         arguments:
-            - @translator
+            - "@translator"
+    dmkclub.member.twig.extension:
+        class:                        "%dmkclub.member.twig.class%"
+        arguments:                    ["@dmkclub.member.status_provider"]
+        tags:
+            - { name: twig.extension }

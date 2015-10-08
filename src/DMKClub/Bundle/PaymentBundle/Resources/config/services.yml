@@ -1,7 +1,14 @@
 parameters:
-    dmkclub.payment.options_provider.class:               DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider
+    dmkclub.payment.options_provider.class:         DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider
+    dmkclub.payment.twig.class:                     DMKClub\Bundle\PaymentBundle\Twig\PaymentExtension
 services:
     dmkclub.payment.options_provider:
         class: "%dmkclub.payment.options_provider.class%"
         arguments:
-            - @translator
+            - "@translator"
+    dmkclub.payment.twig.extension:
+        class:                        "%dmkclub.payment.twig.class%"
+        arguments:                    ["@dmkclub.payment.options_provider"]
+        tags:
+            - { name: twig.extension }
+            
