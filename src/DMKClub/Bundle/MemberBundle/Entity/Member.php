@@ -204,6 +204,20 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     protected $isActive = false;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean", name="is_honorary")
+     */
+    protected $isHonorary = false;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean", name="is_free_of_charge")
+     */
+    protected $isFreeOfCharge = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=20, nullable=true)
@@ -219,6 +233,21 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      */
     protected $status;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="payment_option", type="string", length=20, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Oro\Versioned
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $paymentOption;
 
     /**
      * @var Address $postalAddress
@@ -321,7 +350,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     /**
      * @param Contact $contact
      *
-     * @return Customer
+     * @return Member
      */
     public function setContact($contact)
     {
@@ -336,6 +365,46 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     * @param bool $isFreeOfCharge
+     *
+     * @return Member
+     */
+    public function setIsHonorary($isHonorary)
+    {
+    	$this->isHonorary = $isHonorary;
+
+    	return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsHonorary()
+    {
+    	return $this->isHonorary;
+    }
+
+    /**
+     * @param bool $isFreeOfCharge
+     *
+     * @return Member
+     */
+    public function setIsFreeOfCharge($isFreeOfCharge)
+    {
+    	$this->isFreeOfCharge = $isFreeOfCharge;
+
+    	return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsFreeOfCharge()
+    {
+    	return $this->isFreeOfCharge;
     }
 
     /**
@@ -366,11 +435,28 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     }
 
     /**
-     *
      * @param string $value
+     * @return Member
      */
     public function setStatus($value) {
     	$this->status = $value;
+      return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentOption() {
+    	return $this->paymentOption;
+    }
+
+    /**
+     * @param string $value
+     * @return Member
+     */
+    public function setPaymentOption($value) {
+    	$this->paymentOption = $value;
+    	return $this;
     }
 
     /**
@@ -387,6 +473,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     public function setPostalAddress(Address $address)
     {
     	$this->postalAddress = $address;
+      return $this;
     }
 
     /**
@@ -403,13 +490,14 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     public function setOwner(User $user)
     {
         $this->owner = $user;
+        return $this;
     }
 
     /**
      * Set organization
      *
      * @param Organization $organization
-     * @return Customer
+     * @return Member
      */
     public function setOrganization(Organization $organization = null)
     {
@@ -431,7 +519,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     /**
      * @param Account $account
      *
-     * @return Customer
+     * @return Member
      */
     public function setAccount($account) {
     	$this->account = $account;

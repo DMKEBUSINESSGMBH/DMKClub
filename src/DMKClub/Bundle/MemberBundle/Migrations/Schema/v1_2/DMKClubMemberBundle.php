@@ -18,6 +18,7 @@ class DMKClubMemberBundle implements Migration
 	 * - Antragssteller
 	 * - aktives Mitglied
 	 * - Ex-Mitglied
+	 * PaymentStatus, Ehrenmitglied und beitragsfrei
 	 *
 	 *
 	 * @inheritdoc
@@ -26,7 +27,10 @@ class DMKClubMemberBundle implements Migration
 	public function up(Schema $schema, QueryBag $queries)
 	{
 		$table = $schema->getTable('dmkclub_member');
-		$table->addColumn('status', 'string', ['notnull' => false, 'length' => 8]);
+		$table->addColumn('status', 'string', ['notnull' => false, 'length' => 20]);
+		$table->addColumn('payment_option', 'string', ['notnull' => false, 'length' => 20]);
+		$table->addColumn('is_honorary', 'boolean', []);
+		$table->addColumn('is_free_of_charge', 'boolean', []);
 	}
 
 

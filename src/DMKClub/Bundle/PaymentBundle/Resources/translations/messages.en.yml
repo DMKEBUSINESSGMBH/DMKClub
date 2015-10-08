@@ -1,0 +1,6 @@
+dmkclub:
+    payment_option:
+        sepa_direct_debit: Sepa Direct Debit
+        banktransfer: Bank transfer
+        creditcard: Creditcard
+        

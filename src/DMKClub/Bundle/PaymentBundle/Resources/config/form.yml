@@ -1,0 +1,9 @@
+parameters:
+    dmkclub.form.type.payment_options.class:        DMKClub\Bundle\PaymentBundle\Form\Type\PaymentOptionsType
+services:
+    dmkclub.form.type.payment_options:
+        class: "%dmkclub.form.type.payment_options.class%"
+        arguments:
+            - @dmkclub.payment.options_provider
+        tags:
+            - { name: form.type, alias: dmkclub_paymentoptions }

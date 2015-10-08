@@ -1,0 +1,7 @@
+parameters:
+    dmkclub.payment.options_provider.class:               DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider
+services:
+    dmkclub.payment.options_provider:
+        class: "%dmkclub.payment.options_provider.class%"
+        arguments:
+            - @translator
