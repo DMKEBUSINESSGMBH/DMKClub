@@ -84,7 +84,7 @@ class MemberController extends Controller
     						'parameters' => array('id' => $entity->getId())
     				);
     			},
-    			$this->get('translator')->trans('dmkclub.controller.member.saved.message'),
+    			$this->get('translator')->trans('dmkclub.member.message.saved'),
     			$this->get('dmkclub.member.form.handler')
     	);
     }
@@ -115,13 +115,13 @@ class MemberController extends Controller
     }
 
     /**
-     * Wird aufgerufen, um im Account einen Abschnitt für die Mitgliedschaft 
+     * Wird aufgerufen, um im Account einen Abschnitt für die Mitgliedschaft
      * einzublenden. Die Einbindung erfolgt über die placeholder.yml
      * Die Methode stellt die Member-Datensätze des aktuellen Accounts
      * im entsprechenden Channel bereit.
-     * Die eigentlichen Datensätze werden dann in der Route 
+     * Die eigentlichen Datensätze werden dann in der Route
      * dmkclub_member_widget_member_info gerendert.
-     * 
+     *
      * @Route(
      *      "/widget/member-info/account/{accountId}/channel/{channelId}",
      *      name="dmkclub_member_widget_account_member_info",
