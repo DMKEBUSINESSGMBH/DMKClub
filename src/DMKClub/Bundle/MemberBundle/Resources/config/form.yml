@@ -8,12 +8,12 @@ parameters:
 
 services:
     dmkclub.member.form.type:
-        class: %dmkclub.member.form.type.class%
+        class: "%dmkclub.member.form.type.class%"
         tags:
             - { name: form.type, alias: dmkclub_member_member }
 
     dmkclub.member.form.type.api:
-        class: %dmkclub.member.form.type.api.class%
+        class: "%dmkclub.member.form.type.api.class%"
         tags:
             - { name: form.type, alias: dmkclub_member_member_api }
 
@@ -34,31 +34,31 @@ services:
             - "dmkclub_member_member_api"
 
     dmkclub.member.form.handler:
-        class: %dmkclub.member.form.handler.class%
+        class: "%dmkclub.member.form.handler.class%"
         scope: request
         arguments:
-            - @dmkclub.member.form
-            - @request
-            - @doctrine.orm.entity_manager
+            - "@dmkclub.member.form"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
         tags:
             - { name: oro_tag.tag_manager }
 
     dmkclub.member.form.handler.api:
-        class: %dmkclub.member.form.handler.class%
+        class: "%dmkclub.member.form.handler.class%"
         scope: request
         arguments:
-            - @dmkclub.member.form.api
-            - @request
-            - @doctrine.orm.entity_manager
+            - "@dmkclub.member.form.api"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
 
     dmkclub.form.type.member_select:
-        class: %dmkclub.form.type.member_select.class%
+        class: "%dmkclub.form.type.member_select.class%"
         tags:
             - { name: form.type, alias: "dmkclub_member_member_select" }
 
     dmkclub.form.type.member_status:
-        class: %dmkclub.form.type.member_status.class%
+        class: "%dmkclub.form.type.member_status.class%"
         arguments:
-            - @dmkclub.member.status_provider
+            - "@dmkclub.member.status_provider"
         tags:
             - { name: form.type, alias: dmkclub_memberstatus }

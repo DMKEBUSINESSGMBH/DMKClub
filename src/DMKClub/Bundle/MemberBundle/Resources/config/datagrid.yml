@@ -1,6 +1,6 @@
 datagrid:
     dmkclub-members-grid:
-        extended_entity_name: %dmkclub.member.entity.class%
+        extended_entity_name: "%dmkclub.member.entity.class%"
         source:
             type: orm
             acl_resource: orocrm_contact_view
@@ -9,18 +9,37 @@ datagrid:
                     - m.id
                     - c.firstName
                     - c.lastName
+                    - m.isHonorary
+                    - m.isActive
+                    - m.isFreeOfCharge
+                    - m.status
+                    - m.paymentOption
+                    - a.city
                     - m.createdAt
                     - m.updatedAt
                 from:
-                    - { table: %dmkclub.member.entity.class%, alias: m }
+                    - { table: "%dmkclub.member.entity.class%", alias: m }
                 join:
                     left:
                         - { join: m.contact, alias: c }
+                        - { join: m.postalAddress, alias: a }
         columns:
             firstName:
                 label:         orocrm.contact.first_name.label
             lastName:
                 label:         orocrm.contact.last_name.label
+            isHonorary:
+                label:         dmkclub.member.is_honorary.label
+            isActive:
+                label:         dmkclub.member.is_active.label
+            isFreeOfCharge:
+                label:         dmkclub.member.is_free_of_charge.label
+            status:
+                label:         dmkclub.member.status.label
+            paymentOption:
+                label:         dmkclub.member.payment_option.label
+            city:
+                label:         oro.address.city.label
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
@@ -43,6 +62,18 @@ datagrid:
                     data_name: c.lastName
                 firstName:
                     data_name: c.firstName
+                isHonorary:
+                    data_name: m.isHonorary
+                isActive:
+                    data_name: m.isActive
+                isFreeOfCharge:
+                    data_name: m.isFreeOfCharge
+                status:
+                    data_name: m.status
+                paymentOption:
+                    data_name: m.paymentOption
+                city:
+                    data_name: a.city
                 createdAt:
                     data_name: m.createdAt
                 updatedAt:
@@ -53,10 +84,30 @@ datagrid:
             columns:
                 firstName:
                     type: string
+                    enabled: false
                     data_name: c.firstName
                 lastName:
                     type: string
                     data_name: c.lastName
+                isHonorary:
+                    type: string
+                    enabled: false
+                    data_name: m.isHonorary
+                isFreeOfCharge:
+                    type: string
+                    enabled: false
+                    data_name: m.isFreeOfCharge
+                active:
+                    type: string
+                    enabled: false
+                    data_name: m.active
+                status:
+                    type: string
+                    data_name: m.status
+                city:
+                    type: string
+                    enabled: false
+                    data_name: a.city
                 createdAt:
                     type:      datetime
                     data_name: m.createdAt
@@ -64,6 +115,8 @@ datagrid:
                     type:      datetime
                     data_name: m.updatedAt
                     enabled: false
+            default:
+                status: { value: 'active', type: %oro_filter.form.type.filter.text.class%::TYPE_EQUAL }
         actions:
             view:
                 type: navigate
