@@ -6,6 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
 use Oro\Bundle\UserBundle\Provider\GenderProvider;
+use DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider;
 
 class PaymentOptionsType extends AbstractType
 {
@@ -50,7 +51,7 @@ class PaymentOptionsType extends AbstractType
                 'choices'     => $this->paymentOptionsProvider->getChoices(),
                 'multiple'    => false,
                 'expanded'    => false,
-                'empty_value' => 'dmkclub.payment.form.choose_option',
+                'empty_value' => 'dmkclub.payment_option.form.choose',
                 'translatable_options' => false
             )
         );

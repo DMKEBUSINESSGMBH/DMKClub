@@ -5,7 +5,13 @@
 {% oro_title_set({params : {"%member.name%": fullname} }) %}
 
 {% block navButtons %}
-    {{ parent() }}
+    {{ UI.cancelButton(path('dmkclub_member_index')) }}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('dmkclub_member_update', { 'id': entity.id }),
+            'entity_label': 'dmkclub.member.entity_label'|trans
+        }) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}

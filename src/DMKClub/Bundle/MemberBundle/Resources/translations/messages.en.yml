@@ -10,8 +10,11 @@ dmkclub:
         name.label:          Name
         member_code.label:   Club ID
         is_active.label:     Active member
+        is_honorary.label:   Honorary member
+        is_free_of_charge.label:  Free of charge
         contact.label:       Contact
         postal_address.label:  Postal Address
+        payment_option.label:  Payment option
         organization.label:  Organization
         start_date.label:    Joining
         end_date.label:      Resignation

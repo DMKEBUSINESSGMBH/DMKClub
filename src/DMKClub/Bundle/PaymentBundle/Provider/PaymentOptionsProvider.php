@@ -1,6 +1,6 @@
 <?php
 
-namespace DMKClub\Bundle\MemberBundle\Provider;
+namespace DMKClub\Bundle\PaymentBundle\Provider;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
+use Oro\Bundle\TagBundle\Entity\TagManager;
 
 class MemberHandler
 {
@@ -62,14 +63,22 @@ class MemberHandler
         return false;
     }
 
-    /**
-     * "Success" form handler
-     *
-     * @param Lead $entity
-     */
-    protected function onSuccess(Member $entity)
-    {
-        $this->manager->persist($entity);
-        $this->manager->flush();
-    }
+	/**
+	 * "Success" form handler
+	 *
+	 * @param Member $entity
+	 */
+	protected function onSuccess(Member $entity) {
+		$this->manager->persist($entity);
+		$this->manager->flush();
+		$this->tagManager->saveTagging($entity);
+	}
+	/**
+	 * Setter for tag manager
+	 *
+	 * @param TagManager $tagManager
+	 */
+	public function setTagManager(TagManager $tagManager) {
+		$this->tagManager = $tagManager;
+	}
 }

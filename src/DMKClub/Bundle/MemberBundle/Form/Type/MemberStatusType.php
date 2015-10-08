@@ -6,6 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
 use Oro\Bundle\UserBundle\Provider\GenderProvider;
+use DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider;
 
 class MemberStatusType extends AbstractType
 {

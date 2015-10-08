@@ -27,7 +27,11 @@ class MemberType extends AbstractType
 			->add('startDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.start_date.label'))
 			->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.end_date.label'))
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
+			->add('status', 'dmkclub_memberstatus', array('required' => true, 'label' => 'dmkclub.member.status.label'))
+			->add('paymentOption', 'dmkclub_paymentoptions', array('required' => true, 'label' => 'dmkclub.member.payment_option.label'))
 			->add('isActive')
+			->add('isHonorary')
+			->add('isFreeOfCharge')
 			->add('owner')
 			->add('organization')
 		;

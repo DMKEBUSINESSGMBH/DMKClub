@@ -18,7 +18,13 @@
     {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
         {{ UI.buttonSeparator() }}
     {% endif %}
-    {{ UI.cancelButton(path('dmkclub_member_index')) }}
+
+    {% if form.vars.value.id %}
+	    {{ UI.cancelButton(path('dmkclub_member_view', { 'id': form.vars.value.id })) }}
+    {% else %}
+	    {{ UI.cancelButton(path('dmkclub_member_index')) }}
+    {% endif %}
+
     {% set html = UI.saveAndCloseButton() %}
     {% if form.vars.value.id or resource_granted('dmkclub_member_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
@@ -61,11 +67,15 @@
     {% set formFields = formFields|merge([
         form_row(form.name),
         form_row(form.memberCode),
+        form_row(form.status),
 
         form_row(form.contact),
         form_row(form.startDate),
         form_row(form.endDate),
         form_row(form.isActive),
+        form_row(form.isHonorary),
+        form_row(form.isFreeOfCharge),
+        form_row(form.paymentOption),
         form_row(form.dataChannel)
     ]) %}
     {% if form.owner is defined %}
