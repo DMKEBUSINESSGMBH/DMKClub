@@ -1,0 +1,46 @@
+parameters:
+    dmkclub.member.importexport.template_fixture.member.class:        DMKClub\Bundle\MemberBundle\ImportExport\TemplateFixture\MemberFixture
+
+services:
+    dmkclub.member.importexport.template_fixture.member:
+        class: %dmkclub.member.importexport.template_fixture.member.class%
+        tags:
+            - { name: oro_importexport.template_fixture }
+
+    # Converter
+    dmkclub.member.importexport.data_converter.member:
+        parent: oro_importexport.data_converter.configurable
+
+
+    dmkclub.member.importexport.template_fixture.data_converter.member:
+        parent: oro_importexport.data_converter.template_fixture.configurable
+
+
+    # Export processor
+    dmkclub.member.importexport.processor.export.member:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, [@dmkclub.member.importexport.data_converter.member]]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: %dmkclub.member.entity.class%, alias: dmkclub_member }
+
+    dmkclub.member.importexport.processor.export_template.member:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, [@dmkclub.member.importexport.template_fixture.data_converter.member]]
+        tags:
+            - { name: oro_importexport.processor, type: export_template, entity: %dmkclub.member.entity.class%, alias: dmkclub_member }
+
+    # Strategy
+    dmkclub.member.importexport.strategy.member.add_or_replace:
+        parent: oro_importexport.strategy.configurable_add_or_replace
+
+    # Import processor
+    dmkclub.member.importexport.processor.import.member:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+             - [setDataConverter, [@dmkclub.member.importexport.data_converter.member]]
+             - [setStrategy, [@dmkclub.member.importexport.strategy.member.add_or_replace]]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: %dmkclub.member.entity.class%, alias: dmkclub_member.add_or_replace }
+            - { name: oro_importexport.processor, type: import_validation, entity: %dmkclub.member.entity.class%, alias: dmkclub_member.add_or_replace }

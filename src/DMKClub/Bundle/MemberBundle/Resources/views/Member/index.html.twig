@@ -6,6 +6,15 @@
 
 
 {% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        entity_class: entity_class,
+        exportProcessor: 'dmkclub_member',
+        exportTemplateProcessor: 'dmkclub_member',
+        importProcessor: 'dmkclub_member.add_or_replace',
+        importTitle: 'oro.importexport.import.entity'|trans({'%entityName%': 'dmkclub.member.entity_plural_label'|trans}),
+        dataGridName: gridName
+    } %}
+
     {% if resource_granted('dmkclub_member_create') %}
         <div class="btn-group">
             {{ UI.addButton({
@@ -15,4 +24,3 @@
         </div>
     {% endif %}
 {% endblock %}
-    
