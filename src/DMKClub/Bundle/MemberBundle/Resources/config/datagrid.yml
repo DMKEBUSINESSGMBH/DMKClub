@@ -15,6 +15,7 @@ datagrid:
                     - m.status
                     - m.paymentOption
                     - a.city
+                    - c.birthday
                     - m.createdAt
                     - m.updatedAt
                 from:
@@ -40,6 +41,9 @@ datagrid:
                 label:         dmkclub.member.payment_option.label
             city:
                 label:         oro.address.city.label
+            birthday:
+                label:         orocrm.contact.birthday.label
+                frontend_type: date
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
@@ -74,6 +78,8 @@ datagrid:
                     data_name: m.paymentOption
                 city:
                     data_name: a.city
+                birthday:
+                    data_name: c.birthday
                 createdAt:
                     data_name: m.createdAt
                 updatedAt:
@@ -108,6 +114,9 @@ datagrid:
                     type: string
                     enabled: false
                     data_name: a.city
+                birthday:
+                    type:      date
+                    data_name: c.birthday
                 createdAt:
                     type:      datetime
                     data_name: m.createdAt
