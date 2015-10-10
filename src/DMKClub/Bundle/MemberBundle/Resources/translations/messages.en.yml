@@ -7,6 +7,7 @@ dmkclub:
         entity_description:  Represent member of club
         id.label:            Id
         owner.label:         Owner
+        account.label:       Account
         name.label:          Name
         member_code.label:   Club ID
         is_active.label:     Active member
@@ -19,6 +20,7 @@ dmkclub:
         start_date.label:    Joining
         end_date.label:      Resignation
         channel_type.member.label: Club member
+        data_channel.member.label: Data channel
         status.label: Status
         status.proposal: Proposal
         status.active: Active

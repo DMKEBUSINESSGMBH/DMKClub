@@ -6,6 +6,7 @@ dmkclub:
         entity_description:  Mitgliedschaft im Verein
         id.label:            Id
         owner.label:         Owner
+        account.label:       Account
         name.label:          Name
         member_code.label:   Mitgliedsnummer
         is_active.label:     Aktives Mitglied
@@ -18,6 +19,7 @@ dmkclub:
         start_date.label:    Eintrittsdatum
         end_date.label:      Austrittsdatum
         channel_type.member.label: Vereinsverwaltung
+        data_channel.member.label: Kanal
         status.label: Status
         status.proposal: Antragsteller
         status.active: Laufende Mitgliedschaft
