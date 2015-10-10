@@ -199,28 +199,34 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean", name="is_active")
+     * @ORM\Column(type="boolean", name="is_active", options={"default" : false})
+     * @Oro\Versioned
+		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
     protected $isActive = false;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean", name="is_honorary")
+     * @ORM\Column(type="boolean", name="is_honorary", options={"default" : false})
+     * @Oro\Versioned
+		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
     protected $isHonorary = false;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean", name="is_free_of_charge")
+     * @ORM\Column(type="boolean", name="is_free_of_charge", options={"default" : false})
+     * @Oro\Versioned
+		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
     protected $isFreeOfCharge = false;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=20, nullable=true)
+     * @ORM\Column(name="status", type="string", length=20, nullable=true, options={"default" : "active"})
      * @Soap\ComplexType("string", nillable=true)
      * @Oro\Versioned
      * @ConfigField(
@@ -236,7 +242,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_option", type="string", length=20, nullable=true)
+     * @ORM\Column(name="payment_option", type="string", length=20, nullable=true, options={"default" : "none"})
      * @Soap\ComplexType("string", nillable=true)
      * @Oro\Versioned
      * @ConfigField(
