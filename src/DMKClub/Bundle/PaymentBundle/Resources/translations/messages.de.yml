@@ -3,5 +3,6 @@ dmkclub:
         sepa_direct_debit: Sepa Bankeinzug
         banktransfer: Überweisung
         creditcard: Kreditkarte
+        none: Keine
         form.choose: Wählen Sie ein Zahlungsart
         

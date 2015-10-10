@@ -3,5 +3,6 @@ dmkclub:
         sepa_direct_debit: Sepa Direct Debit
         banktransfer: Bank transfer
         creditcard: Creditcard
+        none: None
         form.choose: Choose payment option
         
