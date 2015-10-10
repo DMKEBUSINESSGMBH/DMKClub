@@ -31,10 +31,13 @@ datagrid:
                 label:         orocrm.contact.last_name.label
             isHonorary:
                 label:         dmkclub.member.is_honorary.label
+                frontend_type: boolean
             isActive:
                 label:         dmkclub.member.is_active.label
+                frontend_type: boolean
             isFreeOfCharge:
                 label:         dmkclub.member.is_free_of_charge.label
+                frontend_type: boolean
             status:
                 label:         dmkclub.member.status.label
             paymentOption:
