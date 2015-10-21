@@ -40,7 +40,11 @@ Wird in der Detailansicht des Mitglieds verwendet
             {% endif %}
         </div>
         <div class="responsive-block">
-            {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
+            {{ UI.renderProperty('dmkclub.member.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
+        		{{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
+            {%- if entity.endDate -%}
+            	{{ UI.renderProperty('dmkclub.member.end_date.label'|trans, entity.endDate|oro_format_date) }}
+            {% endif %}
             {%- if entity.contact -%}
 	            {%- set birthdayData -%}
 	                {{ entity.contact.birthday is not empty ? entity.contact.birthday|oro_format_date : null }}

@@ -32,7 +32,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_4';
     }
 
     /**
@@ -67,6 +67,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     {
     	$table = $schema->createTable('dmkclub_member');
     	$table->addColumn('id', 'integer', ['autoincrement' => true]);
+    	$table->addColumn('bank_account', 'integer', ['notnull' => false]);
     	$table->addColumn('organization_id', 'integer', ['notnull' => false]);
     	$table->addColumn('postal_address', 'integer', ['notnull' => false]);
     	$table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
@@ -91,11 +92,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     	$table->addIndex(['organization_id'], 'IDX_6A79FCCD32C8A3DE', []);
     	$table->addIndex(['account_id'], 'IDX_6A79FCCD9B6B5FBA', []);
     	$table->addIndex(['data_channel_id'], 'IDX_6A79FCCDBDC09B73', []);
-
-    	$activityExtension->addActivityAssociation ( $schema, 'orocrm_call', 'dmkclub_member' );
-    	$activityExtension->addActivityAssociation ( $schema, 'orocrm_task', 'dmkclub_member' );
-    	$activityExtension->addActivityAssociation ( $schema, 'oro_calendar_event', 'dmkclub_member' );
-
+    	$table->addIndex(['bank_account'], 'IDX_6A79FCCD53A23E0A', []);
     }
 
     /**
@@ -106,6 +103,12 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     protected function addDmkclubMemberForeignKeys(Schema $schema)
     {
     	$table = $schema->getTable('dmkclub_member');
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('dmkclub_bankaccount'),
+    			['bank_account'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
     	$table->addForeignKeyConstraint(
     			$schema->getTable('oro_organization'),
     			['organization_id'],
@@ -143,4 +146,5 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     			['onDelete' => 'SET NULL', 'onUpdate' => null]
     	);
     }
+
 }

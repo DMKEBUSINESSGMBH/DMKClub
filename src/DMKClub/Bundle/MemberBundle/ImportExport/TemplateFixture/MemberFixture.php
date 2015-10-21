@@ -51,7 +51,9 @@ class MemberFixture extends AbstractTemplateRepository implements TemplateFixtur
 				$entity->setDataChannel ( $channelRepo->getEntity ( 'Member channel|member' ) );
 				$entity->setCreatedAt ( new \DateTime () );
 				$entity->setUpdatedAt ( new \DateTime () );
-				$entity->setContact ( $contactRepo->getEntity ( self::DUMMY_MEMBER_NAME ) );
+				$contact = $contactRepo->getEntity ( self::DUMMY_MEMBER_NAME );
+				$contact->setBirthday(new \DateTime ());
+				$entity->setContact ( $contact );
 				$entity->setPostalAddress ( $addressRepo->getEntity ( self::DUMMY_MEMBER_NAME ) );
 //				$entity->setEmail ( 'mb@chemnitzerfc.de' );
 				$entity->setName ( self::DUMMY_MEMBER_NAME );

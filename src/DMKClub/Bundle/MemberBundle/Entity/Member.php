@@ -94,7 +94,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *              "auditable"=true
      *          },
      *          "importexport"={
-     *              "order"=10
+     *              "order"=20
      *          }
      *      }
      * )
@@ -167,6 +167,9 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
      *          }
      *      }
      * )
@@ -182,6 +185,9 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
      *          }
      *      }
      * )
@@ -193,6 +199,17 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *
      * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\ContactBundle\Entity\Contact", cascade="PERSIST")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=190,
+     *              "short"=false
+     *          }
+     *      }
+     * )
      */
     protected $contact;
 
@@ -201,7 +218,13 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *
      * @ORM\Column(type="boolean", name="is_active", options={"default" : false})
      * @Oro\Versioned
-		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+		 * @ConfigField(
+		 * 	defaultValues={"dataaudit"={"auditable"=true},
+     *          "importexport"={
+     *              "order"=40
+     *          }
+		 *  }
+		 * )
      */
     protected $isActive = false;
 
@@ -210,7 +233,12 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *
      * @ORM\Column(type="boolean", name="is_honorary", options={"default" : false})
      * @Oro\Versioned
-		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true},
+     *          "importexport"={
+     *              "order"=50
+     *          }
+		 *   }
+		 * )
      */
     protected $isHonorary = false;
 
@@ -219,7 +247,12 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *
      * @ORM\Column(type="boolean", name="is_free_of_charge", options={"default" : false})
      * @Oro\Versioned
-		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true},
+     *          "importexport"={
+     *              "order"=60
+     *          }
+		 *   }
+		 * )
      */
     protected $isFreeOfCharge = false;
 
@@ -233,6 +266,9 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=70
      *          }
      *      }
      * )
@@ -249,11 +285,34 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=80
      *          }
      *      }
      * )
      */
     protected $paymentOption;
+
+    /**
+     * @var Account
+     *
+     * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\PaymentBundle\Entity\BankAccount", cascade="PERSIST")
+     * @ORM\JoinColumn(name="bank_account", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\Versioned
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "full"=true,
+     *              "order"=85
+     *          }
+     *      }
+     * )
+     */
+    protected $bankAccount;
 
     /**
      * @var Address $postalAddress
@@ -264,7 +323,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *      defaultValues={
      *          "importexport"={
      *              "full"=true,
-     *              "order"=20
+     *              "order"=150
      *          }
      *      }
      * )
