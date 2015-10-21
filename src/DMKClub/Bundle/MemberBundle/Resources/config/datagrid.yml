@@ -7,6 +7,7 @@ datagrid:
             query:
                 select:
                     - m.id
+                    - m.memberCode
                     - c.firstName
                     - c.lastName
                     - m.isHonorary
@@ -29,6 +30,8 @@ datagrid:
                 label:         orocrm.contact.first_name.label
             lastName:
                 label:         orocrm.contact.last_name.label
+            memberCode:
+                label:         dmkclub.member.member_code.label
             isHonorary:
                 label:         dmkclub.member.is_honorary.label
                 frontend_type: boolean
@@ -65,6 +68,8 @@ datagrid:
                 params:     [ id ]
         sorters:
             columns:
+                memberCode:
+                    data_name: m.memberCode
                 lastName:
                     data_name: c.lastName
                 firstName:
@@ -91,6 +96,9 @@ datagrid:
                 name:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
+                memberCode:
+                    type: string
+                    data_name: m.memberCode
                 firstName:
                     type: string
                     enabled: false
@@ -106,7 +114,7 @@ datagrid:
                     type: string
                     enabled: false
                     data_name: m.isFreeOfCharge
-                active:
+                isActive:
                     type: string
                     enabled: false
                     data_name: m.active
