@@ -35,6 +35,14 @@ class MemberType extends AbstractType
 			->add('owner')
 			->add('organization')
 		;
+// 		$builder->add(
+// 					'bankAccount',
+// 					'dmkclub_bankaccount',
+// 					[
+// 							'label'    => 'dmkclub.member.bankAccount.label',
+// 							'required' => false,
+// 					]
+// 				);
 		$builder->add(
 					'contact',
 					'orocrm_contact_select',
@@ -43,14 +51,14 @@ class MemberType extends AbstractType
 							'required' => true,
 					]
 				);
-			$builder->add(
-					'postalAddress',
-					'oro_address',
-					[
-							'cascade_validation' => true,
-							'required'           => false
-					]
-				);
+		$builder->add(
+				'postalAddress',
+				'oro_address',
+				[
+						'cascade_validation' => true,
+						'required'           => false
+				]
+			);
 		}
     /**
      * @param FormBuilderInterface $builder

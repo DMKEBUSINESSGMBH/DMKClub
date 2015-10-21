@@ -14,12 +14,13 @@ dmkclub:
         is_free_of_charge.label:  Beitragsfrei
         contact.label:       Kontakt
         payment_option.label:  Zahlungsweise
+        bank_account.label:   Bank account
         postal_address.label:  Postadresse
         organization.label:  Organisation
         start_date.label:    Eintrittsdatum
         end_date.label:      Austrittsdatum
         channel_type.member.label: Vereinsverwaltung
-        data_channel.member.label: Kanal
+        data_channel.label: Kanal
         status.label: Status
         status.proposal: Antragsteller
         status.active: Laufende Mitgliedschaft

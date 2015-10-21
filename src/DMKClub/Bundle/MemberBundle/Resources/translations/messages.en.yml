@@ -16,11 +16,12 @@ dmkclub:
         contact.label:       Contact
         postal_address.label:  Postal Address
         payment_option.label:  Payment option
+        bank_account.label:   Bank account
         organization.label:  Organization
         start_date.label:    Joining
         end_date.label:      Resignation
         channel_type.member.label: Club member
-        data_channel.member.label: Data channel
+        data_channel.label: Data channel
         status.label: Status
         status.proposal: Proposal
         status.active: Active
