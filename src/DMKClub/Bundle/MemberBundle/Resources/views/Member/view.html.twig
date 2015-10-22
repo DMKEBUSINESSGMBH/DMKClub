@@ -24,6 +24,17 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
+{% block breadcrumbs %}
+    {{ parent() }}
+    <div class="pull-left">
+        {% if entity.status == 'active' %}
+            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ entity.status|trans }} ({{ entity.memberCode }})</div>
+        {% else %}
+            <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ entity.status|trans }}</div>
+        {% endif %}
+    </div>
+{% endblock breadcrumbs %}
+
 {% block stats %}
     {{ parent() }}
     <li>

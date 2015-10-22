@@ -34,14 +34,19 @@ Wird in der Detailansicht des Mitglieds verwendet
             {% if entity.postalAddress is not empty %}
                 {{ UI.renderHtmlProperty('orocrm.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
+            {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
 
-            {% if resource_granted('oro_tag_view') %}
-                {{ UI.renderHtmlProperty('oro.tag.entity_plural_label'|trans, tag.renderView(entity)) }}
+            {% if entity.bankAccount is not empty %}
+              {{ UI.renderProperty('dmkclub.bank_account.account_owner.label'|trans, entity.bankAccount.accountOwner) }}
+              {{ UI.renderProperty('dmkclub.bank_account.iban.label'|trans, entity.bankAccount.iban) }}
+              {{ UI.renderProperty('dmkclub.bank_account.bic.label'|trans, entity.bankAccount.bic) }}
+              {{ UI.renderProperty('dmkclub.bank_account.bank_name.label'|trans, entity.bankAccount.bankName) }}
             {% endif %}
+
         </div>
         <div class="responsive-block">
+            {{ UI.renderProperty('dmkclub.member.member_code.label'|trans, entity.memberCode) }}
             {{ UI.renderProperty('dmkclub.member.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
-        		{{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
             {%- if entity.endDate -%}
             	{{ UI.renderProperty('dmkclub.member.end_date.label'|trans, entity.endDate|oro_format_date) }}
             {% endif %}
@@ -57,7 +62,11 @@ Wird in der Detailansicht des Mitglieds verwendet
 	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_honorary.label'|trans, entity.isHonorary) }}
 	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_free_of_charge.label'|trans, entity.isFreeOfCharge) }}
 	          {% endif %}
-            {{ entityConfig.renderDynamicFields(entity) }}
-	      </div>
+            {% if resource_granted('oro_tag_view') %}
+                {{ UI.renderHtmlProperty('oro.tag.entity_plural_label'|trans, tag.renderView(entity)) }}
+            {% endif %}
+	          {{ entityConfig.renderDynamicFields(entity) }}
+
+          </div>
     </div>
 </div>

@@ -32,8 +32,9 @@ dmkclub:
         message.saved: Member saved
         fees.label: Membership fee
 
-    active: Active
-    inactive: Inactive
     member_information: Member Information
     general_information: General Information
     entity_number: "%entityName% %entityNumber%"
+active: Active
+proposal: Proposal
+terminated: Terminated

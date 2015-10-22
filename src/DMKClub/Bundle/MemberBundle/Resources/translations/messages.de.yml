@@ -14,7 +14,7 @@ dmkclub:
         is_free_of_charge.label:  Beitragsfrei
         contact.label:       Kontakt
         payment_option.label:  Zahlungsweise
-        bank_account.label:   Bank account
+        bank_account.label:   Bankverbindung
         postal_address.label:  Postadresse
         organization.label:  Organisation
         start_date.label:    Eintrittsdatum
@@ -31,8 +31,9 @@ dmkclub:
         message.saved: Member saved
         fees.label: Mitgliedsbeiträge
 
-    active: Aktiv
-    inactive: Inaktiv
-    member_information: Mitglieds-Information
+    member_information: Angaben zum Mitglied
     general_information: Allgemeine Informationen
     entity_number: "%entityName% %entityNumber%"
+active: Laufende Mitgliedschaft
+proposal: Antragsteller
+terminated: Beendete Mitgliedschaft

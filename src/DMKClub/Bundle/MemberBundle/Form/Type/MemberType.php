@@ -35,14 +35,14 @@ class MemberType extends AbstractType
 			->add('owner')
 			->add('organization')
 		;
-// 		$builder->add(
-// 					'bankAccount',
-// 					'dmkclub_bankaccount',
-// 					[
-// 							'label'    => 'dmkclub.member.bankAccount.label',
-// 							'required' => false,
-// 					]
-// 				);
+		$builder->add(
+					'bankAccount',
+					'dmkclub_bankaccount',
+					[
+							'label'    => 'dmkclub.member.bank_account.label',
+							'required' => false,
+					]
+				);
 		$builder->add(
 					'contact',
 					'orocrm_contact_select',

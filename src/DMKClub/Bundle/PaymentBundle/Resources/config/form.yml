@@ -1,5 +1,8 @@
 parameters:
     dmkclub.form.type.payment_options.class:        DMKClub\Bundle\PaymentBundle\Form\Type\PaymentOptionsType
+    dmkclub.form.type.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType
+    dmkclub.form.handler.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Handler\BankAccount
+
 services:
     dmkclub.form.type.payment_options:
         class: "%dmkclub.form.type.payment_options.class%"
@@ -7,3 +10,28 @@ services:
             - @dmkclub.payment.options_provider
         tags:
             - { name: form.type, alias: dmkclub_paymentoptions }
+
+    # Bankaccount form type
+    dmkclub.form.type.bank_account:
+        class: %dmkclub.form.type.bank_account.class%
+        tags:
+             - { name: form.type, alias: dmkclub_bankaccount }
+
+    # Bankaccount form
+    dmkclub.form.bank_account:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "dmkclub_bankaccount_form"
+            - "dmkclub_bankaccount"
+            - ~
+
+    # BankAccount form handler
+    dmkclub.form.handler.bank_account:
+        class: %dmkclub.form.handler.bank_account.class%
+        scope: request
+        arguments:
+            - @dmkclub.form.bank_account
+            - @request
+            - @doctrine.orm.entity_manager

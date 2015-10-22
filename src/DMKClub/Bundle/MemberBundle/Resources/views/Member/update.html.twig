@@ -51,10 +51,10 @@
 {% block breadcrumbs %}
     {{ parent() }}
     <div class="pull-left">
-        {% if entity.isActive == true %}
-            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'dmkclub.active'|trans }}</div>
+        {% if entity.status == 'active' %}
+            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ entity.status|trans }} ({{ entity.memberCode }})</div>
         {% else %}
-            <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'dmkclub.inactive'|trans }}</div>
+            <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ entity.status|trans }}</div>
         {% endif %}
     </div>
 {% endblock breadcrumbs %}
@@ -72,11 +72,8 @@
         form_row(form.contact),
         form_row(form.startDate),
         form_row(form.endDate),
-        form_row(form.isActive),
-        form_row(form.isHonorary),
-        form_row(form.isFreeOfCharge),
-        form_row(form.paymentOption),
         form_row(form.dataChannel)
+
     ]) %}
     {% if form.owner is defined %}
         {% set formFields = formFields|merge([form_row(form.owner)]) %}
@@ -91,9 +88,12 @@
                     'data': formFields
                 },
                 {
-                    'title': 'Tags'|trans,
+                    'title': ''|trans,
                     'data': [
-                       form_row(form.tags),
+                      form_row(form.isActive),
+                      form_row(form.isHonorary),
+                      form_row(form.isFreeOfCharge),
+                      form_row(form.tags),
                     ]
                 },
             ]
@@ -106,6 +106,20 @@
         {
             'title': 'dmkclub.member.postal_address.label'|trans,
             'data': [form_widget(form.postalAddress)]
+        },
+        ]
+    }] ) %}
+
+    {% set dataBlocks = dataBlocks|merge( [{
+        'title' : 'Financial data'|trans,
+        'subblocks': [
+        {
+            'title': 'dmkclub.member.bank_account.label'|trans,
+            'data': [form_widget(form.bankAccount)]
+        },
+        {
+            'title': '',
+            'data': [form_row(form.paymentOption)]
         },
         ]
     }] ) %}

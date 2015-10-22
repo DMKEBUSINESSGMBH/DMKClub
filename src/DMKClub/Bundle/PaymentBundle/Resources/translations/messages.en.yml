@@ -1,18 +1,18 @@
 dmkclub:
-    payment:
-        bankaccount:
-            entity_label:        Bank account
-            entity_plural_label: Bank accounts
-            entity_description:  Represents a banking account
-            id.label:            Id
-            account_owner.label: Owner
-            iban.label: IBAN
-            bic.label: BIC
-            bank_name.label: Bank
+    bank_account:
+        entity_label:        Bank account
+        entity_plural_label: Bank accounts
+        entity_description:  Represents a banking account
+        id.label:            Id
+        account_owner.label: Account owner
+        iban.label: IBAN
+        bic.label: BIC
+        bank_name.label: Bank
     payment_option:
         sepa_direct_debit: Sepa Direct Debit
         banktransfer: Bank transfer
         creditcard: Creditcard
         none: None
         form.choose: Choose payment option
-        
+
+"Financial data": Finanzen
