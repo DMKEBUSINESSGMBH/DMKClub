@@ -206,7 +206,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *          },
      *          "importexport"={
      *              "order"=190,
-     *              "short"=false
+     *              "full"=true
      *          }
      *      }
      * )
@@ -521,6 +521,23 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      */
     public function setPaymentOption($value) {
     	$this->paymentOption = $value;
+    	return $this;
+    }
+
+    /**
+     * @return \DMKClub\Bundle\PaymentBundle\Entity\BankAccount
+     */
+    public function getBankAccount() {
+    	return $this->bankAccount;
+    }
+
+    /**
+     *
+     * @param \DMKClub\Bundle\PaymentBundle\Entity\BankAccount $value
+     * @return \DMKClub\Bundle\MemberBundle\Entity\Member
+     */
+    public function setBankAccount($value) {
+    	$this->bankAccount = $value;
     	return $this;
     }
 
