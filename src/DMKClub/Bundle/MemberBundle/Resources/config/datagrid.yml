@@ -26,12 +26,12 @@ datagrid:
                         - { join: m.contact, alias: c }
                         - { join: m.postalAddress, alias: a }
         columns:
+            memberCode:
+                label:         dmkclub.member.member_code.label
             firstName:
                 label:         orocrm.contact.first_name.label
             lastName:
                 label:         orocrm.contact.last_name.label
-            memberCode:
-                label:         dmkclub.member.member_code.label
             isHonorary:
                 label:         dmkclub.member.is_honorary.label
                 frontend_type: boolean
