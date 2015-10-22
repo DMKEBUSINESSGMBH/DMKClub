@@ -11,6 +11,7 @@ dmkclub:
     payment_option:
         sepa_direct_debit: Sepa Direct Debit
         banktransfer: Bank transfer
+        cash: Cash payment
         creditcard: Creditcard
         none: None
         form.choose: Choose payment option

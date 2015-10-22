@@ -19,6 +19,7 @@ class PaymentOptionsProvider
         PaymentOption::NONE  => 'dmkclub.payment_option.none',
     		PaymentOption::SEPA_DIRECT_DEBIT   => 'dmkclub.payment_option.sepa_direct_debit',
         PaymentOption::BANKTRANSFER   => 'dmkclub.payment_option.banktransfer',
+        PaymentOption::CASH   => 'dmkclub.payment_option.cash',
         PaymentOption::CREDITCARD   => 'dmkclub.payment_option.creditcard',
     );
 
