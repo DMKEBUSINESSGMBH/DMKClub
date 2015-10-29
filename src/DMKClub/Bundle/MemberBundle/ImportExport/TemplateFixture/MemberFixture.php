@@ -7,6 +7,7 @@ use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Model\MemberStatus;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
+use DMKClub\Bundle\PaymentBundle\Entity\BankAccount;
 
 class MemberFixture extends AbstractTemplateRepository implements TemplateFixtureInterface {
 	const DUMMY_MEMBER_NAME = 'Jerry Coleman';
@@ -57,6 +58,12 @@ class MemberFixture extends AbstractTemplateRepository implements TemplateFixtur
 				$entity->setPostalAddress ( $addressRepo->getEntity ( self::DUMMY_MEMBER_NAME ) );
 //				$entity->setEmail ( 'mb@chemnitzerfc.de' );
 				$entity->setName ( self::DUMMY_MEMBER_NAME );
+				$bankAccount = new BankAccount();
+				$bankAccount->setBankName('HonestBank')->setIban('DE12345678')->setBic('DEDE123BANK');
+				$entity->setBankAccount($bankAccount);
+				$feeCat = new FeeCategory();
+				$feeCat->setName('feecat1');
+				$entity->setFeeCategory($feeCat);
 				$entity->setStatus ( MemberStatus::ACTIVE );
 				$entity->setStartDate( new \DateTime () );
 				$entity->setPaymentOption(PaymentOption::SEPA_DIRECT_DEBIT);

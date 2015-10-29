@@ -2,6 +2,8 @@ orocrm_channel:
    entity_data:
        -
           name: DMKClub\Bundle\MemberBundle\Entity\Member
+          dependent:
+              - DMKClub\Bundle\MemberBundle\Entity\FeeCategory
           navigation_items:
               - application_menu.customers_tab.dmkclub_member
 
@@ -10,4 +12,5 @@ orocrm_channel:
             label: dmkclub.member.channel_type.member.label
             entities:
                 - DMKClub\Bundle\MemberBundle\Entity\Member
+                - DMKClub\Bundle\MemberBundle\Entity\FeeCategory
             customer_identity: DMKClub\Bundle\MemberBundle\Entity\Member

@@ -178,6 +178,7 @@ class BankAccount extends ExtendBankAccount {
 
 	public function setAccountOwner($value) {
 		$this->accountOwner = $value;
+		return $this;
 	}
 
 	public function getBankName() {
@@ -186,6 +187,7 @@ class BankAccount extends ExtendBankAccount {
 
 	public function setBankName($value) {
 		$this->bankName = $value;
+		return $this;
 	}
 	public function getBic() {
 		return $this->bic;
@@ -193,6 +195,7 @@ class BankAccount extends ExtendBankAccount {
 
 	public function setBic($value) {
 		$this->bic = $value;
+		return $this;
 	}
 	public function getIban() {
 		return $this->iban;
@@ -200,6 +203,7 @@ class BankAccount extends ExtendBankAccount {
 
 	public function setIban($value) {
 		$this->iban = $value;
+		return $this;
 	}
 
 	/**

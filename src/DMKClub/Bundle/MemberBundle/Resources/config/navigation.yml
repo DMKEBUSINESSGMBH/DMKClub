@@ -19,3 +19,5 @@ oro_menu_config:
 oro_titles:
     dmkclub_member_index: ~
     dmkclub_member_view:  %%member.name%%
+    dmkclub_feecategory_create: 'Create fee category'
+    dmkclub_feecategory_update: '%%feecategory.name%% - Edit'
