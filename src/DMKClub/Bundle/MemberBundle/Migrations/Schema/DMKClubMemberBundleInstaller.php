@@ -49,14 +49,34 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
-        $this->createDmkclubMemberTable($schema);
+        $this->createDmkclubFeecategoryTable($schema);
+    	  $this->createDmkclubMemberTable($schema);
 
         /** Foreign keys generation **/
-        $this->addDmkclubMemberForeignKeys($schema);
+        $this->addDmkclubFeecategoryForeignKeys($schema);
+    		$this->addDmkclubMemberForeignKeys($schema);
 
         $this->comment->addCommentAssociation($schema, 'dmkclub_member');
     }
 
+    /**
+     * Create dmkclub_feecategory table
+     *
+     * @param Schema $schema
+     */
+    protected function createDmkclubFeecategoryTable(Schema $schema)
+    {
+    	$table = $schema->createTable('dmkclub_feecategory');
+    	$table->addColumn('id', 'integer', ['autoincrement' => true]);
+    	$table->addColumn('organization_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('name', 'string', ['length' => 255]);
+    	$table->addColumn('created_at', 'datetime', []);
+    	$table->addColumn('updated_at', 'datetime', []);
+    	$table->setPrimaryKey(['id']);
+    	$table->addIndex(['user_owner_id'], 'IDX_291829209EB185F9', []);
+    	$table->addIndex(['organization_id'], 'IDX_2918292032C8A3DE', []);
+    }
 
     /**
      * Create dmkclub_member table
@@ -67,6 +87,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     {
     	$table = $schema->createTable('dmkclub_member');
     	$table->addColumn('id', 'integer', ['autoincrement' => true]);
+      $table->addColumn('fee_category', 'integer', ['notnull' => false]);
     	$table->addColumn('bank_account', 'integer', ['notnull' => false]);
     	$table->addColumn('organization_id', 'integer', ['notnull' => false]);
     	$table->addColumn('postal_address', 'integer', ['notnull' => false]);
@@ -96,6 +117,28 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     }
 
     /**
+     * Add dmkclub_feecategory foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addDmkclubFeecategoryForeignKeys(Schema $schema)
+    {
+    	$table = $schema->getTable('dmkclub_feecategory');
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('oro_organization'),
+    			['organization_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('oro_user'),
+    			['user_owner_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    }
+
+    /**
      * Add dmkclub_member foreign keys.
      *
      * @param Schema $schema
@@ -103,6 +146,12 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     protected function addDmkclubMemberForeignKeys(Schema $schema)
     {
     	$table = $schema->getTable('dmkclub_member');
+      $table->addForeignKeyConstraint(
+          $schema->getTable('dmkclub_feecategory'),
+          ['fee_category'],
+          ['id'],
+          ['onDelete' => 'SET NULL', 'onUpdate' => null]
+      );
     	$table->addForeignKeyConstraint(
     			$schema->getTable('dmkclub_bankaccount'),
     			['bank_account'],

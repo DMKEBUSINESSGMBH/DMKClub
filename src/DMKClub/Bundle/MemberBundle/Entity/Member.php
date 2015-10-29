@@ -205,7 +205,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      *              "auditable"=true
      *          },
      *          "importexport"={
-     *              "order"=190,
+     *              "order"=500,
      *              "full"=true
      *          }
      *      }
@@ -313,6 +313,25 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      * )
      */
     protected $bankAccount;
+
+    /**
+     * @var Account
+     *
+     * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\FeeCategory", cascade="PERSIST")
+     * @ORM\JoinColumn(name="fee_category", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\Versioned
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=90
+     *          }
+     *      }
+     * )
+     */
+    protected $feeCategory;
 
     /**
      * @var Address $postalAddress
@@ -538,6 +557,23 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      */
     public function setBankAccount($value) {
     	$this->bankAccount = $value;
+    	return $this;
+    }
+
+    /**
+     * @return \DMKClub\Bundle\MemberBundle\Entity\FeeCategory
+     */
+    public function getFeeCategory() {
+    	return $this->feeCategory;
+    }
+
+    /**
+     *
+     * @param \DMKClub\Bundle\MemberBundle\Entity\FeeCategory $value
+     * @return \DMKClub\Bundle\MemberBundle\Entity\Member
+     */
+    public function setFeeCategory($value) {
+    	$this->feeCategory = $value;
     	return $this;
     }
 
