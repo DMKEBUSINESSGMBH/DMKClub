@@ -30,7 +30,6 @@ class DMKClubMemberBundle implements Migration
 		$table->addColumn('status', 'string', ['default' => 'active', 'notnull' => false, 'length' => 20]);
 		$table->addColumn('payment_option', 'string', ['default' => 'none', 'notnull' => false, 'length' => 20]);
 		$table->addColumn('is_honorary', 'boolean', ['default' => '0']);
-		$table->addColumn('is_free_of_charge', 'boolean', ['default' => '0']);
 	}
 
 

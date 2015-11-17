@@ -60,7 +60,6 @@ Wird in der Detailansicht des Mitglieds verwendet
 	            {{ UI.renderProperty('orocrm.contact.gender.label'|trans, oro_gender(entity.contact.gender)) }}
 	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_active.label'|trans, entity.isActive) }}
 	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_honorary.label'|trans, entity.isHonorary) }}
-	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_free_of_charge.label'|trans, entity.isFreeOfCharge) }}
 	          {% endif %}
             {% if resource_granted('oro_tag_view') %}
                 {{ UI.renderHtmlProperty('oro.tag.entity_plural_label'|trans, tag.renderView(entity)) }}

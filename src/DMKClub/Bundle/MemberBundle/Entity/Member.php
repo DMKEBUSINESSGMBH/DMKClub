@@ -243,20 +243,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     protected $isHonorary = false;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean", name="is_free_of_charge", options={"default" : false})
-     * @Oro\Versioned
-		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true},
-     *          "importexport"={
-     *              "order"=60
-     *          }
-		 *   }
-		 * )
-     */
-    protected $isFreeOfCharge = false;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=20, nullable=true, options={"default" : "active"})
@@ -452,7 +438,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     }
 
     /**
-     * @param bool $isFreeOfCharge
+     * @param bool $isHonorary
      *
      * @return Member
      */
@@ -469,26 +455,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     public function getIsHonorary()
     {
     	return $this->isHonorary;
-    }
-
-    /**
-     * @param bool $isFreeOfCharge
-     *
-     * @return Member
-     */
-    public function setIsFreeOfCharge($isFreeOfCharge)
-    {
-    	$this->isFreeOfCharge = $isFreeOfCharge;
-
-    	return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsFreeOfCharge()
-    {
-    	return $this->isFreeOfCharge;
     }
 
     /**

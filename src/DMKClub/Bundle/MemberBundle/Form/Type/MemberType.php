@@ -31,7 +31,6 @@ class MemberType extends AbstractType
 			->add('paymentOption', 'dmkclub_paymentoptions', array('required' => true, 'label' => 'dmkclub.member.payment_option.label'))
 			->add('isActive')
 			->add('isHonorary')
-			->add('isFreeOfCharge')
 			->add('owner')
 			->add('organization')
 		;

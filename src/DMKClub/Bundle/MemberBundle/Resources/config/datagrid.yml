@@ -12,7 +12,6 @@ datagrid:
                     - c.lastName
                     - m.isHonorary
                     - m.isActive
-                    - m.isFreeOfCharge
                     - m.status
                     - m.paymentOption
                     - a.city
@@ -37,9 +36,6 @@ datagrid:
                 frontend_type: boolean
             isActive:
                 label:         dmkclub.member.is_active.label
-                frontend_type: boolean
-            isFreeOfCharge:
-                label:         dmkclub.member.is_free_of_charge.label
                 frontend_type: boolean
             status:
                 label:         dmkclub.member.status.label
@@ -78,8 +74,6 @@ datagrid:
                     data_name: m.isHonorary
                 isActive:
                     data_name: m.isActive
-                isFreeOfCharge:
-                    data_name: m.isFreeOfCharge
                 status:
                     data_name: m.status
                 paymentOption:
@@ -110,10 +104,6 @@ datagrid:
                     type: string
                     enabled: false
                     data_name: m.isHonorary
-                isFreeOfCharge:
-                    type: string
-                    enabled: false
-                    data_name: m.isFreeOfCharge
                 isActive:
                     type: string
                     enabled: false
