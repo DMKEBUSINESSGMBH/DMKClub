@@ -101,16 +101,6 @@
     %}
 
     {% set dataBlocks = dataBlocks|merge( [{
-        'title' : 'Addresses'|trans,
-        'subblocks': [
-        {
-            'title': 'dmkclub.member.postal_address.label'|trans,
-            'data': [form_widget(form.postalAddress)]
-        },
-        ]
-    }] ) %}
-
-    {% set dataBlocks = dataBlocks|merge( [{
         'title' : 'Financial data'|trans,
         'subblocks': [
         {
@@ -124,6 +114,15 @@
         ]
     }] ) %}
 
+    {% set dataBlocks = dataBlocks|merge( [{
+        'title' : 'Addresses'|trans,
+        'subblocks': [
+        {
+            'title': 'dmkclub.member.postal_address.label'|trans,
+            'data': [form_widget(form.postalAddress)]
+        },
+        ]
+    }] ) %}
 
     {% if form.additional is defined and form.additional.children|length > 0 %}
         {% set additionalData = [] %}
