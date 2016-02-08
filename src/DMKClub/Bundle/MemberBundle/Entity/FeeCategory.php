@@ -51,7 +51,7 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  *              "group_name"=""
  *          },
  *          "form"={
- *              "grid_name"="dmkclub-feecategories-grid",
+ *              "grid_name"="dmkclub-feecategories-select-grid",
  *              "form_type"="dmkclub_feecategory_select"
  *          },
  *          "dataaudit"={

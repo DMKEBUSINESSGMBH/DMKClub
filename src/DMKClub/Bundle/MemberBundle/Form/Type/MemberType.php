@@ -29,8 +29,8 @@ class MemberType extends AbstractType
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
 			->add('status', 'dmkclub_memberstatus', array('required' => true, 'label' => 'dmkclub.member.status.label'))
 			->add('paymentOption', 'dmkclub_paymentoptions', array('required' => true, 'label' => 'dmkclub.member.payment_option.label'))
-			->add('isActive')
-			->add('isHonorary')
+			->add('isActive', 'checkbox', array('tooltip' => 'dmkclub.member.isActive.help', 'required' => false))
+			->add('isHonorary', 'checkbox', array('required' => false))
 			->add('owner')
 			->add('organization')
 		;

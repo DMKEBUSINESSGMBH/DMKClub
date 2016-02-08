@@ -11,6 +11,7 @@ dmkclub:
         name.label:          Name
         member_code.label:   Club ID
         is_active.label:     Active member
+        isActive.help:       Activate this flag for active players, coaches and officials
         is_honorary.label:   Honorary member
         contact.label:       Contact
         postal_address.label:  Postal Address
@@ -31,6 +32,7 @@ dmkclub:
 
         message.saved: Member saved
         fees.label: Membership fee
+        fee_category.label: Fee category
 
         feecategory:
             entity_label:        Fee category
@@ -38,7 +40,9 @@ dmkclub:
             entity_description:  Represents a fee category
             id.label:            Id
             name.label:          Name
-            message.saved: Fee category saved
+            message.saved:       Fee category saved
+            owner.label:         Owner
+            organization.label:  Organization
     feecategory_information: Fee category Information
     member_information: Member Information
     general_information: General Information

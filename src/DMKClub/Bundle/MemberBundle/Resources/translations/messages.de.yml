@@ -10,6 +10,7 @@ dmkclub:
         name.label:          Name
         member_code.label:   Mitgliedsnummer
         is_active.label:     Aktives Mitglied
+        isActive.help:       Das Flag kennzeichnet aktive Spieler, Trainer und Offizielle des Vereins
         is_honorary.label:   Ehrenmitglied
         contact.label:       Kontakt
         payment_option.label:  Zahlungsweise
@@ -29,6 +30,7 @@ dmkclub:
 
         message.saved: Member saved
         fees.label: Mitgliedsbeiträge
+        fee_category.label: Mitgliedsbeitrag
 
         feecategory:
             entity_label:        Kategorie Mitgliedsbeitrag

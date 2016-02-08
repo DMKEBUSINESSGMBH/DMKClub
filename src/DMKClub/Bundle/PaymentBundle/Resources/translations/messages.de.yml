@@ -1,5 +1,5 @@
 dmkclub:
-    bank_account:
+    bankaccount:
         entity_label:        Bankverbindung
         entity_plural_label: Bankverbindungen
         entity_description:  Represents a banking account
@@ -13,3 +13,9 @@ dmkclub:
         none: Keine
         form.choose: Wählen Sie ein Zahlungsart
 "Financial data": Finanzen
+
+sepa_direct_debit: Sepa Bankeinzug
+banktransfer: Überweisung
+creditcard: Kreditkarte
+cash: Barzahlung
+none: Keine

@@ -8,6 +8,7 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Model\MemberStatus;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
 use DMKClub\Bundle\PaymentBundle\Entity\BankAccount;
+use DMKClub\Bundle\MemberBundle\Entity\FeeCategory;
 
 class MemberFixture extends AbstractTemplateRepository implements TemplateFixtureInterface {
 	const DUMMY_MEMBER_NAME = 'Jerry Coleman';
@@ -64,6 +65,7 @@ class MemberFixture extends AbstractTemplateRepository implements TemplateFixtur
 				$feeCat = new FeeCategory();
 				$feeCat->setName('feecat1');
 				$entity->setFeeCategory($feeCat);
+				$entity->setIsActive( TRUE );
 				$entity->setStatus ( MemberStatus::ACTIVE );
 				$entity->setStartDate( new \DateTime () );
 				$entity->setPaymentOption(PaymentOption::SEPA_DIRECT_DEBIT);

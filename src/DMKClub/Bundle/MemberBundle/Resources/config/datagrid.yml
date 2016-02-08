@@ -39,8 +39,10 @@ datagrid:
                 frontend_type: boolean
             status:
                 label:         dmkclub.member.status.label
+#                frontend_type: translatable
             paymentOption:
                 label:         dmkclub.member.payment_option.label
+#                frontend_type: translatable
             city:
                 label:         oro.address.city.label
             birthday:
@@ -141,3 +143,36 @@ datagrid:
                 label: oro.grid.action.update
                 icon: edit
                 link: update_link
+    dmkclub-feecategories-select-grid:
+        extended_entity_name: %dmkclub.feecategory.entity.class%
+        source:
+            type: orm
+            acl_resource: orocrm_contact_view
+            query:
+                select:
+                    - c.id
+                    - c.name
+                    - c.createdAt
+                    - c.updatedAt
+                from:
+                    - { table: %dmkclub.feecategory.entity.class%, alias: c }
+        columns:
+            name:
+                label:         dmkclub.member.feecategory.name.label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+        sorters:
+            columns:
+                name:
+                    data_name: c.name
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: c.name
