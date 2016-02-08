@@ -39,7 +39,7 @@ dmkclub:
             id.label:            Id
             name.label:          Name
             message.saved: Beitragskategorie gespeichert
-    feecategory_information: Information zur Beitragskategorie
+        feecategory_information: Information zur Beitragskategorie
     member_information: Angaben zum Mitglied
     general_information: Allgemeine Informationen
     entity_number: "%entityName% %entityNumber%"

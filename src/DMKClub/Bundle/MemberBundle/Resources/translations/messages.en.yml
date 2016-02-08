@@ -43,7 +43,7 @@ dmkclub:
             message.saved:       Fee category saved
             owner.label:         Owner
             organization.label:  Organization
-    feecategory_information: Fee category Information
+        feecategory_information: Fee category Information
     member_information: Member Information
     general_information: General Information
     entity_number: "%entityName% %entityNumber%"
