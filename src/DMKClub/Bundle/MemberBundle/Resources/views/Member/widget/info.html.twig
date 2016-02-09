@@ -37,10 +37,10 @@ Wird in der Detailansicht des Mitglieds verwendet
             {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
 
             {% if entity.bankAccount is not empty %}
-              {{ UI.renderProperty('dmkclub.bank_account.account_owner.label'|trans, entity.bankAccount.accountOwner) }}
-              {{ UI.renderProperty('dmkclub.bank_account.iban.label'|trans, entity.bankAccount.iban) }}
-              {{ UI.renderProperty('dmkclub.bank_account.bic.label'|trans, entity.bankAccount.bic) }}
-              {{ UI.renderProperty('dmkclub.bank_account.bank_name.label'|trans, entity.bankAccount.bankName) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.account_owner.label'|trans, entity.bankAccount.accountOwner) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.iban.label'|trans, entity.bankAccount.iban) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.bic.label'|trans, entity.bankAccount.bic) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.bank_name.label'|trans, entity.bankAccount.bankName) }}
             {% endif %}
 
         </div>

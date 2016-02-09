@@ -25,10 +25,10 @@ class BankAccountType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('id', 'hidden')
-			->add('accountOwner', 'text', array('required' => false, 'label' => 'dmkclub.bank_account.account_owner.label'))
-			->add('iban', 'text', array('required' => false, 'label' => 'dmkclub.bank_account.iban.label'))
-			->add('bic', 'text', array('required' => false, 'label' => 'dmkclub.bank_account.bic.label'))
-			->add('bankName', 'text', array('required' => false, 'label' => 'dmkclub.bank_account.bank_name.label'))
+			->add('accountOwner', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.account_owner.label'))
+			->add('iban', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.iban.label'))
+			->add('bic', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.bic.label'))
+			->add('bankName', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.bank_name.label'))
 			;
 	}
 
