@@ -5,18 +5,31 @@ namespace DMKClub\Bundle\MemberBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class MemberType extends AbstractType
-{
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $this->buildPlainFields($builder, $options);
-        $this->buildRelationFields($builder, $options);
-    }
+class MemberType extends AbstractType {
+
+	/** @var TranslatorInterface */
+	protected $translator;
+
+	/**
+	 * @param ConfigManager       $configManager
+	 * @param TranslatorInterface $translator
+	 */
+	public function __construct(TranslatorInterface $translator)
+	{
+		$this->translator = $translator;
+	}
+
+	/**
+	 * @param FormBuilderInterface $builder
+	 * @param array                $options
+	 */
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$this->buildPlainFields($builder, $options);
+		$this->buildRelationFields($builder, $options);
+	}
 	/**
 	 * @param FormBuilderInterface $builder
 	 * @param array $options
@@ -29,7 +42,7 @@ class MemberType extends AbstractType
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
 			->add('status', 'dmkclub_memberstatus', array('required' => true, 'label' => 'dmkclub.member.status.label'))
 			->add('paymentOption', 'dmkclub_paymentoptions', array('required' => true, 'label' => 'dmkclub.member.payment_option.label'))
-			->add('isActive', 'checkbox', array('tooltip' => 'dmkclub.member.isActive.help', 'required' => false))
+			->add('isActive', 'checkbox', array('tooltip' => $this->translator->trans('dmkclub.member.isActive.help'), 'required' => false))
 			->add('isHonorary', 'checkbox', array('required' => false))
 			->add('owner')
 			->add('organization')

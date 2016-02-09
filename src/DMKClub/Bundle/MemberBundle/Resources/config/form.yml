@@ -13,6 +13,8 @@ parameters:
 services:
     dmkclub.member.form.type:
         class: "%dmkclub.member.form.type.class%"
+        arguments:
+            - @translator
         tags:
             - { name: form.type, alias: dmkclub_member_member }
 
