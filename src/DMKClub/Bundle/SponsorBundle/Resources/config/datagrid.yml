@@ -3,7 +3,7 @@ datagrid:
         extended_entity_name: %dmkclub.sponsor.entity.class%
         source:
             type: orm
-            acl_resource: orocrm_contact_view
+            acl_resource: dmkclub_sponsor_view
             query:
                 select:
                     - s.id
@@ -113,7 +113,7 @@ datagrid:
         extended_entity_name: %dmkclub.sponsorcategory.entity.class%
         source:
             type: orm
-            acl_resource: orocrm_contact_view
+            acl_resource: dmkclub_sponsor_view
             query:
                 select:
                     - c.id

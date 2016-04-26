@@ -3,7 +3,7 @@ datagrid:
         extended_entity_name: "%dmkclub.member.entity.class%"
         source:
             type: orm
-            acl_resource: orocrm_contact_view
+            acl_resource: dmkclub_member_view
             query:
                 select:
                     - m.id
@@ -89,7 +89,7 @@ datagrid:
                 updatedAt:
                     data_name: m.updatedAt
             default:
-                name:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 memberCode:
@@ -128,7 +128,7 @@ datagrid:
                     data_name: m.updatedAt
                     enabled: false
             default:
-                status: { value: 'active', type: %oro_filter.form.type.filter.text.class%::TYPE_EQUAL }
+                status: { value: 'active', type: "%oro_filter.form.type.filter.text.class%::TYPE_EQUAL" }
         actions:
             view:
                 type: navigate
@@ -147,7 +147,7 @@ datagrid:
         extended_entity_name: %dmkclub.feecategory.entity.class%
         source:
             type: orm
-            acl_resource: orocrm_contact_view
+            acl_resource: dmkclub_member_view
             query:
                 select:
                     - c.id
