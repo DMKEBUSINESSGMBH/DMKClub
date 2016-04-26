@@ -47,6 +47,7 @@ class MemberType extends AbstractType {
 					'label' => 'dmkclub.member.is_active.label',
 					'required' => false))
 			->add('isHonorary', 'checkbox', array('required' => false, 'label' => 'dmkclub.member.is_honorary.label'))
+			->add('isFreeOfCharge', 'checkbox', array('required' => false, 'label' => 'dmkclub.member.is_free_of_charge.label'))
 			->add('owner')
 			->add('organization')
 		;

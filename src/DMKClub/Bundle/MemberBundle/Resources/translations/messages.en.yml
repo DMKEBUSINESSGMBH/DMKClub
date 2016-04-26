@@ -13,6 +13,7 @@ dmkclub:
         is_active.label:     Active member
         isActive.help:       Activate this flag for active players, coaches and officials
         is_honorary.label:   Honorary member
+        is_free_of_charge.label:   Free of charge
         contact.label:       Contact
         postal_address.label:  Postal Address
         payment_option.label:  Payment option

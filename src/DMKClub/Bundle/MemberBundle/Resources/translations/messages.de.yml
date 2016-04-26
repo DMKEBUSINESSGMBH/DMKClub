@@ -12,6 +12,7 @@ dmkclub:
         is_active.label:     Aktives Mitglied
         isActive.help:       Das Flag kennzeichnet aktive Spieler, Trainer und Offizielle des Vereins
         is_honorary.label:   Ehrenmitglied
+        is_free_of_charge.label:   Beitragsfrei
         contact.label:       Kontakt
         payment_option.label:  Zahlungsweise
         bank_account.label:   Bankverbindung
