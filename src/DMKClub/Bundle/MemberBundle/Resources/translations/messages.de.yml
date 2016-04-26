@@ -27,6 +27,25 @@ dmkclub:
         status.active: Laufende Mitgliedschaft
         status.terminated: Beendete Mitgliedschaft
 
+        memberbilling:
+          entity_label:        Abrechnung Mitgliedsbeitrag
+          entity_plural_label: Abrechnung Mitgliedsbeiträge
+          entity_description:  Represent membership billing definition
+          id.label:            Id
+          owner.label:         Owner
+          name.label:          Name
+          start_date.label:    Startdatum
+          end_date.label:      Enddatum
+        memberfee:
+          entity_label:        Mitgliedsbeitrag
+          entity_plural_label: Mitgliedsbeiträge
+          entity_description:  Represent a fee for membership
+          id.label:            Id
+          owner.label:         Owner
+          name.label:          Name
+          start_date.label:    Startdatum
+          end_date.label:      Enddatum
+
         form.choose_status: Wählen Sie einen Mitgliedsstatus
 
         message.saved: Member saved

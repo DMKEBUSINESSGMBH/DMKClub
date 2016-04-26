@@ -32,6 +32,25 @@ dmkclub:
 
         message.saved: Member saved
         fees.label: Membership fee
+        memberbilling:
+          entity_label:        Membership Billing
+          entity_plural_label: Membership Billings
+          entity_description:  Represent membership billing definition
+          id.label:            Id
+          owner.label:         Owner
+          name.label:          Name
+          start_date.label:    Start date
+          end_date.label:      End date
+        memberfee:
+          entity_label:        Membership fee
+          entity_plural_label: Membership fees
+          entity_description:  Represent a fee for membership
+          id.label:            Id
+          owner.label:         Owner
+          name.label:          Name
+          start_date.label:    Start date
+          end_date.label:      End date
+          
 
     member_information: Member Information
     general_information: General Information

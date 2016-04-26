@@ -24,20 +24,21 @@ use Oro\Bundle\AddressBundle\Entity\Address;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
+use DMKClub\Bundle\MemberBundle\Model\ExtendMemberBilling;
 
 /**
- * Class Member
+ * Class Billing
  *
  * @package DMKClub\Bundle\DMKClubMemberBundle\Entity
- * @ORM\Entity(repositoryClass="DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository")
- * @ORM\Table(name="dmkclub_member")
+ * @ORM\Entity(repositoryClass="DMKClub\Bundle\MemberBundle\Entity\Repository\MemberBillingRepository")
+ * @ORM\Table(name="dmkclub_member_billing")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
- *      routeName="dmkclub_member_index",
- *      routeView="dmkclub_member_view",
+ *      routeName="dmkclub_memberbilling_index",
+ *      routeView="dmkclub_memberbilling_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-user-md"
+ *              "icon"="icon-briefcase-md"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",
@@ -50,23 +51,15 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  *              "type"="ACL",
  *              "group_name"=""
  *          },
- *          "form"={
- *              "grid_name"="dmkclub-members-grid",
- *              "form_type"="dmkclub_member_select"
- *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }
  *      }
  * )
  * @Oro\Loggable
- * Die Angaben in "form" dienen dem create_select_form_inline
  */
-class Member extends ExtendMember implements Taggable, ChannelAwareInterface, CustomerIdentityInterface {
+class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwareInterface {
     use ChannelEntityTrait;
-	/*
-	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
-	*/
 	/**
 	 * @var int
 	 *
@@ -84,23 +77,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 */
 	protected $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="member_code", type="string", length=255, nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=20
-     *          }
-     *      }
-     * )
-     * @Oro\Versioned
-     */
-    protected $memberCode;
 
     /**
      * @var \DateTime
@@ -157,13 +133,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      */
     protected $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", mappedBy="member", cascade={"all"}, orphanRemoval=true)
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
-     */
-    private $memberFees;
-
 
     /**
      * @var \DateTime $createdAt
@@ -202,141 +171,12 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     protected $updatedAt;
 
     /**
-     * @var Contact
-     *
-     * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\ContactBundle\Entity\Contact", cascade="PERSIST")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id", onDelete="SET NULL")
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=500,
-     *              "full"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $contact;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean", name="is_active", options={"default" : false})
+     * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", mappedBy="billing", cascade={"all"}, orphanRemoval=true)
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      * @Oro\Versioned
-		 * @ConfigField(
-		 * 	defaultValues={"dataaudit"={"auditable"=true},
-     *          "importexport"={
-     *              "order"=40
-     *          }
-		 *  }
-		 * )
      */
-    protected $isActive = false;
+    private $memberFees;
 
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean", name="is_honorary", options={"default" : false})
-     * @Oro\Versioned
-		 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true},
-     *          "importexport"={
-     *              "order"=50
-     *          }
-		 *   }
-		 * )
-     */
-    protected $isHonorary = false;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean", name="is_free_of_charge", options={"default" : false})
-     * @Oro\Versioned
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true},
-     *          "importexport"={
-     *              "order"=60
-     *          }
-     *   }
-     * )
-     */
-    protected $isFreeOfCharge = false;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=20, nullable=true, options={"default" : "active"})
-     * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=70
-     *          }
-     *      }
-     * )
-     */
-    protected $status;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="payment_option", type="string", length=20, nullable=true, options={"default" : "none"})
-     * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=80
-     *          }
-     *      }
-     * )
-     */
-    protected $paymentOption;
-
-    /**
-     * @var Account
-     *
-     * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\PaymentBundle\Entity\BankAccount", cascade="PERSIST")
-     * @ORM\JoinColumn(name="bank_account", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "full"=true,
-     *              "order"=85
-     *          }
-     *      }
-     * )
-     */
-    protected $bankAccount;
-
-    /**
-     * @var Address $postalAddress
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="postal_address", referencedColumnName="id", onDelete="SET NULL")
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "full"=true,
-     *              "order"=150
-     *          }
-     *      }
-     * )
-     */
-    protected $postalAddress;
 
     /**
      * @var User
@@ -344,14 +184,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $owner;
-
-    /**
-     * @var Account
-     *
-     * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $account;
 
     /**
      * @var Organization
@@ -422,152 +254,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     }
 
     /**
-     * @param Contact $contact
-     *
-     * @return Member
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-
-        return $this;
-    }
-
-    /**
-     * @return Contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
-     * @param bool $isHonorary
-     *
-     * @return Member
-     */
-    public function setIsHonorary($isHonorary)
-    {
-    	$this->isHonorary = $isHonorary;
-
-    	return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsHonorary()
-    {
-    	return $this->isHonorary;
-    }
-
-    /**
-     * @param bool $flag
-     *
-     * @return Member
-     */
-    public function setIsFreeOfCharge($flag)
-    {
-    	$this->isFreeOfCharge = $flag;
-
-    	return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsFreeOfCharge()
-    {
-    	return $this->isFreeOfCharge;
-    }
-
-    /**
-     * @param bool $isActive
-     *
-     * @return Customer
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatus() {
-    	return $this->status;
-    }
-
-    /**
-     * @param string $value
-     * @return Member
-     */
-    public function setStatus($value) {
-    	$this->status = $value;
-      return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentOption() {
-    	return $this->paymentOption;
-    }
-
-    /**
-     * @param string $value
-     * @return Member
-     */
-    public function setPaymentOption($value) {
-    	$this->paymentOption = $value;
-    	return $this;
-    }
-
-    /**
-     * @return \DMKClub\Bundle\PaymentBundle\Entity\BankAccount
-     */
-    public function getBankAccount() {
-    	return $this->bankAccount;
-    }
-
-    /**
-     *
-     * @param \DMKClub\Bundle\PaymentBundle\Entity\BankAccount $value
-     * @return \DMKClub\Bundle\MemberBundle\Entity\Member
-     */
-    public function setBankAccount($value) {
-    	$this->bankAccount = $value;
-    	return $this;
-    }
-
-    /**
-     * @return Address
-     */
-    public function getPostalAddress()
-    {
-    	return $this->postalAddress;
-    }
-
-    /**
-     * @param Address $address
-     */
-    public function setPostalAddress(Address $address)
-    {
-    	$this->postalAddress = $address;
-      return $this;
-    }
-
-    /**
      * @return \Doctrine\Common\Collections\ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFee]
      */
     public function getMemberFees() {
@@ -579,7 +265,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      */
     public function setMemberFees($memberFees) {
     	foreach ($memberFees as $memberFee) {
-    		$memberFee->setMember($this);
+    		$memberFee->setBilling($this);
     	}
     	$this->memberFees = $memberFees;
     }
@@ -592,7 +278,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
      * @internal param MemberFee $memberFees
      */
     public function addMemberFee(MemberFee $memberFee) {
-    	$memberFee->setMember($this);
+    	$memberFee->setBilling($this);
     	$this->memberFees[] = $memberFee;
     	return $this;
     }
@@ -635,47 +321,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
     public function getOrganization()
     {
         return $this->organization;
-    }
-
-    /**
-     * @param Account $account
-     *
-     * @return Member
-     */
-    public function setAccount($account) {
-    	$this->account = $account;
-
-    	return $this;
-    }
-
-    /**
-     * @return Account
-     */
-    public function getAccount() {
-    	return $this->account;
-    }
-
-    /**
-     * Set memberCode
-     *
-     * @param string $memberCode
-     * @return Member
-     */
-    public function setMemberCode($memberCode)
-    {
-        $this->memberCode = $memberCode;
-
-        return $this;
-    }
-
-    /**
-     * Get memberCode
-     *
-     * @return string
-     */
-    public function getMemberCode()
-    {
-        return $this->memberCode;
     }
 
     /**

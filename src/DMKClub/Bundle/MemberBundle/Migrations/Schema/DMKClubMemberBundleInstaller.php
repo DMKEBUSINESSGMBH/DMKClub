@@ -32,7 +32,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_5';
     }
 
     /**
@@ -50,9 +50,13 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     {
         /** Tables generation **/
     	  $this->createDmkclubMemberTable($schema);
+    	  $this->createDmkclubMemberBillingTable($schema);
+    	  $this->createDmkclubMemberFeeTable($schema);
 
         /** Foreign keys generation **/
     		$this->addDmkclubMemberForeignKeys($schema);
+    		$this->addDmkclubMemberBillingForeignKeys($schema);
+    		$this->addDmkclubMemberFeeForeignKeys($schema);
 
         $this->comment->addCommentAssociation($schema, 'dmkclub_member');
     }
@@ -93,6 +97,56 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     	$table->addIndex(['account_id'], 'IDX_6A79FCCD9B6B5FBA', []);
     	$table->addIndex(['data_channel_id'], 'IDX_6A79FCCDBDC09B73', []);
     	$table->addIndex(['bank_account'], 'IDX_6A79FCCD53A23E0A', []);
+    }
+
+    /**
+     * Create dmkclub_member_billing table
+     *
+     * @param Schema $schema
+     */
+    protected function createDmkclubMemberBillingTable(Schema $schema)
+    {
+    	$table = $schema->createTable('dmkclub_member_billing');
+    	$table->addColumn('id', 'integer', ['autoincrement' => true]);
+    	$table->addColumn('data_channel_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('organization_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('start_date', 'date', ['notnull' => false]);
+    	$table->addColumn('end_date', 'date', ['notnull' => false]);
+    	$table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);
+    	$table->addColumn('created_at', 'datetime', []);
+    	$table->addColumn('updated_at', 'datetime', []);
+    	$table->setPrimaryKey(['id']);
+    	$table->addIndex(['user_owner_id'], 'IDX_25B89C799EB185F9', []);
+    	$table->addIndex(['organization_id'], 'IDX_25B89C7932C8A3DE', []);
+    	$table->addIndex(['data_channel_id'], 'IDX_25B89C79BDC09B73', []);
+    }
+
+    /**
+     * Create dmkclub_member_fee table
+     *
+     * @param Schema $schema
+     */
+    protected function createDmkclubMemberFeeTable(Schema $schema)
+    {
+    	$table = $schema->createTable('dmkclub_member_fee');
+    	$table->addColumn('id', 'integer', ['autoincrement' => true]);
+    	$table->addColumn('billing', 'integer', ['notnull' => false]);
+    	$table->addColumn('organization_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('member', 'integer', ['notnull' => false]);
+    	$table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('data_channel_id', 'integer', ['notnull' => false]);
+    	$table->addColumn('start_date', 'date', ['notnull' => false]);
+    	$table->addColumn('end_date', 'date', ['notnull' => false]);
+    	$table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);
+    	$table->addColumn('created_at', 'datetime', []);
+    	$table->addColumn('updated_at', 'datetime', []);
+    	$table->setPrimaryKey(['id']);
+    	$table->addIndex(['member'], 'IDX_B0418BD970E4FA78', []);
+    	$table->addIndex(['user_owner_id'], 'IDX_B0418BD99EB185F9', []);
+    	$table->addIndex(['organization_id'], 'IDX_B0418BD932C8A3DE', []);
+    	$table->addIndex(['data_channel_id'], 'IDX_B0418BD9BDC09B73', []);
+    	$table->addIndex(['billing'], 'IDX_B0418BD9EC224CAA', []);
     }
 
     /**
@@ -142,6 +196,74 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     	$table->addForeignKeyConstraint(
     			$schema->getTable('orocrm_contact'),
     			['contact_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    }
+
+    /**
+     * Add dmkclub_member_billing foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addDmkclubMemberBillingForeignKeys(Schema $schema)
+    {
+    	$table = $schema->getTable('dmkclub_member_billing');
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('orocrm_channel'),
+    			['data_channel_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('oro_organization'),
+    			['organization_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('oro_user'),
+    			['user_owner_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    }
+
+    /**
+     * Add dmkclub_member_fee foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addDmkclubMemberFeeForeignKeys(Schema $schema)
+    {
+    	$table = $schema->getTable('dmkclub_member_fee');
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('dmkclub_member_billing'),
+    			['billing'],
+    			['id'],
+    			['onDelete' => 'CASCADE', 'onUpdate' => null]
+    	);
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('oro_organization'),
+    			['organization_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('dmkclub_member'),
+    			['member'],
+    			['id'],
+    			['onDelete' => 'CASCADE', 'onUpdate' => null]
+    	);
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('oro_user'),
+    			['user_owner_id'],
+    			['id'],
+    			['onDelete' => 'SET NULL', 'onUpdate' => null]
+    	);
+    	$table->addForeignKeyConstraint(
+    			$schema->getTable('orocrm_channel'),
+    			['data_channel_id'],
     			['id'],
     			['onDelete' => 'SET NULL', 'onUpdate' => null]
     	);
