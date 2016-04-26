@@ -24,16 +24,3 @@ DMKClub\Bundle\MemberBundle\Entity\Member:
                     name:          id
                     target_type:   integer
                     target_fields: [dataChannelId]
-DMKClub\Bundle\MemberBundle\Entity\FeeCategory:
-    alias: dmkclub_feecategory
-    label: dmkclub.feecategory.entity_plural_label
-    route:
-        name: dmkclub_feecategory_view
-        parameters:
-            id: id
-    search_template: DMKClubMemberBundle:FeeCategory:searchResult.html.twig
-    fields:
-        -
-            name:                   name
-            target_type:            text
-            target_fields:          [name]

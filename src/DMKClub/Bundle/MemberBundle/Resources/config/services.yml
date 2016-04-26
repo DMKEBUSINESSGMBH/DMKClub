@@ -1,6 +1,5 @@
 parameters:
     dmkclub.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
-    dmkclub.feecategory.entity.class:       DMKClub\Bundle\MemberBundle\Entity\FeeCategory
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
     dmkclub.country.datagrid_helper.class:          Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
@@ -25,10 +24,3 @@ services:
         tags:
             - { name: twig.extension }
 
-    dmkclub_member.form.autocomplete.feecategory.search_handler:
-        parent: oro_form.autocomplete.search_handler
-        arguments:
-            - %dmkclub.feecategory.entity.class%
-            - ["name"]
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: feecategories, acl_resource: dmkclub_feecategory_view }

@@ -28,22 +28,10 @@ dmkclub:
         status.terminated: Terminated
         
         form.choose_status: Choose a member status
-        form.choose_feecategory: Choose a fee category
 
         message.saved: Member saved
         fees.label: Membership fee
-        fee_category.label: Fee category
 
-        feecategory:
-            entity_label:        Fee category
-            entity_plural_label: Fee categories
-            entity_description:  Represents a fee category
-            id.label:            Id
-            name.label:          Name
-            message.saved:       Fee category saved
-            owner.label:         Owner
-            organization.label:  Organization
-        feecategory_information: Fee category Information
     member_information: Member Information
     general_information: General Information
     entity_number: "%entityName% %entityNumber%"

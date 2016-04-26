@@ -50,14 +50,6 @@ class MemberType extends AbstractType {
 			->add('owner')
 			->add('organization')
 		;
-		$builder->add(
-				'feecategory',
-				'dmkclub_feecategory_select',
-				array(
-						'label'    => 'dmkclub.member.feecategory.entity_label',
-						'required' => false,
-				)
-		);
 
 		$builder->add(
 					'bankAccount',

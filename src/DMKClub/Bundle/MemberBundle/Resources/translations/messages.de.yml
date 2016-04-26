@@ -30,16 +30,7 @@ dmkclub:
 
         message.saved: Member saved
         fees.label: Mitgliedsbeiträge
-        fee_category.label: Mitgliedsbeitrag
 
-        feecategory:
-            entity_label:        Kategorie Mitgliedsbeitrag
-            entity_plural_label: Kategorien Mitgliedsbeitrag
-            entity_description:  Steuert die Berechnung des Mitgliedsbeitrags
-            id.label:            Id
-            name.label:          Name
-            message.saved: Beitragskategorie gespeichert
-        feecategory_information: Information zur Beitragskategorie
     member_information: Angaben zum Mitglied
     general_information: Allgemeine Informationen
     entity_number: "%entityName% %entityNumber%"

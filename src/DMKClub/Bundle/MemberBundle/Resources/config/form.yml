@@ -6,10 +6,6 @@ parameters:
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
     dmkclub.form.type.member_status.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberStatusType
 
-    dmkclub.feecategory.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\FeeCategoryType
-    dmkclub.feecategory.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\FeeCategoryHandler
-    dmkclub_member.form.type.feecategory_select.class:  DMKClub\Bundle\MemberBundle\Form\Type\FeeCategorySelectType
-
 services:
     dmkclub.member.form.type:
         class: "%dmkclub.member.form.type.class%"
@@ -68,29 +64,4 @@ services:
             - "@dmkclub.member.status_provider"
         tags:
             - { name: form.type, alias: dmkclub_memberstatus }
-# Fee category forms
-    dmkclub.feecategory.form.type:
-        class: %dmkclub.feecategory.form.type.class%
-        tags:
-            - { name: form.type, alias: dmkclub_member_feecategory }
 
-    dmkclub.feecategory.form:
-        class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
-        arguments:
-            - "dmkclub_feecategory_form"
-            - "dmkclub_member_feecategory"
-    dmkclub.feecategory.form.handler:
-        class: %dmkclub.feecategory.form.handler.class%
-        scope: request
-        arguments:
-            - @dmkclub.feecategory.form
-            - @request
-            - @doctrine.orm.entity_manager
-
-    # Form SELECT type
-    dmkclub_member.form.type.feecategory_select:
-        class: %dmkclub_member.form.type.feecategory_select.class%
-        tags:
-            - { name: form.type, alias: dmkclub_feecategory_select }
