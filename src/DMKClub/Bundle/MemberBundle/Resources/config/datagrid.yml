@@ -1,6 +1,6 @@
 datagrid:
     dmkclub-members-grid:
-        extended_entity_name: "%dmkclub.member.entity.class%"
+        extended_entity_name: "%dmkclub_member.member.entity.class%"
         source:
             type: orm
             acl_resource: dmkclub_member_view
@@ -19,7 +19,7 @@ datagrid:
                     - m.createdAt
                     - m.updatedAt
                 from:
-                    - { table: "%dmkclub.member.entity.class%", alias: m }
+                    - { table: "%dmkclub_member.member.entity.class%", alias: m }
                 join:
                     left:
                         - { join: m.contact, alias: c }

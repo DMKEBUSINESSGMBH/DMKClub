@@ -1,7 +1,7 @@
 parameters:
-    dmkclub.member.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberType
-    dmkclub.member.form.type.api.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberApiType
-    dmkclub.member.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler
+    dmkclub_member.member.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberType
+    dmkclub_member.member.form.type.api.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberApiType
+    dmkclub_member.member.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler
     dmkclub_member.memberbilling.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
     dmkclub_member.memberbilling.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberBillingHandler
 
@@ -12,15 +12,15 @@ services:
 # ####
 # FormTypes
 # ####
-    dmkclub.member.form.type:
-        class: "%dmkclub.member.form.type.class%"
+    dmkclub_member.member.form.type:
+        class: "%dmkclub_member.member.form.type.class%"
         arguments:
             - "@translator"
         tags:
             - { name: form.type, alias: dmkclub_member_member }
 
-    dmkclub.member.form.type.api:
-        class: "%dmkclub.member.form.type.api.class%"
+    dmkclub_member.member.form.type.api:
+        class: "%dmkclub_member.member.form.type.api.class%"
         tags:
             - { name: form.type, alias: dmkclub_member_member_api }
     dmkclub_member.memberbilling.form.type:
@@ -34,7 +34,7 @@ services:
 # Forms
 # ####
 
-    dmkclub.member.form:
+    dmkclub_member.member.form:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
@@ -51,7 +51,7 @@ services:
             - "dmkclub_member_memberbilling"
 
 
-    dmkclub.member.form.api:
+    dmkclub_member.member.form.api:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
@@ -63,21 +63,21 @@ services:
 # FormHandler
 # ####
 
-    dmkclub.member.form.handler:
-        class: "%dmkclub.member.form.handler.class%"
+    dmkclub_member.member.form.handler:
+        class: "%dmkclub_member.member.form.handler.class%"
         scope: request
         arguments:
-            - "@dmkclub.member.form"
+            - "@dmkclub_member.member.form"
             - "@request"
             - "@doctrine.orm.entity_manager"
         tags:
             - { name: oro_tag.tag_manager }
 
-    dmkclub.member.form.handler.api:
-        class: "%dmkclub.member.form.handler.class%"
+    dmkclub_member.member.form.handler.api:
+        class: "%dmkclub_member.member.form.handler.class%"
         scope: request
         arguments:
-            - "@dmkclub.member.form.api"
+            - "@dmkclub_member.member.form.api"
             - "@request"
             - "@doctrine.orm.entity_manager"
 
@@ -103,7 +103,7 @@ services:
     dmkclub.form.type.member_status:
         class: "%dmkclub.form.type.member_status.class%"
         arguments:
-            - "@dmkclub.member.status_provider"
+            - "@dmkclub_member.member.status_provider"
         tags:
             - { name: form.type, alias: dmkclub_memberstatus }
 

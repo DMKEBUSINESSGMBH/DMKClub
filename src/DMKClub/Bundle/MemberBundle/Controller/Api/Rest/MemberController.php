@@ -50,7 +50,8 @@ class MemberController extends RestController implements ClassResourceInterface
      */
     public function getManager()
     {
-        return $this->get('dmkclub.member.manager.api');
+    	// FIXME: missing
+    	return $this->get('dmkclub_member.member.manager.api');
     }
 
     /**

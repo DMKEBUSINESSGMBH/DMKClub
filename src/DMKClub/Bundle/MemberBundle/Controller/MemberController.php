@@ -28,7 +28,7 @@ class MemberController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('dmkclub.member.entity.class')
+            'entity_class' => $this->container->getParameter('dmkclub_member.member.entity.class')
         ];
     }
     /**
@@ -71,7 +71,7 @@ class MemberController extends Controller
     {
     	return $this->get('oro_form.model.update_handler')->handleUpdate(
     			$entity,
-    			$this->get('dmkclub.member.form'),
+    			$this->get('dmkclub_member.member.form'),
     			function (Member $entity) {
     				return array(
     						'route' => 'dmkclub_member_update',
@@ -85,7 +85,7 @@ class MemberController extends Controller
     				);
     			},
     			$this->get('translator')->trans('dmkclub.member.message.saved'),
-    			$this->get('dmkclub.member.form.handler')
+    			$this->get('dmkclub_member.member.form.handler')
     	);
     }
 

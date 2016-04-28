@@ -29,7 +29,7 @@ class MemberFeeController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('dmkclub.memberfee.entity.class')
+            'entity_class' => $this->container->getParameter('dmkclub_member.memberfee.entity.class')
         ];
     }
     /**
@@ -72,7 +72,7 @@ class MemberFeeController extends Controller
     {
     	return $this->get('oro_form.model.update_handler')->handleUpdate(
     			$entity,
-    			$this->get('dmkclub.memberfee.form'),
+    			$this->get('dmkclub_member.memberfee.form'),
     			function (MemberFee $entity) {
     				return array(
     						'route' => 'dmkclub_memberfee_update',
@@ -86,7 +86,7 @@ class MemberFeeController extends Controller
     				);
     			},
     			$this->get('translator')->trans('dmkclub.memberfee.message.saved'),
-    			$this->get('dmkclub.memberfee.form.handler')
+    			$this->get('dmkclub_member.memberfee.form.handler')
     	);
     }
 

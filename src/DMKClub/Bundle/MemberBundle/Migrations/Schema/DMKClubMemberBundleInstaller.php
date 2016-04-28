@@ -116,6 +116,8 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
     	$table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);
     	$table->addColumn('created_at', 'datetime', []);
     	$table->addColumn('updated_at', 'datetime', []);
+    	$table->addColumn('processor', 'string', ['notnull' => false, 'length' => 255]);
+    	$table->addColumn('processor_config', 'text', ['notnull' => false]);
     	$table->setPrimaryKey(['id']);
     	$table->addIndex(['user_owner_id'], 'IDX_25B89C799EB185F9', []);
     	$table->addIndex(['organization_id'], 'IDX_25B89C7932C8A3DE', []);
