@@ -41,6 +41,7 @@ dmkclub:
           name.label:          Name
           start_date.label:    Start date
           end_date.label:      End date
+          createbills.label:   Start accounting
         memberfee:
           entity_label:        Membership fee
           entity_plural_label: Membership fees
@@ -53,6 +54,7 @@ dmkclub:
           
 
     member_information: Member Information
+    memberbilling_information: Billing Information
     general_information: General Information
     entity_number: "%entityName% %entityNumber%"
 active: Active

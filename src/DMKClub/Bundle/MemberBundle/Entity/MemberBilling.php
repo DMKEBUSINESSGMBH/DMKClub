@@ -59,7 +59,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberBilling;
  * @Oro\Loggable
  */
 class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwareInterface {
-    use ChannelEntityTrait;
+	use ChannelEntityTrait;
 	/**
 	 * @var int
 	 *
@@ -69,393 +69,452 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
-	 *          "importexport"={
-	 *              "order"=10
-	 *          }
 	 *      }
 	 * )
 	 */
 	protected $id;
 
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start_date", type="date", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=75
-     *          }
-     *      }
-     * )
-     * @Oro\Versioned
-     */
-    protected $startDate;
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_date", type="date", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=80
-     *          }
-     *      }
-     * )
-     * @Oro\Versioned
-     */
-    protected $endDate;
+	/**
+	 * @var \Date
+	 *
+	 * @ORM\Column(name="start_date", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $startDate;
+	/**
+	 * @var \Date
+	 *
+	 * @ORM\Column(name="end_date", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $endDate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string")
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "identity"=true,
-     *              "order"=30
-     *          }
-     *      }
-     * )
-     */
-    protected $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $name;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="processor", type="string", length=255, nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $processor;
 
-    /**
-     * @var \DateTime $createdAt
-     *
-     * @ORM\Column(type="datetime", name="created_at")
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime $updatedAt
-     *
-     * @ORM\Column(type="datetime", name="updated_at")
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
-
-    /**
-     * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", mappedBy="billing", cascade={"all"}, orphanRemoval=true)
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
-     */
-    private $memberFees;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="processor_config", type="text", nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $processorConfig;
 
 
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+	/**
+	 * @var \DateTime $createdAt
+	 *
+	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "entity"={
+	 *              "label"="oro.ui.created_at"
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $createdAt;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
-    /**
-     * @var ArrayCollection
-     */
-    protected $tags;
+	/**
+	 * @var \DateTime $updatedAt
+	 *
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "entity"={
+	 *              "label"="oro.ui.updated_at"
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $updatedAt;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->memberFees = new \Doctrine\Common\Collections\ArrayCollection();
+	/**
+	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", mappedBy="billing", cascade={"all"}, orphanRemoval=true)
+	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 * @Oro\Versioned
+	 */
+	protected $memberFees;
 
-    }
 
-    /**
-     * Set endDate
-     *
-     * @param \DateTime $endDate
-     * @return Member
-     */
-    public function setId($id)
-    {
-    	$this->id = $id;
+	/**
+	 * @var User
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+	 * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $owner;
 
-    	return $this;
-    }
+	/**
+	 * @var Organization
+	 *
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $organization;
+	/**
+	 * @var ArrayCollection
+	 */
+	protected $tags;
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-    	return $this->id;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function __construct()
+	{
+	    parent::__construct();
+	    $this->memberFees = new \Doctrine\Common\Collections\ArrayCollection();
 
-    /**
-     * Set endDate
-     *
-     * @param \DateTime $endDate
-     * @return Member
-     */
-    public function setName($id)
-    {
-    	$this->name = $id;
+	}
 
-    	return $this;
-    }
+	/**
+	 * Set endDate
+	 *
+	 * @param \DateTime $endDate
+	 * @return Member
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getName()
-    {
-    	return $this->name;
-    }
+		return $this;
+	}
 
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFee]
-     */
-    public function getMemberFees() {
-    	return $this->memberFees;
-    }
+	/**
+	 * Get id
+	 *
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * @param MemberFee[] $deliveries
-     */
-    public function setMemberFees($memberFees) {
-    	foreach ($memberFees as $memberFee) {
-    		$memberFee->setBilling($this);
-    	}
-    	$this->memberFees = $memberFees;
-    }
+	/**
+	 * Set name
+	 *
+	 * @param string $value
+	 * @return Member
+	 */
+	public function setName($value)
+	{
+		$this->name = $value;
 
-    /**
-     * Add member fee
-     *
-     * @param MemberFee $memberFee
-     * @return Member
-     * @internal param MemberFee $memberFees
-     */
-    public function addMemberFee(MemberFee $memberFee) {
-    	$memberFee->setBilling($this);
-    	$this->memberFees[] = $memberFee;
-    	return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return User
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
+	/**
+	 * Get name
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
-    /**
-     * @param User $user
-     */
-    public function setOwner(User $user)
-    {
-        $this->owner = $user;
-        return $this;
-    }
+	/**
+	 * Set processor
+	 *
+	 * @param string $value
+	 * @return Member
+	 */
+	public function setProcessor($value)
+	{
+		$this->processor = $value;
 
-    /**
-     * Set organization
-     *
-     * @param Organization $organization
-     * @return Member
-     */
-    public function setOrganization(Organization $organization = null)
-    {
-        $this->organization = $organization;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * Get processor
+	 *
+	 * @return string
+	 */
+	public function getProcessor()
+	{
+		return $this->processor;
+	}
 
-    /**
-     * Get organization
-     *
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
+	/**
+	 * Set processorConfig
+	 *
+	 * @param string $value
+	 * @return Member
+	 */
+	public function setProcessorConfig($value)
+	{
+		$this->processorConfig = $value;
 
-    /**
-     * Set startDate
-     *
-     * @param \DateTime $startDate
-     * @return Member
-     */
-    public function setStartDate($startDate)
-    {
-        $this->startDate = $startDate;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * Get processorConfig
+	 *
+	 * @return string
+	 */
+	public function getProcessorConfig()
+	{
+		return $this->processorConfig;
+	}
 
-    /**
-     * Get startDate
-     *
-     * @return \DateTime
-     */
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFee]
+	 */
+	public function getMemberFees() {
+		return $this->memberFees;
+	}
 
-    /**
-     * Set endDate
-     *
-     * @param \DateTime $endDate
-     * @return Member
-     */
-    public function setEndDate($endDate)
-    {
-        $this->endDate = $endDate;
+	/**
+	 * @param MemberFee[] $deliveries
+	 */
+	public function setMemberFees($memberFees) {
+		foreach ($memberFees as $memberFee) {
+			$memberFee->setBilling($this);
+		}
+		$this->memberFees = $memberFees;
+	}
 
-        return $this;
-    }
+	/**
+	 * Add member fee
+	 *
+	 * @param MemberFee $memberFee
+	 * @return Member
+	 * @internal param MemberFee $memberFees
+	 */
+	public function addMemberFee(MemberFee $memberFee) {
+		$memberFee->setBilling($this);
+		$this->memberFees[] = $memberFee;
+		return $this;
+	}
 
-    /**
-     * Get endDate
-     *
-     * @return \DateTime
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
+	/**
+	 * @return User
+	 */
+	public function getOwner()
+	{
+	    return $this->owner;
+	}
 
-    /**
-     * @return int
-     */
-    public function getTaggableId()
-    {
-        return $this->getId();
-    }
+	/**
+	 * @param User $user
+	 */
+	public function setOwner(User $user)
+	{
+	    $this->owner = $user;
+	    return $this;
+	}
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getTags()
-    {
-        if (null === $this->tags) {
-            $this->tags = new ArrayCollection();
-        }
+	/**
+	 * Set organization
+	 *
+	 * @param Organization $organization
+	 * @return Member
+	 */
+	public function setOrganization(Organization $organization = null)
+	{
+	    $this->organization = $organization;
 
-        return $this->tags;
-    }
+	    return $this;
+	}
 
-    /**
-     * @param $tags
-     * @return Contact
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
+	/**
+	 * Get organization
+	 *
+	 * @return Organization
+	 */
+	public function getOrganization()
+	{
+	    return $this->organization;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set startDate
+	 *
+	 * @param \DateTime $startDate
+	 * @return Member
+	 */
+	public function setStartDate($startDate)
+	{
+	    $this->startDate = $startDate;
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
+	    return $this;
+	}
 
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
+	/**
+	 * Get startDate
+	 *
+	 * @return \DateTime
+	 */
+	public function getStartDate()
+	{
+	    return $this->startDate;
+	}
 
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
+	/**
+	 * Set endDate
+	 *
+	 * @param \DateTime $endDate
+	 * @return Member
+	 */
+	public function setEndDate($endDate)
+	{
+	    $this->endDate = $endDate;
 
-    /**
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-    /**
-     * Pre persist event listener
-     *
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
+	    return $this;
+	}
 
-    /**
-     * Pre update event handler
-     *
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
+	/**
+	 * Get endDate
+	 *
+	 * @return \DateTime
+	 */
+	public function getEndDate()
+	{
+	    return $this->endDate;
+	}
 
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getName();
-    }
+	/**
+	 * @return int
+	 */
+	public function getTaggableId()
+	{
+	    return $this->getId();
+	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getTags()
+	{
+	    if (null === $this->tags) {
+	        $this->tags = new ArrayCollection();
+	    }
+
+	    return $this->tags;
+	}
+
+	/**
+	 * @param $tags
+	 * @return Contact
+	 */
+	public function setTags($tags)
+	{
+	    $this->tags = $tags;
+
+	    return $this;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreatedAt()
+	{
+	    return $this->createdAt;
+	}
+
+	/**
+	 * @param \DateTime $createdAt
+	 */
+	public function setCreatedAt(\DateTime $createdAt)
+	{
+	    $this->createdAt = $createdAt;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getUpdatedAt()
+	{
+	    return $this->updatedAt;
+	}
+
+	/**
+	 * @param \DateTime $updatedAt
+	 */
+	public function setUpdatedAt(\DateTime $updatedAt)
+	{
+	    $this->updatedAt = $updatedAt;
+	}
+	/**
+	 * Pre persist event listener
+	 *
+	 * @ORM\PrePersist
+	 */
+	public function prePersist()
+	{
+	    $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+	}
+
+	/**
+	 * Pre update event handler
+	 *
+	 * @ORM\PreUpdate
+	 */
+	public function preUpdate()
+	{
+	    $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+	    return (string) $this->getName();
+	}
 }

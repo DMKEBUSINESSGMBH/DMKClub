@@ -1,0 +1,7 @@
+oro_menu_config:
+    items:
+        accounting_tab:
+            label: 'accounting'
+            uri: '#'
+            extras:
+                position: 11

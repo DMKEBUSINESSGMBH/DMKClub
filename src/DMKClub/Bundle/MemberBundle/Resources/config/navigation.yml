@@ -8,6 +8,14 @@ oro_menu_config:
                 routes:      ['/^dmkclub_member_(index|view)$/']
                 position:    210
                 description: 'dmkclub.member.entity_plural_label'
+        dmkclub_memberbilling:
+            label:   'dmkclub.member.memberbilling.entity_plural_label'
+            route:   'dmkclub_memberbilling_index'
+            display: false
+            extras:
+                routes:      ['/^dmkclub_memberbilling_(index|view)$/']
+                position:    100
+                description: 'dmkclub.member.memberbilling.entity_plural_label'
 
     tree:
         application_menu:
@@ -15,7 +23,10 @@ oro_menu_config:
                 customers_tab:
                     children:
                         dmkclub_member: ~
+                accounting_tab:
+                    children:
+                        dmkclub_memberbilling: ~
 
 oro_titles:
     dmkclub_member_index: ~
-    dmkclub_member_view:  %%member.name%%
+    dmkclub_member_view:  "%%member.name%%"

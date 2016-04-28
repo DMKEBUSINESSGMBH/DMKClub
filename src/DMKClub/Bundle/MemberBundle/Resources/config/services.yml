@@ -1,15 +1,20 @@
 parameters:
     dmkclub.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
+    dmkclub_member.memberbilling.manager.class:     DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
+
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
     dmkclub.country.datagrid_helper.class:          Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
     dmkclub.member.status_provider.class:           DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider
     dmkclub.member.twig.class:                      DMKClub\Bundle\MemberBundle\Twig\MemberExtension
 
+    dmkclub_member.memberbilling.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\MemberBilling
+    dmkclub_member.memberfee.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\MemberFee
+
 services:
-#    dmk_club_member.example:
-#        class: %dmk_club_member.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    dmkclub_member.memberbilling.manager:
+        class:                        "%dmkclub_member.memberbilling.manager.class%"
+        arguments:                    ["@doctrine.orm.entity_manager", "@service_container"]
 
     dmkclub.country.datagrid_helper:
         class: "%dmkclub.country.datagrid_helper.class%"
@@ -24,3 +29,6 @@ services:
         tags:
             - { name: twig.extension }
 
+    dmkclub_member.memberbilling.processor.default:
+        class: "%dmkclub.member.status_provider.class%"
+        

@@ -143,3 +143,96 @@ datagrid:
                 label: oro.grid.action.update
                 icon: edit
                 link: update_link
+
+# ###
+# MemberBilling base grid
+# ###
+    dmkclub-memberbillings-grid:
+        extended_entity_name: "%dmkclub_member.memberbilling.entity.class%"
+        source:
+            type: orm
+            acl_resource: dmkclub_memberbilling_view
+            query:
+                select:
+                    - mb.id
+                    - mb.name
+                    - mb.startDate
+                    - mb.endDate
+                    - mb.createdAt
+                    - mb.updatedAt
+                from:
+                    - { table: "%dmkclub_member.memberbilling.entity.class%", alias: mb }
+        columns:
+            name:
+                label:         dmkclub.member.memberbilling.name.label
+            startDate:
+                label:         dmkclub.member.memberbilling.start_date.label
+                frontend_type: date
+            endDate:
+                label:         dmkclub.member.memberbilling.end_date.label
+                frontend_type: date
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      dmkclub_memberbilling_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_memberbilling_update
+                params:     [ id ]
+        sorters:
+            columns:
+                name:
+                    data_name: mb.name
+                startDate:
+                    data_name: mb.startDate
+                endDate:
+                    data_name: mb.endDate
+                createdAt:
+                    data_name: mb.createdAt
+                updatedAt:
+                    data_name: mb.updatedAt
+            default:
+                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: mb.name
+                startDate:
+                    type:      date
+                    data_name: mb.startDate
+                endDate:
+                    type:      date
+                    data_name: mb.endDate
+                createdAt:
+                    type:      datetime
+                    data_name: mb.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: mb.updatedAt
+                    enabled: false
+            default:
+                status: { value: 'active', type: "%oro_filter.form.type.filter.text.class%::TYPE_EQUAL" }
+        actions:
+            view:
+                type: navigate
+                acl_resource: dmkclub_memberbilling_view
+                label: oro.grid.action.view
+                icon: eye-open
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                acl_resource: dmkclub_memberbilling_update
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                

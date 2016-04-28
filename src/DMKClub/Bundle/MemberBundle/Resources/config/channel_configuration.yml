@@ -3,9 +3,11 @@ orocrm_channel:
        -
           name: DMKClub\Bundle\MemberBundle\Entity\Member
           dependent:
-#              - DMKClub\Bundle\MemberBundle\Entity\FeeCategory
+              - DMKClub\Bundle\MemberBundle\Entity\MemberFee
+              - DMKClub\Bundle\MemberBundle\Entity\MemberBilling
           navigation_items:
               - application_menu.customers_tab.dmkclub_member
+              - application_menu.accounting_tab.dmkclub_memberbilling
 
    channel_types:
         member:

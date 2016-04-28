@@ -52,6 +52,7 @@ dmkclub:
         fees.label: Mitgliedsbeiträge
 
     member_information: Angaben zum Mitglied
+    memberbilling_information: Daten zur Abrechnung
     general_information: Allgemeine Informationen
     entity_number: "%entityName% %entityNumber%"
 active: Laufende Mitgliedschaft
