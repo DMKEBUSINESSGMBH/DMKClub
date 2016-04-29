@@ -42,6 +42,12 @@ dmkclub:
           start_date.label:    Start date
           end_date.label:      End date
           createbills.label:   Start accounting
+          processor.label: Processor
+          fee.label:    Membership Fee
+          fee_reduced.label:      Fee reduced
+          age_reduced.label:      Age for reduced fee
+          block.processor_settings: Settings
+          message.saved: Settings saved
         memberfee:
           entity_label:        Membership fee
           entity_plural_label: Membership fees
@@ -51,8 +57,9 @@ dmkclub:
           name.label:          Name
           start_date.label:    Start date
           end_date.label:      End date
-          
 
+        accounting.processor.default: Default accounting
+        accounting.processor.simple: Simple accounting
     member_information: Member Information
     memberbilling_information: Billing Information
     general_information: General Information

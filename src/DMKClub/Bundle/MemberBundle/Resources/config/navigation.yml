@@ -30,3 +30,6 @@ oro_menu_config:
 oro_titles:
     dmkclub_member_index: ~
     dmkclub_member_view:  "%%member.name%%"
+    dmkclub_memberbilling_index: ~
+    dmkclub_memberbilling_view:  "%%memberbilling.name%%"
+    

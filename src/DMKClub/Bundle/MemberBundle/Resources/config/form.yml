@@ -7,6 +7,10 @@ parameters:
 
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
     dmkclub.form.type.member_status.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberStatusType
+    dmkclub_member.form.type.accounting_processor_select.class: DMKClub\Bundle\MemberBundle\Form\Type\ProcessorSelectType
+    dmkclub_member.form.type.default_processor_settings.class: DMKClub\Bundle\MemberBundle\Form\Type\DefaultProcessorSettingsType
+    dmkclub_member.form.type.simple_processor_settings.class: DMKClub\Bundle\MemberBundle\Form\Type\SimpleProcessorSettingsType
+    dmkclub_member.form.subscriber.processor_settings.class: DMKClub\Bundle\MemberBundle\Form\EventListener\ProcessorSettingsListener
 
 services:
 # ####
@@ -25,10 +29,14 @@ services:
             - { name: form.type, alias: dmkclub_member_member_api }
     dmkclub_member.memberbilling.form.type:
         class: "%dmkclub_member.memberbilling.form.type.class%"
+        calls:
+            - [addSubscriber, [@dmkclub_member.form.subscriber.processor_settings]]
         arguments:
             - "@translator"
+            - "@dmkclub_member.memberbilling.processorprovider"
         tags:
             - { name: form.type, alias: dmkclub_member_memberbilling }
+
 
 # ####
 # Forms
@@ -88,6 +96,7 @@ services:
             - "@dmkclub_member.memberbilling.form"
             - "@request"
             - "@doctrine.orm.entity_manager"
+            - "@dmkclub_member.memberbilling.manager"
         tags:
             - { name: oro_tag.tag_manager }
 
@@ -106,4 +115,30 @@ services:
             - "@dmkclub_member.member.status_provider"
         tags:
             - { name: form.type, alias: dmkclub_memberstatus }
+    dmkclub_member.form.type.accounting_processor_select:
+        class: "%dmkclub_member.form.type.accounting_processor_select.class%"
+        arguments:
+            - "@dmkclub_member.memberbilling.processorprovider"
+        tags:
+            - { name: form.type, alias: "dmkclub_member_accounting_processor_select" }
 
+    # Subforms for accounting processor setting
+    dmkclub_member.form.type.default_processor_settings:
+        class: "%dmkclub_member.form.type.default_processor_settings.class%"
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: form.type, alias: "dmkclub_member_default_processor_settings" }
+    dmkclub_member.form.type.simple_processor_settings:
+        class: "%dmkclub_member.form.type.simple_processor_settings.class%"
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: form.type, alias: "dmkclub_member_simple_processor_settings" }
+    # listener to switch settings form for selected processor
+    # is injected to dmkclub_member.memberbilling.form.type
+    dmkclub_member.form.subscriber.processor_settings:
+        class: %dmkclub_member.form.subscriber.processor_settings.class%
+        arguments:
+            - "@dmkclub_member.memberbilling.processorprovider"
+            - "@oro_entity.doctrine_helper"

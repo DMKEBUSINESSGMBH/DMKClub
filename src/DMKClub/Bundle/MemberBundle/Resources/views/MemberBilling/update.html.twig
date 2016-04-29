@@ -55,6 +55,11 @@
 {% block content_data %}
     {% set id = 'member-billing' %}
 
+    {% set processorFormData = [form_row(form.processor)] %}
+    {% if form.processorSettings is defined %}
+        {% set processorFormData = processorFormData|merge([form_widget(form.processorSettings)]) %}
+    {% endif %}
+
     {% set formFields = [] %}
 
     {% set formFields = formFields|merge([
@@ -82,6 +87,15 @@
                       form_row(form.tags),
                     ]
                 },
+            ]
+        },
+        {
+            'title': 'dmkclub.member.memberbilling.block.processor_settings'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': processorFormData
+                }
             ]
         }]
     %}

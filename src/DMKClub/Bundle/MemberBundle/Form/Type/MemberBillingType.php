@@ -2,23 +2,43 @@
 
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class MemberBillingType extends AbstractType {
+	/**
+	 * @var EventSubscriberInterface[]
+	 */
+	protected $subscribers = [];
 
 	/** @var TranslatorInterface */
 	protected $translator;
+	/**
+	 * @var ProcessorProvider
+	 */
+	protected $processorProvider;
 
 	/**
 	 * @param ConfigManager       $configManager
 	 * @param TranslatorInterface $translator
 	 */
-	public function __construct(TranslatorInterface $translator)
+	public function __construct(TranslatorInterface $translator, ProcessorProvider $processorProvider)
 	{
 		$this->translator = $translator;
+		$this->processorProvider = $processorProvider;
+	}
+	/**
+	 * @param EventSubscriberInterface $subscriber
+	 */
+	public function addSubscriber(EventSubscriberInterface $subscriber)
+	{
+		$this->subscribers[] = $subscriber;
 	}
 
 	/**
@@ -27,6 +47,10 @@ class MemberBillingType extends AbstractType {
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		foreach ($this->subscribers as $subscriber) {
+			$builder->addEventSubscriber($subscriber);
+		}
+
 		$this->buildPlainFields($builder, $options);
 		$this->buildRelationFields($builder, $options);
 	}
@@ -39,6 +63,13 @@ class MemberBillingType extends AbstractType {
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.memberbilling.name.label'))
 			->add('startDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.memberbilling.start_date.label'))
 			->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.memberbilling.end_date.label'))
+			// TODO: Add Member-List Segment
+// 			->add(
+// 					'segment',
+// 					'oro_segment_entity_choice',
+// 					['label' => 'orocrm.campaign.emailcampaign.marketing_list.label', 'required' => true]
+// 			)
+
 			->add('owner')
 			->add('organization')
 		;
@@ -50,9 +81,35 @@ class MemberBillingType extends AbstractType {
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
 	public function buildRelationFields(FormBuilderInterface $builder, array $options){
-	    // tags
-	    $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
+		// tags
+		$builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
 
+		// Einstellungsformular für dem Processor
+		$builder->addEventListener(
+				FormEvents::PRE_SET_DATA,
+				function (FormEvent $event) {
+					$options = [
+							'label' => 'dmkclub.member.memberbilling.processor.label',
+							'required' => true,
+							'mapped' => false
+					];
+
+					/** @var MemberBilling $data */
+					$data = $event->getData();
+					if ($data) {
+						$choices = $this->processorProvider->getVisibleProcessorChoices();
+						$currentProcessorName = $data->getProcessor();
+						if ($currentProcessorName && !array_key_exists($currentProcessorName, $choices)) {
+							$currentProcessor = $this->processorProvider->getProcessorByName($currentProcessorName);
+							$choices[$currentProcessor->getName()] = $currentProcessor->getLabel();
+							$options['choices'] = $choices;
+						}
+					}
+
+					$form = $event->getForm();
+					$form->add('processor', 'dmkclub_member_accounting_processor_select', $options);
+				}
+		);
 	}
 	/**
 	 * @param OptionsResolverInterface $resolver

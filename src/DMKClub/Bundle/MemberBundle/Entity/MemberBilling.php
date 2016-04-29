@@ -152,6 +152,8 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	 */
 	protected $processorConfig;
 
+	protected $processorSettings;
+
 
 	/**
 	 * @var \DateTime $createdAt
@@ -210,6 +212,15 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	 */
 	protected $tags;
 
+	private $segment;
+
+	public function getSegment() {
+	  return $this->segment;
+	}
+
+	public function setSegment($value) {
+	  $this->segment = $value;
+	}
 	/**
 	 * {@inheritdoc}
 	 */
@@ -310,6 +321,28 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	public function getProcessorConfig()
 	{
 		return $this->processorConfig;
+	}
+	/**
+	 * Set processorConfig
+	 *
+	 * @param string $value
+	 * @return Member
+	 */
+	public function setProcessorSettings($value)
+	{
+		$this->processorSettings = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Get processorSettings
+	 *
+	 * @return string
+	 */
+	public function getProcessorSettings()
+	{
+		return $this->processorSettings;
 	}
 
 	/**

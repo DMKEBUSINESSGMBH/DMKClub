@@ -36,6 +36,10 @@ dmkclub:
           name.label:          Name
           start_date.label:    Startdatum
           end_date.label:      Enddatum
+          fee.label:    Mitgliedsbeitrag
+          fee_reduced.label:      Mitgliedsbeitrag reduziert
+          age_reduced.label:      Altersgrenze für red. Beitrag
+          block.processor_settings: Einstellungen
         memberfee:
           entity_label:        Mitgliedsbeitrag
           entity_plural_label: Mitgliedsbeiträge
@@ -51,6 +55,8 @@ dmkclub:
         message.saved: Member saved
         fees.label: Mitgliedsbeiträge
 
+        accounting.processor.default: Standard Berechnung
+        accounting.processor.simple: Einfache Abrechnung
     member_information: Angaben zum Mitglied
     memberbilling_information: Daten zur Abrechnung
     general_information: Allgemeine Informationen

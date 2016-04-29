@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class MemberType extends AbstractType {
 
@@ -96,7 +98,6 @@ class MemberType extends AbstractType {
         				],
         		]
         );
-
     }
     /**
      * @param OptionsResolverInterface $resolver
