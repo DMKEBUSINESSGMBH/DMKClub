@@ -40,9 +40,19 @@ class MemberBillingManager implements ContainerAwareInterface {
 		$provider = $this->container->get('dmkclub_member.memberbilling.processorprovider');
 		$processor = $provider->getProcessorByName($entity->getProcessor());
 
-		$result = $processor->execute($entity, $this->getProcessorSettings($entity));
+		// TODO: Hier relevante Filter auf die Mitglieder setzen
+		$qb = $this->getMemberRepository()->createQueryBuilder('m');
+		$q = $qb->where('(m.isFreeOfCharge = 0)')
+			->getQuery();
+		$result = $q->iterate();
+		$hits = 0;
+		foreach ($result As $row) {
+			$member = $row[0];
+			$result = $processor->execute($member, $entity, $this->getProcessorSettings($entity));
+			$hits++;
+		}
 
-		return $result;
+		return ['success' => ($hits)];
 	}
 
 	/**
@@ -77,5 +87,11 @@ class MemberBillingManager implements ContainerAwareInterface {
 	public function setContainer(ContainerInterface $container = null)
 	{
 		$this->container = $container;
+	}
+	/**
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository
+	 */
+	public function getMemberRepository() {
+		return $this->em->getRepository('DMKClubMemberBundle:Member');
 	}
 }

@@ -5,11 +5,22 @@ namespace DMKClub\Bundle\MemberBundle\Accounting;
 
 use DMKClub\Bundle\MemberBundle\Form\Type\DefaultProcessorSettingsType;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
+use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
+use Doctrine\ORM\EntityManager;
+use DMKClub\Bundle\MemberBundle\Entity\Member;
 /**
  */
 class DefaultProcessor implements ProcessorInterface {
 	const NAME = 'default';
 
+	/**
+	 * @var \Doctrine\ORM\EntityManager
+	 */
+	private $em;
+
+	public function __construct(EntityManager $em) {
+		$this->em = $em;
+	}
 	/**
 	 * {@inheritdoc}
 	 */
@@ -35,8 +46,17 @@ class DefaultProcessor implements ProcessorInterface {
 	/* (non-PHPdoc)
 	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::execute()
 	 */
-	public function execute(MemberBilling $entity, array $options) {
-		return ['success' => get_class($this)];
+	public function execute(Member $member, MemberBilling $entity, array $options) {
+		//
+
+		return ['success' => get_class($member)];
+	}
+
+	/**
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository
+	 */
+	public function getMemberRepository() {
+		return $this->em->getRepository('DMKClubMemberBundle:Member');
 	}
 
 }

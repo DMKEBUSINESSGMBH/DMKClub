@@ -4,6 +4,7 @@ namespace DMKClub\Bundle\MemberBundle\Accounting;
 
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
+use DMKClub\Bundle\MemberBundle\Entity\Member;
 interface ProcessorInterface {
 	/**
 	 * Get processor name.
@@ -27,9 +28,10 @@ interface ProcessorInterface {
 
 	/**
 	 * Start processing
+	 * @param Member $member
 	 * @param MemberBilling $entity
 	 * @param array $options
 	 */
-	public function execute(MemberBilling $entity, array $options);
+	public function execute(Member $member, MemberBilling $entity, array $options);
 
 }
