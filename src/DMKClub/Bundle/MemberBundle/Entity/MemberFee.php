@@ -59,7 +59,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFee;
  * @Oro\Loggable
  */
 class MemberFee extends ExtendMemberFee implements Taggable, ChannelAwareInterface {
-    use ChannelEntityTrait;
+	use ChannelEntityTrait;
 	/**
 	 * @var int
 	 *
@@ -78,384 +78,430 @@ class MemberFee extends ExtendMemberFee implements Taggable, ChannelAwareInterfa
 	protected $id;
 
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start_date", type="date", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=75
-     *          }
-     *      }
-     * )
-     * @Oro\Versioned
-     */
-    protected $startDate;
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_date", type="date", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "order"=80
-     *          }
-     *      }
-     * )
-     * @Oro\Versioned
-     */
-    protected $endDate;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="start_date", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "order"=75
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $startDate;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="end_date", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "order"=80
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $endDate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string")
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "identity"=true,
-     *              "order"=30
-     *          }
-     *      }
-     * )
-     */
-    protected $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "identity"=true,
+	 *              "order"=30
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberBilling", inversedBy="memberFees")
-     * @ORM\JoinColumn(name="billing", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
-     */
-    protected $billing;
+	/**
+	 * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberBilling", inversedBy="memberFees")
+	 * @ORM\JoinColumn(name="billing", referencedColumnName="id", onDelete="CASCADE")
+	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 * @Oro\Versioned
+	 */
+	protected $billing;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFees")
-     * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
-     */
-    protected $member;
+	/**
+	 * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFees")
+	 * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
+	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 * @Oro\Versioned
+	 */
+	protected $member;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition", mappedBy="memberFee", cascade={"all"}, orphanRemoval=true)
+	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 * @Oro\Versioned
+	 */
+	protected $positions;
+
+	/**
+	 * @var float
+	 *
+	 * @ORM\Column(name="price_total", type="integer", nullable=true)
+	 */
+	private $priceTotal;
+
+	/**
+	 * @var \DateTime $createdAt
+	 *
+	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "entity"={
+	 *              "label"="oro.ui.created_at"
+	 *          },
+	 *          "importexport"={
+	 *              "excluded"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $createdAt;
+
+	/**
+	 * @var \DateTime $updatedAt
+	 *
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "entity"={
+	 *              "label"="oro.ui.updated_at"
+	 *          },
+	 *          "importexport"={
+	 *              "excluded"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $updatedAt;
 
 
-    /**
-     * @var \DateTime $createdAt
-     *
-     * @ORM\Column(type="datetime", name="created_at")
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
+	/**
+	 * @var User
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+	 * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $owner;
 
-    /**
-     * @var \DateTime $updatedAt
-     *
-     * @ORM\Column(type="datetime", name="updated_at")
-     * @Oro\Versioned
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
+	/**
+	 * @var Organization
+	 *
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $organization;
+	/**
+	 * @var ArrayCollection
+	 */
+	protected $tags;
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function __construct() {
+	    parent::__construct();
+	    $this->positions = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+	/**
+	 * Set endDate
+	 *
+	 * @param \DateTime $endDate
+	 * @return Member
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
-    /**
-     * @var ArrayCollection
-     */
-    protected $tags;
+		return $this;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct()
-    {
-        parent::__construct();
+	/**
+	 * Get id
+	 *
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    }
+	/**
+	 * Set endDate
+	 *
+	 * @param \DateTime $endDate
+	 * @return Member
+	 */
+	public function setName($id)
+	{
+		$this->name = $id;
 
-    /**
-     * Set endDate
-     *
-     * @param \DateTime $endDate
-     * @return Member
-     */
-    public function setId($id)
-    {
-    	$this->id = $id;
+		return $this;
+	}
 
-    	return $this;
-    }
+	/**
+	 * Get id
+	 *
+	 * @return int
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+	public function getPriceTotal() {
+		return $this->priceTotal;
+	}
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-    	return $this->id;
-    }
+	public function setPriceTotal($value) {
+		$this->priceTotal = $value;
+		return $this;
+	}
 
-    /**
-     * Set endDate
-     *
-     * @param \DateTime $endDate
-     * @return Member
-     */
-    public function setName($id)
-    {
-    	$this->name = $id;
+	/**
+	 * @return \DMKClub\Bundle\MemberBundle\Member
+	 */
+	public function getMember() {
+		return $this->member;
+	}
+	public function setMember($member) {
+		$this->member = $member;
+		return $this;
+	}
 
-    	return $this;
-    }
+	/**
+	 * @return \DMKClub\Bundle\MemberBundle\MemberBilling
+	 */
+	public function getBilling() {
+		return $this->billing;
+	}
+	public function setBilling($billing) {
+		$this->billing = $billing;
+		return $this;
+	}
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getName()
-    {
-    	return $this->name;
-    }
+	/**
+	 * @return User
+	 */
+	public function getOwner()
+	{
+		return $this->owner;
+	}
 
-    /**
-     * @return \DMKClub\Bundle\MemberBundle\Member
-     */
-    public function getMember() {
-    	return $this->member;
-    }
-    public function setMember($member) {
-    	$this->member = $member;
-    	return $this;
-    }
+	/**
+	 * @param User $user
+	 */
+	public function setOwner(User $user)
+	{
+		$this->owner = $user;
+		return $this;
+	}
 
-    /**
-     * @return \DMKClub\Bundle\MemberBundle\MemberBilling
-     */
-    public function getBilling() {
-    	return $this->billing;
-    }
-    public function setBilling($billing) {
-    	$this->billing = $billing;
-    	return $this;
-    }
+	/**
+	 * Set organization
+	 *
+	 * @param Organization $organization
+	 * @return Member
+	 */
+	public function setOrganization(Organization $organization = null)
+	{
+		$this->organization = $organization;
 
-    /**
-     * @return User
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
+		return $this;
+	}
 
-    /**
-     * @param User $user
-     */
-    public function setOwner(User $user)
-    {
-        $this->owner = $user;
-        return $this;
-    }
+	/**
+	 * Get organization
+	 *
+	 * @return Organization
+	 */
+	public function getOrganization()
+	{
+		return $this->organization;
+	}
 
-    /**
-     * Set organization
-     *
-     * @param Organization $organization
-     * @return Member
-     */
-    public function setOrganization(Organization $organization = null)
-    {
-        $this->organization = $organization;
+	/**
+	 * Set startDate
+	 *
+	 * @param \DateTime $startDate
+	 * @return Member
+	 */
+	public function setStartDate($startDate)
+	{
+		$this->startDate = $startDate;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get organization
-     *
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
+	/**
+	 * Get startDate
+	 *
+	 * @return \DateTime
+	 */
+	public function getStartDate()
+	{
+		return $this->startDate;
+	}
 
-    /**
-     * Set startDate
-     *
-     * @param \DateTime $startDate
-     * @return Member
-     */
-    public function setStartDate($startDate)
-    {
-        $this->startDate = $startDate;
+	/**
+	 * Set endDate
+	 *
+	 * @param \DateTime $endDate
+	 * @return Member
+	 */
+	public function setEndDate($endDate)
+	{
+		$this->endDate = $endDate;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get startDate
-     *
-     * @return \DateTime
-     */
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
+	/**
+	 * Get endDate
+	 *
+	 * @return \DateTime
+	 */
+	public function getEndDate()
+	{
+		return $this->endDate;
+	}
 
-    /**
-     * Set endDate
-     *
-     * @param \DateTime $endDate
-     * @return Member
-     */
-    public function setEndDate($endDate)
-    {
-        $this->endDate = $endDate;
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition]
+	 */
+	public function getPositions() {
+		return $this->positions;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param MemberFeePosition[] $value
+	 */
+	public function setPositions($value) {
+		$this->positions = $value;
+	  return $this;
+	}
+	/**
+	 * Add member fee position
+	 *
+	 * @param MemberFeePosition $position
+	 * @return MemberFee
+	 */
+	public function addPosition(MemberFeePosition $position) {
+		$position->setMemberFee($this);
+		$this->positions[] = $position;
+		return $this;
+	}
 
-    /**
-     * Get endDate
-     *
-     * @return \DateTime
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
+	/**
+	 * @return int
+	 */
+	public function getTaggableId()
+	{
+		return $this->getId();
+	}
 
-    /**
-     * @return int
-     */
-    public function getTaggableId()
-    {
-        return $this->getId();
-    }
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getTags()
+	{
+		if (null === $this->tags) {
+			$this->tags = new ArrayCollection();
+		}
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getTags()
-    {
-        if (null === $this->tags) {
-            $this->tags = new ArrayCollection();
-        }
+		return $this->tags;
+	}
 
-        return $this->tags;
-    }
+	/**
+	 * @param $tags
+	 * @return Contact
+	 */
+	public function setTags($tags)
+	{
+		$this->tags = $tags;
 
-    /**
-     * @param $tags
-     * @return Contact
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreatedAt()
+	{
+		return $this->createdAt;
+	}
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
+	/**
+	 * @param \DateTime $createdAt
+	 */
+	public function setCreatedAt(\DateTime $createdAt)
+	{
+		$this->createdAt = $createdAt;
+	}
 
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
+	}
 
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
+	/**
+	 * @param \DateTime $updatedAt
+	 */
+	public function setUpdatedAt(\DateTime $updatedAt)
+	{
+		$this->updatedAt = $updatedAt;
+	}
+	/**
+	 * Pre persist event listener
+	 *
+	 * @ORM\PrePersist
+	 */
+	public function prePersist()
+	{
+		$this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+	}
 
-    /**
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-    /**
-     * Pre persist event listener
-     *
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
+	/**
+	 * Pre update event handler
+	 *
+	 * @ORM\PreUpdate
+	 */
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+	}
 
-    /**
-     * Pre update event handler
-     *
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getName();
-    }
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->getName();
+	}
 }

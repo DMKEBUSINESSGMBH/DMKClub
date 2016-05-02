@@ -228,7 +228,6 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	{
 	    parent::__construct();
 	    $this->memberFees = new \Doctrine\Common\Collections\ArrayCollection();
-
 	}
 
 	/**
