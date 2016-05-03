@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set fullname = entity.name %}
 {% oro_title_set({params : {"%memberbilling.name%": fullname} }) %}
@@ -49,6 +49,11 @@
         }) }}
     {% endset %}
 
+    {% set memberFees %}
+        {% set memberFeeGrid = 'dmkclub-memberfees-grid-billing' %}
+        {{ dataGrid.renderGrid(memberFeeGrid, {billing: entity.id}) }}
+    {% endset %}
+
     {% set generalSubBlocks = [{'data' : [entityInformationWidget]}] %}
 
     {% set dataBlocks = [
@@ -60,6 +65,9 @@
         {
             'title': 'dmkclub.member.fees.label'|trans,
             'subblocks': [
+                {'data' : [
+                    memberFees
+                ]}
             ]
         }
     ] %}

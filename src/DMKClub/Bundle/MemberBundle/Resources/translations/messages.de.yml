@@ -36,10 +36,13 @@ dmkclub:
           name.label:          Name
           start_date.label:    Startdatum
           end_date.label:      Enddatum
-          fee.label:    Mitgliedsbeitrag
+          createbills.label:   Abrechnung starten
+          processor.label:     Prozessor
+          fee.label:           Mitgliedsbeitrag
           fee_reduced.label:      Mitgliedsbeitrag reduziert
           age_reduced.label:      Altersgrenze für red. Beitrag
           block.processor_settings: Einstellungen
+          message.saved:        Einstellungen gespeichert
         memberfee:
           entity_label:        Mitgliedsbeitrag
           entity_plural_label: Mitgliedsbeiträge
@@ -47,8 +50,18 @@ dmkclub:
           id.label:            Id
           owner.label:         Owner
           name.label:          Name
+          price_total.label:   Gesamtbeitrag
           start_date.label:    Startdatum
           end_date.label:      Enddatum
+        memberfee_position:
+          entity_label:        Position für Mitgliedsbeitrag
+          entity_plural_label: Position für Mitgliedsbeiträge
+          entity_description:  Represent a position for membership fee
+          id.label:            Id
+          owner.label:         Owner
+          quantity.label:      Anzahl
+          price_total.label:   Gesamtpreis
+          price_single.label:  Einzelpreis
 
         form.choose_status: Wählen Sie einen Mitgliedsstatus
 

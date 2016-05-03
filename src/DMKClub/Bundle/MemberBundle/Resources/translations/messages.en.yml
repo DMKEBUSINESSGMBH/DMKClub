@@ -55,8 +55,18 @@ dmkclub:
           id.label:            Id
           owner.label:         Owner
           name.label:          Name
+          price_total.label:   Fee total
           start_date.label:    Start date
           end_date.label:      End date
+        memberfee_position:
+          entity_label:        Membership fee position
+          entity_plural_label: Membership fee positions
+          entity_description:  Represent a position for membership fee
+          id.label:            Id
+          owner.label:         Owner
+          quantity.label:      Quantity
+          price_total.label:   Price total
+          price_single.label:  Price single
 
         accounting.processor.default: Default accounting
         accounting.processor.simple: Simple accounting

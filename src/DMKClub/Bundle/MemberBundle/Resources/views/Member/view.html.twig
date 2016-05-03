@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set fullname = entity.name %}
 {% oro_title_set({params : {"%member.name%": fullname} }) %}
@@ -52,20 +52,13 @@
         }) }}
     {% endset %}
 
-    {% set generalSubBlocks = [{'data' : [memberInformationWidget]}] %}
-{#
-    {% set memberAddressBookWidget %}
-        <div class="responsive-cell">
-            {{ oro_widget_render({
-                'widgetType': 'block',
-                'contentClasses': [],
-                'url': path('dmkclub_member_address_book', {id: entity.id}),
-                'title': 'Address Book'|trans
-            }) }}
-        </div>
+    {% set memberFees %}
+        {% set memberFeeGrid = 'dmkclub-memberfees-grid-member' %}
+        {{ dataGrid.renderGrid(memberFeeGrid, {member: entity.id}) }}
     {% endset %}
-    {% set generalSubBlocks = generalSubBlocks|merge([{'data': [memberAddressBookWidget]}]) %}
-#}
+
+
+    {% set generalSubBlocks = [{'data' : [memberInformationWidget]}] %}
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
@@ -75,6 +68,9 @@
         {
             'title': 'dmkclub.member.fees.label'|trans,
             'subblocks': [
+                {'data' : [
+                    memberFees
+                ]}
             ]
         }
     ] %}

@@ -235,4 +235,172 @@ datagrid:
                 label: oro.grid.action.update
                 icon: edit
                 link: update_link
-                
+
+# ###
+# MemberFee grid in billing
+# ###
+    dmkclub-memberfees-grid-billing:
+        source:
+            type: orm
+            acl_resource: dmkclub_memberfee_view
+            query:
+                select:
+                    - f.id
+                    - f.priceTotal/100 As priceTotal
+                    - m.id as mid
+                    - m.name
+                    - f.createdAt
+                    - f.updatedAt
+                from:
+                    - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
+                where:
+                    and:
+                        - f.billing = :billing
+                join:
+                    left:
+                        - { join: f.member, alias: m }
+            bind_parameters:
+                - billing
+        columns:
+            name:
+                type:          link
+                route:         dmkclub_member_view
+                params: {id: mid}
+                label:         dmkclub.member.name.label
+                frontend_type: html
+            priceTotal:
+                label:         dmkclub.member.memberfee.price_total.label
+#                type: currency
+#                divisor: 100
+                frontend_type: currency
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+#            view_link:
+#                type:       url
+#                route:      dmkclub_memberbilling_view
+#                params:     [ id ]
+#            update_link:
+#                type:       url
+#                route:      dmkclub_memberbilling_update
+#                params:     [ id ]
+        sorters:
+            columns:
+                name:
+                    data_name: m.name
+                priceTotal:
+                    data_name: f.priceTotal
+                createdAt:
+                    data_name: f.createdAt
+                updatedAt:
+                    data_name: f.updatedAt
+            default:
+                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: m.name
+                createdAt:
+                    type:      datetime
+                    data_name: f.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: f.updatedAt
+                    enabled: false
+        actions:
+#            view:
+#                type: navigate
+#                acl_resource: dmkclub_memberfee_view
+#                label: oro.grid.action.view
+#                icon: eye-open
+#                link: view_link
+#                rowAction: true
+#            update:
+#                type: navigate
+#                acl_resource: dmkclub_memberfee_update
+#                label: oro.grid.action.update
+#                icon: edit
+#                link: update_link
+
+# ###
+# MemberFee grid in member
+# ###
+    dmkclub-memberfees-grid-member:
+        source:
+            type: orm
+            acl_resource: dmkclub_memberfee_view
+            query:
+                select:
+                    - f.id
+                    - f.priceTotal/100 As priceTotal
+                    - b.id as bid
+                    - b.name
+                    - f.createdAt
+                    - f.updatedAt
+                from:
+                    - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
+                where:
+                    and:
+                        - f.member = :member
+                join:
+                    left:
+                        - { join: f.billing, alias: b }
+            bind_parameters:
+                - member
+        columns:
+            name:
+                type:          link
+                route:         dmkclub_memberbilling_view
+                params: {id: bid}
+                label:         dmkclub.member.memberbilling.name.label
+                frontend_type: html
+            priceTotal:
+                label:         dmkclub.member.memberfee.price_total.label
+                frontend_type: currency
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+#            view_link:
+#                type:       url
+#                route:      dmkclub_memberbilling_view
+#                params:     [ id ]
+#            update_link:
+#                type:       url
+#                route:      dmkclub_memberbilling_update
+#                params:     [ id ]
+        sorters:
+            columns:
+                name:
+                    data_name: b.name
+                priceTotal:
+                    data_name: f.priceTotal
+                createdAt:
+                    data_name: f.createdAt
+                updatedAt:
+                    data_name: f.updatedAt
+            default:
+                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: b.name
+                createdAt:
+                    type:      datetime
+                    data_name: f.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: f.updatedAt
+                    enabled: false
+        actions:
