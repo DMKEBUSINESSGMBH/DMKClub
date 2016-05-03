@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Model\Processor;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
+use DMKClub\Bundle\MemberBundle\Accounting\AccountingException;
+use DMKClub\Bundle\MemberBundle\Entity\Member;
 
 class MemberBillingManager implements ContainerAwareInterface {
 	/**
@@ -35,10 +37,12 @@ class MemberBillingManager implements ContainerAwareInterface {
 	 * @param MemberBilling $entity
 	 * @return array
 	 */
-	public function startAccounting(MemberBilling $entity) {
+	public function startAccounting(MemberBilling $memberBilling) {
 		/* @var $provider \DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider */
 		$provider = $this->container->get('dmkclub_member.memberbilling.processorprovider');
-		$processor = $provider->getProcessorByName($entity->getProcessor());
+		/* @var $processor \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface */
+		$processor = $provider->getProcessorByName($memberBilling->getProcessor());
+		$processor->init($memberBilling, $this->getProcessorSettings($memberBilling));
 
 		// TODO: Hier relevante Filter auf die Mitglieder setzen
 		$qb = $this->getMemberRepository()->createQueryBuilder('m');
@@ -46,13 +50,42 @@ class MemberBillingManager implements ContainerAwareInterface {
 			->getQuery();
 		$result = $q->iterate();
 		$hits = 0;
-		foreach ($result As $row) {
-			$member = $row[0];
-			$result = $processor->execute($member, $entity, $this->getProcessorSettings($entity));
-			$hits++;
-		}
+		$skipped = 0;
+		$errors = [];
 
-		return ['success' => ($hits)];
+		foreach ($result As $row) {
+			/* @var $member \DMKClub\Bundle\MemberBundle\Entity\Member */
+			$member = $row[0];
+			try {
+				if($this->hasFee4Billing($member, $memberBilling)) {
+					$skipped++;
+					continue;
+				}
+				$memberFee = $processor->execute($member);
+				$memberFee->setBilling($memberBilling);
+				$memberFee->setMember($member);
+				$this->em->persist($memberFee);
+			}
+			catch(AccountingException $exception) {
+				$errors[] = 'Member '. $member->getId() . ' - ' . $exception->getMessage();
+			}
+			$hits++;
+			if($hits > 10)
+				break;
+		}
+		$this->em->flush();
+
+		return ['success' => ($hits), 'skipped' => $skipped, 'errors'=>$errors];
+	}
+	/**
+	 * Wether or not a fee still exists
+	 * @param Member $member
+	 * @param MemberBilling $memberBilling
+	 * @return boolean
+	 */
+	public function hasFee4Billing(Member $member, MemberBilling $memberBilling) {
+		$fee = $this->getMemberFeeRepository()->findOneBy(['billing' => $memberBilling->getId(), 'member' => $member->getId()]);
+		return $fee !== NULL;
 	}
 
 	/**
@@ -93,5 +126,11 @@ class MemberBillingManager implements ContainerAwareInterface {
 	 */
 	public function getMemberRepository() {
 		return $this->em->getRepository('DMKClubMemberBundle:Member');
+	}
+	/**
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\Repository\MemberFeeRepository
+	 */
+	public function getMemberFeeRepository() {
+		return $this->em->getRepository('DMKClubMemberBundle:MemberFee');
 	}
 }

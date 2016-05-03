@@ -128,7 +128,7 @@ class MemberBillingController extends Controller
 
 		$this->get('session')
 			->getFlashBag()
-			->add('success', $this->get('translator')->trans('Auswertung gestartet: ' . $ret['success']));
+			->add('success', $this->get('translator')->trans('Auswertung gestartet: ' . print_r($ret, true)));
 		return new RedirectResponse(
 				$this->generateUrl('dmkclub_memberbilling_view', ['id' => $entity->getId()]));
 	}

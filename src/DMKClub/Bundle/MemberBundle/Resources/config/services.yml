@@ -42,6 +42,7 @@ services:
     dmkclub_member.memberbilling.processor.default:
         class: "%dmkclub_member.memberbilling.processor_default.class%"
         arguments:
+            - "@logger"
             - "@doctrine.orm.entity_manager"
         tags:
             - { name: dmkclub_member.billingprocessor }

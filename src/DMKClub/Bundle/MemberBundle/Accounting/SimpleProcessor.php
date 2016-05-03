@@ -11,6 +11,8 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
  */
 class SimpleProcessor implements ProcessorInterface {
 	const NAME = 'simple';
+	private $memberBilling;
+	private $options;
 
 	/**
 	 * {@inheritdoc}
@@ -18,6 +20,11 @@ class SimpleProcessor implements ProcessorInterface {
 	public function getName()
 	{
 		return self::NAME;
+	}
+
+	public function init(MemberBilling $memberBilling, array $options) {
+		$this->memberBilling = $memberBilling;
+		$this->options = $options;
 	}
 
 	/**
@@ -37,7 +44,7 @@ class SimpleProcessor implements ProcessorInterface {
 	/* (non-PHPdoc)
 	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::execute()
 	 */
-	public function execute(Member $member, MemberBilling $entity, array $options) {
+	public function execute(Member $member) {
 		return ['success' => get_class($this)];
 	}
 }

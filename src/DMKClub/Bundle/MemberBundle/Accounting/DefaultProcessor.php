@@ -11,6 +11,7 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
 use DMKClub\Bundle\MemberBundle\Accounting\Time\TimeCalculator;
+use Psr\Log\LoggerInterface;
 /**
  */
 class DefaultProcessor implements ProcessorInterface {
@@ -20,6 +21,8 @@ class DefaultProcessor implements ProcessorInterface {
 	 * @var \Doctrine\ORM\EntityManager
 	 */
 	private $em;
+	/* @var \Psr\Log\LoggerInterface */
+	private $logger;
 	private $memberBilling;
 	private $options;
 
@@ -35,8 +38,9 @@ class DefaultProcessor implements ProcessorInterface {
 	}
 
 
-	public function __construct(EntityManager $em) {
+	public function __construct(LoggerInterface $logger, EntityManager $em) {
 		$this->em = $em;
+		$this->logger = $logger;
 	}
 	/**
 	 * {@inheritdoc}
@@ -61,7 +65,8 @@ class DefaultProcessor implements ProcessorInterface {
 		return DefaultProcessorSettingsType::NAME;
 	}
 	public function init(MemberBilling $memberBilling, array $options) {
-
+		$this->memberBilling = $memberBilling;
+		$this->options = $options;
 	}
 	/* (non-PHPdoc)
 	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::execute()
@@ -84,7 +89,7 @@ class DefaultProcessor implements ProcessorInterface {
 		$fee = 0;
 		// Über jeden Monat iterieren
 		/* @var $currentMonth \DateTime */
-		$currentMonthFirstDay = $startDate;
+		$currentMonthFirstDay = new \DateTime($startDate->format('Y-m-d'));
 		$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
 		foreach ($months As $interval) {
 			if($this->isMembershipActive($member, $currentMonthFirstDay)) {
@@ -98,13 +103,18 @@ class DefaultProcessor implements ProcessorInterface {
 			$currentMonthFirstDay = $currentMonthFirstDay->add($interval);
 			$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
 		}
+		$this->writeLog("Fee: " . $fee . " from " . $startDate->format('Y-m-d') . ' to '.$endDate->format('Y-m-d'));
 
 		$position->setPriceSingle($fee);
 		$position->setPriceTotal($fee);
+		$memberFee->setPriceTotal($fee);
 
 
 
 		return $memberFee;
+	}
+	private function writeLog($message) {
+		$this->logger->info($message);
 	}
 	/**
 	 * Is the member active in given month

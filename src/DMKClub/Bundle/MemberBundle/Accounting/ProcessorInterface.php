@@ -28,10 +28,15 @@ interface ProcessorInterface {
 
 	/**
 	 * Start processing
-	 * @param Member $member
+	 * @param \DMKClub\Bundle\MemberBundle\Entity\Member $member
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\MemberFee
+	 */
+	public function execute(Member $member);
+	/**
+	 *
 	 * @param MemberBilling $entity
 	 * @param array $options
 	 */
-	public function execute(Member $member, MemberBilling $entity, array $options);
+	public function init(MemberBilling $entity, array $options);
 
 }

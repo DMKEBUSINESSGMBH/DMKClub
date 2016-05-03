@@ -7,11 +7,17 @@ use DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use Psr\Log\NullLogger;
 
 class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
+	private $logger;
+	public function setUp() {
+		$this->logger = new NullLogger();
+	}
+
 	public function testGetLabel(){
 		$emMock = $this->getEMMockBuilder()->getMock();
-		$processor = new DefaultProcessor($emMock);
+		$processor = new DefaultProcessor($this->logger, $emMock);
 		$this->assertEquals('dmkclub.member.accounting.processor.default',$processor->getLabel(), 'Label is wrong');
 	}
 
@@ -20,7 +26,7 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testExecute($start, $end, $options, $member, $expectedFee, $tag){
 		$emMock = $this->getEMMockBuilder()->getMock();
-		$processor = new DefaultProcessor($emMock);
+		$processor = new DefaultProcessor($this->logger, $emMock);
 		$memberBilling = new MemberBilling();
 		$memberBilling->setStartDate($start);
 		$memberBilling->setEndDate($end);
@@ -39,6 +45,8 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expectedFee, $position->getPriceTotal(), $tag.' - Price total is wrong');
 		$this->assertEquals($expectedFee, $position->getPriceSingle(), $tag.' - Price single is wrong');
+
+		$this->assertEquals($expectedFee, $memberFee->getPriceTotal(), $tag.' - Price in summary total is wrong');
 
 	}
 
