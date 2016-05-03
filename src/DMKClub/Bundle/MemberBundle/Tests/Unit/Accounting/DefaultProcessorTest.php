@@ -18,14 +18,15 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider dataProvider
 	 */
-	public function testExecute4FullAgedMember($start, $end, $options, $member, $expectedFee, $tag){
+	public function testExecute($start, $end, $options, $member, $expectedFee, $tag){
 		$emMock = $this->getEMMockBuilder()->getMock();
 		$processor = new DefaultProcessor($emMock);
 		$memberBilling = new MemberBilling();
 		$memberBilling->setStartDate($start);
 		$memberBilling->setEndDate($end);
 
-		$memberFee = $processor->execute($member, $memberBilling, $options);
+		$processor->init($memberBilling, $options);
+		$memberFee = $processor->execute($member);
 
 		$this->assertInstanceOf('\DMKClub\Bundle\MemberBundle\Entity\MemberFee', $memberFee, 'Result is not instance of memberfee');
 
@@ -42,6 +43,8 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataProvider() {
+		$year = (int)(new \DateTime(''))->format('Y');
+
 		return [
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
@@ -55,6 +58,22 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 						'fee' => 1000,
 						'fee_reduced' => 520,
 				], $this->buildMember('2015-08-01', '2016-08-01', '1970-05-13'), 2000, 'retiredfull'],
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						'fee' => 1000,
+						'fee_reduced' => 200,
+				], $this->buildMember('2010-02-01', NULL, ($year - 10).'-05-13'), 2400, 'simplereduced'],
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						'fee' => 1000,
+						'fee_reduced' => 200,
+				], $this->buildMember('2010-02-01', NULL, ($year - 17).'-05-13'), 4000, 'reduced2full'],
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						'fee' => 1000,
+						'fee_reduced' => 200,
+				], $this->buildMember('2010-02-01', '2017-05-01', ($year - 17).'-05-13'), 3000, 'reduced2fullretired'],
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						'fee' => 1000,
+						'fee_reduced' => 200,
+				], $this->buildMember('2016-08-01', NULL, ($year - 17).'-05-13'), 3800, 'reduced2fullnew'],
 		];
 	}
 

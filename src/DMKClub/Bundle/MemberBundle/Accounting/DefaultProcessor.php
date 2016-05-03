@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManager;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
-use DMKClub\Bundle\MemberBundle\Accounting\Time\TimeSpanCalculator;
+use DMKClub\Bundle\MemberBundle\Accounting\Time\TimeCalculator;
 /**
  */
 class DefaultProcessor implements ProcessorInterface {
@@ -20,6 +20,20 @@ class DefaultProcessor implements ProcessorInterface {
 	 * @var \Doctrine\ORM\EntityManager
 	 */
 	private $em;
+	private $memberBilling;
+	private $options;
+
+	/**
+	 * @return MemberBilling
+	 */
+	protected function getMemberBilling() {
+	  return $this->memberBilling;
+	}
+
+	protected function getOption($key) {
+		return $this->options[$key];
+	}
+
 
 	public function __construct(EntityManager $em) {
 		$this->em = $em;
@@ -46,32 +60,43 @@ class DefaultProcessor implements ProcessorInterface {
 	{
 		return DefaultProcessorSettingsType::NAME;
 	}
+	public function init(MemberBilling $memberBilling, array $options) {
+
+	}
 	/* (non-PHPdoc)
 	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::execute()
 	 */
-	public function execute(Member $member, MemberBilling $memberBilling, array $options) {
+	public function execute(Member $member) {
 		//
 		$memberFee = new MemberFee();
 		$position = new MemberFeePosition();
 		$memberFee->addPosition($position);
 
+		$memberBilling = $this->getMemberBilling();
 		// Monate ermitteln
 		$startDate = $memberBilling->getStartDate();
 		$endDate = $memberBilling->getEndDate();
-		$calculator = new TimeSpanCalculator();
+		$calculator = new TimeCalculator();
 		$months = $calculator->calculateTimePeriods($startDate, $endDate);
 
-		$feeFull = (int) $options['fee'];
+		$feeFull = (int) $this->getOption('fee');
+		$feeReduced = (int) $this->getOption('fee_reduced');
 		$fee = 0;
 		// Über jeden Monat iterieren
 		/* @var $currentMonth \DateTime */
-		$currentMonth = $startDate;
-		foreach ($months As $idx => $interval) {
-			if($this->isMembershipActive($member, $currentMonth)) {
-				$fee += $feeFull;
+		$currentMonthFirstDay = $startDate;
+		$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
+		foreach ($months As $interval) {
+			if($this->isMembershipActive($member, $currentMonthFirstDay)) {
+				$periodFee = $feeFull;
+				if($this->isMembershipReduced($member, $currentMonthLastDay)) {
+					$periodFee = $feeReduced;
+				}
+				$fee += $periodFee;
 			}
 			// War das Mitglied in dem Monat Mitglied?
-			$currentMonth = $currentMonth->add($interval);
+			$currentMonthFirstDay = $currentMonthFirstDay->add($interval);
+			$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
 		}
 
 		$position->setPriceSingle($fee);
@@ -84,14 +109,24 @@ class DefaultProcessor implements ProcessorInterface {
 	/**
 	 * Is the member active in given month
 	 * @param \DMKClub\Bundle\MemberBundle\Entity\Member $member
-	 * @param unknown $currentMonth
+	 * @param \DateTime $currentMonth
 	 */
 	protected function isMembershipActive($member, $currentMonth) {
 		$current = (int)$currentMonth->format('Ym');
 		$memberShipStarted = (int)$member->getStartDate()->format('Ym') <= $current;
 		$memberShipNotEnded = $member->getEndDate() == NULL || (int)$member->getEndDate()->format('Ym') >= $current;
-//print_r(['curr' => $current, 'end' => $member->getEndDate(), 'notEnded' => $memberShipNotEnded ]);
 		return $memberShipStarted && $memberShipNotEnded;
+	}
+	/**
+	 * Is member not full aged in current month
+	 * @param Member $member
+	 * @param \DateTime $currentMonth
+	 */
+	protected function isMembershipReduced($member, $currentMonth) {
+		// currentMonth steht immer auf dem 1. des Monats. Wer in dem
+		// Monat 18 wird, ist also am 1. noch 17 Jahre alt.
+		$age = $member->getContact()->getBirthday()->diff($currentMonth)->y;
+		return $age < 18;
 	}
 
 	/**

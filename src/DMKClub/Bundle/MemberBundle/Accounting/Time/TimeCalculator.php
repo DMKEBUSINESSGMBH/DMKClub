@@ -5,7 +5,7 @@ namespace DMKClub\Bundle\MemberBundle\Accounting\Time;
 
 /**
  */
-class TimeSpanCalculator {
+class TimeCalculator {
 	private $monthDays = array(31,28,31,30,31,30,31,31,30,31,30,31);
 	/**
 	 *
@@ -29,6 +29,11 @@ class TimeSpanCalculator {
 			}
 		}
 		return $ret;
+	}
+
+	public function getLastDayInMonth(\DateTime $date) {
+		// Anzahl Tage des Monats holen
+		return new \DateTime($date->format('Y-m-t'));
 	}
 
 }
