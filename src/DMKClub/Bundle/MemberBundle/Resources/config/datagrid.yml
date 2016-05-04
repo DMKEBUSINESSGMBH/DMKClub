@@ -156,6 +156,7 @@ datagrid:
                 select:
                     - mb.id
                     - mb.name
+                    - mb.feeTotal/100 As feeTotal
                     - mb.startDate
                     - mb.endDate
                     - mb.createdAt
@@ -165,6 +166,9 @@ datagrid:
         columns:
             name:
                 label:         dmkclub.member.memberbilling.name.label
+            feeTotal:
+                label:         dmkclub.member.memberbilling.fee_total.label
+                frontend_type: currency
             startDate:
                 label:         dmkclub.member.memberbilling.start_date.label
                 frontend_type: date
@@ -191,6 +195,8 @@ datagrid:
             columns:
                 name:
                     data_name: mb.name
+                feeTotal:
+                    data_name: mb.feeTotal
                 startDate:
                     data_name: mb.startDate
                 endDate:
@@ -206,6 +212,9 @@ datagrid:
                 name:
                     type: string
                     data_name: mb.name
+                feeTotal:
+                    type: number
+                    data_name: mb.feeTotal
                 startDate:
                     type:      date
                     data_name: mb.startDate
@@ -277,8 +286,6 @@ datagrid:
                 frontend_type: boolean
             priceTotal:
                 label:         dmkclub.member.memberfee.price_total.label
-#                type: currency
-#                divisor: 100
                 frontend_type: currency
             createdAt:
                 label:         oro.ui.created_at

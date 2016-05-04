@@ -82,9 +82,20 @@ class MemberBillingManager implements ContainerAwareInterface {
 		}
 		$this->em->flush();
 		// TODO: jetzt die Summe holen und im Billing speichern
+		$this->updateSummary($memberBilling);
 
 		return ['success' => ($hits), 'skipped' => $skipped, 'errors'=>$errors];
 	}
+	protected function updateSummary(MemberBilling $memberBilling) {
+		$sub = 'SELECT sum(f.priceTotal) FROM DMKClubMemberBundle:MemberFee f WHERE f.billing = :bid';
+
+		$q = $this->em->createQuery('UPDATE DMKClubMemberBundle:MemberBilling b
+				SET b.feeTotal = ('.$sub.')
+				WHERE b.id = :bid');
+		$q->setParameter('bid', $memberBilling->getId());
+		$numUpdated = $q->execute();
+	}
+
 	/**
 	 * Wether or not a fee still exists
 	 * @param Member $member

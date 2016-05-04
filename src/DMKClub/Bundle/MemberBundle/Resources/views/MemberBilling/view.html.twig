@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'DMKClubBasicsBundle::macros.html.twig' as CUI %}
 
 {% set fullname = entity.name %}
 {% oro_title_set({params : {"%memberbilling.name%": fullname} }) %}
@@ -41,7 +42,7 @@
     {{ parent() }}
     <li>
         <div class="pull-right label label-info orocrm-channel-lifetime-value-label">
-        Stats
+        {{ 'Total sum'|trans }}: {{ CUI.cent2Euro(entity.feeTotal) }}
         </div>
     </li>
 {% endblock stats %}

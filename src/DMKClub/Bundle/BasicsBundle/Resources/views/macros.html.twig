@@ -39,6 +39,10 @@
 	{{ UI.renderHtmlProperty(title, _self.value_bool(value)|raw) }}
 {% endmacro %}
 
+{% macro cent2Euro(value) %}
+	{% import 'OroUIBundle::macros.html.twig' as UI %}
+	{{ (value/100)|number_format(2, ',', '.') ~ ' €' }}
+{% endmacro %}
 
 {% macro attributeInEuro(title, value, additionalData) %}
 	{% import 'OroUIBundle::macros.html.twig' as UI %}

@@ -34,6 +34,7 @@ dmkclub:
           id.label:            Id
           owner.label:         Owner
           name.label:          Name
+          fee_total.label:     Gesamtsumme
           start_date.label:    Startdatum
           end_date.label:      Enddatum
           createbills.label:   Abrechnung starten
