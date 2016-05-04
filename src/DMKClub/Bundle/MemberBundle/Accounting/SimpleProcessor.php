@@ -3,16 +3,13 @@
 namespace DMKClub\Bundle\MemberBundle\Accounting;
 
 
-use DMKClub\Bundle\MemberBundle\Form\Type\DefaultProcessorSettingsType;
 use DMKClub\Bundle\MemberBundle\Form\Type\SimpleProcessorSettingsType;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 /**
  */
-class SimpleProcessor implements ProcessorInterface {
+class SimpleProcessor extends AbstractProcessor {
 	const NAME = 'simple';
-	private $memberBilling;
-	private $options;
 
 	/**
 	 * {@inheritdoc}
@@ -22,18 +19,7 @@ class SimpleProcessor implements ProcessorInterface {
 		return self::NAME;
 	}
 
-	public function init(MemberBilling $memberBilling, array $options) {
-		$this->memberBilling = $memberBilling;
-		$this->options = $options;
-	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getLabel()
-	{
-		return 'dmkclub.member.accounting.processor.' . self::NAME;
-	}
 	/**
 	 * {@inheritdoc}
 	 */

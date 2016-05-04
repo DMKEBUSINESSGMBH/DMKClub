@@ -31,6 +31,16 @@ class MemberBillingManager implements ContainerAwareInterface {
 	}
 
 	/**
+	 *
+	 * @param MemberBilling $memberBilling
+	 * @return \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface
+	 */
+	public function getProcessor(MemberBilling $memberBilling) {
+		/* @var $provider \DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider */
+		$provider = $this->container->get('dmkclub_member.memberbilling.processorprovider');
+		return $provider->getProcessorByName($memberBilling->getProcessor());
+	}
+	/**
 	 * Starts account process for given billing.
 	 * Das muss später bestimmt mal asynchon gemacht werden. Jetzt aber zunächst die direkte Umsetzung.
 	 *
@@ -38,15 +48,12 @@ class MemberBillingManager implements ContainerAwareInterface {
 	 * @return array
 	 */
 	public function startAccounting(MemberBilling $memberBilling) {
-		/* @var $provider \DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider */
-		$provider = $this->container->get('dmkclub_member.memberbilling.processorprovider');
-		/* @var $processor \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface */
-		$processor = $provider->getProcessorByName($memberBilling->getProcessor());
+		$processor = $this->getProcessor($memberBilling);
 		$processor->init($memberBilling, $this->getProcessorSettings($memberBilling));
 
 		// TODO: Hier relevante Filter auf die Mitglieder setzen
 		$qb = $this->getMemberRepository()->createQueryBuilder('m');
-		$q = $qb->where('(m.isFreeOfCharge = 0)')
+		$q = $qb->where('(m.isFreeOfCharge = 0 AND m.isHonorary = 0 )')
 			->getQuery();
 		$result = $q->iterate();
 		$hits = 0;
@@ -74,6 +81,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 				break;
 		}
 		$this->em->flush();
+		// TODO: jetzt die Summe holen und im Billing speichern
 
 		return ['success' => ($hits), 'skipped' => $skipped, 'errors'=>$errors];
 	}

@@ -248,7 +248,9 @@ datagrid:
                     - f.id
                     - f.priceTotal/100 As priceTotal
                     - m.id as mid
+                    - m.memberCode
                     - m.name
+                    - m.isActive
                     - f.createdAt
                     - f.updatedAt
                 from:
@@ -262,12 +264,17 @@ datagrid:
             bind_parameters:
                 - billing
         columns:
+            memberCode:
+                label:         dmkclub.member.member_code.label
             name:
                 type:          link
                 route:         dmkclub_member_view
                 params: {id: mid}
                 label:         dmkclub.member.name.label
                 frontend_type: html
+            isActive:
+                label:         dmkclub.member.is_active.label
+                frontend_type: boolean
             priceTotal:
                 label:         dmkclub.member.memberfee.price_total.label
 #                type: currency
@@ -291,6 +298,8 @@ datagrid:
 #                params:     [ id ]
         sorters:
             columns:
+                memberCode:
+                    data_name: m.memberCode
                 name:
                     data_name: m.name
                 priceTotal:
@@ -306,6 +315,9 @@ datagrid:
                 name:
                     type: string
                     data_name: m.name
+                memberCode:
+                    type: string
+                    data_name: m.memberCode
                 createdAt:
                     type:      datetime
                     data_name: f.createdAt

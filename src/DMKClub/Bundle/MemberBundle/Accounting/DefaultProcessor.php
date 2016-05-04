@@ -14,8 +14,11 @@ use DMKClub\Bundle\MemberBundle\Accounting\Time\TimeCalculator;
 use Psr\Log\LoggerInterface;
 /**
  */
-class DefaultProcessor implements ProcessorInterface {
+class DefaultProcessor extends AbstractProcessor {
 	const NAME = 'default';
+	const OPTION_FEE = 'fee';
+	const OPTION_FEE_REDUCED = 'fee_reduced';
+	const OPTION_AGE_REDUCED = 'age_reduced';
 
 	/**
 	 * @var \Doctrine\ORM\EntityManager
@@ -23,19 +26,7 @@ class DefaultProcessor implements ProcessorInterface {
 	private $em;
 	/* @var \Psr\Log\LoggerInterface */
 	private $logger;
-	private $memberBilling;
-	private $options;
 
-	/**
-	 * @return MemberBilling
-	 */
-	protected function getMemberBilling() {
-	  return $this->memberBilling;
-	}
-
-	protected function getOption($key) {
-		return $this->options[$key];
-	}
 
 
 	public function __construct(LoggerInterface $logger, EntityManager $em) {
@@ -50,13 +41,6 @@ class DefaultProcessor implements ProcessorInterface {
 		return self::NAME;
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getLabel()
-	{
-		return 'dmkclub.member.accounting.processor.' . self::NAME;
-	}
 	/**
 	 * {@inheritdoc}
 	 */
@@ -84,8 +68,10 @@ class DefaultProcessor implements ProcessorInterface {
 		$calculator = new TimeCalculator();
 		$months = $calculator->calculateTimePeriods($startDate, $endDate);
 
-		$feeFull = (int) $this->getOption('fee');
-		$feeReduced = (int) $this->getOption('fee_reduced');
+		$feeFull = (int) $this->getOption(self::OPTION_FEE);
+		$feeReduced = (int) $this->getOption(self::OPTION_FEE_REDUCED);
+		$ageReduced = (int) $this->getOption(self::OPTION_AGE_REDUCED);
+
 		$fee = 0;
 		// Über jeden Monat iterieren
 		/* @var $currentMonth \DateTime */
@@ -94,7 +80,7 @@ class DefaultProcessor implements ProcessorInterface {
 		foreach ($months As $interval) {
 			if($this->isMembershipActive($member, $currentMonthFirstDay)) {
 				$periodFee = $feeFull;
-				if($this->isMembershipReduced($member, $currentMonthLastDay)) {
+				if($this->isMembershipReduced($member, $currentMonthLastDay, $ageReduced)) {
 					$periodFee = $feeReduced;
 				}
 				$fee += $periodFee;
@@ -132,11 +118,11 @@ class DefaultProcessor implements ProcessorInterface {
 	 * @param Member $member
 	 * @param \DateTime $currentMonth
 	 */
-	protected function isMembershipReduced($member, $currentMonth) {
+	protected function isMembershipReduced($member, $currentMonth, $ageReduced) {
 		// currentMonth steht immer auf dem 1. des Monats. Wer in dem
 		// Monat 18 wird, ist also am 1. noch 17 Jahre alt.
 		$age = $member->getContact()->getBirthday()->diff($currentMonth)->y;
-		return $age < 18;
+		return $age < $ageReduced;
 	}
 
 	/**
@@ -146,4 +132,13 @@ class DefaultProcessor implements ProcessorInterface {
 		return $this->em->getRepository('DMKClubMemberBundle:Member');
 	}
 
+	public function formatSettings(array $options) {
+		$ret = array();
+		foreach ($options As $key => $value) {
+			if($key == self::OPTION_FEE || $key == self::OPTION_FEE_REDUCED)
+				$value = number_format($value/100,2);
+			$ret[$key] = $value;
+		}
+		return $ret;
+	}
 }

@@ -57,30 +57,37 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
 						'fee_reduced' => 520,
+						'age_reduced' => 18,
 				], $this->buildMember('2010-02-01', NULL, '1970-05-13'), 12000, 'simplefull'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
 						'fee_reduced' => 520,
+						'age_reduced' => 18,
 				], $this->buildMember('2016-08-01', NULL, '1970-05-13'), 11000, 'newfull'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
 						'fee_reduced' => 520,
+						'age_reduced' => 18,
 				], $this->buildMember('2015-08-01', '2016-08-01', '1970-05-13'), 2000, 'retiredfull'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
 						'fee_reduced' => 200,
+						'age_reduced' => 18,
 				], $this->buildMember('2010-02-01', NULL, ($year - 10).'-05-13'), 2400, 'simplereduced'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
 						'fee_reduced' => 200,
+						'age_reduced' => 18,
 				], $this->buildMember('2010-02-01', NULL, ($year - 17).'-05-13'), 4000, 'reduced2full'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
 						'fee_reduced' => 200,
+						'age_reduced' => 18,
 				], $this->buildMember('2010-02-01', '2017-05-01', ($year - 17).'-05-13'), 3000, 'reduced2fullretired'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						'fee' => 1000,
 						'fee_reduced' => 200,
+						'age_reduced' => 18,
 				], $this->buildMember('2016-08-01', NULL, ($year - 17).'-05-13'), 3800, 'reduced2fullnew'],
 		];
 	}

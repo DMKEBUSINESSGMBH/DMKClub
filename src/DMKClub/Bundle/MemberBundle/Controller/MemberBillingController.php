@@ -103,7 +103,9 @@ class MemberBillingController extends Controller
 	 */
 	public function viewAction(MemberBilling $entity)
 	{
-		return ['entity' => $entity];
+		$options = $this->get('dmkclub_member.memberbilling.manager')->getProcessorSettings($entity);
+		$options = $this->get('dmkclub_member.memberbilling.manager')->getProcessor($entity)->formatSettings($options);
+		return ['entity' => $entity, 'options' => $options];
 	}
 
 	/**

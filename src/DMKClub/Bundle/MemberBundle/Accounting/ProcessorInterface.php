@@ -7,6 +7,12 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 interface ProcessorInterface {
 	/**
+	 * Format options values for output in detailsview
+	 * @param array $options
+	 * @return array
+	 */
+	public function formatSettings(array $options);
+	/**
 	 * Get processor name.
 	 *
 	 * @return string

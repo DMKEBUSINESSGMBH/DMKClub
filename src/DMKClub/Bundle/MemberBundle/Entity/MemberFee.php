@@ -157,7 +157,7 @@ class MemberFee extends ExtendMemberFee implements Taggable, ChannelAwareInterfa
 	protected $positions;
 
 	/**
-	 * @var float
+	 * @var integer
 	 *
 	 * @ORM\Column(name="price_total", type="integer", nullable=true)
 	 */

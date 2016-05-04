@@ -6,7 +6,12 @@
 
 {% block navButtons %}
   {% if resource_granted('dmkclub_memberbilling_create') %}
-    {{ UI.button({'path' : path('dmkclub_memberbilling_createbills', { id: entity.id }), 'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberbilling.createbills.label'|trans , 'label' : 'dmkclub.member.memberbilling.createbills.label'|trans }) }}
+    {{ UI.button({
+    		'path' : path('dmkclub_memberbilling_createbills', { id: entity.id }),
+    		'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberbilling.createbills.label'|trans ,
+    		'aCss' : 'btn-primary',
+    		'label' : 'dmkclub.member.memberbilling.createbills.label'|trans
+	}) }}
   {% endif %}
 
   {{ UI.cancelButton(path('dmkclub_memberbilling_index')) }}
@@ -56,11 +61,26 @@
 
     {% set generalSubBlocks = [{'data' : [entityInformationWidget]}] %}
 
+    {% set settingsWidget %}
+        <div class="responsive-cell">
+        {% for key, value in options %}
+        {% set label = 'dmkclub.member.memberbilling.'~ key ~ '.label' %}
+       {{ UI.renderProperty(label|trans, value) }}
+        {% endfor %}
+        </div>
+    {% endset %}
+
+    {% set settingsSubBlocks = [{'data' : [settingsWidget]}] %}
+
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
             'class': 'active',
             'subblocks': generalSubBlocks
+        },
+        {
+            'title': 'Processor settings'|trans,
+            'subblocks': settingsSubBlocks
         },
         {
             'title': 'dmkclub.member.fees.label'|trans,

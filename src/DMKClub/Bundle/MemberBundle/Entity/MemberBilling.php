@@ -154,6 +154,13 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 
 	protected $processorSettings;
 
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="fee_total", type="integer", nullable=true)
+	 */
+	private $feeTotal;
+
 
 	/**
 	 * @var \DateTime $createdAt
@@ -324,7 +331,7 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	/**
 	 * Set processorConfig
 	 *
-	 * @param string $value
+	 * @param array $value
 	 * @return Member
 	 */
 	public function setProcessorSettings($value)
@@ -337,11 +344,26 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	/**
 	 * Get processorSettings
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function getProcessorSettings()
 	{
 		return $this->processorSettings;
+	}
+
+	public function getFeeTotal() {
+		return $this->feeTotal;
+	}
+
+	/**
+	 * Set total fee
+	 *
+	 * @param integer $value
+	 * @return Member
+	 */
+	public function setFeeTotal($value) {
+		$this->feeTotal = $value;
+		return $this;
 	}
 
 	/**
