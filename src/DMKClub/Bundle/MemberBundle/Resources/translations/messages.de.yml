@@ -42,6 +42,8 @@ dmkclub:
           fee.label:           Mitgliedsbeitrag
           fee_reduced.label:      Mitgliedsbeitrag reduziert
           age_reduced.label:      Altersgrenze für red. Beitrag
+          organization.label:  Organisation
+          data_channel.label: Kanal
           block.processor_settings: Einstellungen
           message.saved:        Einstellungen gespeichert
         memberfee:
@@ -54,12 +56,17 @@ dmkclub:
           price_total.label:   Gesamtbeitrag
           start_date.label:    Startdatum
           end_date.label:      Enddatum
+          organization.label:  Organisation
+          data_channel.label: Kanal
         memberfee_position:
           entity_label:        Position für Mitgliedsbeitrag
           entity_plural_label: Position für Mitgliedsbeiträge
           entity_description:  Represent a position for membership fee
           id.label:            Id
           owner.label:         Owner
+          member.label:        Mitglied
+          billing.label:       Abrechnung
+          positions.label:     Positionen
           quantity.label:      Anzahl
           price_total.label:   Gesamtpreis
           price_single.label:  Einzelpreis
