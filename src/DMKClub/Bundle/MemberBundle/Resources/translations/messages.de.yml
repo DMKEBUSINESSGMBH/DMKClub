@@ -39,9 +39,11 @@ dmkclub:
           end_date.label:      Enddatum
           createbills.label:   Abrechnung starten
           processor.label:     Prozessor
+          processor_config.label: Prozessor Einstellung
           fee.label:           Mitgliedsbeitrag
           fee_reduced.label:      Mitgliedsbeitrag reduziert
           age_reduced.label:      Altersgrenze für red. Beitrag
+          member_fees.label:    Mitgliedsbeiträge
           organization.label:  Organisation
           data_channel.label: Kanal
           block.processor_settings: Einstellungen

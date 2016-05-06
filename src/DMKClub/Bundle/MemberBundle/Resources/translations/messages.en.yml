@@ -44,9 +44,11 @@ dmkclub:
           end_date.label:      End date
           createbills.label:   Start accounting
           processor.label: Processor
+          processor_config.label: Processor config
           fee.label:    Membership Fee
           fee_reduced.label:      Fee reduced
           age_reduced.label:      Age for reduced fee
+          member_fees.label:    Member fees
           organization.label:  Organization
           data_channel.label: Data channel
           block.processor_settings: Settings
