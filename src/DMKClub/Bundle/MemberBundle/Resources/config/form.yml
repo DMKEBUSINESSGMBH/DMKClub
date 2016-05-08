@@ -7,10 +7,12 @@ parameters:
 
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
     dmkclub.form.type.member_status.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberStatusType
+    dmkclub.form.type.membersegment_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSegmentSelectType
     dmkclub_member.form.type.accounting_processor_select.class: DMKClub\Bundle\MemberBundle\Form\Type\ProcessorSelectType
     dmkclub_member.form.type.default_processor_settings.class: DMKClub\Bundle\MemberBundle\Form\Type\DefaultProcessorSettingsType
     dmkclub_member.form.type.simple_processor_settings.class: DMKClub\Bundle\MemberBundle\Form\Type\SimpleProcessorSettingsType
     dmkclub_member.form.subscriber.processor_settings.class: DMKClub\Bundle\MemberBundle\Form\EventListener\ProcessorSettingsListener
+
 
 services:
 # ####
@@ -36,6 +38,11 @@ services:
             - "@dmkclub_member.memberbilling.processorprovider"
         tags:
             - { name: form.type, alias: dmkclub_member_memberbilling }
+
+    dmkclub_member.form.type.membersegment_select:
+        class: %dmkclub.form.type.membersegment_select.class%
+        tags:
+            - { name: form.type, alias: dmkclub_member_segment_select_type }
 
 
 # ####

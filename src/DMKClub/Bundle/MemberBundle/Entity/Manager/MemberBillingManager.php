@@ -11,6 +11,9 @@ use DMKClub\Bundle\MemberBundle\Model\Processor;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use DMKClub\Bundle\MemberBundle\Accounting\AccountingException;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
+use Oro\Bundle\SegmentBundle\Entity\SegmentType;
+use Oro\Bundle\SegmentBundle\Query\StaticSegmentQueryBuilder;
+use Oro\Bundle\SegmentBundle\Query\DynamicSegmentQueryBuilder;
 
 class MemberBillingManager implements ContainerAwareInterface {
 	/**
@@ -23,11 +26,18 @@ class MemberBillingManager implements ContainerAwareInterface {
 	 */
 	protected $container;
 	protected $processionProvider;
+	/** @var DynamicSegmentQueryBuilder */
+	protected $dynamicSegmentQueryBuilder;
+	/** @var StaticSegmentQueryBuilder */
+	protected $staticSegmentQueryBuilder;
 
-	public function __construct(EntityManager $em, ContainerInterface $container, ProcessorProvider $processorProvider) {
+	public function __construct(EntityManager $em, ContainerInterface $container, ProcessorProvider $processorProvider,
+			DynamicSegmentQueryBuilder $dynamicSegmentQueryBuilder, StaticSegmentQueryBuilder $staticSegmentQueryBuilder) {
 		$this->em = $em;
 		$this->setContainer($container);
 		$this->processionProvider = $processorProvider;
+		$this->dynamicSegmentQueryBuilder = $dynamicSegmentQueryBuilder;
+		$this->staticSegmentQueryBuilder = $staticSegmentQueryBuilder;
 	}
 
 	/**
@@ -51,9 +61,32 @@ class MemberBillingManager implements ContainerAwareInterface {
 		$processor = $this->getProcessor($memberBilling);
 		$processor->init($memberBilling, $this->getProcessorSettings($memberBilling));
 
-		// TODO: Hier relevante Filter auf die Mitglieder setzen
-		$qb = $this->getMemberRepository()->createQueryBuilder('m');
-		$q = $qb->where('(m.isFreeOfCharge = 0 AND m.isHonorary = 0 )')
+		$segmentQuery = NULL;
+		$segment = $memberBilling->getSegment();
+		if($segment) {
+			// TODO: Hier relevante Filter auf die Mitglieder setzen
+			if ($segment->getType()->getName() === SegmentType::TYPE_DYNAMIC) {
+				$segmentQuery = $this->dynamicSegmentQueryBuilder->build($segment);
+			} else {
+				$segmentQuery = $this->staticSegmentQueryBuilder->build($segment);
+			}
+		}
+
+		$alias = 'm';
+		$qb = $this->getMemberRepository()->createQueryBuilder($alias);
+		if($segmentQuery != NULL) {
+			$identifier = $alias.'.id';
+			$segmentExpr = $qb->expr()->in($identifier, $segmentQuery->getDQL());
+			$qb->where($segmentExpr);
+				$params = $segmentQuery->getParameters();
+				/** @var Parameter $param */
+				foreach ($params as $param) {
+					$qb->setParameter($param->getName(), $param->getValue(), $param->getType());
+				}
+		}
+
+
+		$q = $qb->andWhere('('.$alias.'.isFreeOfCharge = 0 AND '.$alias.'.isHonorary = 0 )')
 			->getQuery();
 		$result = $q->iterate();
 		$hits = 0;

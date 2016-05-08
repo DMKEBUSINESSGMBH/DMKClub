@@ -16,6 +16,7 @@ Wird in der Detailansicht der Abrechnung verwendet
             {{ UI.renderProperty('dmkclub.member.memberbilling.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.end_date.label'|trans, entity.endDate ? entity.endDate|oro_format_date : null) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.processor.label'|trans, entity.processor) }}
+            {{ UI.renderProperty('dmkclub.member.memberbilling.segment.label'|trans, entity.segment ? entity.segment.name : null ) }}
         </div>
         <div class="responsive-block">
             {% if resource_granted('oro_tag_view') %}

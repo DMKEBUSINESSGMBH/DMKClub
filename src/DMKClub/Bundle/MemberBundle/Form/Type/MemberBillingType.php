@@ -63,12 +63,6 @@ class MemberBillingType extends AbstractType {
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.memberbilling.name.label'))
 			->add('startDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.memberbilling.start_date.label'))
 			->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.memberbilling.end_date.label'))
-			// TODO: Add Member-List Segment
-// 			->add(
-// 					'segment',
-// 					'oro_segment_entity_choice',
-// 					['label' => 'orocrm.campaign.emailcampaign.marketing_list.label', 'required' => true]
-// 			)
 
 			->add('owner')
 			->add('organization')
@@ -83,6 +77,19 @@ class MemberBillingType extends AbstractType {
 	public function buildRelationFields(FormBuilderInterface $builder, array $options){
 		// tags
 		$builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
+
+		// TODO: Add Member-List Segment
+		$builder->add(
+				'segment',
+				'dmkclub_member_segment_select_type',
+				[
+						'label' => 'oro.segment.entity_label',
+						'required' => false,
+						'entities' => [
+								'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
+						],
+				]
+		);
 
 		// Einstellungsformular für dem Processor
 		$builder->addEventListener(

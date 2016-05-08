@@ -25,6 +25,7 @@ use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberBilling;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 /**
  * Class Billing
@@ -199,6 +200,12 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	 */
 	protected $memberFees;
 
+	/**
+	 * @var Segment
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\SegmentBundle\Entity\Segment")
+	 * @ORM\JoinColumn(name="segment_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $segment;
 
 	/**
 	 * @var User
@@ -219,15 +226,6 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 	 */
 	protected $tags;
 
-	private $segment;
-
-	public function getSegment() {
-	  return $this->segment;
-	}
-
-	public function setSegment($value) {
-	  $this->segment = $value;
-	}
 	/**
 	 * {@inheritdoc}
 	 */
@@ -394,6 +392,22 @@ class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwar
 		$memberFee->setBilling($this);
 		$this->memberFees[] = $memberFee;
 		return $this;
+	}
+
+	/**
+	 * @return Segment
+	 */
+	public function getSegment()
+	{
+	    return $this->segment;
+	}
+
+	/**
+	 * @param Segment $segment
+	 */
+	public function setSegment($segment) {
+	    $this->segment = $segment;
+	    return $this;
 	}
 
 	/**
