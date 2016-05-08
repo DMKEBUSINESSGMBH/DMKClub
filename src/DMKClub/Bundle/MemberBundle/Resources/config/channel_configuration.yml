@@ -4,6 +4,7 @@ orocrm_channel:
           name: DMKClub\Bundle\MemberBundle\Entity\Member
           dependent:
               - DMKClub\Bundle\MemberBundle\Entity\MemberFee
+              - DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition
               - DMKClub\Bundle\MemberBundle\Entity\MemberBilling
           navigation_items:
               - application_menu.customers_tab.dmkclub_member
@@ -15,3 +16,4 @@ orocrm_channel:
             entities:
                 - DMKClub\Bundle\MemberBundle\Entity\Member
             customer_identity: DMKClub\Bundle\MemberBundle\Entity\Member
+#            lifetime_value: lifetime
