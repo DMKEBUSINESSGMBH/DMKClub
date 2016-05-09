@@ -1,0 +1,13 @@
+dmkclub_basics_bundle:
+    resource:     "@DMKClubBasicsBundle/Controller"
+    type:         annotation
+    prefix:       /dmkclub
+
+dmkclub_basics_bundle_api:
+    resource: "@DMKClubBasicsBundle/Resources/config/oro/routing_api.yml"
+    type: rest
+    prefix:       api/rest/{version}
+    requirements:
+        version:  latest|v1
+    defaults:
+        version:  latest

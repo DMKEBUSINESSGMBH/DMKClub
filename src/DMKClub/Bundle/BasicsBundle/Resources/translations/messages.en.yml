@@ -1,2 +1,15 @@
+dmkclub:
+    basics:
+        twigtemplate:
+          entity_label:        Twig Template
+          entity_plural_label: Twig Templates
+          entity_description:  Represents Twig Templates for PDF generation
+          id.label:            Id
+          owner.label:         Owner
+          name.label:          Name
+          template.label:      Template
+          organization.label:  Organization
+        
+dmkclub.basics.menu.twigtemplate_list.description: Manage twig templates for PDF generation
 dmkclub.basics.label.yes: Yes
 dmkclub.basics.label.no: No

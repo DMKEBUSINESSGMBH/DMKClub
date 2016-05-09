@@ -1,0 +1,22 @@
+oro_menu_config:
+    items:
+        dmkclub_basics_twigtemplate_list:
+            label: 'dmkclub.basics.twigtemplate.entity_plural_label'
+            route: 'dmkclub_basics_twigtemplate_index'
+            extras:
+                routes: ['dmkclub_basics_twigtemplate_*']
+                description: 'dmkclub.basics.menu.twigtemplate_list.description'
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        twigtemplates:
+                            children:
+                                dmkclub_basics_twigtemplate_list: ~
+oro_titles:
+    dmkclub_basics_twigtemplate_index: ~
+    dmkclub_basics_twigtemplate_update: "Template %%name%% - Edit"
+    dmkclub_basics_twigtemplate_create: "Create Twig Template"
+    dmkclub_basics_twigtemplate_clone: "Clone Twig Template"

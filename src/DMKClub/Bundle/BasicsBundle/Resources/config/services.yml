@@ -1,0 +1,4 @@
+parameters:
+    dmkclub_basics.twigtemplate.entity.class:            DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate
+#    dmkclub_basics.twigtemplate.manager.class:           DMKClub\Bundle\BasicsBundle\Entity\Manager\TwigTemplateManager
+services:

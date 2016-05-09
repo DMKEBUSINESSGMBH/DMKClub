@@ -1,0 +1,5 @@
+parameters:
+    dmkclub_basics.twigtemplate.form.type.class: DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateType
+    dmkclub_basics.twigtemplate.form.handler.class: DMKClub\Bundle\BasicsBundle\Form\Handler\TwigTemplateHandler
+services:
+    

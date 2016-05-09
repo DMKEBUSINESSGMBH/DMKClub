@@ -1,0 +1,3 @@
+dmkclub_basics_bundle_twigtemplate_api:
+    resource:     "@DMKClubBasicsBundle/Controller/Api/Rest/TwigTemplateController.php"
+    type:         rest
