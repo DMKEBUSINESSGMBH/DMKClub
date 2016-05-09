@@ -1,9 +1,9 @@
 datagrid:
     dmkclub-prcontacts-grid:
-        extended_entity_name: %dmkclub.prcontact.entity.class%
+        extended_entity_name: "%dmkclub.prcontact.entity.class%"
+        acl_resource: dmkclub_prcontact_view
         source:
             type: orm
-            acl_resource: dmkclub_prcontact_view
             query:
                 select:
                     - prc.id
@@ -12,7 +12,7 @@ datagrid:
                     - prc.createdAt
                     - prc.updatedAt
                 from:
-                    - { table: %dmkclub.prcontact.entity.class%, alias: prc }
+                    - { table: "%dmkclub.prcontact.entity.class%", alias: prc }
                 join:
                     left:
                         - { join: prc.category, alias: cat }
@@ -52,7 +52,7 @@ datagrid:
                 updatedAt:
                     data_name: prc.updatedAt
             default:
-                name:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 name:

@@ -1,9 +1,9 @@
 datagrid:
     dmkclub-members-grid:
         extended_entity_name: "%dmkclub_member.member.entity.class%"
+        acl_resource: dmkclub_member_view
         source:
             type: orm
-            acl_resource: dmkclub_member_view
             query:
                 select:
                     - m.id
@@ -149,9 +149,9 @@ datagrid:
 # ###
     dmkclub-memberbillings-grid:
         extended_entity_name: "%dmkclub_member.memberbilling.entity.class%"
+        acl_resource: dmkclub_memberbilling_view
         source:
             type: orm
-            acl_resource: dmkclub_memberbilling_view
             query:
                 select:
                     - mb.id
@@ -249,9 +249,9 @@ datagrid:
 # MemberFee grid in billing
 # ###
     dmkclub-memberfees-grid-billing:
+        acl_resource: dmkclub_memberfee_view
         source:
             type: orm
-            acl_resource: dmkclub_memberfee_view
             query:
                 select:
                     - f.id
@@ -351,9 +351,9 @@ datagrid:
 # MemberFee grid in member
 # ###
     dmkclub-memberfees-grid-member:
+        acl_resource: dmkclub_memberfee_view
         source:
             type: orm
-            acl_resource: dmkclub_memberfee_view
             query:
                 select:
                     - f.id

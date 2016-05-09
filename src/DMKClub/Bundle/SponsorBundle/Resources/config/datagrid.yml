@@ -1,9 +1,9 @@
 datagrid:
     dmkclub-sponsors-grid:
-        extended_entity_name: %dmkclub.sponsor.entity.class%
+        extended_entity_name: "%dmkclub.sponsor.entity.class%"
+        acl_resource: dmkclub_sponsor_view
         source:
             type: orm
-            acl_resource: dmkclub_sponsor_view
             query:
                 select:
                     - s.id
@@ -14,7 +14,7 @@ datagrid:
                     - s.createdAt
                     - s.updatedAt
                 from:
-                    - { table: %dmkclub.sponsor.entity.class%, alias: s }
+                    - { table: "%dmkclub.sponsor.entity.class%", alias: s }
                 join:
                     left:
                         - { join: s.contact, alias: c }
@@ -63,7 +63,7 @@ datagrid:
                 updatedAt:
                     data_name: s.updatedAt
             default:
-                name:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 name:
@@ -110,10 +110,10 @@ datagrid:
                 icon: trash
                 link: delete_link
     dmkclub-sponsorcategories-select-grid:
-        extended_entity_name: %dmkclub.sponsorcategory.entity.class%
+        extended_entity_name: "%dmkclub.sponsorcategory.entity.class%"
+        acl_resource: dmkclub_sponsor_view
         source:
             type: orm
-            acl_resource: dmkclub_sponsor_view
             query:
                 select:
                     - c.id
@@ -121,7 +121,7 @@ datagrid:
                     - c.createdAt
                     - c.updatedAt
                 from:
-                    - { table: %dmkclub.sponsorcategory.entity.class%, alias: c }
+                    - { table: "%dmkclub.sponsorcategory.entity.class%", alias: c }
         columns:
             name:
                 label:         dmkclub.sponsor.name.label
