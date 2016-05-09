@@ -58,8 +58,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFee;
  * )
  * @Oro\Loggable
  */
-class MemberFee extends ExtendMemberFee implements Taggable, ChannelAwareInterface {
-	use ChannelEntityTrait;
+class MemberFee extends ExtendMemberFee implements Taggable {
 	/**
 	 * @var int
 	 *

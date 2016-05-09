@@ -43,8 +43,7 @@ use OroCRM\Bundle\MagentoBundle\Entity\OriginTrait;
  *      }
  * )
  */
-class MemberFeePosition extends ExtendMemberFeePosition implements ChannelAwareInterface {
-	use ChannelEntityTrait;
+class MemberFeePosition extends ExtendMemberFeePosition {
 
 	/**
 	 * @var int

@@ -59,8 +59,7 @@ use Oro\Bundle\SegmentBundle\Entity\Segment;
  * )
  * @Oro\Loggable
  */
-class MemberBilling extends ExtendMemberBilling implements Taggable, ChannelAwareInterface {
-	use ChannelEntityTrait;
+class MemberBilling extends ExtendMemberBilling implements Taggable {
 	/**
 	 * @var int
 	 *
