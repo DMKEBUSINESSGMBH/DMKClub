@@ -1,0 +1,52 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set fullname = entity.name %}
+{% oro_title_set({params : {"%template.name%": fullname} }) %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('dmkclub_basics_twigtemplate_index')) }}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('dmkclub_basics_twigtemplate_update', { 'id': entity.id }),
+            'entity_label': 'dmkclub.basics.twigtemplate.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('dmkclub_basics_twigtemplate_index'),
+        'indexLabel': 'dmkclub.basics.twigtemplate.entity_plural_label'|trans,
+        'entityTitle': fullname
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+
+{% block content_data %}
+    {% set infoWidget %}
+        <div class="responsive-cell">
+						{{ UI.renderProperty('dmkclub.basics.twigtemplate.name.label'|trans, entity.name) }}
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'class': 'active',
+            'subblocks': [
+		            {
+		            	'data' : [
+		            		infoWidget
+		            	]
+								}
+            ]
+        }
+    ] %}
+
+    {% set id = 'dmkclubBasicsTwigTemplateView' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}

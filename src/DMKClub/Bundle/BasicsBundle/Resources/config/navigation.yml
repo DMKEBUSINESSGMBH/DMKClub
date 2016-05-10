@@ -12,9 +12,7 @@ oro_menu_config:
             children:
                 system_tab:
                     children:
-                        twigtemplates:
-                            children:
-                                dmkclub_basics_twigtemplate_list: ~
+                        dmkclub_basics_twigtemplate_list: ~
 oro_titles:
     dmkclub_basics_twigtemplate_index: ~
     dmkclub_basics_twigtemplate_update: "Template %%name%% - Edit"

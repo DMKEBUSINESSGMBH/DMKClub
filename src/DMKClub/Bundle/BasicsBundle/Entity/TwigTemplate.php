@@ -141,9 +141,7 @@ class TwigTemplate {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function __construct()
-	{
-	    parent::__construct();
+	public function __construct() {
 	}
 
 	/**
@@ -152,8 +150,7 @@ class TwigTemplate {
 	 * @param \int $id
 	 * @return Member
 	 */
-	public function setId($id)
-	{
+	public function setId($id) {
 		$this->id = $id;
 
 		return $this;

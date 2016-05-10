@@ -102,9 +102,7 @@ class TwigTemplateController extends Controller
 	 */
 	public function viewAction(TwigTemplate $entity)
 	{
-		$options = $this->get('dmkclub_basics.twigtemplate.manager')->getProcessorSettings($entity);
-		$options = $this->get('dmkclub_basics.twigtemplate.manager')->getProcessor($entity)->formatSettings($options);
-		return ['entity' => $entity, 'options' => $options];
+		return ['entity' => $entity, ];
 	}
 
 	/**

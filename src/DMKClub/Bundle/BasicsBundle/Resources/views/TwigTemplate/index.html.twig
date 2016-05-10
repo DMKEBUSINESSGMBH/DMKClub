@@ -1,0 +1,17 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridName = 'dmkclub-basics-twigtemplate-grid' %}
+{% set pageTitle = 'dmkclub.basics.twigtemplate.entity_plural_label'|trans %}
+
+
+{% block navButtons %}
+    {% if resource_granted('dmkclub_basics_twigtemplate_create') %}
+        <div class="btn-group">
+            {{ UI.addButton({
+                'path' : path('dmkclub_basics_twigtemplate_create'),
+                'entity_label': 'dmkclub.basics.twigtemplate.entity_label'|trans
+            }) }}
+        </div>
+    {% endif %}
+{% endblock %}
