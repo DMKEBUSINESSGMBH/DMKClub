@@ -75,8 +75,8 @@ class MemberBillingType extends AbstractType {
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
 	public function buildRelationFields(FormBuilderInterface $builder, array $options){
-		// tags
-		$builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
+		// tags removed in 1.9
+		// $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
 
 		// TODO: Add Member-List Segment
 		$builder->add(

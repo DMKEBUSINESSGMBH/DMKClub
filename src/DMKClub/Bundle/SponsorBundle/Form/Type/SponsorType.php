@@ -52,8 +52,8 @@ class SponsorType extends AbstractType
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function buildRelationFields(FormBuilderInterface $builder, array $options){
-        // tags
-        $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
+        // tags removed in 1.9
+        //$builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
 
         $builder->add(
         		'dataChannel',
@@ -66,7 +66,7 @@ class SponsorType extends AbstractType
 	        		],
         		]
         );
-        
+
         // sponsor categories
         $builder->add(
         		'category',

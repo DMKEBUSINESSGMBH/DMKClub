@@ -19,4 +19,4 @@ oro_titles:
     dmkclub_basics_twigtemplate_index: ~
     dmkclub_basics_twigtemplate_update: "Template %%name%% - Edit"
     dmkclub_basics_twigtemplate_create: "Create Twig Template"
-    dmkclub_basics_twigtemplate_clone: "Clone Twig Template"
+#    dmkclub_basics_twigtemplate_clone: "Clone Twig Template"

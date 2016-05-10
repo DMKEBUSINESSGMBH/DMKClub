@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
-use Oro\Bundle\TagBundle\Entity\TagManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
 
 class CategoryHandler

@@ -19,9 +19,6 @@ Wird in der Detailansicht der Abrechnung verwendet
             {{ UI.renderProperty('dmkclub.member.memberbilling.segment.label'|trans, entity.segment ? entity.segment.name : null ) }}
         </div>
         <div class="responsive-block">
-            {% if resource_granted('oro_tag_view') %}
-                {{ UI.renderHtmlProperty('oro.tag.entity_plural_label'|trans, tag.renderView(entity)) }}
-            {% endif %}
 	          {{ entityConfig.renderDynamicFields(entity) }}
           </div>
     </div>

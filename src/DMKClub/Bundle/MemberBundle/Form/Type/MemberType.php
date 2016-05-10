@@ -54,30 +54,6 @@ class MemberType extends AbstractType {
 			->add('organization')
 		;
 
-		$builder->add(
-					'bankAccount',
-					'dmkclub_bankaccount',
-					[
-							'label'    => 'dmkclub.member.bank_account.label',
-							'required' => false,
-					]
-				);
-		$builder->add(
-					'contact',
-					'orocrm_contact_select',
-					[
-							'label'    => 'orocrm.sales.b2bcustomer.contact.label',
-							'required' => true,
-					]
-				);
-		$builder->add(
-				'postalAddress',
-				'oro_address',
-				[
-						'cascade_validation' => true,
-						'required'           => false
-				]
-			);
 		}
     /**
      * @param FormBuilderInterface $builder
@@ -85,9 +61,33 @@ class MemberType extends AbstractType {
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function buildRelationFields(FormBuilderInterface $builder, array $options){
-        // tags
-        $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
-        $builder->add(
+        // tags disabled in 1.9
+//        $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
+			$builder->add(
+					'bankAccount',
+					'dmkclub_bankaccount',
+					[
+							'label'    => 'dmkclub.member.bank_account.label',
+							'required' => false,
+					]
+				);
+			$builder->add(
+					'contact',
+					'orocrm_contact_select',
+					[
+							'label'    => 'orocrm.sales.b2bcustomer.contact.label',
+							'required' => true,
+					]
+				);
+			$builder->add(
+				'postalAddress',
+				'oro_address',
+				[
+						'cascade_validation' => true,
+						'required'           => false
+				]
+			);
+    	$builder->add(
         		'dataChannel',
         		'orocrm_channel_select_type',
         		[
