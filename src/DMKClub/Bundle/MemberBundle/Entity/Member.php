@@ -164,6 +164,13 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 */
 	private $memberFees;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount", mappedBy="member", cascade={"all"}, orphanRemoval=true)
+	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 * @Oro\Versioned
+	 */
+	private $memberFeeDiscounts;
+
 
 	/**
 	 * @var \DateTime $createdAt
@@ -372,6 +379,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	{
 	    parent::__construct();
 	    $this->memberFees = new \Doctrine\Common\Collections\ArrayCollection();
+	    $this->memberFeeDiscounts = new \Doctrine\Common\Collections\ArrayCollection();
 
 	}
 
@@ -594,6 +602,36 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	public function addMemberFee(MemberFee $memberFee) {
 		$memberFee->setMember($this);
 		$this->memberFees[] = $memberFee;
+		return $this;
+	}
+
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFee]
+	 */
+	public function getMemberFeeDiscounts() {
+		return $this->memberFeeDiscounts;
+	}
+
+	/**
+	 * @param MemberFeeDiscount[] $memberFeeDiscounts
+	 */
+	public function setMemberFeeDiscounts($memberFeeDiscounts) {
+		foreach ($memberFeeDiscounts as $memberFee) {
+			$memberFeeDiscount->setMember($this);
+		}
+		$this->memberFeeDiscounts = $memberFeeDiscounts;
+	}
+
+	/**
+	 * Add member fee
+	 *
+	 * @param MemberFeeDiscount $memberFeeDiscount
+	 * @return Member
+	 * @internal param MemberFeeDiscount $memberFeeDiscounts
+	 */
+	public function addMemberFeeDiscount(MemberFeeDiscount $memberFeeDiscount) {
+		$memberFeeDiscount->setMember($this);
+		$this->memberFeeDiscounts[] = $memberFeeDiscount;
 		return $this;
 	}
 

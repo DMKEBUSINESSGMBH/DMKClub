@@ -16,14 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
-
-use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
 use Oro\Bundle\TagBundle\Entity\Taggable;
-use Oro\Bundle\AddressBundle\Entity\Address;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
-use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberBilling;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 
@@ -476,7 +469,7 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	 * Set endDate
 	 *
 	 * @param \DateTime $endDate
-	 * @return Member
+	 * @return MemberBilling
 	 */
 	public function setEndDate($endDate)
 	{
@@ -492,15 +485,14 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	 */
 	public function getEndDate()
 	{
-	    return $this->endDate;
+		return $this->endDate;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getTaggableId()
-	{
-	    return $this->getId();
+	public function getTaggableId() {
+		return $this->getId();
 	}
 
 	/**
