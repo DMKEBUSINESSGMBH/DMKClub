@@ -33,12 +33,12 @@ services:
 #            - "dmkclub_prcontact_api"
 
     dmkclub.prcontact.form.handler:
-        class: %dmkclub.prcontact.form.handler.class%
+        class: "%dmkclub.prcontact.form.handler.class%"
         scope: request
         arguments:
-            - @dmkclub.prcontact.form
-            - @request
-            - @doctrine.orm.entity_manager
+            - "@dmkclub.prcontact.form"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
 
 #    dmkclub.prcontact.form.handler.api:
 #        class: %dmkclub.prcontact.form.handler.class%

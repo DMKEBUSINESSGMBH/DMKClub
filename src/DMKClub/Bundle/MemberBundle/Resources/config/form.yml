@@ -32,7 +32,7 @@ services:
     dmkclub_member.memberbilling.form.type:
         class: "%dmkclub_member.memberbilling.form.type.class%"
         calls:
-            - [addSubscriber, [@dmkclub_member.form.subscriber.processor_settings]]
+            - [addSubscriber, ["@dmkclub_member.form.subscriber.processor_settings"]]
         arguments:
             - "@translator"
             - "@dmkclub_member.memberbilling.processorprovider"
@@ -40,7 +40,7 @@ services:
             - { name: form.type, alias: dmkclub_member_memberbilling }
 
     dmkclub_member.form.type.membersegment_select:
-        class: %dmkclub.form.type.membersegment_select.class%
+        class: "%dmkclub.form.type.membersegment_select.class%"
         tags:
             - { name: form.type, alias: dmkclub_member_segment_select_type }
 
@@ -145,7 +145,7 @@ services:
     # listener to switch settings form for selected processor
     # is injected to dmkclub_member.memberbilling.form.type
     dmkclub_member.form.subscriber.processor_settings:
-        class: %dmkclub_member.form.subscriber.processor_settings.class%
+        class: "%dmkclub_member.form.subscriber.processor_settings.class%"
         arguments:
             - "@dmkclub_member.memberbilling.processorprovider"
             - "@oro_entity.doctrine_helper"
