@@ -4,6 +4,9 @@ parameters:
     dmkclub_member.member.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler
     dmkclub_member.memberbilling.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
     dmkclub_member.memberbilling.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberBillingHandler
+    dmkclub_member.memberfeediscount.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeDiscountType
+    dmkclub_member.memberfeediscount.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeDiscountHandler
+
 
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
     dmkclub.form.type.member_status.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberStatusType
@@ -29,6 +32,7 @@ services:
         class: "%dmkclub_member.member.form.type.api.class%"
         tags:
             - { name: form.type, alias: dmkclub_member_member_api }
+
     dmkclub_member.memberbilling.form.type:
         class: "%dmkclub_member.memberbilling.form.type.class%"
         calls:
@@ -38,6 +42,13 @@ services:
             - "@dmkclub_member.memberbilling.processorprovider"
         tags:
             - { name: form.type, alias: dmkclub_member_memberbilling }
+
+    dmkclub_member.memberfeediscount.form.type:
+        class: "%dmkclub_member.memberfeediscount.form.type.class%"
+        arguments:
+            - "@translator"
+        tags:
+            - { name: form.type, alias: dmkclub_member_memberfeediscount }
 
     dmkclub_member.form.type.membersegment_select:
         class: "%dmkclub.form.type.membersegment_select.class%"
@@ -64,6 +75,14 @@ services:
         arguments:
             - "dmkclub_member_memberbilling_form"
             - "dmkclub_member_memberbilling"
+
+    dmkclub_member.memberfeediscount.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - "dmkclub_member_memberfeediscount_form"
+            - "dmkclub_member_memberfeediscount"
 
 
     dmkclub_member.member.form.api:
@@ -106,6 +125,14 @@ services:
             - "@dmkclub_member.memberbilling.manager"
         tags:
             - { name: oro_tag.tag_manager }
+
+    dmkclub_member.memberfeediscount.form.handler:
+        class: "%dmkclub_member.memberfeediscount.form.handler.class%"
+        scope: request
+        arguments:
+            - "@dmkclub_member.memberfeediscount.form"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
 
 # ####
 # FormWidgets

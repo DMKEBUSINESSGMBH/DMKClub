@@ -57,6 +57,46 @@
         {{ dataGrid.renderGrid(memberFeeGrid, {member: entity.id}) }}
     {% endset %}
 
+		{% set memberFeeDiscounts %}
+				{% set memberFeeDiscountGrid	 = 'dmkclub-memberfeediscounts-grid-member' %}
+		    {{ dataGrid.renderGrid(memberFeeDiscountGrid, {member: entity.id}) }}
+		    {% set dialogTitle = 'dmkclub.member.memberfeediscount.create'|trans %}
+				{{ UI.clientButton({
+						'dataUrl': path('dmkclub_member_memberfeediscount_create', { 'memberId': entity.id }),
+						'aCss': 'no-hash',
+						'iCss': 'icon-plus-sign',
+						'dataId': entity.id,
+						'title' : dialogTitle,
+						'label' : dialogTitle,
+						'widget' : {
+							'type' : 'dialog',
+							'multiple' : false,
+							'reload-grid-name' : 'dmkclub-memberfeediscounts-grid-member',
+							'options' : {
+								'stateEnabled': false,
+								'dialogOptions' : {
+									'title' : dialogTitle,
+									'allowMaximize': true,
+									'allowMinimize': true,
+									'dblclick': 'maximize',
+									'maximizedHeightDecreaseBy': 'minimize-bar',
+									'width': 600
+								}
+							}
+						}
+					})
+				}}
+		{% endset %}
+
+{#     {% set feeDiscountWidget %}#}
+{#         {{ oro_widget_render({#}
+{#             'widgetType': 'block',#}
+{#             'contentClasses': [],#}
+{#             'url': path('dmkclub_member_memberfeediscount_infoblock', {id: entity.id}),#}
+{#             'title': 'Member fee discount'|trans#}
+{#         }) }}#}
+{#     {% endset %}#}
+
 
     {% set generalSubBlocks = [{'data' : [memberInformationWidget]}] %}
     {% set dataBlocks = [
@@ -68,12 +108,21 @@
         {
             'title': 'dmkclub.member.fees.label'|trans,
             'subblocks': [
-                {'data' : [
-                    memberFees
-                ]}
+                {
+                  'title': 'dmkclub.member.fees.label'|trans,
+                	'data' : [
+                		memberFees
+                	]
+								},
+                {
+                  'title': 'dmkclub.member.memberfeediscount.entity_label'|trans,
+                	'data' : [
+                		memberFeeDiscounts
+                	]
+								}
             ]
         }
-    ] %}
+] %}
 
     {% set id = 'dmkclubMemberView' %}
     {% set data = {'dataBlocks': dataBlocks} %}

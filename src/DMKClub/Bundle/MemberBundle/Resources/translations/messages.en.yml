@@ -69,7 +69,7 @@ dmkclub:
           end_date.label:      End date
           organization.label:  Organization
           data_channel.label: Data channel
-        memberfee_position:
+        memberfeeposition:
           entity_label:        Membership fee position
           entity_plural_label: Membership fee positions
           entity_description:  Represent a position for membership fee
@@ -78,6 +78,15 @@ dmkclub:
           quantity.label:      Quantity
           price_total.label:   Price total
           price_single.label:  Price single
+        memberfeediscount:
+          entity_label:        Membership fee discount
+          entity_plural_label: Membership fee discounts
+          entity_description:  Represent a discount of membership fee
+          id.label:            Id
+          reason.label:        Reason
+          start_date.label:    Start date
+          end_date.label:      End date
+          create:              Create new discount
 
         accounting.processor.default: Default accounting
         accounting.processor.simple: Simple accounting

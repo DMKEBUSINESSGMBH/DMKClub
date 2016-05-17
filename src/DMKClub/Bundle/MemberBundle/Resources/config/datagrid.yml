@@ -423,3 +423,80 @@ datagrid:
                     data_name: f.updatedAt
                     enabled: false
         actions:
+
+# ###
+# MemberFeeDiscount grid in member
+# ###
+    dmkclub-memberfeediscounts-grid-member:
+        acl_resource: dmkclub_member_view
+        source:
+            type: orm
+            query:
+                select:
+                    - f.id
+                    - f.startDate
+                    - f.endDate
+                    - f.reason
+                from:
+                    - { table: "%dmkclub_member.memberfeediscount.entity.class%", alias: f }
+                where:
+                    and:
+                        - f.member = :member
+            bind_parameters:
+                - member
+        columns:
+            startDate:
+                label:         dmkclub.member.memberfeediscount.start_date.label
+                frontend_type: date
+            endDate:
+                label:         dmkclub.member.memberfeediscount.end_date.label
+                frontend_type: date
+            reason:
+                label:         dmkclub.member.memberfeediscount.reason.label
+        properties:
+            id: ~
+#            view_link:
+#                type:       url
+#                route:      dmkclub_memberbilling_view
+#                params:     [ id ]
+#            update_link:
+#                type:       url
+#                route:      dmkclub_member_memberfeediscount_update
+#                params:     [ id ]
+        sorters:
+            columns:
+                startDate:
+                    data_name: f.startDate
+                endDate:
+                    data_name: f.endDate
+                reason:
+                    data_name: f.reason
+            default:
+                startDate:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                reason:
+                    type: string
+                    data_name: f.reason
+                startDate:
+                    type:      datetime
+                    data_name: f.startDate
+                endDate:
+                    type:      datetime
+                    data_name: f.endDate
+        actions:
+#            update:
+#                type: dialog
+#                acl_resource: dmkclub_member_update
+#                label: oro.grid.action.update
+#                icon: edit
+#                link: update_link
+#                widgetOptions:
+#                    options:
+#                        dialogOptions:
+#                            title: "My Title"
+#                widget:
+#                    reload-grid-name: dmkclub-memberfeediscounts-grid-member
+#                    options:
+#                        dialogOptions:
+#                            width: 600

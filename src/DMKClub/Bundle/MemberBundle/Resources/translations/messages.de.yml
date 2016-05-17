@@ -60,7 +60,7 @@ dmkclub:
           end_date.label:      Enddatum
           organization.label:  Organisation
           data_channel.label: Kanal
-        memberfee_position:
+        memberfeeposition:
           entity_label:        Position für Mitgliedsbeitrag
           entity_plural_label: Position für Mitgliedsbeiträge
           entity_description:  Represent a position for membership fee
@@ -72,6 +72,14 @@ dmkclub:
           quantity.label:      Anzahl
           price_total.label:   Gesamtpreis
           price_single.label:  Einzelpreis
+        memberfeediscount:
+          entity_label:        Beitragsermäßigung Mitgliedsbeitrag
+          entity_plural_label: Beitragsermäßigungen Mitgliedsbeitrag
+          entity_description:  Represent a discount of membership fee
+          id.label:            Id
+          reason.label:        Grund
+          start_date.label:    Startdatum
+          end_date.label:      Enddatum
 
         form.choose_status: Wählen Sie einen Mitgliedsstatus
 

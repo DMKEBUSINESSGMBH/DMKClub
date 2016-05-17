@@ -49,7 +49,7 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount {
 	protected $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="discounts")
+	 * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFeeDiscounts")
 	 * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
 	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
 	 * @Oro\Versioned

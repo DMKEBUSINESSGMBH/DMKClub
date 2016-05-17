@@ -1,6 +1,6 @@
 parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
-    dmkclub_member.memberbilling.manager.class:     DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
+    dmkclub_member.memberbilling.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
 
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
@@ -10,9 +10,11 @@ parameters:
 
     dmkclub_member.memberbilling.entity.class:             DMKClub\Bundle\MemberBundle\Entity\MemberBilling
     dmkclub_member.memberfee.entity.class:                 DMKClub\Bundle\MemberBundle\Entity\MemberFee
+    dmkclub_member.memberfeediscount.entity.class:         DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount
+
     dmkclub_member.memberbilling.processorprovider.class:  DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider
     dmkclub_member.memberbilling.processor_default.class:  DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor
-    dmkclub_member.memberbilling.processor_simple.class:  DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor
+    dmkclub_member.memberbilling.processor_simple.class:   DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor
 
 services:
     dmkclub_member.memberbilling.manager:
