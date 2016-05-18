@@ -40,7 +40,13 @@ class MemberFeeDiscountController extends Controller
 	 */
 	public function createAction(Member $member)
 	{
-		return $this->update($member, new MemberFeeDiscount());
+		$discount = new MemberFeeDiscount();
+		$member->addMemberFeeDiscount($discount);
+
+		// Update member's modification date when an address is changed
+		$member->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+
+		return $this->update($member, $discount);
 	}
 
 	/**
@@ -71,18 +77,16 @@ class MemberFeeDiscountController extends Controller
 			'member' => $member
 		);
 
-		$member->addMemberFeeDiscount($discount);
-
-		// Update member's modification date when an address is changed
-		$member->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
 
 		if ($this->get('dmkclub_member.memberfeediscount.form.handler')->process($discount)) {
 			$this->getDoctrine()->getManager()->flush();
 			$responseData['entity'] = $discount;
 			$responseData['saved'] = true;
 		}
-
-		$responseData['form'] = $this->get('dmkclub_member.member_fee_discount.form')->createView();
+		/* @var $form \Symfony\Component\Form\Form */
+		$form = $this->get('dmkclub_member.member_fee_discount.form');
+		$form->setData($discount);
+		$responseData['form'] = $form->createView();
 		return $responseData;
 	}
 }
