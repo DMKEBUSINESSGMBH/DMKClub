@@ -59,6 +59,10 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFee;
  * @Oro\Loggable
  */
 class MemberFee extends ExtendMemberFee implements Taggable {
+	const CORRECTION_STATUS_NONE = 0;
+	const CORRECTION_STATUS_OPEN = 1;
+	const CORRECTION_STATUS_DONE = 2;
+
 	/**
 	 * @var int
 	 *
@@ -94,6 +98,7 @@ class MemberFee extends ExtendMemberFee implements Taggable {
 	 * @Oro\Versioned
 	 */
 	protected $startDate;
+
 	/**
 	 * @var \DateTime
 	 *
@@ -161,6 +166,23 @@ class MemberFee extends ExtendMemberFee implements Taggable {
 	 * @ORM\Column(name="price_total", type="integer", nullable=true)
 	 */
 	private $priceTotal;
+	/**
+	 *
+	 * @var integer
+	 *
+	 * @ORM\Column(name="payed_total", type="integer", nullable=true)
+	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 */
+	private $payedTotal;
+
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="correction_status", type="integer", nullable=true)
+	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 */
+	private $correctionStatus;
+
 
 	/**
 	 * @var \DateTime $createdAt
@@ -411,6 +433,23 @@ class MemberFee extends ExtendMemberFee implements Taggable {
 	public function addPosition(MemberFeePosition $position) {
 		$position->setMemberFee($this);
 		$this->positions[] = $position;
+		return $this;
+	}
+
+	public function getPayedTotal() {
+		return $this->payedTotal;
+	}
+
+	public function setPayedTotal($value) {
+		$this->payedTotal = $value;
+	}
+
+	public function getCorrectionStatus() {
+		return $this->correctionStatus;
+	}
+
+	public function setCorrectionStatus($value) {
+		$this->correctionStatus = $value;
 		return $this;
 	}
 

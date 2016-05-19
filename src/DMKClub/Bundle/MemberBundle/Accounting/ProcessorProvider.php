@@ -34,7 +34,7 @@ class ProcessorProvider
 		if ($this->hasProcessor($name)) {
 			return $this->processors[$name];
 		} else {
-			throw new \RuntimeException(sprintf('Processor %s is unknown', $name));
+			throw new \RuntimeException(sprintf('Processor >%s< is unknown', $name));
 		}
 	}
 
