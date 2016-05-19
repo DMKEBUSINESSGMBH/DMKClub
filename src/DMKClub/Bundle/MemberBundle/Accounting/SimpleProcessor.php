@@ -19,6 +19,15 @@ class SimpleProcessor extends AbstractProcessor {
 		return self::NAME;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::getFields()
+	 */
+	public function getFields() {
+		return [
+				'fee',
+		];
+	}
 
 	/**
 	 * {@inheritdoc}

@@ -80,8 +80,10 @@ class MemberBillingHandler
 		$this->tagManager->saveTagging($entity);
 	}
 	protected function saveProcessorConfig(MemberBilling $entity) {
+		// Die alte, serialisierte Config für alle Prozessoren holen
 		$configData = $entity->getProcessorConfig();
 		$configData = $configData ? unserialize($configData) : [];
+		// Die Daten für den aktuellen Prozessor neu schreiben
 		$configData[$entity->getProcessor()] = $entity->getProcessorSettings();
 
 		$entity->setProcessorConfig(serialize($configData));

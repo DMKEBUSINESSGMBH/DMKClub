@@ -152,7 +152,15 @@ class MemberBillingManager implements ContainerAwareInterface {
 		// Beim Wechsel des processortypes muss man aber aufpassen, damit die Config noch passt!
 		$data = $entity->getProcessorConfig();
 		$data = $data ? unserialize($data) : [];
-		return isset($data[$entity->getProcessor()]) ? $data[$entity->getProcessor()] : [];
+		$processor = $this->getProcessor($entity);
+		$storedData = isset($data[$entity->getProcessor()]) ? $data[$entity->getProcessor()] : [];
+		// Bereinigung von veralteten Attributen
+		$result = [];
+		foreach ($processor->getFields() As $fieldName) {
+			if(array_key_exists($fieldName, $storedData))
+				$result[$fieldName] = $storedData[$fieldName];
+		}
+		return $result;
 	}
 
 	/**

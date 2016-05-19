@@ -24,6 +24,12 @@ interface ProcessorInterface {
 	 * @return string
 	 */
 	public function getLabel();
+	/**
+	 * Get an array of all name of additional form fields.
+	 *
+	 * @return string
+	 */
+	public function getFields();
 
 	/**
 	 * Returns form type name needed to setup transport.

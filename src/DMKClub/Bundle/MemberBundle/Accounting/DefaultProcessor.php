@@ -36,6 +36,19 @@ class DefaultProcessor extends AbstractProcessor {
 		$this->logger = $logger;
 	}
 	/**
+	 * (non-PHPdoc)
+	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::getFields()
+	 */
+	public function getFields() {
+		return [
+				self::OPTION_FEE,
+				self::OPTION_FEE_DISCOUNT,
+				self::OPTION_FEE_CHILD,
+				self::OPTION_AGE_CHILD,
+		];
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function getName()
@@ -158,7 +171,7 @@ class DefaultProcessor extends AbstractProcessor {
 	public function formatSettings(array $options) {
 		$ret = array();
 		foreach ($options As $key => $value) {
-			if($key == self::OPTION_FEE || $key == self::OPTION_FEE_CHILD)
+			if($key == self::OPTION_FEE || $key == self::OPTION_FEE_CHILD || $key == self::OPTION_FEE_DISCOUNT)
 				$value = number_format($value/100,2);
 			$ret[$key] = $value;
 		}
