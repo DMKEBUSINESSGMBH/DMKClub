@@ -4,6 +4,7 @@ namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor;
 
 class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
 {
@@ -16,9 +17,10 @@ class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-					->add('fee', 'money', array('required' => true, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.fee.label'))
-					->add('fee_reduced', 'money', array('required' => false, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.fee_reduced.label'))
-					->add('age_reduced', 'integer', array('required' => true, 'label' => 'dmkclub.member.memberbilling.age_reduced.label'))
+					->add(DefaultProcessor::OPTION_FEE, 'money', array('required' => true, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.fee.label'))
+					->add(DefaultProcessor::OPTION_FEE_DISCOUNT, 'money', array('required' => false, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_DISCOUNT.'.label'))
+					->add(DefaultProcessor::OPTION_FEE_CHILD, 'money', array('required' => false, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_CHILD.'.label'))
+					->add(DefaultProcessor::OPTION_AGE_CHILD, 'integer', array('required' => true, 'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_AGE_CHILD.'.label'))
 					;
 
         parent::buildForm($builder, $options);
@@ -31,7 +33,6 @@ class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
     {
         $resolver->setDefaults(
             [
-//                'data_class' => 'OroCRM\Bundle\CampaignBundle\Entity\InternalTransportSettings'
             ]
         );
     }

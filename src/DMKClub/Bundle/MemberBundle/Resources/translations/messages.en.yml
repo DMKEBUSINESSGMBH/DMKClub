@@ -46,8 +46,9 @@ dmkclub:
           processor.label: Processor
           processor_config.label: Processor config
           fee.label:    Membership Fee
-          fee_reduced.label:      Fee reduced
-          age_reduced.label:      Age for reduced fee
+          fee_discount.label:      Discount Fee
+          fee_child.label:      Fee reduced for childs
+          age_child.label:      max Age for child fee
           member_fees.label:    Member fees
           segment.label:  Segment
           organization.label:  Organization

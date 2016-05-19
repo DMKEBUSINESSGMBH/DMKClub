@@ -12,13 +12,15 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
 use DMKClub\Bundle\MemberBundle\Accounting\Time\TimeCalculator;
 use Psr\Log\LoggerInterface;
+use BeSimple\SoapCommon\Type\KeyValue\DateTime;
 /**
  */
 class DefaultProcessor extends AbstractProcessor {
 	const NAME = 'default';
 	const OPTION_FEE = 'fee';
-	const OPTION_FEE_REDUCED = 'fee_reduced';
-	const OPTION_AGE_REDUCED = 'age_reduced';
+	const OPTION_FEE_DISCOUNT = 'fee_discount';
+	const OPTION_FEE_CHILD = 'fee_child';
+	const OPTION_AGE_CHILD = 'age_child';
 
 	/**
 	 * @var \Doctrine\ORM\EntityManager
@@ -69,8 +71,9 @@ class DefaultProcessor extends AbstractProcessor {
 		$months = $calculator->calculateTimePeriods($startDate, $endDate);
 
 		$feeFull = (int) $this->getOption(self::OPTION_FEE);
-		$feeReduced = (int) $this->getOption(self::OPTION_FEE_REDUCED);
-		$ageReduced = (int) $this->getOption(self::OPTION_AGE_REDUCED);
+		$feeDiscount = (int) $this->getOption(self::OPTION_FEE_DISCOUNT);
+		$feeChild = (int) $this->getOption(self::OPTION_FEE_CHILD);
+		$ageChild = (int) $this->getOption(self::OPTION_AGE_CHILD);
 
 		$fee = 0;
 		// Über jeden Monat iterieren
@@ -78,10 +81,14 @@ class DefaultProcessor extends AbstractProcessor {
 		$currentMonthFirstDay = new \DateTime($startDate->format('Y-m-d'));
 		$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
 		foreach ($months As $interval) {
+			/* @var $interval \DateInterval */
 			if($this->isMembershipActive($member, $currentMonthFirstDay)) {
 				$periodFee = $feeFull;
-				if($this->isMembershipReduced($member, $currentMonthLastDay, $ageReduced)) {
-					$periodFee = $feeReduced;
+				if($this->isMembershipChild($member, $currentMonthLastDay, $ageChild)) {
+					$periodFee = $feeChild;
+				}
+				elseif($this->isMembershipDiscount($member, $currentMonthLastDay)) {
+					$periodFee = $feeDiscount;
 				}
 				$fee += $periodFee;
 			}
@@ -118,11 +125,25 @@ class DefaultProcessor extends AbstractProcessor {
 	 * @param Member $member
 	 * @param \DateTime $currentMonth
 	 */
-	protected function isMembershipReduced($member, $currentMonth, $ageReduced) {
+	protected function isMembershipChild($member, $currentMonth, $ageChild) {
 		// currentMonth steht immer auf dem 1. des Monats. Wer in dem
 		// Monat 18 wird, ist also am 1. noch 17 Jahre alt.
 		$age = $member->getContact()->getBirthday()->diff($currentMonth)->y;
-		return $age < $ageReduced;
+		return $age < $ageChild;
+	}
+	/**
+	 * Is member discount active in current month
+	 * @param Member $member
+	 * @param \DateTime $currentMonthLastDay
+	 */
+	protected function isMembershipDiscount(Member $member, $currentMonthLastDay) {
+		foreach($member->getMemberFeeDiscounts() As $feeDiscount) {
+			// Ist das Datum in $month innerhalb der Discount-Zeit?
+			if($feeDiscount->contains($currentMonthLastDay)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -135,7 +156,7 @@ class DefaultProcessor extends AbstractProcessor {
 	public function formatSettings(array $options) {
 		$ret = array();
 		foreach ($options As $key => $value) {
-			if($key == self::OPTION_FEE || $key == self::OPTION_FEE_REDUCED)
+			if($key == self::OPTION_FEE || $key == self::OPTION_FEE_CHILD)
 				$value = number_format($value/100,2);
 			$ret[$key] = $value;
 		}

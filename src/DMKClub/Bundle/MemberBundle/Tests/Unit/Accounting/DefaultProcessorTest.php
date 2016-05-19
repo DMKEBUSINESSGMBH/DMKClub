@@ -8,6 +8,7 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use Psr\Log\NullLogger;
+use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 
 class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 	private $logger;
@@ -55,51 +56,125 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		return [
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
-						'fee' => 1000,
-						'fee_reduced' => 520,
-						'age_reduced' => 18,
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 520,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
 				], $this->buildMember('2010-02-01', NULL, '1970-05-13'), 12000, 'simplefull'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
-						'fee' => 1000,
-						'fee_reduced' => 520,
-						'age_reduced' => 18,
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 520,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
 				], $this->buildMember('2016-08-01', NULL, '1970-05-13'), 11000, 'newfull'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
-						'fee' => 1000,
-						'fee_reduced' => 520,
-						'age_reduced' => 18,
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 520,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
 				], $this->buildMember('2015-08-01', '2016-08-01', '1970-05-13'), 2000, 'retiredfull'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
-						'fee' => 1000,
-						'fee_reduced' => 200,
-						'age_reduced' => 18,
-				], $this->buildMember('2010-02-01', NULL, ($year - 10).'-05-13'), 2400, 'simplereduced'],
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2010-02-01', NULL, ($year - 10).'-05-13'), 2400, 'simplechild'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
-						'fee' => 1000,
-						'fee_reduced' => 200,
-						'age_reduced' => 18,
-				], $this->buildMember('2010-02-01', NULL, ($year - 17).'-05-13'), 4000, 'reduced2full'],
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2010-02-01', NULL, ($year - 17).'-05-13'), 4000, 'child2full'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
-						'fee' => 1000,
-						'fee_reduced' => 200,
-						'age_reduced' => 18,
-				], $this->buildMember('2010-02-01', '2017-05-01', ($year - 17).'-05-13'), 3000, 'reduced2fullretired'],
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2010-02-01', '2017-05-01', ($year - 17).'-05-13'), 3000, 'child2fullretired'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
-						'fee' => 1000,
-						'fee_reduced' => 200,
-						'age_reduced' => 18,
-				], $this->buildMember('2016-08-01', NULL, ($year - 17).'-05-13'), 3800, 'reduced2fullnew'],
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2016-08-01', NULL, ($year - 17).'-05-13'), 3800, 'child2fullnew'],
+
+				// Beitragsreduzierung über die gesamte Laufzeit
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2015-07-01', NULL, '1970-05-13', [
+							$this->buildMemberFeeDiscount('2015-07-01', NULL),
+					]),
+						9600, 'discountsimple'],
+				// Beitragsreduzierung mit Neuanmeldung
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2016-08-01', NULL, '1970-05-13', [
+							$this->buildMemberFeeDiscount('2015-07-01', NULL),
+					]),
+						8800, 'newdiscount'],
+				// Beitragsreduzierung endet nach 6 Monaten
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2015-08-01', NULL, '1970-05-13', [
+							$this->buildMemberFeeDiscount('2015-07-01', '2016-12-31'),
+					]), 10800, 'discount2full'],
+
+				// Beitragsreduzierung für erste 6 Monate und letzte 2 Monate
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
+						DefaultProcessor::OPTION_FEE => 1000,
+						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
+						DefaultProcessor::OPTION_FEE_CHILD => 200,
+						DefaultProcessor::OPTION_AGE_CHILD => 18,
+				], $this->buildMember('2015-08-01', NULL, '1970-05-13', [
+						$this->buildMemberFeeDiscount('2015-07-01', '2016-12-31'),
+						$this->buildMemberFeeDiscount('2017-05-01', NULL),
+				]), 10800, 'discount2full2discount'],
+
 		];
 	}
 
-	protected function buildMember($start, $end, $birthday) {
+	/**
+	 *
+	 * @param string $start Eintrittsdatum in den Verein
+	 * @param string $end Austrittsdatum aus dem Verein
+	 * @param string $birthday Geburtstag
+	 * @param array[MemberFeeDiscount] $discounts Zeiträume
+	 * @return
+	 */
+	protected function buildMember($start, $end, $birthday, array $discounts = array()) {
 		$contact = new Contact();
 		$contact->setBirthday(new \DateTime($birthday));
 		$member = new Member();
 		$member->setContact($contact);
 		$member->setStartDate(new \DateTime($start));
 		$member->setEndDate($end ? new \DateTime($end) : NULL);
+
+		if(is_array($discounts)) {
+			foreach ($discounts As $discount) {
+				$member->addMemberFeeDiscount($discount);
+			}
+		}
 		return $member;
+	}
+	/**
+	 * Erstellt Instanzen von MemberFeeDiscount
+	 * @param string $start Startzeitpunkt der Ermäßigung
+	 * @param string $end Ende der Ermäßigung oder NULL
+	 */
+	protected function buildMemberFeeDiscount($start, $end) {
+		$discount = new MemberFeeDiscount();
+		$discount->setStartDate(new \DateTime($start));
+		$discount->setEndDate($end ? new \DateTime($end) : NULL);
+		return $discount;
 	}
 	protected function getEMMockBuilder() {
 		return $this->getMockBuilder('\Doctrine\ORM\EntityManager')

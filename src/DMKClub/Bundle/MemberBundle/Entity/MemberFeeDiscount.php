@@ -203,6 +203,19 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount {
 	}
 
 	/**
+	 * Checks if the given period is contained in the current period.
+	 *
+	 * @param \DateTime $date
+	 *
+	 * @return bool true if the period contains this date
+	 */
+	public function contains(\DateTime $date) {
+		$gtStart = $this->startDate <= $date;
+		$ltEnd = $this->endDate == NULL ? true : ($date <= $this->endDate);
+		return $gtStart && $ltEnd;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function __toString()

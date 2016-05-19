@@ -41,8 +41,9 @@ dmkclub:
           processor.label:     Prozessor
           processor_config.label: Prozessor Einstellung
           fee.label:           Mitgliedsbeitrag
-          fee_reduced.label:      Mitgliedsbeitrag reduziert
-          age_reduced.label:      Altersgrenze für red. Beitrag
+          fee_discount.label:      Mitgliedsbeitrag reduziert
+          fee_child.label:    Beitrag für Kinder
+          age_child.label:      Altersgrenze für Kinderbeitrag
           member_fees.label:    Mitgliedsbeiträge
           organization.label:  Organisation
           data_channel.label: Kanal
