@@ -86,7 +86,8 @@ dmkclub:
           reason.label:        Reason
           start_date.label:    Start date
           end_date.label:      End date
-          create:              Create new discount
+          action.create.title: Create new fee discount
+          action.update.title: Update fee discount
 
         accounting.processor.default: Default accounting
         accounting.processor.simple: Simple accounting

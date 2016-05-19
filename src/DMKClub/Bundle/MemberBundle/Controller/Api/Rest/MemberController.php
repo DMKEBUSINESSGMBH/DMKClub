@@ -17,7 +17,7 @@ use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
- * @NamePrefix("oro_api_")
+ * @NamePrefix("dmkclub_api_")
  */
 class MemberController extends RestController implements ClassResourceInterface
 {

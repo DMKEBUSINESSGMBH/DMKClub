@@ -2,6 +2,8 @@ parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
     dmkclub_member.memberbilling.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
 
+    dmkclub_member.memberfeediscount.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
     dmkclub_member.country.datagrid_helper.class:          Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
@@ -26,8 +28,16 @@ services:
             - "@oro_segment.query.dynamic_segment.query_builder"
             - "@oro_segment.query.static_segment.query_builder"
 
+    dmkclub_member.memberfeediscount.manager.api:
+        class: "%dmkclub_member.memberfeediscount.manager.api.class%"
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - "%dmkclub_member.memberfeediscount.entity.class%"
+            - "@doctrine.orm.entity_manager"
+
+
     dmkclub_member.memberbilling.processorprovider:
-        class:                        "%dmkclub_member.memberbilling.processorprovider.class%"
+        class: "%dmkclub_member.memberbilling.processorprovider.class%"
 
     # Wird das verwendet??
     dmkclub_member.country.datagrid_helper:

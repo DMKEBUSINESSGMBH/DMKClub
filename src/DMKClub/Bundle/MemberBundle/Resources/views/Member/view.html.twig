@@ -60,7 +60,7 @@
 		{% set memberFeeDiscounts %}
 				{% set memberFeeDiscountGrid	 = 'dmkclub-memberfeediscounts-grid-member' %}
 		    {{ dataGrid.renderGrid(memberFeeDiscountGrid, {member: entity.id}) }}
-		    {% set dialogTitle = 'dmkclub.member.memberfeediscount.create'|trans %}
+		    {% set dialogTitle = 'dmkclub.member.memberfeediscount.action.create.title'|trans %}
 				{{ UI.clientButton({
 						'dataUrl': path('dmkclub_member_memberfeediscount_create', { 'memberId': entity.id }),
 						'aCss': 'no-hash',

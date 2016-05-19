@@ -460,10 +460,11 @@ datagrid:
         properties:
             id: ~
             memberId: ~
-#            view_link:
-#                type:       url
-#                route:      dmkclub_memberbilling_view
-#                params:     [ id ]
+            delete_link:
+                type: url
+                route: dmkclub_api_delete_memberfeediscount
+                params: [ id ]
+
             update_link:
                 type:       url
                 route:      dmkclub_member_memberfeediscount_update
@@ -497,11 +498,15 @@ datagrid:
                 icon: edit
                 link: update_link
                 widgetOptions:
-                    options:
-                        dialogOptions:
-                            title: "My Title"
-                widget:
                     reload-grid-name: dmkclub-memberfeediscounts-grid-member
                     options:
                         dialogOptions:
-                            width: 600
+                            title:  "@translator->trans(dmkclub.member.memberfeediscount.action.update.title)"
+                            modal:  true
+                            width:  700
+            delete:
+                type:         delete
+                acl_resource: dmkclub_member_delete
+                label:        oro.grid.action.delete
+                icon:         trash
+                link:         delete_link
