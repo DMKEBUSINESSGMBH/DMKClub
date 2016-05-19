@@ -320,12 +320,6 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 				['id'],
 				['onDelete' => 'SET NULL', 'onUpdate' => null]
 		);
-		$table->addForeignKeyConstraint(
-				$schema->getTable('orocrm_channel'),
-				['data_channel_id'],
-				['id'],
-				['onDelete' => 'SET NULL', 'onUpdate' => null]
-		);
 	}
 	/**
 	 * Add dmkclub_member_feeposition foreign keys.
