@@ -73,30 +73,32 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 						DefaultProcessor::OPTION_FEE_CHILD => 520,
 						DefaultProcessor::OPTION_AGE_CHILD => 18,
 				], $this->buildMember('2015-08-01', '2016-08-01', '1970-05-13'), 2000, 'retiredfull'],
+				// Kinderbeitrag über gesamte Laufzeit
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						DefaultProcessor::OPTION_FEE => 1000,
 						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
 						DefaultProcessor::OPTION_FEE_CHILD => 200,
 						DefaultProcessor::OPTION_AGE_CHILD => 18,
 				], $this->buildMember('2010-02-01', NULL, ($year - 10).'-05-13'), 2400, 'simplechild'],
+				// Kinderbeitrag die ersten 11 Monate. Ab 18 voller Preis (Geburtstag im Mai, voller Beitrag ab Juni)
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						DefaultProcessor::OPTION_FEE => 1000,
 						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
 						DefaultProcessor::OPTION_FEE_CHILD => 200,
 						DefaultProcessor::OPTION_AGE_CHILD => 18,
-				], $this->buildMember('2010-02-01', NULL, ($year - 17).'-05-13'), 4000, 'child2full'],
+				], $this->buildMember('2010-02-01', NULL, ($year - 17).'-05-13'), 3200, 'child2full'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						DefaultProcessor::OPTION_FEE => 1000,
 						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
 						DefaultProcessor::OPTION_FEE_CHILD => 200,
 						DefaultProcessor::OPTION_AGE_CHILD => 18,
-				], $this->buildMember('2010-02-01', '2017-05-01', ($year - 17).'-05-13'), 3000, 'child2fullretired'],
+				], $this->buildMember('2010-02-01', '2017-05-01', ($year - 17).'-05-13'), 2200, 'child2fullretired'],
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
 						DefaultProcessor::OPTION_FEE => 1000,
 						DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
 						DefaultProcessor::OPTION_FEE_CHILD => 200,
 						DefaultProcessor::OPTION_AGE_CHILD => 18,
-				], $this->buildMember('2016-08-01', NULL, ($year - 17).'-05-13'), 3800, 'child2fullnew'],
+				], $this->buildMember('2016-08-01', NULL, ($year - 17).'-05-13'), 3000, 'child2fullnew'],
 
 				// Beitragsreduzierung über die gesamte Laufzeit
 				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), [
@@ -137,7 +139,7 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 				], $this->buildMember('2015-08-01', NULL, '1970-05-13', [
 						$this->buildMemberFeeDiscount('2015-07-01', '2016-12-31'),
 						$this->buildMemberFeeDiscount('2017-05-01', NULL),
-				]), 10800, 'discount2full2discount'],
+				]), 10400, 'discount2full2discount'],
 
 		];
 	}

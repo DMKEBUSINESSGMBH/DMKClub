@@ -84,10 +84,10 @@ class DefaultProcessor extends AbstractProcessor {
 			/* @var $interval \DateInterval */
 			if($this->isMembershipActive($member, $currentMonthFirstDay)) {
 				$periodFee = $feeFull;
-				if($this->isMembershipChild($member, $currentMonthLastDay, $ageChild)) {
+				if($this->isMembershipChild($member, $currentMonthFirstDay, $ageChild)) {
 					$periodFee = $feeChild;
 				}
-				elseif($this->isMembershipDiscount($member, $currentMonthLastDay)) {
+				elseif($this->isMembershipDiscount($member, $currentMonthFirstDay)) {
 					$periodFee = $feeDiscount;
 				}
 				$fee += $periodFee;
@@ -128,7 +128,9 @@ class DefaultProcessor extends AbstractProcessor {
 	protected function isMembershipChild($member, $currentMonth, $ageChild) {
 		// currentMonth steht immer auf dem 1. des Monats. Wer in dem
 		// Monat 18 wird, ist also am 1. noch 17 Jahre alt.
+		// Der volle Beitrag gilt erst im Folgemonat
 		$age = $member->getContact()->getBirthday()->diff($currentMonth)->y;
+		//print_r([$currentMonth->format('Y-m-d') => ($age < $ageChild), 'age' => $age ]);
 		return $age < $ageChild;
 	}
 	/**
