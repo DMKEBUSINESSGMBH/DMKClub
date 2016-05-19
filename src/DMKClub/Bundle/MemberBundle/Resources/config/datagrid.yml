@@ -295,6 +295,10 @@ datagrid:
                 frontend_type: datetime
         properties:
             id: ~
+            delete_link:
+                type: url
+                route: dmkclub_api_delete_memberfee
+                params: [ id ]
 #            view_link:
 #                type:       url
 #                route:      dmkclub_memberbilling_view
@@ -333,6 +337,12 @@ datagrid:
                     data_name: f.updatedAt
                     enabled: false
         actions:
+            delete:
+                type:         delete
+                acl_resource: dmkclub_member_memberfee_delete
+                label:        oro.grid.action.delete
+                icon:         trash
+                link:         delete_link
 #            view:
 #                type: navigate
 #                acl_resource: dmkclub_memberfee_view
@@ -464,7 +474,6 @@ datagrid:
                 type: url
                 route: dmkclub_api_delete_memberfeediscount
                 params: [ id ]
-
             update_link:
                 type:       url
                 route:      dmkclub_member_memberfeediscount_update

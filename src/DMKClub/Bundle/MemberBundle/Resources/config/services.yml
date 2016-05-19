@@ -2,7 +2,8 @@ parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
     dmkclub_member.memberbilling.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
 
-    dmkclub_member.memberfeediscount.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    dmkclub_member.memberfeediscount.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    dmkclub_member.memberfee.manager.api.class:            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
@@ -33,6 +34,12 @@ services:
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - "%dmkclub_member.memberfeediscount.entity.class%"
+            - "@doctrine.orm.entity_manager"
+    dmkclub_member.memberfee.manager.api:
+        class: "%dmkclub_member.memberfee.manager.api.class%"
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - "%dmkclub_member.memberfee.entity.class%"
             - "@doctrine.orm.entity_manager"
 
 
