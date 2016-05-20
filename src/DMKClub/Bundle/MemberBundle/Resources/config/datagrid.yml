@@ -259,6 +259,7 @@ datagrid:
                     - m.id as mid
                     - m.memberCode
                     - m.name
+                    - f.correctionStatus
                     - m.isActive
                     - f.createdAt
                     - f.updatedAt
@@ -281,6 +282,9 @@ datagrid:
                 params: {id: mid}
                 label:         dmkclub.member.name.label
                 frontend_type: html
+            correctionStatus:
+                label:         dmkclub.member.memberfee.correction_status.label
+                frontend_type: boolean
             isActive:
                 label:         dmkclub.member.is_active.label
                 frontend_type: boolean

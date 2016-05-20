@@ -66,6 +66,8 @@ dmkclub:
           billing.label:       Billing
           positions.label:     Positions
           price_total.label:   Fee total
+          payed_total.label:   Payed total
+          correction_status.label:  Correction
           start_date.label:    Start date
           end_date.label:      End date
           organization.label:  Organization

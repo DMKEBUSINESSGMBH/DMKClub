@@ -57,6 +57,8 @@ dmkclub:
           owner.label:         Owner
           name.label:          Name
           price_total.label:   Gesamtbeitrag
+          payed_total.label:   Bezahlt
+          correction_status.label:  Korrektur
           start_date.label:    Startdatum
           end_date.label:      Enddatum
           organization.label:  Organisation

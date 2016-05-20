@@ -9,6 +9,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
+use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 
 class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 	const MARK = 'MARK';
@@ -27,6 +28,8 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 
 	/** @var SecurityFacade */
 	protected $securityFacade;
+	/** @var MemberFeeManager */
+	protected $feeManager;
 
 	/**
 	 * @param EntityManager $entityManager
@@ -36,11 +39,13 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 	public function __construct(
 			EntityManager $entityManager,
 			TranslatorInterface $translator,
-			ServiceLink $securityFacadeLink
+			ServiceLink $securityFacadeLink,
+			MemberFeeManager $feeManager
 	) {
 		$this->entityManager = $entityManager;
 		$this->translator = $translator;
 		$this->securityFacade = $securityFacadeLink->getService();
+		$this->feeManager = $feeManager;
 	}
 
 	/**
@@ -72,7 +77,6 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 	 */
 	protected function handleFeeCorrection($options, $data) {
 		$markType = $options['mark_type'];
-		$folderType = null;
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
 
@@ -80,11 +84,34 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 		if (array_key_exists('values', $data)) {
 			$feeIds = explode(',', $data['values']);
 		}
+		// FIXME: wir benötigen noch den aktuellen memberBilling
 		if ($feeIds || $isAllSelected) {
-			// TODO!
+			$queryBuilder = $this
+				->feeManager
+				->getMemberFeeRepository()
+				->getMemberFeeBuilderForMassAction($feeIds, NULL, $isAllSelected);
+
+			$result = $queryBuilder->getQuery()->iterate();
+			foreach ($result as $entity) {
+				/** @var EmailUser $entity */
+				$entity = $entity[0];
+				if ($this->securityFacade->isGranted('EDIT', $entity)) {
+					$this->feeManager->setFeeCorrectionStatus($entity, $markType === self::MARK);
+				}
+
+				$this->entityManager->persist($entity);
+
+				if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
+					$this->entityManager->flush();
+					$this->entityManager->clear();
+				}
+				$iteration++;
+			}
+
+			$this->entityManager->flush();
 		}
 
-		return count($feeIds);
+		return $iteration;
 	}
 	/**
 	 * @param array $data

@@ -1,6 +1,7 @@
 parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
     dmkclub_member.memberbilling.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
+    dmkclub_member.memberfee.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager
 
     dmkclub_member.memberfeediscount.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     dmkclub_member.memberfee.manager.api.class:            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
@@ -21,13 +22,19 @@ parameters:
 
 services:
     dmkclub_member.memberbilling.manager:
-        class:                        "%dmkclub_member.memberbilling.manager.class%"
+        class:     "%dmkclub_member.memberbilling.manager.class%"
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@service_container"
             - "@dmkclub_member.memberbilling.processorprovider"
             - "@oro_segment.query.dynamic_segment.query_builder"
             - "@oro_segment.query.static_segment.query_builder"
+
+    dmkclub_member.memberfee.manager:
+        class:     "%dmkclub_member.memberfee.manager.class%"
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@service_container"
 
     dmkclub_member.memberfeediscount.manager.api:
         class: "%dmkclub_member.memberfeediscount.manager.api.class%"
