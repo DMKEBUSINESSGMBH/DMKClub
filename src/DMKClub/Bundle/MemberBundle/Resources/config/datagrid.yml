@@ -299,6 +299,10 @@ datagrid:
                 type: url
                 route: dmkclub_api_delete_memberfee
                 params: [ id ]
+#            correction_link:
+#                type: url
+#                route: dmkclub_api_delete_memberfee
+#                params: [ id ]
 #            view_link:
 #                type:       url
 #                route:      dmkclub_memberbilling_view
@@ -343,20 +347,13 @@ datagrid:
                 label:        oro.grid.action.delete
                 icon:         trash
                 link:         delete_link
-#            view:
-#                type: navigate
-#                acl_resource: dmkclub_memberfee_view
-#                label: oro.grid.action.view
-#                icon: eye-open
-#                link: view_link
-#                rowAction: true
-#            update:
-#                type: navigate
-#                acl_resource: dmkclub_memberfee_update
-#                label: oro.grid.action.update
-#                icon: edit
-#                link: update_link
-
+        mass_actions:
+            markfeecorrection:
+                type: markfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.mark_feecorrection
+                icon: retweet
 # ###
 # MemberFee grid in member
 # ###

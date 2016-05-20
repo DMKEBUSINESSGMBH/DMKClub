@@ -23,6 +23,7 @@ class DMKClubMemberExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form.yml');
         $loader->load('importexport.yml');
+        $loader->load('mass_action.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

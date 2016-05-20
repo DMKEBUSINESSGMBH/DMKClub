@@ -1,0 +1,17 @@
+parameters:
+    dmkclub_member.mass_action.mark_memberfee_correction.class:   DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionAction
+    dmkclub_member.mass_action.mark_memberfee_correction_handler.class:   DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionHandler
+
+services:
+    dmkclub_member.datagrid.mass_action.mark_fee_correction:
+        class: "%dmkclub_member.mass_action.mark_memberfee_correction.class%"
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: markfeecorrection }
+
+    dmkclub_member.datagrid.mass_action.mark_fee_correction_handler:
+        class: "%dmkclub_member.mass_action.mark_memberfee_correction_handler.class%"
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@translator"
+            - "@oro_security.security_facade.link"

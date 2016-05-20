@@ -1,0 +1,4 @@
+config:
+    paths:
+        # Der Key wird in der URI verwendet und auf die Datei in Value gerouted
+        'oro/datagrid/action/mark-feecorrection-mass-action': 'bundles/dmkclubmember/js/datagrid/action/mark-feecorrection-mass-action.js'

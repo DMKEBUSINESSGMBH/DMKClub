@@ -71,4 +71,4 @@ services:
         class: "%dmkclub_member.memberbilling.processor_simple.class%"
         tags:
             - { name: dmkclub_member.billingprocessor }
-        
+

@@ -61,6 +61,8 @@ dmkclub:
           end_date.label:      Enddatum
           organization.label:  Organisation
           data_channel.label: Kanal
+          action.mark_feecorrection: Korrektur markieren
+          action.unmark_feecorrection: Korrektur entfernen
         memberfeeposition:
           entity_label:        Position für Mitgliedsbeitrag
           entity_plural_label: Position für Mitgliedsbeiträge

@@ -1,18 +1,124 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction;
 
+use Doctrine\ORM\EntityManager;
+
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 
 class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
+	const MARK = 'MARK';
+	const UNMARK = 'UNMARK';
+	const FLUSH_BATCH_SIZE = 100;
+
+	/**
+	 * @var EntityManager
+	 */
+	protected $entityManager;
+
+	/**
+	 * @var TranslatorInterface
+	 */
+	protected $translator;
+
+	/** @var SecurityFacade */
+	protected $securityFacade;
+
+	/**
+	 * @param EntityManager $entityManager
+	 * @param TranslatorInterface $translator
+	 * @param ServiceLink $securityFacadeLink
+	 */
+	public function __construct(
+			EntityManager $entityManager,
+			TranslatorInterface $translator,
+			ServiceLink $securityFacadeLink
+	) {
+		$this->entityManager = $entityManager;
+		$this->translator = $translator;
+		$this->securityFacade = $securityFacadeLink->getService();
+	}
 
 	/**
 	 * https://github.com/orocommerce/orocommerce/tree/62ce38756ca325cd9ccff708f2f9767accdd71af/src/OroB2B/Bundle/ShoppingListBundle/Datagrid/Extension/MassAction
 	 * {@inheritDoc}
 	 */
 	public function handle(MassActionHandlerArgs $args) {
+		$data = $args->getData();
+		$massAction = $args->getMassAction();
+		$options = $massAction->getOptions()->toArray();
 
+		$this->entityManager->beginTransaction();
+		try {
+			set_time_limit(0);
+ 			$iteration = $this->handleFeeCorrection($options, $data);
+			$this->entityManager->commit();
+		} catch (\Exception $e) {
+			$this->entityManager->rollback();
+			throw $e;
+		}
+
+		return $this->getResponse($args, $iteration);
 	}
 
+	/**
+	 * @param array $options
+	 * @param array $data
+	 * @return int
+	 */
+	protected function handleFeeCorrection($options, $data) {
+		$markType = $options['mark_type'];
+		$folderType = null;
+		$isAllSelected = $this->isAllSelected($data);
+		$iteration = 0;
+
+		$feeIds = [];
+		if (array_key_exists('values', $data)) {
+			$feeIds = explode(',', $data['values']);
+		}
+		if ($feeIds || $isAllSelected) {
+			// TODO!
+		}
+
+		return count($feeIds);
+	}
+	/**
+	 * @param array $data
+	 * @return bool
+	 */
+	protected function isAllSelected($data)
+	{
+		return array_key_exists('inset', $data) && $data['inset'] === '0';
+	}
+
+	/**
+	 * @param MassActionHandlerArgs $args
+	 * @param int $entitiesCount
+	 *
+	 * @return MassActionResponse
+	 */
+	protected function getResponse(MassActionHandlerArgs $args, $entitiesCount = 0)
+	{
+		$massAction      = $args->getMassAction();
+		$responseMessage = 'oro.email.datagrid.mark.success_message'; // FIXME!!
+		$responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $responseMessage);
+
+		$successful = $entitiesCount > 0;
+		$options    = ['count' => $entitiesCount];
+
+		return new MassActionResponse(
+				$successful,
+				$this->translator->transChoice(
+						$responseMessage,
+						$entitiesCount,
+						['%count%' => $entitiesCount]
+				),
+				$options
+		);
+	}
 
 }
