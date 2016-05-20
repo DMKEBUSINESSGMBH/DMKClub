@@ -80,16 +80,21 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
 
+		$datagridName = $options['datagrid'];
+		$billingParam = 'billing'; // TODO: make configurable
+		$billingId = $data[$datagridName][$billingParam];
+
 		$feeIds = [];
 		if (array_key_exists('values', $data)) {
 			$feeIds = explode(',', $data['values']);
 		}
 		// FIXME: wir benötigen noch den aktuellen memberBilling
 		if ($feeIds || $isAllSelected) {
+			$billing = $this->feeManager->getMemberBillingRepository()->find($billingId);
 			$queryBuilder = $this
 				->feeManager
 				->getMemberFeeRepository()
-				->getMemberFeeBuilderForMassAction($feeIds, NULL, $isAllSelected);
+				->getMemberFeeBuilderForMassAction($feeIds, $billing, $isAllSelected);
 
 			$result = $queryBuilder->getQuery()->iterate();
 			foreach ($result as $entity) {

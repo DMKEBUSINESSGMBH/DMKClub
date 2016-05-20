@@ -27,6 +27,10 @@ class MemberFeeCorrectionAction extends AbstractMassAction {
 			$options['route'] = 'dmkclub_member_feecorrection_massaction';
 		}
 
+		if (empty($options['datagrid'])) {
+			$options['datagrid'] = 'dmkclub-memberfees-grid-billing';
+		}
+
 		if (empty($options['route_parameters'])) {
 			$options['route_parameters'] = [];
 		}

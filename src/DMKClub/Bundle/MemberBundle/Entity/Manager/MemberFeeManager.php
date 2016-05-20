@@ -69,4 +69,10 @@ class MemberFeeManager implements ContainerAwareInterface {
 	public function getMemberFeeRepository() {
 		return $this->em->getRepository('DMKClubMemberBundle:MemberFee');
 	}
+	/**
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\Repository\MemberBillingRepository
+	 */
+	public function getMemberBillingRepository() {
+		return $this->em->getRepository('DMKClubMemberBundle:MemberBilling');
+	}
 }

@@ -11,10 +11,10 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 class MemberFeeRepository extends EntityRepository {
 
 	/**
-	 * @param array                $ids
-	 * @param MemberBilling        $user
+	 * @param array      $ids
+	 * @param MemberBilling        $billingId
 	 * @param string|string[]|null $folderType
-	 * @param bool                 $isAllSelected
+	 * @param bool       $isAllSelected
 	 *
 	 * @return QueryBuilder
 	 */
@@ -29,7 +29,6 @@ class MemberFeeRepository extends EntityRepository {
 		if (!$isAllSelected) {
 			$this->applyIdFilter($queryBuilder, $ids);
 		}
-
 		return $queryBuilder;
 	}
 
