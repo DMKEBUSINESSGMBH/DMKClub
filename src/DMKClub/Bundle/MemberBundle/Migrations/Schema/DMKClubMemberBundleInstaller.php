@@ -32,7 +32,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 	 */
 	public function getMigrationVersion()
 	{
-	    return 'v1_5';
+	    return 'v1_0';
 	}
 
 	/**
@@ -186,10 +186,11 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$table->addColumn('member_fee', 'integer', ['notnull' => false]);
 		$table->addColumn('quantity', 'float', ['notnull' => false]);
 		$table->addColumn('unit', 'string', ['notnull' => false, 'length' => 255]);
+		$table->addColumn('flag', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('description', 'string', ['notnull' => false, 'length' => 255]);
-		$table->addColumn('price_single', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-		$table->addColumn('price_total', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-		$table->addColumn('tax_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+		$table->addColumn('price_single', 'integer', ['notnull' => false]);
+		$table->addColumn('price_total', 'integer', ['notnull' => false]);
+		$table->addColumn('tax_amount', 'integer', ['notnull' => false]);
 		$table->addColumn('sort_order', 'integer', []);
 		$table->setPrimaryKey(['id']);
 		$table->addIndex(['member_fee'], 'IDX_1ACE617A7ED44EE', []);

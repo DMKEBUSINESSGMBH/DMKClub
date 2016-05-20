@@ -72,6 +72,13 @@ class MemberFeePosition extends ExtendMemberFeePosition {
 	/**
 	 * @var string
 	 *
+	 * @ORM\Column(name="flag", type="string", length=255, nullable=true)
+	 */
+	private $flag;
+
+	/**
+	 * @var string
+	 *
 	 * @ORM\Column(name="unit", type="string", length=255, nullable=true)
 	 */
 	private $unit;
@@ -155,6 +162,13 @@ class MemberFeePosition extends ExtendMemberFeePosition {
 	  return $this;
 	}
 
+	public function getFlag() {
+		return $this->flag;
+	}
+
+	public function setFlag($value) {
+		$this->flag = $value;
+	}
 
 	public function getUnit() {
 	  return $this->unit;
