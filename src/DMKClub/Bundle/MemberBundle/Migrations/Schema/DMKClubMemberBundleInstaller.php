@@ -191,7 +191,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$table->addColumn('price_single', 'integer', ['notnull' => false]);
 		$table->addColumn('price_total', 'integer', ['notnull' => false]);
 		$table->addColumn('tax_amount', 'integer', ['notnull' => false]);
-		$table->addColumn('sort_order', 'integer', []);
+		$table->addColumn('sort_order', 'integer', ['notnull' => false]);
 		$table->setPrimaryKey(['id']);
 		$table->addIndex(['member_fee'], 'IDX_1ACE617A7ED44EE', []);
 	}
