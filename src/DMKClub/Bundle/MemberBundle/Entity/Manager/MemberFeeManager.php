@@ -40,7 +40,7 @@ class MemberFeeManager implements ContainerAwareInterface {
 	 */
 	public function setFeeCorrectionStatus(MemberFee $entity, $enableCorrection = true, $flush = false) {
 		if ($entity->getCorrectionStatus() !== $enableCorrection) {
-			$entity->setCorrectionStatus(MemberFee::CORRECTION_STATUS_OPEN);
+			$entity->setCorrectionStatus($enableCorrection ? MemberFee::CORRECTION_STATUS_OPEN : MemberFee::CORRECTION_STATUS_NONE);
 			if ($flush) {
 				$this->em->flush();
 			}

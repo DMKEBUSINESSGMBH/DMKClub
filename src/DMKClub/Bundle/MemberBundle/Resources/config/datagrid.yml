@@ -323,6 +323,10 @@ datagrid:
                     data_name: m.name
                 priceTotal:
                     data_name: f.priceTotal
+                isActive:
+                    data_name: m.isActive
+                correctionStatus:
+                    data_name: f.correctionStatus
                 createdAt:
                     data_name: f.createdAt
                 updatedAt:
@@ -358,6 +362,12 @@ datagrid:
                 data_identifier: f.id
                 label: dmkclub.member.memberfee.action.mark_feecorrection
                 icon: retweet
+            unmarkfeecorrection:
+                type: unmarkfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.unmark_feecorrection
+                icon: minus
 # ###
 # MemberFee grid in member
 # ###

@@ -10,6 +10,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
+use Doctrine\ORM\Query;
 
 class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 	const MARK = 'MARK';
@@ -57,10 +58,13 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 		$massAction = $args->getMassAction();
 		$options = $massAction->getOptions()->toArray();
 
+ 		$query = $args->getResults()->getSource();
+// 		$query->getQuery()->getAST()->
+
 		$this->entityManager->beginTransaction();
 		try {
 			set_time_limit(0);
- 			$iteration = $this->handleFeeCorrection($options, $data);
+ 			$iteration = $this->handleFeeCorrection($options, $data, $query);
 			$this->entityManager->commit();
 		} catch (\Exception $e) {
 			$this->entityManager->rollback();
@@ -73,16 +77,17 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 	/**
 	 * @param array $options
 	 * @param array $data
+	 * @param Query $query Die Query des Datagrids
 	 * @return int
 	 */
-	protected function handleFeeCorrection($options, $data) {
+	protected function handleFeeCorrection($options, $data, $query) {
 		$markType = $options['mark_type'];
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
 
-		$datagridName = $options['datagrid'];
-		$billingParam = 'billing'; // TODO: make configurable
-		$billingId = $data[$datagridName][$billingParam];
+// 		$datagridName = $options['datagrid'];
+// 		$billingParam = 'billing'; // TODO: make configurable
+// 		$billingId = $data[$datagridName][$billingParam];
 
 		$feeIds = [];
 		if (array_key_exists('values', $data)) {
@@ -90,16 +95,12 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 		}
 		// FIXME: wir benötigen noch den aktuellen memberBilling
 		if ($feeIds || $isAllSelected) {
-			$billing = $this->feeManager->getMemberBillingRepository()->find($billingId);
-			$queryBuilder = $this
-				->feeManager
-				->getMemberFeeRepository()
-				->getMemberFeeBuilderForMassAction($feeIds, $billing, $isAllSelected);
+			$result = $query->iterate();
+			foreach ($result as $row) {
+				/** @var MemberFee $entity */
+				$entity = reset($row);
+				$entity = $this->feeManager->getMemberFeeRepository()->find($entity['id']);
 
-			$result = $queryBuilder->getQuery()->iterate();
-			foreach ($result as $entity) {
-				/** @var EmailUser $entity */
-				$entity = $entity[0];
 				if ($this->securityFacade->isGranted('EDIT', $entity)) {
 					$this->feeManager->setFeeCorrectionStatus($entity, $markType === self::MARK);
 				}
