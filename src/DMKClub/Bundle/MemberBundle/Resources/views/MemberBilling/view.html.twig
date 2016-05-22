@@ -9,11 +9,17 @@
   {% if resource_granted('dmkclub_memberbilling_create') %}
     {{ UI.button({
     		'path' : path('dmkclub_memberbilling_createbills', { id: entity.id }),
-    		'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberbilling.createbills.label'|trans ,
+    		'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberbilling.action.createbills'|trans ,
     		'aCss' : 'btn-primary',
-    		'label' : 'dmkclub.member.memberbilling.createbills.label'|trans
-	}) }}
-  {% endif %}
+    		'label' : 'dmkclub.member.memberbilling.action.createbills'|trans
+		}) }}
+    {{ UI.button({
+    		'path' : path('dmkclub_memberbilling_createcorrections', { id: entity.id }),
+    		'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberbilling.action.createcorrections'|trans ,
+    		'aCss' : 'btn-warning',
+    		'label' : 'dmkclub.member.memberbilling.action.createcorrections'|trans
+		}) }}
+	{% endif %}
 
   {{ UI.cancelButton(path('dmkclub_memberbilling_index')) }}
   {% if resource_granted('EDIT', entity) %}

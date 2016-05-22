@@ -63,10 +63,6 @@ class DefaultProcessor extends AbstractProcessor {
 	{
 		return DefaultProcessorSettingsType::NAME;
 	}
-	public function init(MemberBilling $memberBilling, array $options) {
-		$this->memberBilling = $memberBilling;
-		$this->options = $options;
-	}
 	/* (non-PHPdoc)
 	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::execute()
 	 */
@@ -111,8 +107,10 @@ class DefaultProcessor extends AbstractProcessor {
 		}
 		$this->writeLog("Fee: " . $fee . " from " . $startDate->format('Y-m-d') . ' to '.$endDate->format('Y-m-d'));
 
+		$position->setQuantity(1);
 		$position->setPriceSingle($fee);
 		$position->setPriceTotal($fee);
+		$position->setFlag('FEE');
 		$memberFee->setPriceTotal($fee);
 
 
@@ -142,7 +140,12 @@ class DefaultProcessor extends AbstractProcessor {
 		// currentMonth steht immer auf dem 1. des Monats. Wer in dem
 		// Monat 18 wird, ist also am 1. noch 17 Jahre alt.
 		// Der volle Beitrag gilt erst im Folgemonat
-		$age = $member->getContact()->getBirthday()->diff($currentMonth)->y;
+		if(!$member->getContact())
+			return FALSE;
+		$birthday = $member->getContact()->getBirthday();
+		if(!$birthday)
+			return FALSE;
+		$age = $birthday->diff($currentMonth)->y;
 		//print_r([$currentMonth->format('Y-m-d') => ($age < $ageChild), 'age' => $age ]);
 		return $age < $ageChild;
 	}

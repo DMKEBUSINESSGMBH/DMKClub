@@ -37,7 +37,6 @@ dmkclub:
           fee_total.label:     Gesamtsumme
           start_date.label:    Startdatum
           end_date.label:      Enddatum
-          createbills.label:   Abrechnung starten
           processor.label:     Prozessor
           processor_config.label: Prozessor Einstellung
           fee.label:           Mitgliedsbeitrag
@@ -49,6 +48,8 @@ dmkclub:
           data_channel.label: Kanal
           block.processor_settings: Einstellungen
           message.saved:        Einstellungen gespeichert
+          action.createbills:   Abrechnung starten
+          action.createcorrections:   Korrektur starten
         memberfee:
           entity_label:        Mitgliedsbeitrag
           entity_plural_label: Mitgliedsbeiträge

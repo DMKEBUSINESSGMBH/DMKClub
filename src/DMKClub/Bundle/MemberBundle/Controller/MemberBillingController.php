@@ -123,14 +123,29 @@ class MemberBillingController extends Controller
 	 * @AclAncestor("dmkclub_memberbilling_create")
 	 * @Template
 	 */
-	public function createBillsAction(MemberBilling $entity)
-	{
+	public function createBillsAction(MemberBilling $entity) {
 		// Info an den Manager übergeben
 		$ret = $this->get('dmkclub_member.memberbilling.manager')->startAccounting($entity);
 
 		$this->get('session')
 			->getFlashBag()
 			->add('success', $this->get('translator')->trans('Auswertung gestartet: ' . print_r($ret, true)));
+		return new RedirectResponse(
+				$this->generateUrl('dmkclub_memberbilling_view', ['id' => $entity->getId()]));
+	}
+
+	/**
+	 * @Route("/recreatecorrections/{id}", name="dmkclub_memberbilling_createcorrections", requirements={"id"="\d+"})
+	 * @AclAncestor("dmkclub_memberbilling_create")
+	 * @Template
+	 */
+	public function createCorrectionsAction(MemberBilling $entity) {
+		// Info an den Manager übergeben
+		$ret = $this->get('dmkclub_member.memberbilling.manager')->startCorrections($entity);
+
+		$this->get('session')
+		->getFlashBag()
+		->add('success', $this->get('translator')->trans('Korrektur gestartet: ' . print_r($ret, true)));
 		return new RedirectResponse(
 				$this->generateUrl('dmkclub_memberbilling_view', ['id' => $entity->getId()]));
 	}
