@@ -13,3 +13,4 @@ dmkclub:
 dmkclub.basics.menu.twigtemplate_list.description: Manage twig templates for PDF generation
 dmkclub.basics.label.yes: Yes
 dmkclub.basics.label.no: No
+dmkclub.form.choose: Please choose

@@ -50,6 +50,7 @@ dmkclub:
           age_child.label:      max Age for child fee
           member_fees.label:    Member fees
           segment.label:  Segment
+          template.label:  PDF Template
           organization.label:  Organization
           data_channel.label: Data channel
           block.processor_settings: Settings

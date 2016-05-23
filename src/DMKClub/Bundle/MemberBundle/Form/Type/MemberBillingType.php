@@ -78,7 +78,7 @@ class MemberBillingType extends AbstractType {
 		// tags removed in 1.9
 		// $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
 
-		// TODO: Add Member-List Segment
+		// Add Member-List Segment
 		$builder->add(
 				'segment',
 				'dmkclub_member_segment_select_type',
@@ -88,6 +88,15 @@ class MemberBillingType extends AbstractType {
 						'entities' => [
 								'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
 						],
+				]
+		);
+
+		$builder->add(
+				'template',
+				'dmkclub_basics_twigtemplate_select',
+				[
+						'label' => 'dmkclub.member.memberbilling.template.label',
+						'required' => false,
 				]
 		);
 

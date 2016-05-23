@@ -15,11 +15,12 @@ Wird in der Detailansicht der Abrechnung verwendet
             {{ UI.renderProperty('dmkclub.member.memberbilling.name.label'|trans, entity.name) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.end_date.label'|trans, entity.endDate ? entity.endDate|oro_format_date : null) }}
-            {{ UI.renderProperty('dmkclub.member.memberbilling.processor.label'|trans, entity.processor) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.segment.label'|trans, entity.segment ? entity.segment.name : null ) }}
         </div>
         <div class="responsive-block">
-	          {{ entityConfig.renderDynamicFields(entity) }}
+            {{ UI.renderProperty('dmkclub.member.memberbilling.processor.label'|trans, entity.processor) }}
+        		{{ UI.renderProperty('dmkclub.member.memberbilling.template.label'|trans, entity.template ? entity.template.name : null ) }}
+        		{{ entityConfig.renderDynamicFields(entity) }}
           </div>
     </div>
 </div>

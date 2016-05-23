@@ -200,6 +200,13 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	protected $segment;
 
 	/**
+	 * @var TwigTemplate
+	 * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate")
+	 * @ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $template;
+
+	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
 	 * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
@@ -400,6 +407,15 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	public function setSegment($segment) {
 	    $this->segment = $segment;
 	    return $this;
+	}
+
+	public function getTemplate() {
+		return $this->template;
+	}
+
+	public function setTemplate($value) {
+		$this->template = $value;
+		return $this;
 	}
 
 	/**

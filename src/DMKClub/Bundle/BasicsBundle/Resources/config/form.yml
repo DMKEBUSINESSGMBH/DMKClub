@@ -1,12 +1,13 @@
 parameters:
-    dmkclub_basics.twigtemplate.form.type.class: DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateType
-    dmkclub_basics.twigtemplate.form.handler.class: DMKClub\Bundle\BasicsBundle\Form\Handler\TwigTemplateHandler
+    dmkclub_basics.form.type.twigtemplate.class:        DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateType
+    dmkclub_basics.form.type.twigtemplate_select.class: DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateSelectType
+    dmkclub_basics.form.twigtemplate.handler.class:     DMKClub\Bundle\BasicsBundle\Form\Handler\TwigTemplateHandler
 services:
 # ####
 # FormTypes
 # ####
     dmkclub_basics.twigtemplate.form.type:
-        class: "%dmkclub_basics.twigtemplate.form.type.class%"
+        class: "%dmkclub_basics.form.type.twigtemplate.class%"
         arguments:
             - "@translator"
         tags:
@@ -25,9 +26,18 @@ services:
 # FormHandler
 # ####
     dmkclub_basics.twigtemplate.form.handler:
-        class: "%dmkclub_basics.twigtemplate.form.handler.class%"
+        class: "%dmkclub_basics.form.twigtemplate.handler.class%"
         scope: request
         arguments:
             - "@dmkclub_basics.twigtemplate.form"
             - "@request"
             - "@doctrine.orm.entity_manager"
+
+# ####
+# FormWidgets
+# ####
+
+    dmkclub_basics.form.type.twigtemplate_select:
+        class: "%dmkclub_basics.form.type.twigtemplate_select.class%"
+        tags:
+            - { name: form.type, alias: "dmkclub_basics_twigtemplate_select" }
