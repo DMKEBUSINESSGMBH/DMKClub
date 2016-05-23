@@ -13,6 +13,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TwigTemplate
@@ -92,6 +93,38 @@ class TwigTemplate {
 	 * )
 	 */
 	protected $template;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="orientation", type="string", length=50, nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	private $orientation = 'P';
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="page_format", type="text")
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	private $pageFormat;
+
 
 	/**
 	 * @var \DateTime $createdAt
@@ -210,6 +243,51 @@ class TwigTemplate {
 	public function getTemplate()
 	{
 		return $this->template;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPageFormat() {
+		return $this->pageFormat;
+	}
+
+	/**
+	 * @return mixed either string or array
+	 */
+	public function getPageFormatStructured() {
+		try {
+			$value = Yaml::parse($this->getPageFormat());
+		}
+		catch (ParseException $e) {
+			// nothing todo
+			$value = $this->getPageFormat();
+		}
+		return $value;
+	}
+
+	/**
+	 *
+	 * @param mixed $value either string or array
+	 */
+	public function setPageFormatStructured($value) {
+		if(is_array($value)) {
+			$value = Yaml::dump($value);
+		}
+		$this->setPageFormat($value);
+	}
+	public function setPageFormat($value) {
+		$this->pageFormat = $value;
+		return $this;
+	}
+
+	public function getOrientation() {
+		return $this->orientation;
+	}
+
+	public function setOrientation($value) {
+		$this->orientation = $value;
+		return $this;
 	}
 
 	/**

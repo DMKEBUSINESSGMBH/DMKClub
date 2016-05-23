@@ -48,6 +48,8 @@ class DMKClubBasicsBundleInstaller implements Installation
 		$table->addColumn('template', 'text', []);
 		$table->addColumn('created_at', 'datetime', []);
 		$table->addColumn('updated_at', 'datetime', []);
+		$table->addColumn('orientation', 'string', ['notnull' => false, 'length' => 50]);
+		$table->addColumn('page_format', 'text', []);
 		$table->setPrimaryKey(['id']);
 		$table->addIndex(['user_owner_id'], 'IDX_95E3EB829EB185F9', []);
 		$table->addIndex(['organization_id'], 'IDX_95E3EB8232C8A3DE', []);

@@ -10,6 +10,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TwigTemplateType extends AbstractType {
 
@@ -49,6 +50,19 @@ class TwigTemplateType extends AbstractType {
 					'wysiwyg_options' => [
 						'height'     => '250px'
 					]
+				)
+			)
+			->add('orientation', 'choice', array(
+					'label' => 'dmkclub.basics.twigtemplate.orientation.label',
+					'choices' => array(
+							'P' => 'Portrait',
+							'L' => 'Landscape',
+					)
+				)
+			)
+			->add('pageFormat', 'textarea', array(
+					'required' => true,
+					'label' => 'dmkclub.basics.twigtemplate.page_format.label',
 				)
 			)
 			->add('owner')

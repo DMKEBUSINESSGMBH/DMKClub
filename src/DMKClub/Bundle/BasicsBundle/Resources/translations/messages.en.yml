@@ -8,7 +8,10 @@ dmkclub:
           owner.label:         Owner
           name.label:          Name
           template.label:      Template
+          orientation.label:   Orientation
+          page_format.label:   Page format
           organization.label:  Organization
+          message.saved:       Saved
         
 dmkclub.basics.menu.twigtemplate_list.description: Manage twig templates for PDF generation
 dmkclub.basics.label.yes: Yes
