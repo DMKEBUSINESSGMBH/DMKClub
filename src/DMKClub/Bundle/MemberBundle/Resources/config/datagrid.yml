@@ -256,11 +256,16 @@ datagrid:
                 select:
                     - f.id
                     - f.priceTotal/100 As priceTotal
+                    - f.payedTotal/100 As payedTotal
                     - m.id as mid
                     - m.memberCode
                     - m.name
                     - f.correctionStatus
                     - m.isActive
+                    - >
+                        (SELECT CASE WHEN p.flag IS NOT NULL THEN 1 ELSE 0 END 
+                        FROM DMKClubMemberBundle:MemberFeePosition p 
+                        WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
                     - f.createdAt
                     - f.updatedAt
                 from:
@@ -285,11 +290,17 @@ datagrid:
             correctionStatus:
                 label:         dmkclub.member.memberfee.correction_status.label
                 frontend_type: boolean
+            corrected:
+                label:         dmkclub.member.memberfee.corrected.label
+                frontend_type: boolean
             isActive:
                 label:         dmkclub.member.is_active.label
                 frontend_type: boolean
             priceTotal:
                 label:         dmkclub.member.memberfee.price_total.label
+                frontend_type: currency
+            payedTotal:
+                label:         dmkclub.member.memberfee.payed_total.label
                 frontend_type: currency
             createdAt:
                 label:         oro.ui.created_at
@@ -323,10 +334,14 @@ datagrid:
                     data_name: m.name
                 priceTotal:
                     data_name: f.priceTotal
+                payedTotal:
+                    data_name: f.payedTotal
                 isActive:
                     data_name: m.isActive
                 correctionStatus:
                     data_name: f.correctionStatus
+                corrected:
+                    data_name: corrected
                 createdAt:
                     data_name: f.createdAt
                 updatedAt:
@@ -379,8 +394,13 @@ datagrid:
                 select:
                     - f.id
                     - f.priceTotal/100 As priceTotal
+                    - f.payedTotal/100 As payedTotal
                     - b.id as bid
                     - b.name
+                    - >
+                        (SELECT CASE WHEN p.flag IS NOT NULL THEN 1 ELSE 0 END 
+                        FROM DMKClubMemberBundle:MemberFeePosition p 
+                        WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
                     - f.createdAt
                     - f.updatedAt
                 from:
@@ -391,6 +411,8 @@ datagrid:
                 join:
                     left:
                         - { join: f.billing, alias: b }
+                groupBy:  f.id
+                
             bind_parameters:
                 - member
         columns:
@@ -403,9 +425,16 @@ datagrid:
             priceTotal:
                 label:         dmkclub.member.memberfee.price_total.label
                 frontend_type: currency
+            corrected:
+                label:         dmkclub.member.memberfee.corrected.label
+                frontend_type: boolean
+            payedTotal:
+                label:         dmkclub.member.memberfee.payed_total.label
+                frontend_type: currency
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
+                renderable:    false
             updatedAt:
                 label:         oro.ui.updated_at
                 frontend_type: datetime
@@ -425,6 +454,8 @@ datagrid:
                     data_name: b.name
                 priceTotal:
                     data_name: f.priceTotal
+                payedTotal:
+                    data_name: f.payedTotal
                 createdAt:
                     data_name: f.createdAt
                 updatedAt:
@@ -444,6 +475,25 @@ datagrid:
                     data_name: f.updatedAt
                     enabled: false
         actions:
+            delete:
+                type:         delete
+                acl_resource: dmkclub_member_memberfee_delete
+                label:        oro.grid.action.delete
+                icon:         trash
+                link:         delete_link
+        mass_actions:
+            markfeecorrection:
+                type: markfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.mark_feecorrection
+                icon: retweet
+            unmarkfeecorrection:
+                type: unmarkfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.unmark_feecorrection
+                icon: minus
 
 # ###
 # MemberFeeDiscount grid in member
