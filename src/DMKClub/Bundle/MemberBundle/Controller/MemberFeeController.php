@@ -16,6 +16,7 @@ use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
 
 /**
  * @Route("/memberfee")
@@ -46,6 +47,40 @@ class MemberFeeController extends Controller {
 	public function createAction()
 	{
 		return $this->update(new MemberFee());
+	}
+	/**
+	 * Create pdf
+	 * @Route("/pdf/{id}", name="dmkclub_memberfee_createpdf", requirements={"id"="\d+"}, defaults={"id"=0})
+	 * @AclAncestor("dmkclub_memberfee_view")
+	 * @Template("DMKClubMemberBundle:MemberFee:pdf.html.twig")
+	 */
+	public function createPDFAction(MemberFee $entity) {
+		$responseData = [
+				'saved'  => false
+		];
+
+		/* @var $pdfManager \DMKClub\Bundle\BasicsBundle\PDF\Manager */
+		$pdfManager = $this->container->get('dmkclub_basics.pdf.manager');
+		$twigTemplate = $entity->getBilling()->getTemplate();
+		$outputFormat = 'pdf';
+		$fileName   = $this->getFilesystemOperator()->generateTemporaryFileName($entity->getId(), $outputFormat);
+		$pdfManager->createPdf($twigTemplate, $fileName, ['entity' => $entity]);
+
+		$url = $this->get('router')->generate(
+				'oro_importexport_export_download',
+				['fileName' => basename($fileName)]
+		);
+
+		$responseData['url'] = $url;
+		$responseData['saved'] = true;
+		return $responseData;
+	}
+
+	/**
+	 * @return FileSystemOperator
+	 */
+	protected function getFilesystemOperator() {
+		return $this->get('oro_importexport.file.file_system_operator');
 	}
 	/**
 	 * Update memberfee form
@@ -108,6 +143,7 @@ class MemberFeeController extends Controller {
 
 	/**
 	 * @Route("/{gridName}/massAction/{actionName}", name="dmkclub_member_feecorrection_massaction")
+	 * @AclAncestor("dmkclub_memberfee_update")
 	 *
 	 * @param string $gridName
 	 * @param string $actionName

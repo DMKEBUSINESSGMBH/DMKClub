@@ -1,0 +1,23 @@
+<div class="widget-content">
+    <div class="form-container">
+    {% if saved %}
+       <script type="text/javascript">
+        require([
+            'orotranslation/js/translator',
+            'oroui/js/widget-manager',
+            'oroui/js/messenger',
+            'oroui/js/mediator'
+        ],
+        function(__, widgetManager, messenger, mediator) {
+            widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                messenger.notificationMessage('success', __('dmkclub.basics.pdf.export_done') +
+                        ' <a class="no-hash" target="_blank" href="{{ url }}">' + __('dmkclub.basics.pdf.download_file') + '</a>');
+                mediator.trigger('widget_success:' + widget.getAlias());
+                mediator.trigger('widget_success:' + widget.getWid());
+                widget.remove();
+            });
+        });
+        </script>
+    {% endif %}
+    </div>
+ </div>
