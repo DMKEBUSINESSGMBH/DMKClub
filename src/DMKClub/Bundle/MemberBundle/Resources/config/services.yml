@@ -20,6 +20,8 @@ parameters:
     dmkclub_member.memberbilling.processor_default.class:  DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor
     dmkclub_member.memberbilling.processor_simple.class:   DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor
 
+    dmkclub_member.memberfee.pdf.simplegenerator.class:    DMKClub\Bundle\MemberBundle\Accounting\PDF\SimpleMemberFeePdf
+
 services:
     dmkclub_member.memberbilling.manager:
         class:     "%dmkclub_member.memberbilling.manager.class%"
@@ -79,3 +81,10 @@ services:
         tags:
             - { name: dmkclub_member.billingprocessor }
 
+
+    dmkclub_member.memberfee.pdf.simplegenerator:
+        class: "%dmkclub_member.memberfee.pdf.simplegenerator.class%"
+        arguments:
+            - "@white_october.tcpdf"
+        tags:
+            - { name: dmkclub_basics.pdfgenerator }

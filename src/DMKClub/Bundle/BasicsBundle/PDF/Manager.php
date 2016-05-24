@@ -58,7 +58,7 @@ class Manager {
 		// Zuerst das HTML erzeugen
 		$html = $this->twig->render($twigTemplate->getTemplate(), $context);
 
-		// TODO: mit Daten aus Template initialisieren
+		// mit Daten aus Template initialisieren
 		$orientation = $twigTemplate->getOrientation() ? $twigTemplate->getOrientation() : 'P';
 		// Format kann auch ein assoziatives Array sein.
 		$pageFormat = $twigTemplate->getPageFormat() ? $twigTemplate->getPageFormatStructured() : 'A4';
