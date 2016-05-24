@@ -370,6 +370,13 @@ datagrid:
                 label:        oro.grid.action.delete
                 icon:         trash
                 link:         delete_link
+            pdf:
+                type: dmkgetpdf
+                acl_resource: dmkclub_memberfee_view
+                label: PDF
+                icon: file-alt
+                link: pdf_link
+                rowAction: true
         mass_actions:
             markfeecorrection:
                 type: markfeecorrection

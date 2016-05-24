@@ -17,6 +17,7 @@ use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
+use FOS\RestBundle\Util\Codes;
 
 /**
  * @Route("/memberfee")
@@ -56,7 +57,7 @@ class MemberFeeController extends Controller {
 	 */
 	public function createPDFAction(MemberFee $entity) {
 		$responseData = [
-				'saved'  => false
+				'url'  => false
 		];
 
 		/* @var $pdfManager \DMKClub\Bundle\BasicsBundle\PDF\Manager */
@@ -64,16 +65,21 @@ class MemberFeeController extends Controller {
 		$twigTemplate = $entity->getBilling()->getTemplate();
 		$outputFormat = 'pdf';
 		$fileName   = $this->getFilesystemOperator()->generateTemporaryFileName($entity->getId(), $outputFormat);
-		$pdfManager->createPdf($twigTemplate, $fileName, ['entity' => $entity]);
+		try {
+			$pdfManager->createPdf($twigTemplate, $fileName, ['entity' => $entity]);
+			$url = $this->get('router')->generate(
+					'oro_importexport_export_download',
+					['fileName' => basename($fileName)]
+			);
+			$responseData['url'] = $url;
+		}
+		catch(Exception $e) {
+			$responseData['message'] = $e->getMessage();
+		}
 
-		$url = $this->get('router')->generate(
-				'oro_importexport_export_download',
-				['fileName' => basename($fileName)]
-		);
+		$response = new JsonResponse($responseData, Codes::HTTP_OK);
 
-		$responseData['url'] = $url;
-		$responseData['saved'] = true;
-		return $responseData;
+		return $response;
 	}
 
 	/**

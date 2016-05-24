@@ -1,0 +1,4 @@
+dmkclub:
+    basics:
+        pdf.export_done: PDF wurde erzeugt
+        pdf.download_file: PDF Datei herunterladen
