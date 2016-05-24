@@ -10,6 +10,11 @@ use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
  * @package DMKClub\Bundle\DMKClubBasicsBundle\PDF
  */
 class Manager {
+	/**
+	 * @var array
+	 */
+	protected $generators = [];
+
 
 	/** @var \TCPDF */
 	protected $tcpdf;
@@ -29,7 +34,27 @@ class Manager {
 	 * @return string filename
 	 */
 	public function createPdf(TwigTemplate $twigTemplate, $filename, array $context = array()) {
+		if($generatorName = $twigTemplate->getGenerator()) {
+			// Call generator
+			$generator = $this->getGeneratorByName($generatorName);
+			$generator->execute($twigTemplate, $filename, $context);
 
+		}
+		else {
+			$this->generateByTemplate($twigTemplate, $filename, $context);
+		}
+
+		return $filename;
+
+	}
+	/**
+	 *
+	 * @param TwigTemplate $twigTemplate
+	 * @param string $filename
+	 * @param array $context
+	 * @return string filename
+	 */
+	public function generateByTemplate(TwigTemplate $twigTemplate, $filename, array $context = array()) {
 		// Zuerst das HTML erzeugen
 		$html = $this->twig->render($twigTemplate->getTemplate(), $context);
 
@@ -50,9 +75,9 @@ class Manager {
 		);
 
 		$pdf->SetAuthor('dmkclub');
-// 		$pdf->SetTitle('Prueba TCPDF');
-// 		$pdf->SetSubject('Your client');
-//		$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+		// 		$pdf->SetTitle('Prueba TCPDF');
+		// 		$pdf->SetSubject('Your client');
+		//		$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 		$pdf->setFontSubsetting(true);
 
 		$pdf->SetFont('helvetica', '', 11, '', true);
@@ -62,8 +87,58 @@ class Manager {
 		$pdf->lastPage();
 
 		$pdf->Output($filename, 'F');
-		return $filename;
-
 	}
+
+
+
+	/**
+	 * @param GeneratorInterface $generator
+	 */
+	public function addGenerator(GeneratorInterface $generator)
+	{
+		$this->generators[$generator->getName()] = $generator;
+	}
+
+	/**
+	 * @return GeneratorInterface[]
+	 */
+	public function getGenerators()
+	{
+		return $this->generators;
+	}
+
+	/**
+	 * @param string $name
+	 * @return GeneratorInterface
+	 */
+	public function getGeneratorByName($name)
+	{
+		if ($this->hasGenerator($name)) {
+			return $this->generators[$name];
+		} else {
+			throw new \RuntimeException(sprintf('Generator >%s< is unknown', $name));
+		}
+	}
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function hasGenerator($name) {
+		return isset($this->generators[$name]);
+	}
+
+	/**
+	 * Auswahlliste für Form
+	 * @return array
+	 */
+	public function getVisibleGeneratorChoices() {
+		$choices = [];
+		foreach ($this->getGenerators() as $generator) {
+			$choices[$generator->getName()] = $generator->getLabel();
+		}
+		return $choices;
+	}
+
 }
 

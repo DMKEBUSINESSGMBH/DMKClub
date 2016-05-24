@@ -1,3 +1,12 @@
+dmkclub:
+    basics:
+        twigtemplate:
+          entity_label:        Twig Template
+          entity_plural_label: Twig Templates
+          entity_description:  Represents Twig Templates for PDF generation
+          id.label:            Id
+          generator.label:     PDF Generator
+
 dmkclub.basics.label.yes: Ja
 dmkclub.basics.label.no: Nein
 "Addresses": Anschriften

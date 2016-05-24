@@ -7,6 +7,7 @@ dmkclub:
           id.label:            Id
           owner.label:         Owner
           name.label:          Name
+          generator.label:     PDF Generator
           template.label:      Template
           orientation.label:   Orientation
           page_format.label:   Page format

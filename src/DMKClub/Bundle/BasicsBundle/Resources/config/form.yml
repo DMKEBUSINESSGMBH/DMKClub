@@ -10,6 +10,7 @@ services:
         class: "%dmkclub_basics.form.type.twigtemplate.class%"
         arguments:
             - "@translator"
+            - "@dmkclub_basics.pdf.manager"
         tags:
             - { name: form.type, alias: dmkclub_basics_twigtemplate }
 # ####

@@ -11,18 +11,21 @@ use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
 class TwigTemplateType extends AbstractType {
 
 	/** @var TranslatorInterface */
 	protected $translator;
+	protected $pdfManager;
 
 	/**
 	 * @param ConfigManager       $configManager
 	 * @param TranslatorInterface $translator
 	 */
-	public function __construct(TranslatorInterface $translator) {
+	public function __construct(TranslatorInterface $translator, Manager $pdfManager) {
 		$this->translator = $translator;
+		$this->pdfManager = $pdfManager;
 	}
 
 	/**
@@ -41,7 +44,7 @@ class TwigTemplateType extends AbstractType {
 		$builder
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.basics.twigtemplate.name.label'))
 			->add('template', 'oro_rich_text', array(
-					'required' => true,
+					'required' => false,
 					'label' => 'dmkclub.basics.twigtemplate.template.label',
 					'attr'            => [
 						'class'                => 'template-editor',
@@ -51,6 +54,13 @@ class TwigTemplateType extends AbstractType {
 						'height'     => '250px'
 					]
 				)
+			)
+			->add('generator', 'choice', array(
+					'required' => false,
+					'label' => 'dmkclub.basics.twigtemplate.generator.label',
+					'choices' => $this->pdfManager->getVisibleGeneratorChoices(),
+					'empty_value' => 'dmkclub.form.choose',
+			)
 			)
 			->add('orientation', 'choice', array(
 					'label' => 'dmkclub.basics.twigtemplate.orientation.label',

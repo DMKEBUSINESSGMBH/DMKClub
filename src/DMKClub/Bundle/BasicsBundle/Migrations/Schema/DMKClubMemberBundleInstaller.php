@@ -45,6 +45,7 @@ class DMKClubBasicsBundleInstaller implements Installation
 		$table->addColumn('organization_id', 'integer', ['notnull' => false]);
 		$table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
 		$table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);
+		$table->addColumn('generator', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('template', 'text', []);
 		$table->addColumn('created_at', 'datetime', []);
 		$table->addColumn('updated_at', 'datetime', []);

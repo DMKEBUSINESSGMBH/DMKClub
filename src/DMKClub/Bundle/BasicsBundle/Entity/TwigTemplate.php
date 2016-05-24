@@ -96,6 +96,31 @@ class TwigTemplate {
 
 	/**
 	 * @var string
+	 * Generatorklasse für PDF-Dateien
+	 *
+	 * @ORM\Column(name="generator", type="string", length=255, nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	private $generator;
+
+	public function getGenerator() {
+	  return $this->generator;
+	}
+
+	public function setGenerator($value) {
+	  $this->generator = $value;
+	}
+
+	/**
+	 * @var string
 	 *
 	 * @ORM\Column(name="orientation", type="string", length=50, nullable=true)
 	 * @Soap\ComplexType("string")
