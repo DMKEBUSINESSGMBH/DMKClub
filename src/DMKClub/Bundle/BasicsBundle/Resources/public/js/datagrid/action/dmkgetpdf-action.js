@@ -47,7 +47,6 @@ define([
          */
         execute: function() {
             this._confirmationExecutor(_.bind(this.executePdfAction, this));
-        	console.info('Test');
         },
         executePdfAction: function() {
             $.ajax({
