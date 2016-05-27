@@ -67,8 +67,9 @@ define([
             var type = data.url ? 'success' : 'error';
             var message = data.message || __(this.messages.error);
             if (data.url) {
+            	var filename = data.url.split('/').reverse()[0];
             	message = __('dmkclub.basics.pdf.export_done') +
-                ' <a class="no-hash" target="_blank" href="'+ data.url + '">' + __('dmkclub.basics.pdf.download_file') + '</a>';
+                ' <a class="no-hash" target="_blank" href="'+ data.url + '">' + filename + '</a>';
             }
         	mediator.execute('showMessage', type, message);
         }

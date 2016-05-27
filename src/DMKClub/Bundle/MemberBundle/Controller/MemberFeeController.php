@@ -18,6 +18,7 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
 use FOS\RestBundle\Util\Codes;
+use DMKClub\Bundle\BasicsBundle\Utility\Strings;
 
 /**
  * @Route("/memberfee")
@@ -64,7 +65,7 @@ class MemberFeeController extends Controller {
 		$pdfManager = $this->container->get('dmkclub_basics.pdf.manager');
 		$twigTemplate = $entity->getBilling()->getTemplate();
 		$outputFormat = 'pdf';
-		$fileName   = $this->getFilesystemOperator()->generateTemporaryFileName($entity->getId(), $outputFormat);
+		$fileName   = $this->getFilesystemOperator()->generateTemporaryFileName($this->createFilePrefix($entity), $outputFormat);
 		try {
 			$pdfManager->createPdf($twigTemplate, $fileName, ['entity' => $entity]);
 			$url = $this->get('router')->generate(
@@ -82,6 +83,19 @@ class MemberFeeController extends Controller {
 		return $response;
 	}
 
+	/**
+	 * Prefix für Name der PDF-Datei
+	 * @param MemberFee $entity
+	 * @return string
+	 */
+	protected function createFilePrefix(MemberFee $entity) {
+		$prefix = [];
+		$prefix[] = $entity->getBilling()->getId();
+		$prefix[] = $entity->getId();
+		$prefix[] = $entity->getMember()->getName();
+		$prefix = implode('_', $prefix);
+		return Strings::sanatizeFilename($prefix);
+	}
 	/**
 	 * @return FileSystemOperator
 	 */
