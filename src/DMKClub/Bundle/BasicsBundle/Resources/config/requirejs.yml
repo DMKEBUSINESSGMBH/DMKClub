@@ -2,3 +2,5 @@ config:
     paths:
         # Der Key wird in der URI verwendet und auf die Datei in Value gerouted
         'oro/datagrid/action/dmkgetpdf-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkgetpdf-action.js'
+        'oro/datagrid/action/dmkexportpdf-mass-action': 'bundles/dmkclubmember/js/datagrid/action/dmkexportpdf-mass-action.js'
+        
