@@ -6,6 +6,9 @@ dmkclub:
             entity_description:  Represents a banking account
             account_owner.label: Kontoinhaber
             bank_name.label: Name der Bank
+        bill:
+            billfor: Rechnung für
+            billnumber.label: Rechnungsnummer
     payment_option:
         sepa_direct_debit: Sepa Bankeinzug
         banktransfer: Überweisung

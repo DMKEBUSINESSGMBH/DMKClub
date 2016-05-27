@@ -57,6 +57,14 @@ dmkclub:
           message.saved: Settings saved
           action.createbills:   Start accounting
           action.createcorrections:   Start correction
+          pdf.salutation.male:   "Dear Mr. "
+          pdf.salutation.female: "Dear Mrs. "
+          pdf.salutation.unknown:   "Dear "
+          pdf.payment.none: "Payment not configured"
+          pdf.payment.cash: "Cash payment"
+          pdf.payment.sepa_direct_debit: "Payment per SEPA direct"
+          pdf.payment.banktransfer: "Bank transfer"
+          pdf.payment.creditcard: "Creditcard"
         memberfee:
           entity_label:        Membership fee
           entity_plural_label: Membership fees

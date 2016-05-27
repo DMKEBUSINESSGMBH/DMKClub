@@ -9,6 +9,9 @@ dmkclub:
             iban.label: IBAN
             bic.label: BIC
             bank_name.label: Bank
+        bill:
+            billfor: Billing for
+            billnumber.label: Bill number
     payment_option:
         sepa_direct_debit: Sepa Direct Debit
         banktransfer: Bank transfer

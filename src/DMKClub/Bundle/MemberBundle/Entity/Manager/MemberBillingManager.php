@@ -75,6 +75,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 		$result = $q->iterate();
 		$hits = 0;
 		$skipped = 0;
+		$limit = 50;
 		$errors = [];
 
 		foreach ($result As $row) {
@@ -94,7 +95,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 			}
 			$existingFee->setCorrectionStatus(MemberFee::CORRECTION_STATUS_NONE);
 			$this->em->persist($existingFee);
-			if(($hits + $skipped) > 10)
+			if(($hits + $skipped) > $limit)
 				break;
 		}
 		$this->em->flush();
@@ -168,6 +169,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 
 		$result = $q->iterate();
 		$hits = 0;
+		$limit = 50;
 		$skipped = 0;
 		$errors = [];
 
@@ -188,7 +190,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 				$errors[] = 'Member '. $member->getId() . ' - ' . $exception->getMessage();
 			}
 			$hits++;
-			if($hits > 10)
+			if($hits > $limit)
 				break;
 		}
 		$this->em->flush();

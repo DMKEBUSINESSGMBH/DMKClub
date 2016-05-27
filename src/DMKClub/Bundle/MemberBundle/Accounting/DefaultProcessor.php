@@ -107,6 +107,13 @@ class DefaultProcessor extends AbstractProcessor {
 		}
 		$this->writeLog("Fee: " . $fee . " from " . $startDate->format('Y-m-d') . ' to '.$endDate->format('Y-m-d'));
 
+		$descriptionFeePosition = 'Beitrag vom [STARTDATE] bis [ENDDATE]';
+		$dateFormat = 'd.m.Y';
+		$descriptionFeePosition = str_replace('[STARTDATE]', $startDate->format($dateFormat), $descriptionFeePosition);
+		$descriptionFeePosition = str_replace('[ENDDATE]', $endDate->format($dateFormat), $descriptionFeePosition);
+
+
+		$position->setDescription($descriptionFeePosition);
 		$position->setQuantity(1);
 		$position->setPriceSingle($fee);
 		$position->setPriceTotal($fee);
