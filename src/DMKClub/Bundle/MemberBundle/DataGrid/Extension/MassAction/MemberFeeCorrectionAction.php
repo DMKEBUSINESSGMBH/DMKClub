@@ -24,14 +24,12 @@ class MemberFeeCorrectionAction extends AbstractMassAction {
 		}
 
 		if (empty($options['route'])) {
-			$options['route'] = 'dmkclub_member_feecorrection_massaction';
-		}
-
-		if (empty($options['datagrid'])) {
-			$options['datagrid'] = 'dmkclub-memberfees-grid-billing';
+			// Wir nutzen den zentralen Controller von Oro für den Dispatch
+			$options['route'] = 'oro_datagrid_mass_action';
 		}
 
 		if (empty($options['route_parameters'])) {
+			// Das Array muss initialisiert werden, damit die Parameter per JS gesetzt werden
 			$options['route_parameters'] = [];
 		}
 

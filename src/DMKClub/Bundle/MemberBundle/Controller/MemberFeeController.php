@@ -157,37 +157,8 @@ class MemberFeeController extends Controller {
 	 * )
 	 * @Template
 	 */
-	public function viewAction(MemberFee $entity)
-	{
+	public function viewAction(MemberFee $entity) {
 	    return ['entity' => $entity];
 	}
-
-
-	/**
-	 * Method is called from "[un]markfeecorrection" datagrid-massaction.
-	 *
-	 * @Route("/{gridName}/massAction/{actionName}", name="dmkclub_member_feecorrection_massaction")
-	 * @AclAncestor("dmkclub_memberfee_update")
-	 *
-	 * @param string $gridName
-	 * @param string $actionName
-	 *
-	 * @return JsonResponse
-	 */
-	public function feeCorrectionAction($gridName, $actionName)
-	{
-		/** @var MassActionDispatcher $massActionDispatcher */
-		$massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
-
-		$response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $this->getRequest());
-
-		$data = [
-			'successful' => $response->isSuccessful(),
-			'message' => $response->getMessage()
-		];
-
-		return new JsonResponse(array_merge($data, $response->getOptions()));
-	}
-
 
 }

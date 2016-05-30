@@ -24,11 +24,7 @@ class MemberFeeCorrectionUnmarkAction extends AbstractMassAction {
 		}
 
 		if (empty($options['route'])) {
-			$options['route'] = 'dmkclub_member_feecorrection_massaction';
-		}
-
-		if (empty($options['datagrid'])) {
-			$options['datagrid'] = 'dmkclub-memberfees-grid-billing';
+			$options['route'] = 'oro_datagrid_mass_action';
 		}
 
 		if (empty($options['route_parameters'])) {
