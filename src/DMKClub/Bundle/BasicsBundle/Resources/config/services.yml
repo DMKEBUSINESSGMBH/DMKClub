@@ -1,10 +1,20 @@
 parameters:
-    dmkclub_basics.twigtemplate.entity.class:            DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate
-#    dmkclub_basics.twigtemplate.manager.class:           DMKClub\Bundle\BasicsBundle\Entity\Manager\TwigTemplateManager
+    dmkclub_basics.twigtemplate.entity.class:    DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate
+#    dmkclub_basics.twigtemplate.manager.class:   DMKClub\Bundle\BasicsBundle\Entity\Manager\TwigTemplateManager
     dmkclub_basics.pdf.manager.class:            DMKClub\Bundle\BasicsBundle\PDF\Manager
+    dmkclub_basics.job_executor.class:           DMKClub\Bundle\BasicsBundle\Job\JobExecutor
+
 services:
     dmkclub_basics.pdf.manager:
         class: "%dmkclub_basics.pdf.manager.class%"
         arguments:
             - "@white_october.tcpdf"
             - "@twig"
+    dmkclub_basics.job_executor:
+        class: "%dmkclub_basics.job_executor.class%"
+        arguments:
+            - "@akeneo_batch.connectors"
+            - "@akeneo_batch.job_repository"
+            - "@oro_importexport.context_registry"
+            - "@doctrine"
+        lazy: true

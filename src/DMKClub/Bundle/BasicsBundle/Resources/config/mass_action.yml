@@ -13,5 +13,7 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@translator"
+            - "@logger"
+            - "@dmkclub_basics.job_executor"
 #            - "@oro_security.security_facade.link"
             - "@dmkclub_member.memberfee.manager"

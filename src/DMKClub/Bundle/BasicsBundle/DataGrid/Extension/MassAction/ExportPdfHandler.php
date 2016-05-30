@@ -11,6 +11,10 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use Doctrine\ORM\Query;
+use Psr\Log\LoggerInterface;
+use Doctrine\ORM\AbstractQuery;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
 
 class ExportPdfHandler implements MassActionHandlerInterface {
 	const FLUSH_BATCH_SIZE = 100;
@@ -28,6 +32,11 @@ class ExportPdfHandler implements MassActionHandlerInterface {
 	/** @var MemberFeeManager */
 	protected $feeManager;
 
+	/** @var \Psr\Log\LoggerInterface */
+	private $logger;
+	/** @var \DMKClub\Bundle\BasicsBundle\Job\JobExecutor */
+	private $jobExecutor;
+
 	/**
 	 * @param EntityManager $entityManager
 	 * @param TranslatorInterface $translator
@@ -36,10 +45,14 @@ class ExportPdfHandler implements MassActionHandlerInterface {
 	public function __construct(
 			EntityManager $entityManager,
 			TranslatorInterface $translator,
+			LoggerInterface $logger,
+			JobExecutor $jobExecutor,
 			MemberFeeManager $feeManager
 	) {
 		$this->entityManager = $entityManager;
 		$this->translator = $translator;
+		$this->logger = $logger;
+		$this->jobExecutor = $jobExecutor;
 		$this->feeManager = $feeManager;
 	}
 
@@ -50,7 +63,6 @@ class ExportPdfHandler implements MassActionHandlerInterface {
 		$data = $args->getData();
 		$massAction = $args->getMassAction();
 		$options = $massAction->getOptions()->toArray();
-
  		$query = $args->getResults()->getSource();
 // 		$query->getQuery()->getAST()->
 
@@ -77,32 +89,40 @@ class ExportPdfHandler implements MassActionHandlerInterface {
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
 
-		$feeIds = [];
-		if (array_key_exists('values', $data)) {
-			$feeIds = explode(',', $data['values']);
+		$jobData = [
+				'data_identifier' => $options['data_identifier'],
+				'entity_name' => $options['entity_name'],
+		];
+
+		if (array_key_exists('values', $data) && !empty($data['values'])) {
+			$jobData['entity_ids'] = $data['values'];
+			$iteration = count(explode(',', $data['values']));
 		}
-		if ($feeIds || $isAllSelected) {
+		elseif($isAllSelected) {
+			$entityIds = [];
 			$result = $query->iterate();
 			foreach ($result as $row) {
-				/** @var MemberFee $entity */
-				$entity = reset($row);
-				$entity = $this->feeManager->getMemberFeeRepository()->find($entity['id']);
-				// TODO: Batch-Job erstellen
-
-//				$this->entityManager->persist($entity);
-
-				if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
-// 					$this->entityManager->flush();
-// 					$this->entityManager->clear();
-				}
-				$iteration++;
+				$row = reset($row);
+				$entityIds[] = $row['id'];
 			}
+			$jobData['entity_ids'] = implode(',',$entityIds);
 
 //			$this->entityManager->flush();
+			$iteration++;
+		}
+		if(array_key_exists('entity_ids', $jobData)) {
+			$jobType = 'dmkexportpdf';
+			$jobName = 'dmkexportpdf';
+
+		$this->logger->warning("\n----".get_class($this->jobExecutor)."\n\n");
+			//$this->createJobInstance($jobType, $jobName, $jobData);
 		}
 
 		return $iteration;
 	}
+
+
+
 	/**
 	 * @param array $data
 	 * @return bool
