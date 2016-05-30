@@ -51,7 +51,9 @@ class MemberFeeController extends Controller {
 		return $this->update(new MemberFee());
 	}
 	/**
-	 * Create pdf
+	 * Method is called from "dmkgetpdf" datagrid-action.
+	 * Is creates a PDF-File for a single MemberFee and returns a download link.
+	 *
 	 * @Route("/pdf/{id}", name="dmkclub_memberfee_createpdf", requirements={"id"="\d+"}, defaults={"id"=0})
 	 * @AclAncestor("dmkclub_memberfee_view")
 	 * @Template("DMKClubMemberBundle:MemberFee:pdf.html.twig")
@@ -162,6 +164,8 @@ class MemberFeeController extends Controller {
 
 
 	/**
+	 * Method is called from "[un]markfeecorrection" datagrid-massaction.
+	 *
 	 * @Route("/{gridName}/massAction/{actionName}", name="dmkclub_member_feecorrection_massaction")
 	 * @AclAncestor("dmkclub_memberfee_update")
 	 *
@@ -184,4 +188,6 @@ class MemberFeeController extends Controller {
 
 		return new JsonResponse(array_merge($data, $response->getOptions()));
 	}
+
+
 }

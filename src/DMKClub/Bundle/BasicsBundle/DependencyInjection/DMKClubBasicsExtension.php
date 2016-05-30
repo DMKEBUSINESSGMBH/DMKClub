@@ -26,5 +26,6 @@ class DMKClubBasicsExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form.yml');
         $loader->load('action.yml');
+        $loader->load('mass_action.yml');
     }
 }

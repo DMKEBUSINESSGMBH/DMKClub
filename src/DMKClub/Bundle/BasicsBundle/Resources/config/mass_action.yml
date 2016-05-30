@@ -1,0 +1,17 @@
+parameters:
+    dmkclub_basics.mass_action.dmkexportpdf.class:          DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfAction
+    dmkclub_basics.mass_action.dmkexportpdf_handler.class:   DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfHandler
+
+services:
+    dmkclub_basics.datagrid.mass_action.dmkexportpdf:
+        class: "%dmkclub_basics.mass_action.dmkexportpdf.class%"
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: dmkexportpdf }
+    dmkclub_basics.datagrid.mass_action.dmkexportpdf_handler:
+        class: "%dmkclub_basics.mass_action.dmkexportpdf_handler.class%"
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@translator"
+#            - "@oro_security.security_facade.link"
+            - "@dmkclub_member.memberfee.manager"

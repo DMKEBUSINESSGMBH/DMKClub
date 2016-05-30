@@ -13,7 +13,10 @@ dmkclub:
           page_format.label:   Page format
           organization.label:  Organization
           message.saved:       Saved
-        
+
+dmkclub.basics.datagrid.action.success_message: "{0} No entities were exported|{1} One PDF was exported|]1,Inf[ %count% PDFs were exported"
+dmkclub.basics.datagrid.action.exportpdf: Export as PDF
+
 dmkclub.basics.menu.twigtemplate_list.description: Manage twig templates for PDF generation
 dmkclub.basics.label.yes: Yes
 dmkclub.basics.label.no: No
