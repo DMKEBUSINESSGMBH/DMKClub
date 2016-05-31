@@ -616,7 +616,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 * @param MemberFeeDiscount[] $memberFeeDiscounts
 	 */
 	public function setMemberFeeDiscounts($memberFeeDiscounts) {
-		foreach ($memberFeeDiscounts as $memberFee) {
+		foreach ($memberFeeDiscounts as $memberFeeDiscount) {
 			$memberFeeDiscount->setMember($this);
 		}
 		$this->memberFeeDiscounts = $memberFeeDiscounts;

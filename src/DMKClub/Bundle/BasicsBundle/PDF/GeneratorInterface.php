@@ -3,8 +3,6 @@
 namespace DMKClub\Bundle\BasicsBundle\PDF;
 
 
-use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 
 interface GeneratorInterface {

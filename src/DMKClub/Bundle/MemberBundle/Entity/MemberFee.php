@@ -25,6 +25,8 @@ use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFee;
+use DMKClub\Bundle\BasicsBundle\PDF\PdfAwareInterface;
+use DMKClub\Bundle\BasicsBundle\Utility\Strings;
 
 /**
  * Class MemberFee
@@ -58,7 +60,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFee;
  * )
  * @Oro\Loggable
  */
-class MemberFee extends ExtendMemberFee implements Taggable {
+class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface {
 	const CORRECTION_STATUS_NONE = 0;
 	const CORRECTION_STATUS_OPEN = 1;
 	const CORRECTION_STATUS_DONE = 2;
@@ -314,7 +316,7 @@ class MemberFee extends ExtendMemberFee implements Taggable {
 	}
 
 	/**
-	 * @return \DMKClub\Bundle\MemberBundle\MemberBilling
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\MemberBilling
 	 */
 	public function getBilling() {
 		return $this->billing;
@@ -542,4 +544,23 @@ class MemberFee extends ExtendMemberFee implements Taggable {
 	{
 		return (string) $this->getName();
 	}
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\BasicsBundle\PDF\PdfAwareInterface::getTemplate()
+	 */
+	public function getTemplate() {
+		return $this->getBilling()->getTemplate();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\BasicsBundle\PDF\PdfAwareInterface::getFilenamePrefix()
+	 */
+	public function getFilenamePrefix() {
+		$prefix = [];
+		$prefix[] = $this->getBilling()->getId();
+		$prefix[] = $this->getId();
+		$prefix[] = $this->getMember()->getName();
+		$prefix = implode('_', $prefix);
+		return Strings::sanitizeFilename($prefix);
+	}
+
 }

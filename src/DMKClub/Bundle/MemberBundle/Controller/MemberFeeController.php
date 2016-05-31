@@ -65,11 +65,9 @@ class MemberFeeController extends Controller {
 
 		/* @var $pdfManager \DMKClub\Bundle\BasicsBundle\PDF\Manager */
 		$pdfManager = $this->container->get('dmkclub_basics.pdf.manager');
-		$twigTemplate = $entity->getBilling()->getTemplate();
-		$outputFormat = 'pdf';
-		$fileName   = $this->getFilesystemOperator()->generateTemporaryFileName($this->createFilePrefix($entity), $outputFormat);
+
 		try {
-			$pdfManager->createPdf($twigTemplate, $fileName, ['entity' => $entity]);
+			$fileName = $pdfManager->buildPdf($entity);
 			$url = $this->get('router')->generate(
 					'oro_importexport_export_download',
 					['fileName' => basename($fileName)]
@@ -85,19 +83,6 @@ class MemberFeeController extends Controller {
 		return $response;
 	}
 
-	/**
-	 * Prefix für Name der PDF-Datei
-	 * @param MemberFee $entity
-	 * @return string
-	 */
-	protected function createFilePrefix(MemberFee $entity) {
-		$prefix = [];
-		$prefix[] = $entity->getBilling()->getId();
-		$prefix[] = $entity->getId();
-		$prefix[] = $entity->getMember()->getName();
-		$prefix = implode('_', $prefix);
-		return Strings::sanitizeFilename($prefix);
-	}
 	/**
 	 * @return FileSystemOperator
 	 */

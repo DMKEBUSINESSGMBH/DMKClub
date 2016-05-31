@@ -3,6 +3,10 @@ parameters:
 #    dmkclub_basics.twigtemplate.manager.class:   DMKClub\Bundle\BasicsBundle\Entity\Manager\TwigTemplateManager
     dmkclub_basics.pdf.manager.class:            DMKClub\Bundle\BasicsBundle\PDF\Manager
     dmkclub_basics.job_executor.class:           DMKClub\Bundle\BasicsBundle\Job\JobExecutor
+    dmkclub_basics.job.reader.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\ItemReader
+    dmkclub_basics.job.processor.pdf.class:      DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfProcessor
+    dmkclub_basics.job.writer.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfWriter
+    dmkclub_basics.job.writer.filesystem:        "dmkclub_pdfexport"
 
 services:
     dmkclub_basics.pdf.manager:
@@ -10,6 +14,7 @@ services:
         arguments:
             - "@white_october.tcpdf"
             - "@twig"
+            - "@oro_importexport.file.file_system_operator"
     dmkclub_basics.job_executor:
         class: "%dmkclub_basics.job_executor.class%"
         arguments:
@@ -18,3 +23,30 @@ services:
             - "@oro_importexport.context_registry"
             - "@doctrine"
         lazy: true
+
+    dmkclub_basics.job.reader.pdf:
+        class: "%dmkclub_basics.job.reader.pdf.class%"
+        arguments:
+            - "@oro_importexport.context_registry"
+            - "@doctrine.orm.entity_manager"
+        lazy: true
+    dmkclub_basics.job.processor.pdf:
+        class: "%dmkclub_basics.job.processor.pdf.class%"
+        arguments:
+            - "@dmkclub_basics.pdf.manager"
+    dmkclub_basics.job.writer.pdf:
+        class: "%dmkclub_basics.job.writer.pdf.class%"
+        arguments:
+            - "@knp_gaufrette.filesystem_map"
+            - "%dmkclub_basics.job.writer.filesystem%"
+
+
+#knp_gaufrette:
+#    adapters:
+#        pdf_out:
+#            local:
+#                directory: /tmp/
+#    filesystems:
+#        "%dmkclub_basics.job.writer.filesystem%":
+#            adapter:    pdf_out
+#            alias:      pdf_out_filesystem
