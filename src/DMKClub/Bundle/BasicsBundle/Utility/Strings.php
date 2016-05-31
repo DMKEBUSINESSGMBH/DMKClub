@@ -12,7 +12,7 @@ class Strings {
 	 * http://stackoverflow.com/questions/2021624/string-sanitizer-for-filename
 	 * @param string $filename
 	 */
-	public static function sanatizeFilename($filename) {
+	public static function sanitizeFilename($filename) {
 		// Remove anything which isn't a word, whitespace, number
 		// or any of the following caracters -_~,;[]().
 		// If you don't need to handle multi-byte characters

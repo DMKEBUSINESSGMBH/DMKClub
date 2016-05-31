@@ -96,7 +96,7 @@ class MemberFeeController extends Controller {
 		$prefix[] = $entity->getId();
 		$prefix[] = $entity->getMember()->getName();
 		$prefix = implode('_', $prefix);
-		return Strings::sanatizeFilename($prefix);
+		return Strings::sanitizeFilename($prefix);
 	}
 	/**
 	 * @return FileSystemOperator
