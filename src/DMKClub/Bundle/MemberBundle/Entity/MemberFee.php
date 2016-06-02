@@ -40,7 +40,7 @@ use DMKClub\Bundle\BasicsBundle\Utility\Strings;
  *      routeView="dmkclub_memberfee_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-briefcase-md"
+ *              "icon"="icon-money"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

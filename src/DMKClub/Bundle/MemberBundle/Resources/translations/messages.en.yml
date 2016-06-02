@@ -10,6 +10,8 @@ dmkclub:
         account.label:       Account
         name.label:          Name
         member_code.label:   Club ID
+        member_fees.label:   Fees
+        member_fee_discounts.label:   Fee discounts
         is_active.label:     Active member
         isActive.help:       Activate this flag for active players, coaches and officials
         is_honorary.label:   Honorary member

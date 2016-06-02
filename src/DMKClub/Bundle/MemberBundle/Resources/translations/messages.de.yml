@@ -9,6 +9,8 @@ dmkclub:
         account.label:       Account
         name.label:          Name
         member_code.label:   Mitgliedsnummer
+        member_fees.label:   Beiträge
+        member_fee_discounts.label:  Ermäßigungen
         is_active.label:     Aktives Mitglied
         isActive.help:       Das Flag kennzeichnet aktive Spieler, Trainer und Offizielle des Vereins
         is_honorary.label:   Ehrenmitglied

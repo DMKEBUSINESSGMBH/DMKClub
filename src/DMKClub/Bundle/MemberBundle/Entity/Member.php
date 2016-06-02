@@ -129,7 +129,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 *              "auditable"=true
 	 *          },
 	 *          "importexport"={
-	 *              "order"=80
+	 *              "order"=77
 	 *          }
 	 *      }
 	 * )
@@ -159,14 +159,24 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 
 	/**
 	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", mappedBy="member", cascade={"all"}, orphanRemoval=true)
-	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 * @ConfigField(
+	 *      defaultValues={
+	 *      		"dataaudit"={"auditable"=true},
+	 *          "importexport"={"excluded"=true}
+	 *      }
+	 * )
 	 * @Oro\Versioned
 	 */
 	private $memberFees;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount", mappedBy="member", cascade={"all"}, orphanRemoval=true)
-	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+	 * @ConfigField(
+	 *      defaultValues={
+	 *      		"dataaudit"={"auditable"=true},
+	 *          "importexport"={"excluded"=true}
+	 *      }
+	 * )
 	 * @Oro\Versioned
 	 */
 	private $memberFeeDiscounts;
@@ -357,6 +367,14 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 *
 	 * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
 	 * @ORM\JoinColumn(name="account_id", referencedColumnName="id", onDelete="SET NULL")
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "importexport"={
+	 *              "full"=false,
+	 *              "order"=450
+	 *          }
+	 *      }
+	 * )
 	 */
 	protected $account;
 
@@ -365,10 +383,26 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 *
 	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
 	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "importexport"={
+	 *              "full"=false,
+	 *              "order"=460
+	 *          }
+	 *      }
+	 * )
 	 */
 	protected $organization;
 	/**
 	 * @var ArrayCollection
+	 * Reihenfolge der Tags läßt sich nicht festlegen...
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "importexport"={
+	 *              "order"=400
+	 *          }
+	 *      }
+	 * )
 	 */
 	protected $tags;
 
