@@ -27,12 +27,12 @@ class MemberFeeDiscountController extends RestController
      *      description="Delete fee discounts",
      *      resource=true
      * )
-     * FIXME: Auf ACTION-ACL umstellen. Der Discount hat keine Entity-ACL
+     * Der Discount hat keine Entity-ACL. Wir nutzen die ACL des MemberFee
      * @Acl(
-     *      id="dmkclub_member_memberfeediscount_delete",
-     *      type="action",
-     *      label="Delete fee discounts",
-     *      group="dmkclub"
+     *      id="dmkclub_member_memberfee_delete",
+     *      type="entity",
+     *      permission="DELETE",
+     *      class="DMKClubMemberBundle:MemberFee"
      * )
      * @return Response
      */
