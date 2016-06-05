@@ -1,0 +1,27 @@
+# Neue Mitglieder pro Jahr
+#SELECT count(id), YEAR(start_date) FROM `dmkclub_member` 
+#WHERE 1
+#GROUP BY YEAR(start_date)
+#ORDER BY YEAR(start_date) desc
+
+# Austritte pro Jahr
+#SELECT count(id), YEAR(end_date) FROM `dmkclub_member` 
+#WHERE end_date IS NOT NULL
+#GROUP BY YEAR(end_date)
+#ORDER BY YEAR(end_date) desc
+
+# Aktiv/Passive Mitglieder
+#SELECT count(id) FROM `dmkclub_member` 
+#WHERE end_date IS NULL AND is_active = 1
+#UNION
+#SELECT count(id) FROM `dmkclub_member` 
+#WHERE end_date IS NULL AND is_active = 0
+
+# m/w
+#SELECT count(m.id) FROM `dmkclub_member` m
+#JOIN orocrm_contact c ON c.id = m.contact_id
+#WHERE m.end_date IS NULL AND c.gender = 'female'
+#UNION
+#SELECT count(m.id) FROM `dmkclub_member` m
+#JOIN orocrm_contact c ON c.id = m.contact_id
+#WHERE m.end_date IS NULL AND c.gender = 'male'
