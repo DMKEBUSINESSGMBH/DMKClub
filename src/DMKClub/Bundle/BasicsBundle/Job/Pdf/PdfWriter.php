@@ -8,35 +8,59 @@ use Oro\Bundle\ImportExportBundle\Processor\ContextAwareProcessor;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use DMKClub\Bundle\BasicsBundle\PDF\PdfException;
+use Gaufrette\Filesystem;
 
 /**
  * Die Klasse schreibt das PDF in das Ziel-Filesystem
  * @author "René Nitzsche"
  */
-class PdfWriter implements ItemWriterInterface {
+class PdfWriter implements ItemWriterInterface, StepExecutionAwareInterface {
+	/**
+	 * @var StepExecution
+	 */
+	protected $stepExecution;
 
 	/**
-	 * @var Filesystem|null
+	 * @var FilesystemMap
 	 */
-	protected $fileSystem = NULL;
+	protected $fileSystemMap = NULL;
+	/**
+	 * @var Filesystem
+	 */
+	protected $fs = NULL;
 	/**
 	 */
-	public function __construct(FilesystemMap $fileSystemMap, $fs) {
-		try {
-			$this->fileSystem = $fileSystemMap->get($fs);
-		}
-		catch(\Exception $e) {
-			// Filesystem not configured...
-		}
+	public function __construct(FilesystemMap $fileSystemMap) {
+		$this->fileSystemMap = $fileSystemMap;
 	}
 
 	/* (non-PHPdoc)
 	 * @see \Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface::write()
 	 */
 	public function write(array $items) {
-		print_r(['write' => 1, 'items' => $items]);
+		try {
+			$fsName = $this->stepExecution->getExecutionContext()->get('target_fs');
+			$this->fs = $this->fileSystemMap->get($fsName);
+		}
+		catch(\Exception $e) {
+			// Filesystem not configured...
+			throw new PdfException('Target filesystem not configured');
+		}
 
-
+		foreach ($items As $path) {
+			$fileName = basename($path);
+			$this->fs->write($fileName, file_get_contents($path));
+			unlink($path); // Quelldatei löschen
+		}
+	}
+	/* (non-PHPdoc)
+	 * @see \Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface::setStepExecution()
+	 */
+	public function setStepExecution(StepExecution $stepExecution) {
+		$this->stepExecution = $stepExecution;
 	}
 
 }

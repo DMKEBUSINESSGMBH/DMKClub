@@ -7,6 +7,7 @@ use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Reader\AbstractReader;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use DMKClub\Bundle\BasicsBundle\PDF\PdfAwareInterface;
 
 /**
  * Die Klasse liest aus der Config die Entities, für die ein PDF erzeugt werden soll
@@ -42,20 +43,22 @@ class ItemReader extends AbstractReader {
 		$this->em = $em;
 	}
 
-	/**
+	/*
+	 * Entity holen und Ziel für Export ermitteln. Letzteres wird in den Context gelegt.
 	 * {@inheritdoc}
 	 */
 	public function read() {
-		print_r(['read'=>1, 'readCount'=>$this->getContext()->getReadCount(), 'ids' => $this->entityIds]);
-
 		if (count($this->entityIds) > 0) {
 			$itemIdx = $this->getContext()->getReadCount();
 			$nextItem = array_key_exists($itemIdx, $this->entityIds) ? $this->entityIds[$itemIdx] : NULL;
 			if($nextItem !== null) {
 				$nextItem = $this->resolveEntity($nextItem, $this->entityName);
-				if($nextItem !== null) {
+				if($nextItem !== null && $nextItem instanceof PdfAwareInterface) {
 					$this->getContext()->incrementReadCount();
+					// Filesystem in den ExecutionContext legen, damit der Writer Zugriff bekommt.
+					$this->getStepExecution()->getExecutionContext()->put('target_fs', $nextItem->getExportFilesystem());
 				}
+
 			}
 			return $nextItem;
 		}

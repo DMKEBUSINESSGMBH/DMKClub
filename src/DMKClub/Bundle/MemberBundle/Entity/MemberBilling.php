@@ -148,6 +148,22 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	protected $processorSettings;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="export_filesystem", type="string", length=255, nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	private $exportFilesystem;
+
+	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(name="fee_total", type="integer", nullable=true)
@@ -346,6 +362,15 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	public function getProcessorSettings()
 	{
 		return $this->processorSettings;
+	}
+
+	public function getExportFilesystem() {
+		return $this->exportFilesystem;
+	}
+
+	public function setExportFilesystem($value) {
+		$this->exportFilesystem = $value;
+		return $this;
 	}
 
 	public function getFeeTotal() {

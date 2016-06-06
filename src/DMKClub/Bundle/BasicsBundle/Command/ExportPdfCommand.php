@@ -31,7 +31,7 @@ class ExportPdfCommand extends ContainerAwareCommand implements CronCommandInter
 	 * {@inheritdoc}
 	 */
 	public function getDefaultDefinition() {
-		return '1 * * * *';
+		return '* * * * *';
 	}
 	/**
 	 * {@inheritdoc}
@@ -76,7 +76,7 @@ class ExportPdfCommand extends ContainerAwareCommand implements CronCommandInter
 			$output->writeln("\nStart job execution with id ".$jobExecution->getId());
 
 			$jobResult = $executor->doJob($jobExecution->getJobInstance(), $jobExecution);
-			$output->writeln(print_r(['result'=>$jobResult],true));
+			$output->writeln(print_r(['result'=>($jobResult->isSuccessful() ? 'success' : 'error')],true));
 			$inc++;
 		}
 		$output->writeln("\nFinished with ".$inc." jobs processed\n");

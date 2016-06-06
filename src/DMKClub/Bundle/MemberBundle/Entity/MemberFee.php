@@ -562,5 +562,12 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface {
 		$prefix = implode('_', $prefix);
 		return Strings::sanitizeFilename($prefix);
 	}
+	/*
+	 * (non-PHPdoc)
+	 * @see \DMKClub\Bundle\BasicsBundle\PDF\PdfAwareInterface::getExportFilesystem()
+	 */
+	public function getExportFilesystem() {
+		return $this->getBilling()->getExportFilesystem();
+	}
 
 }

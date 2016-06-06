@@ -60,7 +60,7 @@ class TwigTemplateType extends AbstractType {
 					'label' => 'dmkclub.basics.twigtemplate.generator.label',
 					'choices' => $this->pdfManager->getVisibleGeneratorChoices(),
 					'empty_value' => 'dmkclub.form.choose',
-			)
+				)
 			)
 			->add('orientation', 'choice', array(
 					'label' => 'dmkclub.basics.twigtemplate.orientation.label',

@@ -10,6 +10,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
 class MemberBillingType extends AbstractType {
 	/**
@@ -25,13 +26,19 @@ class MemberBillingType extends AbstractType {
 	protected $processorProvider;
 
 	/**
+	 * @var array
+	 */
+	protected $fileSystemMap = NULL;
+
+	/**
 	 * @param ConfigManager       $configManager
 	 * @param TranslatorInterface $translator
 	 */
-	public function __construct(TranslatorInterface $translator, ProcessorProvider $processorProvider)
+	public function __construct(TranslatorInterface $translator, ProcessorProvider $processorProvider, FilesystemMap $fileSystemMap)
 	{
 		$this->translator = $translator;
 		$this->processorProvider = $processorProvider;
+		$this->fileSystemMap = (array) $fileSystemMap;
 	}
 	/**
 	 * @param EventSubscriberInterface $subscriber
@@ -61,13 +68,42 @@ class MemberBillingType extends AbstractType {
 	protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.memberbilling.name.label'))
-			->add('startDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.memberbilling.start_date.label'))
-			->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.memberbilling.end_date.label'))
+			->add('startDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.start_date.label'))
+			->add('endDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.end_date.label'))
+
+			->add('exportFilesystem', 'choice', array(
+					'required' => false,
+					'label' => 'dmkclub.member.memberbilling.export_filesystem.label',
+					'choices' => $this->getFilesystems(),
+					'empty_value' => 'dmkclub.form.choose',
+				)
+			)
 
 			->add('owner')
 			->add('organization')
 		;
+	}
+	protected function getFilesystems() {
+		$options = [];
+		$fsm = reset($this->fileSystemMap);
+		foreach ($fsm As $fsName => $filesystem) {
+			/* @var $filesystem \Gaufrette\Filesystem */
+			if($fsName == 'attachments')
+				continue; // skip oro attachment fs
 
+			$clazz = explode('\\', get_class($filesystem->getAdapter()));
+			$fsType = array_pop($clazz);
+			$adapterData = (array)$filesystem->getAdapter();
+			$info = '';
+			foreach($adapterData As $key => $value) {
+				if(strstr($key, 'directory') !== false) {
+					$info = ' ('.$value.')';
+					break;
+				}
+			}
+			$options[$fsName] = $fsType . $info;
+		}
+		return $options;
 	}
 	/**
 	 * @param FormBuilderInterface $builder

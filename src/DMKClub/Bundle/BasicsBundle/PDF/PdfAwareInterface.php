@@ -18,4 +18,9 @@ interface PdfAwareInterface {
 	 */
 	public function getFilenamePrefix();
 
+	/**
+	 * @return string
+	 */
+	public function getExportFilesystem();
+
 }

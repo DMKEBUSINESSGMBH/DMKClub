@@ -41,6 +41,7 @@ dmkclub:
           end_date.label:      Enddatum
           processor.label:     Prozessor
           processor_config.label: Prozessor Einstellung
+          export_filesystem.label: Ziel für PDF-Export
           fee.label:           Mitgliedsbeitrag
           fee_discount.label:      Mitgliedsbeitrag reduziert
           fee_child.label:    Beitrag für Kinder

@@ -6,7 +6,6 @@ parameters:
     dmkclub_basics.job.reader.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\ItemReader
     dmkclub_basics.job.processor.pdf.class:      DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfProcessor
     dmkclub_basics.job.writer.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfWriter
-    dmkclub_basics.job.writer.filesystem:        "dmkclub_pdfexport"
 
 services:
     dmkclub_basics.pdf.manager:
@@ -34,19 +33,9 @@ services:
         class: "%dmkclub_basics.job.processor.pdf.class%"
         arguments:
             - "@dmkclub_basics.pdf.manager"
+            - "@logger"
     dmkclub_basics.job.writer.pdf:
         class: "%dmkclub_basics.job.writer.pdf.class%"
         arguments:
             - "@knp_gaufrette.filesystem_map"
-            - "%dmkclub_basics.job.writer.filesystem%"
 
-
-#knp_gaufrette:
-#    adapters:
-#        pdf_out:
-#            local:
-#                directory: /tmp/
-#    filesystems:
-#        "%dmkclub_basics.job.writer.filesystem%":
-#            adapter:    pdf_out
-#            alias:      pdf_out_filesystem

@@ -40,6 +40,7 @@ services:
         arguments:
             - "@translator"
             - "@dmkclub_member.memberbilling.processorprovider"
+            - "@knp_gaufrette.filesystem_map"
         tags:
             - { name: form.type, alias: dmkclub_member_memberbilling }
 

@@ -1,0 +1,10 @@
+knp_gaufrette:
+    adapters:
+        pdf_out_local:
+            local:
+                directory: "%dmkclub_pdfexport%"
+    filesystems:
+        dmkclub_pdfexport:
+            adapter:    pdf_out_local
+            alias:      pdf_out_filesystem
+
