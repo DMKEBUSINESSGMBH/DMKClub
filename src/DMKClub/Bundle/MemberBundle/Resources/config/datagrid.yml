@@ -278,6 +278,9 @@ datagrid:
                         - { join: f.member, alias: m }
             bind_parameters:
                 - billing
+        inline_editing:
+            enable: true
+            entity_name: "%dmkclub_member.memberfee.entity.class%"
         columns:
             memberCode:
                 label:         dmkclub.member.member_code.label
@@ -376,7 +379,7 @@ datagrid:
                 label: PDF
                 icon: file-alt
                 link: pdf_link
-                rowAction: true
+#                rowAction: true
         mass_actions:
             exportpdf:
                 type: dmkexportpdf
@@ -428,6 +431,9 @@ datagrid:
                 
             bind_parameters:
                 - member
+        inline_editing:
+            enable: true
+            entity_name: "%dmkclub_member.memberfee.entity.class%"
         columns:
             name:
                 type:          link
@@ -453,14 +459,10 @@ datagrid:
                 frontend_type: datetime
         properties:
             id: ~
-#            view_link:
-#                type:       url
-#                route:      dmkclub_memberbilling_view
-#                params:     [ id ]
-#            update_link:
-#                type:       url
-#                route:      dmkclub_memberbilling_update
-#                params:     [ id ]
+            pdf_link:
+                type:       url
+                route:      dmkclub_memberfee_createpdf
+                params:     [ id ]
         sorters:
             columns:
                 name:
@@ -494,6 +496,12 @@ datagrid:
                 label:        oro.grid.action.delete
                 icon:         trash
                 link:         delete_link
+            pdf:
+                type: dmkgetpdf
+                acl_resource: dmkclub_memberfee_view
+                label: PDF
+                icon: file-alt
+                link: pdf_link
         mass_actions:
             markfeecorrection:
                 type: markfeecorrection

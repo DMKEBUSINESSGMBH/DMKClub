@@ -43,16 +43,16 @@ class TwigTemplateType extends AbstractType {
 	protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.basics.twigtemplate.name.label'))
-			->add('template', 'oro_rich_text', array(
+			->add('template', 'textarea', array(
 					'required' => false,
 					'label' => 'dmkclub.basics.twigtemplate.template.label',
 					'attr'            => [
 						'class'                => 'template-editor',
-						'data-wysiwyg-enabled' => true,
+//						'data-wysiwyg-enabled' => true,
 					],
-					'wysiwyg_options' => [
-						'height'     => '250px'
-					]
+// 					'wysiwyg_options' => [
+// 						'height'     => '250px'
+// 					]
 				)
 			)
 			->add('generator', 'choice', array(
