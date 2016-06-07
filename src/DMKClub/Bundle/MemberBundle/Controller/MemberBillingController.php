@@ -129,7 +129,8 @@ class MemberBillingController extends Controller
 
 		$this->get('session')
 			->getFlashBag()
-			->add('success', $this->get('translator')->trans('Auswertung gestartet: ' . print_r($ret, true)));
+			->add('success', $this->buildMessage(
+						'dmkclub.member.memberbilling.message.accounting'.($ret['async'] ? '.async' : '').'.started', $ret));
 		return new RedirectResponse(
 				$this->generateUrl('dmkclub_memberbilling_view', ['id' => $entity->getId()]));
 	}
@@ -143,11 +144,16 @@ class MemberBillingController extends Controller
 		// Info an den Manager übergeben
 		$ret = $this->get('dmkclub_member.memberbilling.manager')->startCorrections($entity);
 
-		$this->get('session')
-		->getFlashBag()
-		->add('success', $this->get('translator')->trans('Korrektur gestartet: ' . print_r($ret, true)));
+		$marked = ((int)$ret['success'] + (int)$ret['skipped']) > 0;
+		$msgType = $marked ? 'success' : 'warning';
+		$msg = 'dmkclub.member.memberbilling.message.correction.'. ($marked ? 'started' : 'nothingfound');
+		$this->get('session')->getFlashBag()->add($msgType, $this->buildMessage($msg, $ret));
 		return new RedirectResponse(
 				$this->generateUrl('dmkclub_memberbilling_view', ['id' => $entity->getId()]));
 	}
 
+	private function buildMessage($msg, $info) {
+		$msg = $this->get('translator')->trans($msg);
+		return  sprintf($msg, $info['success'], $info['skipped'], $info['errors']);
+	}
 }

@@ -51,6 +51,11 @@ dmkclub:
           data_channel.label: Kanal
           block.processor_settings: Einstellungen
           message.saved:        Einstellungen gespeichert
+          message.accounting.started: "Abrechnung ausgeführt. Betroffene Mitglieder: %d, übersprungen: %d, Fehler: %d"
+          message.correction.started: "Korrektur ausgeführt. Korrigierte Beiträge: %d, übersprungen: %d, Fehler: %d"
+          message.correction.nothingfound: "Es wurden noch keine Abrechnungen zur Korrektur markiert."
+          message.accounting.async.started: "Abrechnung gestartet. Betroffene Mitglieder: %d"
+          message.correction.async.started: "Korrektur gestartet. Betroffene Beiträge: %d"
           action.createbills:   Abrechnung starten
           action.createcorrections:   Korrektur starten
           pdf.salutation.male:   "Sehr geehrter Herr "

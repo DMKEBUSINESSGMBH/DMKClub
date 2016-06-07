@@ -58,6 +58,12 @@ dmkclub:
           data_channel.label: Data channel
           block.processor_settings: Settings
           message.saved: Settings saved
+          message.accounting.started: "Fee accounting executed. Members evaluated: %d, skipped: %d, errors: %d"
+          message.correction.started: "Fee correction executed. Fees corrected: %d, skipped: %d, errors: %d"
+          message.correction.nothingfound: "No selected fees for correction found."
+          message.accounting.async.started: "Fee accounting started. Members to evaluate: %d"
+          message.correction.async.started: "Fee correction started. Fees to evaluate: %d"
+
           action.createbills:   Start accounting
           action.createcorrections:   Start correction
           pdf.salutation.male:   "Dear Mr. "
