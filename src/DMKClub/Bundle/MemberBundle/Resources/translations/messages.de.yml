@@ -44,6 +44,7 @@ dmkclub:
           export_filesystem.label: Ziel für PDF-Export
           fee.label:           Mitgliedsbeitrag
           fee_discount.label:      Mitgliedsbeitrag reduziert
+          fee_admission.label:  Aufnahmegebühr für neue Mitglieder
           fee_child.label:    Beitrag für Kinder
           age_child.label:      Altersgrenze für Kinderbeitrag
           member_fees.label:    Mitgliedsbeiträge

@@ -18,6 +18,7 @@ use BeSimple\SoapCommon\Type\KeyValue\DateTime;
 class DefaultProcessor extends AbstractProcessor {
 	const NAME = 'default';
 	const OPTION_FEE = 'fee';
+	const OPTION_FEE_ADMISSION = 'fee_admission';
 	const OPTION_FEE_DISCOUNT = 'fee_discount';
 	const OPTION_FEE_CHILD = 'fee_child';
 	const OPTION_AGE_CHILD = 'age_child';
@@ -43,6 +44,7 @@ class DefaultProcessor extends AbstractProcessor {
 		return [
 				self::OPTION_FEE,
 				self::OPTION_FEE_DISCOUNT,
+				self::OPTION_FEE_ADMISSION,
 				self::OPTION_FEE_CHILD,
 				self::OPTION_AGE_CHILD,
 		];
