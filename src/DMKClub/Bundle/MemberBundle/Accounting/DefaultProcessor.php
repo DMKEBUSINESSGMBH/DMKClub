@@ -63,10 +63,16 @@ class DefaultProcessor extends AbstractProcessor {
 	{
 		return DefaultProcessorSettingsType::NAME;
 	}
+	protected function assertMember(Member $member) {
+		// Alle Pflichtdaten prüfen
+		if(!$member->getStartDate())
+			throw new AccountingException('Member with id [' . $member->getId() . '] has no start date');
+	}
 	/* (non-PHPdoc)
 	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::execute()
 	 */
 	public function execute(Member $member) {
+		$this->assertMember($member);
 		//
 		$memberFee = new MemberFee();
 		$position = new MemberFeePosition();

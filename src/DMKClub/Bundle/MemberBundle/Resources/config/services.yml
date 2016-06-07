@@ -22,6 +22,10 @@ parameters:
 
     dmkclub_member.memberfee.pdf.simplegenerator.class:    DMKClub\Bundle\MemberBundle\Accounting\PDF\SimpleMemberFeePdf
 
+    dmkclub_member.job.reader.feeaccounting.class:         DMKClub\Bundle\MemberBundle\Job\Accounting\ItemReader
+    dmkclub_member.job.processor.feeaccounting.class:      DMKClub\Bundle\MemberBundle\Job\Accounting\FeeProcessor
+    dmkclub_member.job.writer.feeaccounting.class:         DMKClub\Bundle\MemberBundle\Job\Accounting\FeeWriter
+
 services:
     dmkclub_member.memberbilling.manager:
         class:     "%dmkclub_member.memberbilling.manager.class%"
@@ -31,6 +35,7 @@ services:
             - "@dmkclub_member.memberbilling.processorprovider"
             - "@oro_segment.query.dynamic_segment.query_builder"
             - "@oro_segment.query.static_segment.query_builder"
+            - "@dmkclub_basics.job_executor"
 
     dmkclub_member.memberfee.manager:
         class:     "%dmkclub_member.memberfee.manager.class%"
@@ -90,3 +95,22 @@ services:
             - "@twig"
         tags:
             - { name: dmkclub_basics.pdfgenerator }
+
+### Job Services
+    dmkclub_member.job.reader.feeaccounting:
+        class: "%dmkclub_member.job.reader.feeaccounting.class%"
+        arguments:
+            - "@oro_importexport.context_registry"
+            - "@doctrine.orm.entity_manager"
+            - "@dmkclub_member.memberbilling.manager"
+        lazy: true
+    dmkclub_member.job.processor.feeaccounting:
+        class: "%dmkclub_member.job.processor.feeaccounting.class%"
+        arguments:
+            - "@dmkclub_member.memberbilling.manager"
+            - "@logger"
+    dmkclub_member.job.writer.feeaccounting:
+        class: "%dmkclub_member.job.writer.feeaccounting.class%"
+        arguments:
+            - "@dmkclub_member.memberbilling.manager"
+            - "@doctrine.orm.entity_manager"

@@ -17,6 +17,7 @@ use Oro\Bundle\SegmentBundle\Query\DynamicSegmentQueryBuilder;
 use Symfony\Component\Validator\Constraints\Null;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
+use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
 
 class MemberBillingManager implements ContainerAwareInterface {
 	/**
@@ -33,14 +34,18 @@ class MemberBillingManager implements ContainerAwareInterface {
 	protected $dynamicSegmentQueryBuilder;
 	/** @var StaticSegmentQueryBuilder */
 	protected $staticSegmentQueryBuilder;
+	/** @var \DMKClub\Bundle\BasicsBundle\Job\JobExecutor */
+	private $jobExecutor;
 
 	public function __construct(EntityManager $em, ContainerInterface $container, ProcessorProvider $processorProvider,
-			DynamicSegmentQueryBuilder $dynamicSegmentQueryBuilder, StaticSegmentQueryBuilder $staticSegmentQueryBuilder) {
+			DynamicSegmentQueryBuilder $dynamicSegmentQueryBuilder, StaticSegmentQueryBuilder $staticSegmentQueryBuilder,
+			JobExecutor $jobExecutor) {
 		$this->em = $em;
 		$this->setContainer($container);
 		$this->processionProvider = $processorProvider;
 		$this->dynamicSegmentQueryBuilder = $dynamicSegmentQueryBuilder;
 		$this->staticSegmentQueryBuilder = $staticSegmentQueryBuilder;
+		$this->jobExecutor = $jobExecutor;
 	}
 
 	/**
@@ -119,7 +124,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 	 * @param MemberBilling $entity
 	 * @return array
 	 */
-	public function startAccounting(MemberBilling $memberBilling) {
+	public function startAccounting(MemberBilling $memberBilling, $async = TRUE) {
 		$callback = function (Member $member, MemberBilling $billing, $processor) {
 			if($this->hasFee4Billing($member, $billing)) {
 				return null;
@@ -127,7 +132,23 @@ class MemberBillingManager implements ContainerAwareInterface {
 			$memberFee = $processor->execute($member);
 			return $memberFee;
 		};
-		return $this->doAccounting($memberBilling, $callback);
+		return $this->doAccounting($memberBilling, $callback, $async);
+	}
+	/**
+	 * Calculate MemberFee for a single Member. The MemberFee is not persisted to database!
+	 * And there is no check for still existing memberfees.
+	 *
+	 * @param MemberBilling $memberBilling
+	 * @param Member $member
+	 * @return MemberFee
+	 */
+	public function calculateMemberFee(MemberBilling $memberBilling, Member $member) {
+		$processor = $this->getProcessor($memberBilling);
+		$processor->init($memberBilling, $this->getProcessorSettings($memberBilling));
+		$memberFee = $processor->execute($member);
+		$memberFee->setMember($member);
+		$memberFee->setBilling($memberBilling);
+		return $memberFee;
 	}
 	/**
 	 * Starts account process for given billing.
@@ -137,7 +158,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 	 * @param boolean $correction
 	 * @return array
 	 */
-	protected function doAccounting(MemberBilling $memberBilling, $callback) {
+	protected function doAccounting(MemberBilling $memberBilling, $callback, $async = TRUE) {
 		$processor = $this->getProcessor($memberBilling);
 		$processor->init($memberBilling, $this->getProcessorSettings($memberBilling));
 
@@ -165,6 +186,8 @@ class MemberBillingManager implements ContainerAwareInterface {
 			}
 		}
 
+		if($async) // Bei async nur die IDs sammeln
+			$qb->select($alias.'.id');
 		$q = $qb->getQuery();
 
 		$result = $q->iterate();
@@ -173,33 +196,59 @@ class MemberBillingManager implements ContainerAwareInterface {
 		$skipped = 0;
 		$errors = [];
 
-		foreach ($result As $row) {
-			/* @var $member \DMKClub\Bundle\MemberBundle\Entity\Member */
-			$member = $row[0];
-			try {
-				$memberFee = $callback($member, $memberBilling, $processor);
-				if($memberFee === null) {
-					$skipped++;
-					continue;
-				}
-				$memberFee->setBilling($memberBilling);
-				$memberFee->setMember($member);
-				$this->em->persist($memberFee);
-			}
-			catch(AccountingException $exception) {
-				$errors[] = 'Member '. $member->getId() . ' - ' . $exception->getMessage();
-			}
-			$hits++;
-			if($hits > $limit)
-				break;
-		}
-		$this->em->flush();
-		// jetzt die Summe holen und im Billing speichern
-		$this->updateSummary($memberBilling);
+		$jobData = [
+				'ids' => [],
+		];
+		$ids = [];
 
-		return ['success' => ($hits), 'skipped' => $skipped, 'errors'=>$errors];
+		foreach ($result As $row) {
+			if($async) {
+				$row = reset($row);
+				$ids[] = $row['id'];
+				$hits++;
+			}
+			else {
+				/* @var $member \DMKClub\Bundle\MemberBundle\Entity\Member */
+				$member = $row[0];
+				try {
+					$memberFee = $callback($member, $memberBilling, $processor);
+					if($memberFee === null) {
+						$skipped++;
+						continue;
+					}
+					$memberFee->setBilling($memberBilling);
+					$memberFee->setMember($member);
+					$this->em->persist($memberFee);
+				}
+				catch(AccountingException $exception) {
+					$errors[] = 'Member '. $member->getId() . ' - ' . $exception->getMessage();
+				}
+				$hits++;
+				if($hits > $limit)
+					break;
+			}
+		}
+		if(!$async) {
+			$this->em->flush();
+			// jetzt die Summe holen und im Billing speichern
+			$this->updateSummary($memberBilling);
+		}
+		else {
+			$jobData['memberbilling_id'] = $memberBilling->getId();
+			$jobData['entity_ids'] = implode(',', $ids);
+			$jobType = 'export';
+			$jobName = 'dmkfeeaccounting';
+
+			$this->jobExecutor->createJob($jobType, $jobName, $jobData, true);
+		}
+
+		return ['success' => ($hits), 'skipped' => $skipped, 'errors'=>$errors, 'async' => $async];
 	}
-	protected function updateSummary(MemberBilling $memberBilling) {
+	/**
+	 * Update totals for this MemberBilling
+	 * @param MemberBilling $memberBilling
+	 */
+	public function updateSummary(MemberBilling $memberBilling) {
 		$sub = 'SELECT sum(f.priceTotal) FROM DMKClubMemberBundle:MemberFee f WHERE f.billing = :bid';
 
 		$q = $this->em->createQuery('UPDATE DMKClubMemberBundle:MemberBilling b

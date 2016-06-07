@@ -305,7 +305,7 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface {
 	}
 
 	/**
-	 * @return \DMKClub\Bundle\MemberBundle\Member
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\Member
 	 */
 	public function getMember() {
 		return $this->member;
