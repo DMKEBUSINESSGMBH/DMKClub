@@ -54,6 +54,7 @@ class PdfWriter implements ItemWriterInterface, StepExecutionAwareInterface {
 			$fileName = basename($path);
 			$this->fs->write($fileName, file_get_contents($path));
 			unlink($path); // Quelldatei löschen
+			$this->stepExecution->incrementWriteCount();
 		}
 	}
 	/* (non-PHPdoc)

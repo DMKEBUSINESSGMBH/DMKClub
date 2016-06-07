@@ -114,7 +114,7 @@ class ExportPdfHandler implements MassActionHandlerInterface {
 			$jobType = 'export';
 			$jobName = 'dmkexportpdf';
 
-			$this->jobExecutor->createJob($jobType, $jobName, $jobData);
+			$this->jobExecutor->createJob($jobType, $jobName, $jobData, true);
 		}
 
 		return $iteration;
