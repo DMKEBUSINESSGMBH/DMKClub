@@ -1,3 +1,28 @@
+oro_dashboard_config:
+    dashboards:
+        dmkclub_dashboard:
+            twig: OroDashboardBundle:Index:default.html.twig
+    widgets:
+        members_in_active_chart:
+            label:       dmkclub.member.dashboard.members_in_active_chart.title
+            route:       dmkclub_member_dashboard_members_in_active_chart
+            acl:         dmkclub_member_view
+            description: dmkclub.member.dashboard.members_in_active_chart.description
+#            icon:        bundles/orocrmsales/img/opportunities_by_lead_source.png
+#            applicable:  @orocrm_sales.provider.enitity_state->isEntityOpportunityEnabled()
+#            configuration:
+#                dateRange:
+#                    type: oro_type_widget_date_range
+#                    options:
+#                       label: oro.dashboard.date_range.label
+#                    show_on_widget: true
+
+        members_gender_chart:
+            label:       dmkclub.member.dashboard.members_gender_chart.title
+            route:       dmkclub_member_dashboard_members_gender_chart
+            acl:         dmkclub_member_view
+            description: dmkclub.member.dashboard.members_gender_chart.description
+
 # Neue Mitglieder pro Jahr
 #SELECT count(id), YEAR(start_date) FROM `dmkclub_member` 
 #WHERE 1

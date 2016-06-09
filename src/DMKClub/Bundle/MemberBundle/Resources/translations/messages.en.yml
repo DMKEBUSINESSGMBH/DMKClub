@@ -34,6 +34,14 @@ dmkclub:
 
         message.saved: Member saved
         fees.label: Membership fee
+
+        dashboard.members_in_active_chart.title: Active and passive members
+        dashboard.members_gender_chart.title: Members by gender
+        dashboard.members_gender_chart.unknown: Unknown
+        dashboard.members_gender_chart.female: Female
+        dashboard.members_gender_chart.male: Male
+        
+        
         memberbilling:
           entity_label:        Membership Billing
           entity_plural_label: Membership Billings

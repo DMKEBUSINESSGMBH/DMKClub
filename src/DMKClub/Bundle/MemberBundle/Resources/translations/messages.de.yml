@@ -29,6 +29,12 @@ dmkclub:
         status.active: Laufende Mitgliedschaft
         status.terminated: Beendete Mitgliedschaft
 
+        dashboard.members_in_active_chart.title: Aktive und passive Mitglieder
+        dashboard.members_gender_chart.title: Mitglieder nach Geschlecht
+        dashboard.members_gender_chart.unknown: Unbekannt
+        dashboard.members_gender_chart.female: Weiblich
+        dashboard.members_gender_chart.male: Männlich
+
         memberbilling:
           entity_label:        Abrechnung Mitgliedsbeitrag
           entity_plural_label: Abrechnung Mitgliedsbeiträge
