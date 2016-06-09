@@ -262,11 +262,12 @@ datagrid:
                     - m.name
                     - f.correctionStatus
                     - m.isActive
+                    - m.startDate
+                    - m.endDate
                     - >
                         (SELECT CASE WHEN p.flag IS NOT NULL THEN 1 ELSE 0 END 
                         FROM DMKClubMemberBundle:MemberFeePosition p 
                         WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
-                    - f.createdAt
                     - f.updatedAt
                 from:
                     - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
@@ -305,8 +306,11 @@ datagrid:
             payedTotal:
                 label:         dmkclub.member.memberfee.payed_total.label
                 frontend_type: currency
-            createdAt:
-                label:         oro.ui.created_at
+            startDate:
+                label:         dmkclub.member.start_date.label
+                frontend_type: datetime
+            endDate:
+                label:         dmkclub.member.end_date.label
                 frontend_type: datetime
             updatedAt:
                 label:         oro.ui.updated_at
@@ -341,12 +345,14 @@ datagrid:
                     data_name: f.payedTotal
                 isActive:
                     data_name: m.isActive
+                startDate:
+                    data_name: m.startDate
                 correctionStatus:
                     data_name: f.correctionStatus
                 corrected:
                     data_name: corrected
-                createdAt:
-                    data_name: f.createdAt
+                endDate:
+                    data_name: m.endDate
                 updatedAt:
                     data_name: f.updatedAt
             default:
@@ -359,9 +365,12 @@ datagrid:
                 memberCode:
                     type: string
                     data_name: m.memberCode
-                createdAt:
+                startDate:
+                    type: datetime
+                    data_name: m.startDate
+                endDate:
                     type:      datetime
-                    data_name: f.createdAt
+                    data_name: m.endDate
                 updatedAt:
                     type:      datetime
                     data_name: f.updatedAt

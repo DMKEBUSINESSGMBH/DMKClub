@@ -46,6 +46,7 @@ dmkclub:
           end_date.label:      End date
           processor.label: Processor
           processor_config.label: Processor config
+          position_labels.label: Position labels
           export_filesystem.label: Target for pdf exports
           fee.label:    Membership Fee
           fee_discount.label:      Discount Fee

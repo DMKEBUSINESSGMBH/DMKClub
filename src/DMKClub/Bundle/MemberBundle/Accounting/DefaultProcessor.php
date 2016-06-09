@@ -75,12 +75,9 @@ class DefaultProcessor extends AbstractProcessor {
 	 */
 	public function execute(Member $member) {
 		$this->assertMember($member);
-		//
-		$memberFee = new MemberFee();
-		$position = new MemberFeePosition();
-		$memberFee->addPosition($position);
 
 		$memberBilling = $this->getMemberBilling();
+		$labelMap = $memberBilling->getPositionLabelMap();
 		// Monate ermitteln
 		$startDate = $memberBilling->getStartDate();
 		$endDate = $memberBilling->getEndDate();
@@ -89,6 +86,7 @@ class DefaultProcessor extends AbstractProcessor {
 
 		$feeFull = (int) $this->getOption(self::OPTION_FEE);
 		$feeDiscount = (int) $this->getOption(self::OPTION_FEE_DISCOUNT);
+		$feeAdmission = (int) $this->getOption(self::OPTION_FEE_ADMISSION);
 		$feeChild = (int) $this->getOption(self::OPTION_FEE_CHILD);
 		$ageChild = (int) $this->getOption(self::OPTION_AGE_CHILD);
 
@@ -115,22 +113,44 @@ class DefaultProcessor extends AbstractProcessor {
 		}
 		$this->writeLog("Fee: " . $fee . " from " . $startDate->format('Y-m-d') . ' to '.$endDate->format('Y-m-d'));
 
-		$descriptionFeePosition = 'Beitrag vom [STARTDATE] bis [ENDDATE]';
+		// $descriptionFeePosition = 'Beitrag vom [STARTDATE] bis [ENDDATE]';
+		$descriptionFeePosition = isset($labelMap[MemberFeePosition::FLAG_FEE]) ?
+				$labelMap[MemberFeePosition::FLAG_FEE] : 'MemberFeePosition::FLAG_FEE';
+
 		$dateFormat = 'd.m.Y';
 		$descriptionFeePosition = str_replace('[STARTDATE]', $startDate->format($dateFormat), $descriptionFeePosition);
 		$descriptionFeePosition = str_replace('[ENDDATE]', $endDate->format($dateFormat), $descriptionFeePosition);
 
+		$memberFee = new MemberFee();
+		$position = new MemberFeePosition();
+		$memberFee->addPosition($position);
 
 		$position->setDescription($descriptionFeePosition);
 		$position->setQuantity(1);
 		$position->setPriceSingle($fee);
 		$position->setPriceTotal($fee);
-		$position->setFlag('FEE');
-		$memberFee->setPriceTotal($fee);
+		$position->setFlag(MemberFeePosition::FLAG_FEE);
 
+		// Aufnahmegebühr
+		if($feeAdmission > 0 && $this->isNewMembership($member, $startDate, $endDate)) {
+			// Ist das Mitglied im Berechnungszeitraum neu eingetreten
+			$label = isset($labelMap[MemberFeePosition::FLAG_ADMISSON]) ?
+					$labelMap[MemberFeePosition::FLAG_ADMISSON] : 'MemberFeePosition::FLAG_ADMISSON';
+			$position = new MemberFeePosition();
+			$memberFee->addPosition($position);
+			$position->setDescription($label);
+			$position->setQuantity(1);
+			$position->setPriceSingle($feeAdmission);
+			$position->setPriceTotal($feeAdmission);
+			$position->setFlag(MemberFeePosition::FLAG_ADMISSON);
+		}
 
+		$memberFee->updatePriceTotal();
 
 		return $memberFee;
+	}
+	private function isNewMembership($member, $startDate, $endDate) {
+		return $member->getStartDate() >= $startDate && $member->getStartDate() <= $endDate;
 	}
 	private function writeLog($message) {
 		$this->logger->info($message);
@@ -189,7 +209,8 @@ class DefaultProcessor extends AbstractProcessor {
 	public function formatSettings(array $options) {
 		$ret = array();
 		foreach ($options As $key => $value) {
-			if($key == self::OPTION_FEE || $key == self::OPTION_FEE_CHILD || $key == self::OPTION_FEE_DISCOUNT)
+			if($key == self::OPTION_FEE || $key == self::OPTION_FEE_CHILD
+					|| $key == self::OPTION_FEE_DISCOUNT || $key == self::OPTION_FEE_ADMISSION)
 				$value = number_format($value/100,2);
 			$ret[$key] = $value;
 		}

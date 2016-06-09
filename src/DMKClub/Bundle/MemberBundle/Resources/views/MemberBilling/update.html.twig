@@ -60,21 +60,25 @@
         {% set processorFormData = processorFormData|merge([form_widget(form.processorSettings)]) %}
     {% endif %}
 
-    {% set formFields = [] %}
+    {% set formFields1 = [] %}
+    {% set formFields2 = [] %}
 
-    {% set formFields = formFields|merge([
+    {% set formFields1 = formFields1|merge([
         form_row(form.name),
-
         form_row(form.startDate),
         form_row(form.endDate),
         form_row(form.segment),
+	   ]) %}
+    {% if form.owner is defined %}
+        {% set formFields1 = formFields1|merge([form_row(form.owner)]) %}
+    {% endif %}
+
+    {% set formFields2 = formFields2|merge([
         form_row(form.template),
         form_row(form.exportFilesystem),
+        form_row(form.positionLabels),
 
     ]) %}
-    {% if form.owner is defined %}
-        {% set formFields = formFields|merge([form_row(form.owner)]) %}
-    {% endif %}
 
     {% set dataBlocks = [{
             'title': 'General'|trans,
@@ -82,7 +86,11 @@
             'subblocks': [
                 {
                     'title': 'dmkclub.memberbilling_information'|trans,
-                    'data': formFields
+                    'data': formFields1
+                },
+                {
+                    'title': '',
+                    'data': formFields2
                 },
             ]
         },

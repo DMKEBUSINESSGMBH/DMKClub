@@ -16,6 +16,7 @@ use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
 
 /**
  * @Route("/memberbilling")
@@ -103,9 +104,17 @@ class MemberBillingController extends Controller
 	 */
 	public function viewAction(MemberBilling $entity)
 	{
-		$options = $this->get('dmkclub_member.memberbilling.manager')->getProcessorSettings($entity);
-		$options = $this->get('dmkclub_member.memberbilling.manager')->getProcessor($entity)->formatSettings($options);
+		$options = $this->getBillingManager()->getProcessorSettings($entity);
+		$options = $this->getBillingManager()->getProcessor($entity)->formatSettings($options);
+		$entity->setPayedTotal($this->getBillingManager()->getPayedTotal($entity));
+
 		return ['entity' => $entity, 'options' => $options];
+	}
+	/**
+	 * @return MemberBillingManager
+	 */
+	protected function getBillingManager() {
+		return $this->get('dmkclub_member.memberbilling.manager');
 	}
 
 	/**

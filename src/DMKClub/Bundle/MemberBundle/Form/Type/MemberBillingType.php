@@ -70,6 +70,7 @@ class MemberBillingType extends AbstractType {
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.memberbilling.name.label'))
 			->add('startDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.start_date.label'))
 			->add('endDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.end_date.label'))
+			->add('positionLabels', 'textarea', array('required' => true, 'label' => 'dmkclub.member.memberbilling.position_labels.label'))
 
 			->add('exportFilesystem', 'choice', array(
 					'required' => false,

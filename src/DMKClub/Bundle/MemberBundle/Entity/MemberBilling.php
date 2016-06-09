@@ -150,6 +150,24 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	/**
 	 * @var string
 	 *
+	 * @ORM\Column(name="position_labels", type="text", nullable=true)
+	 * @Soap\ComplexType("string")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	private $positionLabels = "FEE Fee from [STARTDATE] to [ENDDATE]
+ADMISSION  admission fee
+FEECORRECTION fee correction";
+
+	/**
+	 * @var string
+	 *
 	 * @ORM\Column(name="export_filesystem", type="string", length=255, nullable=true)
 	 * @Soap\ComplexType("string")
 	 * @Oro\Versioned
@@ -169,6 +187,9 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	 * @ORM\Column(name="fee_total", type="integer", nullable=true)
 	 */
 	private $feeTotal;
+
+	private $payedTotal;
+
 
 
 	/**
@@ -443,6 +464,15 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 		return $this;
 	}
 
+	public function getPayedTotal() {
+		return $this->payedTotal;
+	}
+
+	public function setPayedTotal($value) {
+		$this->payedTotal = $value;
+		return $this;
+	}
+
 	/**
 	 * @return User
 	 */
@@ -527,6 +557,35 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	public function getEndDate()
 	{
 		return $this->endDate;
+	}
+
+	/**
+	 * Returns the base string for labels. each line starts with Positionflag
+	 * <pre>
+	 * FEE Membership fee from [STARTDATE] to [ENDDATE]
+	 * ADMISSION Admission fee
+	 * FEECORRECTION Correction of fee
+	 * </pre>
+	 */
+	public function getPositionLabels() {
+		return $this->positionLabels;
+	}
+
+	public function getPositionLabelMap() {
+		$labels = [];
+		$lines = explode("\n", $this->positionLabels);
+		foreach ($lines As $line) {
+			if(trim($line)) {
+				list($key, $label) = explode(' ', $line, 2);
+				$labels[$key] = $label;
+			}
+		}
+		return $labels;
+	}
+
+	public function setPositionLabels($value) {
+		$this->positionLabels = $value;
+		return $this;
 	}
 
 	/**
@@ -617,4 +676,5 @@ class MemberBilling extends ExtendMemberBilling implements Taggable {
 	{
 	    return (string) $this->getName();
 	}
+
 }

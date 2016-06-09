@@ -113,7 +113,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 		$position->setQuantity(1);
 		$position->setPriceSingle($diff);
 		$position->setPriceTotal($diff);
-		$position->setFlag('FEECORRECTION');
+		$position->setFlag(MemberFeePosition::FLAG_CORRECTION);
 		$fee->addPosition($position);
 		$fee->setPriceTotal($fee->getPriceTotal() + $diff);
 	}
@@ -277,6 +277,20 @@ class MemberBillingManager implements ContainerAwareInterface {
 	public function getFee4Billing(Member $member, MemberBilling $memberBilling) {
 		$fee = $this->getMemberFeeRepository()->findOneBy(['billing' => $memberBilling->getId(), 'member' => $member->getId()]);
 		return $fee;
+	}
+	/**
+	 * returns total payed fee amount
+	 * @param MemberBilling $memberBilling
+	 * @return int
+	 */
+	public function getPayedTotal(MemberBilling $memberBilling) {
+		$dql = 'SELECT sum(f.payedTotal) payed FROM DMKClubMemberBundle:MemberFee f WHERE f.billing = :bid';
+
+		$q = $this->em->createQuery($dql);
+		$q->setParameter('bid', $memberBilling->getId());
+		$result = $q->getArrayResult();
+		$result = reset($result);
+		return $result['payed'];
 	}
 
 	/**

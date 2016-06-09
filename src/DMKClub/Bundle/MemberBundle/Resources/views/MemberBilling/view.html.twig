@@ -48,7 +48,12 @@
     {{ parent() }}
     <li>
         <div class="pull-right label label-info orocrm-channel-lifetime-value-label">
-        {{ 'Total sum'|trans }}: {{ CUI.cent2Euro(entity.feeTotal) }}
+        {{ 'Membership fee total'|trans }}: {{ CUI.cent2Euro(entity.feeTotal) }}
+        </div>
+    </li>
+    <li>
+        <div class="pull-right label label-success orocrm-channel-lifetime-value-label">
+        {{ 'Payed total'|trans }}: {{ CUI.cent2Euro(entity.payedTotal) }}
         </div>
     </li>
 {% endblock stats %}

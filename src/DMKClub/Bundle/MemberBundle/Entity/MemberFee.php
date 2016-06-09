@@ -305,6 +305,18 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface {
 	}
 
 	/**
+	 * Calculate total fee from all positions
+	 */
+	public function updatePriceTotal() {
+		$total = 0;
+		foreach ($this->positions As $position) {
+			$total += $position->getPriceTotal();
+		}
+		$this->setPriceTotal($total);
+		return $this;
+	}
+
+	/**
 	 * @return \DMKClub\Bundle\MemberBundle\Entity\Member
 	 */
 	public function getMember() {
@@ -410,6 +422,16 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface {
 	public function getEndDate()
 	{
 		return $this->endDate;
+	}
+
+	public function getPositionsByFlag($flag) {
+		$result = [];
+		foreach ($this->positions As $position) {
+			if($position->getFlag() == $flag) {
+				$result[] = $position;
+			}
+		}
+		return $result;
 	}
 
 	/**

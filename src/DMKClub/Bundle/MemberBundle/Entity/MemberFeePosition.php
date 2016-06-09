@@ -44,6 +44,9 @@ use OroCRM\Bundle\MagentoBundle\Entity\OriginTrait;
  * )
  */
 class MemberFeePosition extends ExtendMemberFeePosition {
+	const FLAG_FEE = 'FEE';
+	const FLAG_ADMISSON = 'ADMISSION';
+	const FLAG_CORRECTION = 'FEECORRECTION';
 
 	/**
 	 * @var int

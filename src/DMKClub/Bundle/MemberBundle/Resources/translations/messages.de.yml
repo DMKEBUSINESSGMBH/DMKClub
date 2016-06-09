@@ -41,6 +41,7 @@ dmkclub:
           end_date.label:      Enddatum
           processor.label:     Prozessor
           processor_config.label: Prozessor Einstellung
+          position_labels.label: Texte für Positionen
           export_filesystem.label: Ziel für PDF-Export
           fee.label:           Mitgliedsbeitrag
           fee_discount.label:      Mitgliedsbeitrag reduziert
@@ -121,3 +122,5 @@ dmkclub:
 active: Laufende Mitgliedschaft
 proposal: Antragsteller
 terminated: Beendete Mitgliedschaft
+"Membership fee total": Beitragsumme gesamt
+"Payed total": Bezahlt
