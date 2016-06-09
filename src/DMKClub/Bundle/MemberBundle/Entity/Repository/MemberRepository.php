@@ -5,6 +5,7 @@ namespace DMKClub\Bundle\MemberBundle\Entity\Repository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class MemberRepository extends EntityRepository {
 	/**
@@ -59,12 +60,36 @@ class MemberRepository extends EntityRepository {
 // 		GROUP BY YEAR(start_date)
 // 		ORDER BY YEAR(start_date) desc
 // 		LIMIT 10
-		$qb = $this->createQueryBuilder('m');
-		$qb->select('YEAR(m.startDate), count(m.id) cnt')
-//		->where('m.endDate IS NULL')
-			->groupBy('YEAR(m.startDate)')
-			->orderBy('YEAR(m.startDate)', 'desc')
-			->setMaxResults(10);
+
+// 		$qb = $this->createQueryBuilder('m');
+// 		$qb->select('YEAR(m.startDate) year, count(m.id) cnt')
+// 			->groupBy('YEAR(m.startDate)')
+// 			->orderBy('YEAR(m.startDate)', 'desc')
+// 			->setMaxResults(10);
+// 		$data = $qb->getQuery()->getArrayResult();
+ 		$resultData = array();
+
+		$rsm = new ResultSetMapping();
+		// build rsm here
+		$sql = 'SELECT YEAR(start_date) year, count(id) cnt
+				FROM dmkclub_member
+				GROUP BY YEAR(start_date)
+				ORDER BY YEAR(start_date) desc
+				LIMIT 10
+				';
+
+//		$query = $this->_em->createNativeQuery($sql, $rsm);
+
+		$stmt = $this->_em->getConnection()->prepare($sql);
+		$stmt->execute();
+		$data = $stmt->fetchAll();
+
+//		$data = $query->getResult();
+//print_r($data);
+		foreach ($data as $row) {
+			$resultData[$row['year']] = (int)$row['cnt'];
+		}
+		return $resultData;
 
 	}
 }

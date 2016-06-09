@@ -95,4 +95,45 @@ class DashboardController extends Controller {
 
 		return $widgetAttr;
 	}
+
+	/**
+	 * @Route("/dmkclub_member_dashboard_members_new_by_year_chart/chart/{widget}",
+	 *      name="dmkclub_member_dashboard_members_new_by_year_chart",
+	 *      requirements={"widget"="[\w-]+"}
+	 * )
+	 * @Template("DMKClubMemberBundle:Dashboard:membersNewByYearChart.html.twig")
+	 */
+	public function membersNewByYearAction($widget) {
+		/** @var TranslatorInterface $translator */
+		$translator = $this->get('translator');
+
+		/** @var EnumExtension $enumValueTranslator */
+		$enumValueTranslator = $this->get('oro_entity_extend.twig.extension.enum');
+
+		$chartData = [];
+		$data = $this->getDoctrine()->getRepository('DMKClubMemberBundle:Member')->getNewMembersByYear();
+		foreach ($data As $key => $value) {
+			$chartData[] = [
+					'label' => $key,
+					'value' => $value,
+			];
+		}
+
+		$widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
+		$widgetAttr['chartView'] = $this->get('oro_chart.view_builder')->setArrayData($chartData)
+		->setOptions(array(
+				'name' => 'bar_chart',
+				'data_schema' => array(
+						'label' => array(
+								'field_name' => 'label'
+						),
+						'value' => array(
+								'field_name' => 'value'
+						)
+				)
+		))->getView();
+
+				return $widgetAttr;
+	}
+
 }

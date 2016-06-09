@@ -34,6 +34,7 @@ dmkclub:
         dashboard.members_gender_chart.unknown: Unbekannt
         dashboard.members_gender_chart.female: Weiblich
         dashboard.members_gender_chart.male: Männlich
+        dashboard.members_new_by_year_chart.title: Neue Mitglieder pro Jahr
 
         memberbilling:
           entity_label:        Abrechnung Mitgliedsbeitrag
