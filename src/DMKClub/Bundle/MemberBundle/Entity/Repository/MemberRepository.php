@@ -31,6 +31,10 @@ class MemberRepository extends EntityRepository {
 		return $resultData;
 	}
 
+	/**
+	 * Members grouped by gender
+	 * @return multitype:number
+	 */
 	public function getMembersGender() {
 
 		// select statuses
@@ -49,4 +53,18 @@ class MemberRepository extends EntityRepository {
 		return $resultData;
 	}
 
+	public function getNewMembersByYear() {
+// 		SELECT YEAR(start_date), count(m.id) FROM `dmkclub_member` m
+// 		WHERE 1
+// 		GROUP BY YEAR(start_date)
+// 		ORDER BY YEAR(start_date) desc
+// 		LIMIT 10
+		$qb = $this->createQueryBuilder('m');
+		$qb->select('YEAR(m.startDate), count(m.id) cnt')
+//		->where('m.endDate IS NULL')
+			->groupBy('YEAR(m.startDate)')
+			->orderBy('YEAR(m.startDate)', 'desc')
+			->setMaxResults(10);
+
+	}
 }
