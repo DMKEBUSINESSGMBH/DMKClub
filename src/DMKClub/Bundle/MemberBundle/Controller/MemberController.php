@@ -69,7 +69,9 @@ class MemberController extends Controller
      */
     protected function update(Member $entity)
     {
-    	return $this->get('oro_form.model.update_handler')->handleUpdate(
+    	/* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandler */
+    	$handler = $this->get('oro_form.model.update_handler');
+    	$data = $handler->handleUpdate(
     			$entity,
     			$this->get('dmkclub_member.member.form'),
     			function (Member $entity) {
@@ -87,6 +89,7 @@ class MemberController extends Controller
     			$this->get('translator')->trans('dmkclub.member.message.saved'),
     			$this->get('dmkclub_member.member.form.handler')
     	);
+    	return $data;
     }
 
     /**

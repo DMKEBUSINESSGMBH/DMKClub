@@ -577,7 +577,7 @@ FEECORRECTION fee correction";
 		foreach ($lines As $line) {
 			if(trim($line)) {
 				list($key, $label) = explode(' ', $line, 2);
-				$labels[$key] = $label;
+				$labels[$key] = trim($label);
 			}
 		}
 		return $labels;
