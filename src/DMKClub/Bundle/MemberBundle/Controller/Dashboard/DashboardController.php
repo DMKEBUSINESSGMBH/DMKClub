@@ -136,4 +136,14 @@ class DashboardController extends Controller {
 				return $widgetAttr;
 	}
 
+	public function memberByAge() {
+// 		SELECT count(m.id), FLOOR(TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())/10) AS age
+// 		FROM `dmkclub_member` m
+// 		JOIN orocrm_contact c ON c.id = m.contact_id
+// 		WHERE  TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())  > 0 AND TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())  <= 110
+// 		GROUP BY FLOOR(TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())/10)
+// 		ORDER BY age desc
+
+
+	}
 }

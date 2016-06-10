@@ -122,6 +122,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$table->addColumn('updated_at', 'datetime', []);
 		$table->addColumn('processor', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('processor_config', 'text', ['notnull' => false]);
+		$table->addColumn('export_filesystem', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('position_labels', 'text', ['notnull' => false]);
 		$table->addColumn('fee_total', 'integer', ['notnull' => false]);
 		$table->setPrimaryKey(['id']);
