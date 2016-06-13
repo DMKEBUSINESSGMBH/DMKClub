@@ -35,12 +35,21 @@ dmkclub:
         message.saved: Member saved
         fees.label: Membership fee
 
+        dashboard.memberType.label: Member type
+        dashboard.memberType.all: All
         dashboard.members_in_active_chart.title: Active and passive members
+        dashboard.members_in_active_chart.description: 
+        dashboard.members_in_active_chart.active: Aktive
+        dashboard.members_in_active_chart.passive: Passive
         dashboard.members_gender_chart.title: Members by gender
+        dashboard.members_gender_chart.description: 
         dashboard.members_gender_chart.unknown: Unknown
         dashboard.members_gender_chart.female: Female
         dashboard.members_gender_chart.male: Male
         dashboard.members_new_by_year_chart.title: New members by year
+        dashboard.members_new_by_year_chart.description: 
+        dashboard.members_age_chart.title: Members age groups
+        dashboard.members_age_chart.description: 
         
         
         memberbilling:

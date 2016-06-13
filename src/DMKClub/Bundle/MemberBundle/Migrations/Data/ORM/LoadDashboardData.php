@@ -38,7 +38,7 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
 
 		if ($dashboard) {
 			$dashboard
-			// ->addWidget($this->createWidgetModel('opportunities_by_lead_source_chart', [1, 80]))
+				->addWidget ( $this->createWidgetModel ( 'members_age_chart', [1, 30] ))
 				->addWidget ( $this->createWidgetModel ( 'members_gender_chart', [1, 20] ))
 				->addWidget ( $this->createWidgetModel ( 'members_new_by_year_chart', [0, 30] ))
 				->addWidget ( $this->createWidgetModel ( 'members_in_active_chart', [0, 20] ));

@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use OroCRM\Bundle\SalesBundle\Entity\Repository\SalesFunnelRepository;
+use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
 
 class DashboardController extends Controller {
 	/**
@@ -16,24 +17,21 @@ class DashboardController extends Controller {
 	*      name="dmkclub_member_dashboard_members_in_active_chart",
 	*      requirements={"widget"="[\w-]+"}
 	* )
-	* @Template("DMKClubMemberBundle:Dashboard:membersInActiveChart.html.twig")
+	* @Template("DMKClubMemberBundle:Dashboard:membersActivePassiveChart.html.twig")
 	*/
-	public function membersInActiveAction($widget) {
+	public function membersActivePassiveAction($widget) {
 		/** @var TranslatorInterface $translator */
 		$translator = $this->get('translator');
 
-		/** @var EnumExtension $enumValueTranslator */
-		$enumValueTranslator = $this->get('oro_entity_extend.twig.extension.enum');
-
-		$data = $this->getDoctrine()->getRepository('DMKClubMemberBundle:Member')->getMembersInActive();
+		$data = $this->getMemberRepository()->getMembersActivePassive();
 
 		$chartData = [
 				[
-					'label' => 'active',
+					'label' => $translator->trans('dmkclub.member.dashboard.members_in_active_chart.active') . ': '.$data['active'],
 					'value' => $data['active'],
 				],
 				[
-						'label' => 'passive',
+						'label' => $translator->trans('dmkclub.member.dashboard.members_in_active_chart.passive') .': '.$data['passive'],
 						'value' => $data['passive'],
 				]
 		];
@@ -67,14 +65,13 @@ class DashboardController extends Controller {
 		/** @var TranslatorInterface $translator */
 		$translator = $this->get('translator');
 
-		/** @var EnumExtension $enumValueTranslator */
-		$enumValueTranslator = $this->get('oro_entity_extend.twig.extension.enum');
-
 		$chartData = [];
-		$data = $this->getDoctrine()->getRepository('DMKClubMemberBundle:Member')->getMembersGender();
+		$data = $this->getMemberRepository()->getMembersGender($this->get('oro_dashboard.widget_configs')
+                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
+                    ->get('memberType'));
 		foreach ($data As $key => $value) {
 			$chartData[] = [
-					'label' => $translator->trans('dmkclub.member.dashboard.members_gender_chart.'.$key),
+					'label' => $translator->trans('dmkclub.member.dashboard.members_gender_chart.'.$key) .': '.$value,
 					'value' => $value,
 			];
 		}
@@ -104,20 +101,10 @@ class DashboardController extends Controller {
 	 * @Template("DMKClubMemberBundle:Dashboard:membersNewByYearChart.html.twig")
 	 */
 	public function membersNewByYearAction($widget) {
-		/** @var TranslatorInterface $translator */
-		$translator = $this->get('translator');
 
-		/** @var EnumExtension $enumValueTranslator */
-		$enumValueTranslator = $this->get('oro_entity_extend.twig.extension.enum');
-
-		$chartData = [];
-		$data = $this->getDoctrine()->getRepository('DMKClubMemberBundle:Member')->getNewMembersByYear();
-		foreach ($data As $key => $value) {
-			$chartData[] = [
-					'label' => $key,
-					'value' => $value,
-			];
-		}
+		$chartData = $this->getMemberRepository()->getNewMembersByYear($this->get('oro_dashboard.widget_configs')
+                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
+                    ->get('memberType'));
 
 		$widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
 		$widgetAttr['chartView'] = $this->get('oro_chart.view_builder')->setArrayData($chartData)
@@ -130,20 +117,46 @@ class DashboardController extends Controller {
 						'value' => array(
 								'field_name' => 'value'
 						)
-				)
+				),
 		))->getView();
 
-				return $widgetAttr;
+		return $widgetAttr;
 	}
 
-	public function memberByAge() {
-// 		SELECT count(m.id), FLOOR(TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())/10) AS age
-// 		FROM `dmkclub_member` m
-// 		JOIN orocrm_contact c ON c.id = m.contact_id
-// 		WHERE  TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())  > 0 AND TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())  <= 110
-// 		GROUP BY FLOOR(TIMESTAMPDIFF(YEAR, c.birthday, CURDATE())/10)
-// 		ORDER BY age desc
+	/**
+	 * @Route("/dmkclub_member_dashboard_members_age_chart/chart/{widget}",
+	 *      name="dmkclub_member_dashboard_members_age_chart",
+	 *      requirements={"widget"="[\w-]+"}
+	 * )
+	 * @Template("DMKClubMemberBundle:Dashboard:flowChart.html.twig")
+	 */
+	public function memberByAge($widget) {
+		$chartData = $this->getMemberRepository()->getMemberByAge($this->get('oro_dashboard.widget_configs')
+                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
+                    ->get('memberType'));
 
+		$widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
+		$widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+			->setArrayData($chartData)
+			->setOptions(array(
+				'name' => 'pie_chart',
+				'data_schema' => array(
+					'label' => array('field_name' => 'label'),
+					'value' => array('field_name' => 'value'),
+				),
+				'settings' => array(
+						'pie' => [
+							'explode' => 6,
+						],
+				),
+		))->getView();
 
+		return $widgetAttr;
+	}
+	/**
+	 * @return MemberRepository
+	 */
+	protected function getMemberRepository() {
+	 return $this->getDoctrine()->getRepository('DMKClubMemberBundle:Member');
 	}
 }

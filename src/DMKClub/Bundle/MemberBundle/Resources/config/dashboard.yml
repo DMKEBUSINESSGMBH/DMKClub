@@ -3,11 +3,27 @@ oro_dashboard_config:
         dmkclub_dashboard:
             twig: OroDashboardBundle:Index:default.html.twig
     widgets:
+        members_age_chart:
+            label:       dmkclub.member.dashboard.members_age_chart.title
+            route:       dmkclub_member_dashboard_members_age_chart
+            acl:         dmkclub_member_view
+            description: dmkclub.member.dashboard.members_age_chart.description
+            configuration:
+                memberType:
+                    type: choice
+                    options:
+                        label: dmkclub.member.dashboard.memberType.label
+                        choices:
+                            all: dmkclub.member.dashboard.memberType.all
+                            active: dmkclub.member.dashboard.members_in_active_chart.active
+                            passive: dmkclub.member.dashboard.members_in_active_chart.passive
+                    show_on_widget: true
         members_in_active_chart:
             label:       dmkclub.member.dashboard.members_in_active_chart.title
             route:       dmkclub_member_dashboard_members_in_active_chart
             acl:         dmkclub_member_view
             description: dmkclub.member.dashboard.members_in_active_chart.description
+                        
 #            icon:        bundles/orocrmsales/img/opportunities_by_lead_source.png
 #            applicable:  @orocrm_sales.provider.enitity_state->isEntityOpportunityEnabled()
 #            configuration:
@@ -22,12 +38,33 @@ oro_dashboard_config:
             route:       dmkclub_member_dashboard_members_gender_chart
             acl:         dmkclub_member_view
             description: dmkclub.member.dashboard.members_gender_chart.description
+            configuration:
+                memberType:
+                    type: choice
+                    options:
+                        label: dmkclub.member.dashboard.memberType.label
+                        choices:
+                            all: dmkclub.member.dashboard.memberType.all
+                            active: dmkclub.member.dashboard.members_in_active_chart.active
+                            passive: dmkclub.member.dashboard.members_in_active_chart.passive
+                    show_on_widget: true
 
         members_new_by_year_chart:
             label:       dmkclub.member.dashboard.members_new_by_year_chart.title
             route:       dmkclub_member_dashboard_members_new_by_year_chart
             acl:         dmkclub_member_view
             description: dmkclub.member.dashboard.members_new_by_year_chart.description
+            configuration:
+                memberType:
+                    type: choice
+                    options:
+                        label: dmkclub.member.dashboard.memberType.label
+                        choices:
+                            all: dmkclub.member.dashboard.memberType.all
+                            active: dmkclub.member.dashboard.members_in_active_chart.active
+                            passive: dmkclub.member.dashboard.members_in_active_chart.passive
+                    show_on_widget: true
+
 
 # Neue Mitglieder pro Jahr
 #SELECT count(id), YEAR(start_date) FROM `dmkclub_member` 
