@@ -63,6 +63,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$this->addDmkclubMemberFeepositionForeignKeys($schema);
 
 		$this->comment->addCommentAssociation($schema, 'dmkclub_member');
+		self::addActivityAssociations($schema, $this->activityExtension);
 	}
 
 
@@ -346,4 +347,17 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 				['onDelete' => 'CASCADE', 'onUpdate' => null]
 		);
 	}
+
+	/**
+	 * Enables activities for sponsor entity
+	 *
+	 * @param Schema            $schema
+	 * @param ActivityExtension $activityExtension
+	 */
+	public static function addActivityAssociations(Schema $schema, ActivityExtension $activityExtension) {
+		$activityExtension->addActivityAssociation($schema, 'orocrm_call', 'dmkclub_member');
+		$activityExtension->addActivityAssociation($schema, 'orocrm_task', 'dmkclub_member');
+		$activityExtension->addActivityAssociation($schema, 'oro_calendar_event', 'dmkclub_member');
+	}
+
 }
