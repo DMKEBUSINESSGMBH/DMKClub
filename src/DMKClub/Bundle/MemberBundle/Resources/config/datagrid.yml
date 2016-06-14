@@ -331,7 +331,7 @@ datagrid:
                 frontend_type: currency
             startDate:
                 label:         dmkclub.member.start_date.label
-                frontend_type: datetime
+                frontend_type: date
             endDate:
                 label:         dmkclub.member.end_date.label
                 frontend_type: datetime
@@ -389,10 +389,10 @@ datagrid:
                     type: string
                     data_name: m.memberCode
                 startDate:
-                    type: datetime
+                    type: date
                     data_name: m.startDate
                 endDate:
-                    type:      datetime
+                    type:      date
                     data_name: m.endDate
                 updatedAt:
                     type:      datetime
