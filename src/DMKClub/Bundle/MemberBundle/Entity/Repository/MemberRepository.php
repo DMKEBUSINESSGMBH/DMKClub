@@ -111,13 +111,14 @@ class MemberRepository extends EntityRepository {
 				FROM dmkclub_member WHERE 1=1 ';
 		$sql .= $this->getMemberTypeClause($memberType, '');
 		$sql .=	' GROUP BY YEAR(start_date)
-				ORDER BY YEAR(start_date) asc
+				ORDER BY YEAR(start_date) desc
 				LIMIT 20
 				';
 
 		$stmt = $this->_em->getConnection()->prepare($sql);
 		$stmt->execute();
 		$data = $stmt->fetchAll();
+		$data = array_reverse($data);
 
  		$resultData = array();
 		foreach ($data as $row) {
@@ -127,6 +128,5 @@ class MemberRepository extends EntityRepository {
 			];
 		}
 		return $resultData;
-
 	}
 }

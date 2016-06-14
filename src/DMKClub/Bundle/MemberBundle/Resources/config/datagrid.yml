@@ -16,6 +16,8 @@ datagrid:
                     - m.paymentOption
                     - a.city
                     - c.birthday
+                    - m.startDate
+                    - m.endDate
                     - m.createdAt
                     - m.updatedAt
                 from:
@@ -48,12 +50,21 @@ datagrid:
             birthday:
                 label:         orocrm.contact.birthday.label
                 frontend_type: date
+            startDate:
+                label:         dmkclub.member.start_date.label
+                frontend_type: date
+            endDate:
+                label:         dmkclub.member.end_date.label
+                frontend_type: date
+                renderable:    false
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
+                renderable:    false
             updatedAt:
                 label:         oro.ui.updated_at
                 frontend_type: datetime
+                renderable:    false
         properties:
             id: ~
             view_link:
@@ -84,6 +95,10 @@ datagrid:
                     data_name: a.city
                 birthday:
                     data_name: c.birthday
+                startDate:
+                    data_name: m.startDate
+                endDate:
+                    data_name: m.endDate
                 createdAt:
                     data_name: m.createdAt
                 updatedAt:
@@ -120,9 +135,17 @@ datagrid:
                 birthday:
                     type:      date
                     data_name: c.birthday
+                startDate:
+                    type:      datetime
+                    data_name: m.startDate
+                endDate:
+                    type:      datetime
+                    data_name: m.endDate
+                    enabled: false
                 createdAt:
                     type:      datetime
                     data_name: m.createdAt
+                    enabled: false
                 updatedAt:
                     type:      datetime
                     data_name: m.updatedAt
