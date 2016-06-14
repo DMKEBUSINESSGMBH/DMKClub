@@ -41,6 +41,10 @@ class FeeProcessor implements ItemProcessorInterface {
 
 		try {
 			$memberFee = $this->billingManager->calculateMemberFee($memberFee->getBilling(), $memberFee->getMember());
+			if($memberFee->getPriceTotal() == 0) {
+				// Ohne Beitrag muss kein Datensatz angelegt werden
+				return null;
+			}
 			$memberFee->setOrganization($memberFee->getBilling()->getOrganization());
 			$memberFee->setOwner($memberFee->getBilling()->getOwner());
 		}
