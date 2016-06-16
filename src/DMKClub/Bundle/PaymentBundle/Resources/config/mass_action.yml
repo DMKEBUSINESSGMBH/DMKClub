@@ -1,0 +1,18 @@
+parameters:
+    dmkclub_payment.mass_action.sepadebitxml.class:          DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction\SepaDebitXmlAction
+    dmkclub_payment.mass_action.sepadebitxml_handler.class:   DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction\SepaDebitXmlHandler
+
+services:
+    dmkclub_payment.datagrid.mass_action.sepadebitxml:
+        class: "%dmkclub_payment.mass_action.sepadebitxml.class%"
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: dmksepadebitxml }
+    dmkclub_payment.datagrid.mass_action.sepadebitxml_handler:
+        class: "%dmkclub_payment.mass_action.sepadebitxml_handler.class%"
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@translator"
+            - "@logger"
+#            - "@oro_security.security_facade.link"
+#            - "@dmkclub_member.memberfee.manager"

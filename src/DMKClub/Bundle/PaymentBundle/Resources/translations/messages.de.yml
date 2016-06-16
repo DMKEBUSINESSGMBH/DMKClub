@@ -1,5 +1,7 @@
 dmkclub:
     payment:
+        datagrid.action.sepa_direct_debit_success_message: "{0} Es wurden keine Zahlungen verarbeitet|{1} SEPA-XML mit einer Lastschrift erzeugt|]1,Inf[ SEPA-XML mit %count% Lastschriften erzeugt"
+        datagrid.action.sepa_direct_debit: SEPA Lastschrift
         bankaccount:
             entity_label:        Bankverbindung
             entity_plural_label: Bankverbindungen

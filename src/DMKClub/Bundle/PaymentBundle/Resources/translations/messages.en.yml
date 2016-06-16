@@ -1,5 +1,7 @@
 dmkclub:
     payment:
+        datagrid.action.sepa_direct_debit_success_message: "{0} No entities were processed|{1} SEPA-XML with one direct debit was created|]1,Inf[ SEPA-XML with %count% direct debits was created"
+        datagrid.action.sepa_direct_debit: SEPA direct debit
         bankaccount:
             entity_label:        Bank account
             entity_plural_label: Bank accounts

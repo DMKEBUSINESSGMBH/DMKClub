@@ -419,6 +419,12 @@ datagrid:
                 data_identifier: f.id
                 label: dmkclub.basics.datagrid.action.exportpdf
                 icon: download-alt
+            sepadebitxml:
+                type: dmksepadebitxml
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.payment.datagrid.action.sepa_direct_debit
+                icon: eur
             markfeecorrection:
                 type: markfeecorrection
                 entity_name: "%dmkclub_member.memberfee.entity.class%"
