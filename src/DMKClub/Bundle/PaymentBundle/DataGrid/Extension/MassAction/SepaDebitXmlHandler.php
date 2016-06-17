@@ -15,6 +15,9 @@ use Psr\Log\LoggerInterface;
 use Doctrine\ORM\AbstractQuery;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
+use DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder;
+use DMKClub\Bundle\PaymentBundle\Sepa\Payment;
+use DMKClub\Bundle\PaymentBundle\Sepa\Transaction;
 
 class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	const FLUSH_BATCH_SIZE = 100;
@@ -32,16 +35,22 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	/** @var \Psr\Log\LoggerInterface */
 	private $logger;
 
+	/** @var DirectDebitBuilder */
+	private $sepaBuilder;
+	private $payment;
+
 	/**
 	 * @param EntityManager $entityManager
 	 * @param TranslatorInterface $translator
 	 * @param ServiceLink $securityFacadeLink
+	 * @param DirectDebitBuilder $sepaBuilder
 	 */
-	public function __construct(
-			EntityManager $entityManager, TranslatorInterface $translator, LoggerInterface $logger) {
+	public function __construct(EntityManager $entityManager, TranslatorInterface $translator,
+			LoggerInterface $logger, DirectDebitBuilder $sepaBuilder) {
 		$this->entityManager = $entityManager;
 		$this->translator = $translator;
 		$this->logger = $logger;
+		$this->sepaBuilder = $sepaBuilder;
 	}
 
 	/**
@@ -77,36 +86,74 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
 
-		$data_identifier = $options['data_identifier'];
+//		$data_identifier = $options['data_identifier'];
 		$entity_name =$options['entity_name'];
 
 		// TODO: implement
 
 		if (array_key_exists('values', $data) && !empty($data['values'])) {
-			$entity_ids = $data['values'];
-			$iteration = count(explode(',', $data['values']));
+			$entity_ids = explode(',', $data['values']);
+			$iteration = count($entity_ids);
 			foreach ($entity_ids As $entityId) {
-				$this->handleItem($entityId, $data_identifier);
+				$this->handleItem($entityId, $entity_name);
 			}
 		}
 		elseif($isAllSelected) {
-			$entityIds = [];
 			$result = $query->iterate();
 			foreach ($result as $row) {
 				$row = reset($row);
 				$entityId = $row['id'];
-				$this->handleItem($entityId, $data_identifier);
+				$this->handleItem($entityId, $entity_name);
 				$iteration++;
 			}
+		}
+		if($iteration > 0) {
+			$xml = $this->sepaBuilder->buildXML();
+			$this->logger->error('SEPA fertig', ['XML' => $xml] );
 		}
 
 		return $iteration;
 	}
 
-	private function handleItem($entityId, $className) {
+	private function handleItem($entityId, $entityName) {
+		if(!$this->sepaBuilder->isInited()) {
+			// TODO: holen
+			$identifier = '4567';
+			$this->sepaBuilder->init($identifier, 'My Club');
+			$this->logger->error('Init called');
+
+			$this->payment = new Payment();
+			$this->payment->setId('123')
+				->setCreditorName('My Club e.V.')
+				->setCreditorAccountIBAN('DE345678989998')
+				->setCreditorAgentBIC('CHEKDE81XXX')
+				->setCreditorId('DE87WRE8R');
+			$this->sepaBuilder->addPaymentInfo($this->payment);
+		}
+		$sepaItem = $this->resolveEntity($entityId, $entityName);
+
+		$transaction = new Transaction();
+		$transaction->setPayment($this->payment)
+			->setAmount('500')
+			->setDebtorName('Hans Testus')
+			->setDebtorBic('DEUTDEDBCHE')
+			->setDebtorIban('DE29870700240001641955')
+			->setDebtorMandateSignDate('13.10.2016')
+			->setRemittanceInformation('Mitgliedsbeitrag Verein');
+		$this->sepaBuilder->addPaymentTransaction($transaction);
 
 	}
 
+	/**
+	 *
+	 * @param int $itemId
+	 * @param string $entityName
+	 * @return object|null
+	 */
+	protected function resolveEntity($entityId, $entityName) {
+		$repo = $this->entityManager->getRepository($entityName);
+		return $repo->findOneById($entityId);
+	}
 
 	/**
 	 * @param array $data
@@ -131,6 +178,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 
 		$successful = $entitiesCount > 0;
 		$options    = ['count' => $entitiesCount];
+		$options['url'] = 'fieldaet';
 
 		return new MassActionResponse(
 				$successful,

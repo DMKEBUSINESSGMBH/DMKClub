@@ -2,8 +2,9 @@ define([
     'underscore',
     'oroui/js/messenger',
     'orotranslation/js/translator',
-    'oro/datagrid/action/mass-action'
-], function(_, messenger, __, MassAction) {
+    'oro/datagrid/action/mass-action',
+    'oroui/js/mediator'
+], function(_, messenger, __, MassAction, mediator) {
     'use strict';
 
     var CreateSepaDebitAction;
@@ -17,6 +18,17 @@ define([
      * @extends oro.datagrid.action.MassAction
      */
     CreateSepaDebitAction = MassAction.extend({
+    	_showAjaxSuccessMessage: function(data) {
+          var type = data.url ? 'success' : 'error';
+          var message = data.message || __(this.messages.error);
+          if (data.url) {
+          	var filename = data.url.split('/').reverse()[0];
+          	message = message +
+              ' <a class="no-hash" target="_blank" href="'+ data.url + '">' + filename + '</a>';
+          }
+          if(message)
+        	  mediator.execute('showMessage', type, message);
+      }
 
     });
 

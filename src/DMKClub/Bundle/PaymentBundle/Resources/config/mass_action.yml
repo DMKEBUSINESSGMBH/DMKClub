@@ -15,4 +15,4 @@ services:
             - "@translator"
             - "@logger"
 #            - "@oro_security.security_facade.link"
-#            - "@dmkclub_member.memberfee.manager"
+            - "@dmkclub.payment.sepa.direct_debit_builder"
