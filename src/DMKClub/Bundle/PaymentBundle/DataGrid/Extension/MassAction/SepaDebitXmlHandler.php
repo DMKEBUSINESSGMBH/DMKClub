@@ -204,7 +204,9 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	 * @param SepaDirectDebitAwareInterface $sepaItem
 	 */
 	protected function isSepaDirectDebitPossible(SepaDirectDebitAwareInterface $sepaItem) {
-		return $sepaItem->getDebtorIban() && $sepaItem->getDebtorBic();
+		return $sepaItem->isSepaDirectDebitPossible()
+			&& $sepaItem->getDebtorIban()
+			&& $sepaItem->getDebtorBic();
 	}
 
 	/**

@@ -11,6 +11,7 @@ dmkclub:
             iban.label: IBAN
             bic.label: BIC
             bank_name.label: Bank
+            direct_debit_valid_from: DirectDebit valid from
         sepacreditor:
             entity_label:        Sepa Creditor
             entity_plural_label: Sepa Creditors

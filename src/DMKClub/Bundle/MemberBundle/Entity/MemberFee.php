@@ -28,6 +28,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFee;
 use DMKClub\Bundle\BasicsBundle\PDF\PdfAwareInterface;
 use DMKClub\Bundle\BasicsBundle\Utility\Strings;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
 
 /**
  * Class MemberFee
@@ -642,6 +643,14 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface, 
 	 */
 	public function getRemittanceInformation() {
 		return $this->getBilling()->getName().' - ' .$this->getId();
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface::isSepaDirectDebitPossible()
+	 */
+	public function isSepaDirectDebitPossible() {
+		return PaymentOption::SEPA_DIRECT_DEBIT === $this->getMember()->getPaymentOption();
 	}
 
 }

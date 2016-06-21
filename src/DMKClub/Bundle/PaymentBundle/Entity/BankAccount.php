@@ -118,6 +118,24 @@ class BankAccount extends ExtendBankAccount {
 	protected $bankName;
 
 	/**
+	 * @var \Date
+	 *
+	 * @ORM\Column(name="direct_debit_valid_from", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "order"=50
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $directDebitValidFrom;
+
+	/**
 	 * @var \DateTime $created
 	 *
 	 * @ORM\Column(type="datetime")
@@ -203,6 +221,15 @@ class BankAccount extends ExtendBankAccount {
 
 	public function setIban($value) {
 		$this->iban = $value;
+		return $this;
+	}
+
+	public function getDirectDebitValidFrom() {
+		return $this->directDebitValidFrom;
+	}
+
+	public function setDirectDebitValidFrom($value) {
+		$this->directDebitValidFrom = $value;
 		return $this;
 	}
 

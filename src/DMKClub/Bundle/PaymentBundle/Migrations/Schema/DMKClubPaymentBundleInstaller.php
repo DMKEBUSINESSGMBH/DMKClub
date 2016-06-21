@@ -45,6 +45,7 @@ class DMKClubPaymentBundleInstaller implements Installation
 		$table->addColumn('bank_name', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('created', 'datetime', []);
 		$table->addColumn('updated', 'datetime', []);
+		$table->addColumn('direct_debit_valid_from', 'date', ['notnull' => false]);
 		$table->setPrimaryKey(['id']);
 	}
 	/**

@@ -29,6 +29,7 @@ class BankAccountType extends AbstractType {
 			->add('iban', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.iban.label'))
 			->add('bic', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.bic.label'))
 			->add('bankName', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.bank_name.label'))
+			->add('directDebitValidFrom', 'oro_date', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.direct_debit_valid_from.label'))
 			;
 	}
 

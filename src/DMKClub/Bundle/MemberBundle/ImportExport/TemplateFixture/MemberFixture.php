@@ -59,7 +59,10 @@ class MemberFixture extends AbstractTemplateRepository implements TemplateFixtur
 //				$entity->setEmail ( 'mb@chemnitzerfc.de' );
 				$entity->setName ( self::DUMMY_MEMBER_NAME );
 				$bankAccount = new BankAccount();
-				$bankAccount->setBankName('HonestBank')->setIban('DE12345678')->setBic('DEDE123BANK');
+				$bankAccount->setBankName('HonestBank')
+					->setIban('DE12345678')
+					->setBic('DEDE123BANK')
+					->setDirectDebitValidFrom(new \DateTime());
 				$entity->setBankAccount($bankAccount);
 				$entity->setIsActive( TRUE );
 				$entity->setStatus ( MemberStatus::ACTIVE );
