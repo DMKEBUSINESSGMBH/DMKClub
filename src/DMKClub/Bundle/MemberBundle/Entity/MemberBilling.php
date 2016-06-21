@@ -19,6 +19,8 @@ use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberBilling;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
+use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
 
 /**
  * Class Billing
@@ -52,7 +54,7 @@ use Oro\Bundle\SegmentBundle\Entity\Segment;
  * )
  * @Oro\Loggable
  */
-class MemberBilling extends ExtendMemberBilling implements Taggable {
+class MemberBilling extends ExtendMemberBilling implements Taggable, SepaPaymentAwareInterface {
 	/**
 	 * @var int
 	 *
@@ -235,6 +237,13 @@ FEECORRECTION fee correction";
 	 * @ORM\JoinColumn(name="segment_id", referencedColumnName="id", onDelete="SET NULL")
 	 */
 	protected $segment;
+
+	/**
+	 * @var SepaCreditor
+	 * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor")
+	 * @ORM\JoinColumn(name="creditor_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $sepaCreditor;
 
 	/**
 	 * @var TwigTemplate
@@ -442,17 +451,25 @@ FEECORRECTION fee correction";
 	/**
 	 * @return Segment
 	 */
-	public function getSegment()
-	{
-	    return $this->segment;
+	public function getSegment() {
+		return $this->segment;
 	}
 
 	/**
 	 * @param Segment $segment
 	 */
 	public function setSegment($segment) {
-	    $this->segment = $segment;
-	    return $this;
+		$this->segment = $segment;
+		return $this;
+	}
+
+	public function getSepaCreditor() {
+		return $this->sepaCreditor;
+	}
+
+	public function setSepaCreditor($value) {
+		$this->sepaCreditor = $value;
+		return $this;
 	}
 
 	public function getTemplate() {
@@ -654,9 +671,8 @@ FEECORRECTION fee correction";
 	 *
 	 * @ORM\PrePersist
 	 */
-	public function prePersist()
-	{
-	    $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+	public function prePersist() {
+		$this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
 	}
 
 	/**
@@ -664,17 +680,70 @@ FEECORRECTION fee correction";
 	 *
 	 * @ORM\PreUpdate
 	 */
-	public function preUpdate()
-	{
-	    $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+	public function preUpdate()	{
+		$this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
 	}
 
 	/**
 	 * @return string
 	 */
-	public function __toString()
-	{
-	    return (string) $this->getName();
+	public function __toString() {
+		return (string) $this->getName();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface::getUniqueMessageIdentification()
+	 */
+	public function getUniqueMessageIdentification() {
+		// will be generated
+		return null;
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface::getInitiatingPartyName()
+	 */
+	public function getInitiatingPartyName() {
+		if($this->getSepaCreditor())
+			return $this->getSepaCreditor()->getName();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface::getPaymentId()
+	 */
+	public function getPaymentId() {
+		return 'bill'.($this->getId());
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface::getCreditorName()
+	 */
+	public function getCreditorName() {
+		if($this->getSepaCreditor())
+			return $this->getSepaCreditor()->getName();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface::getCreditorIban()
+	 */
+	public function getCreditorIban() {
+		if($this->getSepaCreditor())
+			return $this->getSepaCreditor()->getIban();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface::getCreditorBic()
+	 */
+	public function getCreditorBic() {
+		if($this->getSepaCreditor())
+			return $this->getSepaCreditor()->getBic();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface::getCreditorId()
+	 */
+	public function getCreditorId() {
+		if($this->getSepaCreditor())
+			return $this->getSepaCreditor()->getCreditorId();
 	}
 
 }

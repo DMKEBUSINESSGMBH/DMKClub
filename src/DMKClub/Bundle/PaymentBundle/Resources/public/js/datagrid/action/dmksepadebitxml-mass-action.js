@@ -23,6 +23,7 @@ define([
           var message = data.message || __(this.messages.error);
           if (data.url) {
           	var filename = data.url.split('/').reverse()[0];
+          	filename = filename + ' (' + data.bytes_hr + ')'; 
           	message = message +
               ' <a class="no-hash" target="_blank" href="'+ data.url + '">' + filename + '</a>';
           }

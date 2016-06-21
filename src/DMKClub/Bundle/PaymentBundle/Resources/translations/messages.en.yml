@@ -11,6 +11,17 @@ dmkclub:
             iban.label: IBAN
             bic.label: BIC
             bank_name.label: Bank
+        sepacreditor:
+            entity_label:        Sepa Creditor
+            entity_plural_label: Sepa Creditors
+            entity_description:  Represents a sepa creditor party
+            id.label:            Id
+            name.label:          Account owner
+            iban.label:          IBAN
+            bic.label:           BIC
+            creditor_id.label:   Creditor ID
+            owner.label: Owner
+            form.choose: Choose SEPA account
         bill:
             billfor: Billing for
             billnumber.label: Bill number

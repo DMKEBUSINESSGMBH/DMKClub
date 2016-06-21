@@ -1,24 +1,42 @@
 parameters:
-    dmkclub.form.type.payment_options.class:        DMKClub\Bundle\PaymentBundle\Form\Type\PaymentOptionsType
-    dmkclub.form.type.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType
-    dmkclub.form.handler.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Handler\BankAccount
+    dmkclub_payment.form.type.payment_options.class:        DMKClub\Bundle\PaymentBundle\Form\Type\PaymentOptionsType
+    dmkclub_payment.form.type.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType
+    dmkclub_payment.form.handler.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Handler\BankAccount
+
+    dmkclub_payment.form.type.sepa_creditor.class:        DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorType
+    dmkclub_payment.form.handler.sepa_creditor.class:        DMKClub\Bundle\PaymentBundle\Form\Handler\SepaCreditorHandler
+    dmkclub_payment.form.type.sepacreditor_select.class: DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorSelectType
 
 services:
+# ####
+# FormTypes
+# ####
+
     dmkclub.form.type.payment_options:
-        class: "%dmkclub.form.type.payment_options.class%"
+        class: "%dmkclub_payment.form.type.payment_options.class%"
         arguments:
-            - @dmkclub.payment.options_provider
+            - "@dmkclub.payment.options_provider"
         tags:
             - { name: form.type, alias: dmkclub_paymentoptions }
 
     # Bankaccount form type
-    dmkclub.form.type.bank_account:
-        class: %dmkclub.form.type.bank_account.class%
+    dmkclub_payment.form.type.bank_account:
+        class: "%dmkclub_payment.form.type.bank_account.class%"
         tags:
              - { name: form.type, alias: dmkclub_bankaccount }
+    # sepaCreditor form type
+    dmkclub_payment.form.type.sepa_creditor:
+        class: "%dmkclub_payment.form.type.sepa_creditor.class%"
+        tags:
+             - { name: form.type, alias: dmkclub_sepacreditor }
+
+
+# ####
+# Forms
+# ####
 
     # Bankaccount form
-    dmkclub.form.bank_account:
+    dmkclub_payment.bank_account.form:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
@@ -26,12 +44,45 @@ services:
             - "dmkclub_bankaccount_form"
             - "dmkclub_bankaccount"
             - ~
+    # SepaCreditor form
+    dmkclub_payment.sepa_creditor.form:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "dmkclub_sepacreditor_form"
+            - "dmkclub_sepacreditor"
+            - ~
+
+# ####
+# FormHandler
+# ####
 
     # BankAccount form handler
-    dmkclub.form.handler.bank_account:
-        class: %dmkclub.form.handler.bank_account.class%
+    dmkclub_payment.form.handler.bank_account:
+        class: "%dmkclub_payment.form.handler.bank_account.class%"
         scope: request
         arguments:
-            - @dmkclub.form.bank_account
-            - @request
-            - @doctrine.orm.entity_manager
+            - "@dmkclub_payment.bank_account.form"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
+
+
+    # SepaCreditor form handler
+    dmkclub_payment.sepa_creditor.form.handler:
+        class: "%dmkclub_payment.form.handler.sepa_creditor.class%"
+        scope: request
+        arguments:
+            - "@dmkclub_payment.sepa_creditor.form"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
+
+# ####
+# FormWidgets
+# ####
+
+    # Form SELECT type
+    dmkclub_payment.form.type.sepacreditor_select:
+        class: "%dmkclub_payment.form.type.sepacreditor_select.class%"
+        tags:
+            - { name: form.type, alias: dmkclub_sepacreditor_select }

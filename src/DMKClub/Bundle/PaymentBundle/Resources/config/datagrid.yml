@@ -1,0 +1,37 @@
+datagrid:
+    dmkclub-sepacreditor-grid:
+        extended_entity_name: "%dmkclub.payment.sepacreditor.entity.class%"
+        acl_resource: dmkclub_sepacreditor_view
+        source:
+            type: orm
+            query:
+                select:
+                    - c.id
+                    - c.name
+                    - c.iban
+                    - c.bic
+                    - c.creditorId
+                    - c.created
+                    - c.updated
+                from:
+                    - { table: "%dmkclub.payment.sepacreditor.entity.class%", alias: c }
+        columns:
+            name:
+                label:         dmkclub.payment.sepacreditor.name.label
+            iban:
+                label:         dmkclub.payment.sepacreditor.iban.label
+            bic:
+                label:         dmkclub.payment.sepacreditor.bic.label
+            creditorId:
+                label:         dmkclub.payment.sepacreditor.creditor_id.label
+            created:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+                renderable:    false
+            updated:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+                renderable:    false
+        properties:
+            id: ~
+                

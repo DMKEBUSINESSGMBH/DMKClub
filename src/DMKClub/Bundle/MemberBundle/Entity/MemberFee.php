@@ -27,6 +27,7 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFee;
 use DMKClub\Bundle\BasicsBundle\PDF\PdfAwareInterface;
 use DMKClub\Bundle\BasicsBundle\Utility\Strings;
+use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
 
 /**
  * Class MemberFee
@@ -60,7 +61,7 @@ use DMKClub\Bundle\BasicsBundle\Utility\Strings;
  * )
  * @Oro\Loggable
  */
-class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface {
+class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface, SepaDirectDebitAwareInterface {
 	const CORRECTION_STATUS_NONE = 0;
 	const CORRECTION_STATUS_OPEN = 1;
 	const CORRECTION_STATUS_DONE = 2;
@@ -590,6 +591,57 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface {
 	 */
 	public function getExportFilesystem() {
 		return $this->getBilling()->getExportFilesystem();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getSepaAmount()
+	 */
+	public function getSepaAmount() {
+		return $this->getPriceTotal();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getDebtorName()
+	 */
+	public function getDebtorName() {
+		$name = $this->getMember()->getBankAccount()->getAccountOwner();
+		return $name ? $name : $this->getMember()->getName();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getDebtorBic()
+	 */
+	public function getDebtorBic() {
+		return $this->getMember()->getBankAccount()->getBic();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getDebtorIban()
+	 */
+	public function getDebtorIban() {
+		return $this->getMember()->getBankAccount()->getIban();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getDebtorMandateSignDate()
+	 */
+	public function getDebtorMandateSignDate() {
+		// TODO:
+		return new \DateTime();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface::getPaymentAware()
+	 */
+	public function getPaymentAware() {
+		return $this->getBilling();
+	}
+
+	/* (non-PHPdoc)
+	 * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface::getRemittanceInformation()
+	 */
+	public function getRemittanceInformation() {
+		return $this->getBilling()->getName().' - ' .$this->getId();
 	}
 
 }

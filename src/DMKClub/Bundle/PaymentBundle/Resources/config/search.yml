@@ -1,0 +1,13 @@
+DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor:
+    alias: dmkclub_sepacreditor
+    label: dmkclub.payment.sepacreditor.entity_plural_label
+    route:
+        name: dmkclub_sepacreditor_view
+        parameters:
+            id: id
+    search_template: DMKClubPaymentBundle:SepaCreditor:searchResult.html.twig
+    fields:
+        -
+            name:                   name
+            target_type:            text
+            target_fields:          [name]

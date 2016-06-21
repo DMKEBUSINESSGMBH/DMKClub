@@ -2,6 +2,9 @@ parameters:
     dmkclub.payment.options_provider.class:           DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider
     dmkclub.payment.twig.class:                       DMKClub\Bundle\PaymentBundle\Twig\PaymentExtension
     dmkclub.payment.sepa.direct_debit_builder.class:  DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder
+    dmkclub.payment.sepacreditor.entity.class:        DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor
+    dmkclub.payment.bankaccount.entity.class:         DMKClub\Bundle\PaymentBundle\Entity\BankAccount
+    dmkclub.payment.sepacreditor.manager.api.class:   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
 services:
     dmkclub.payment.options_provider:
@@ -16,4 +19,18 @@ services:
 
     dmkclub.payment.sepa.direct_debit_builder:
         class: "%dmkclub.payment.sepa.direct_debit_builder.class%"
-            
+
+    dmkclub.payment.form.autocomplete.sepacreditor.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - "%dmkclub.payment.sepacreditor.entity.class%"
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: dmkclub_sepacreditors, acl_resource: dmkclub_sepacreditor_view }
+
+    dmkclub.payment.sepacreditor.manager.api:
+        class: "%dmkclub.payment.sepacreditor.manager.api.class%"
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - "%dmkclub.payment.sepacreditor.entity.class%"
+            - "@doctrine.orm.entity_manager"

@@ -2,9 +2,9 @@
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
 {% set fullname = entity|oro_format_name|default('N/A') %}
-{% oro_title_set({ params : {"%memberbilling.name%": fullname} }) %}
+{% oro_title_set({ params : {"%sepacreditor.name%": fullname} }) %}
 
-{% set formAction = form.vars.value.id ? path('dmkclub_memberbilling_update', { 'id': form.vars.value.id }) : path('dmkclub_memberbilling_create')  %}
+{% set formAction = form.vars.value.id ? path('dmkclub_sepacreditor_update', { 'id': form.vars.value.id }) : path('dmkclub_sepacreditor_create')  %}
 
 {% block head_script %}
     {{ parent() }}
@@ -18,15 +18,9 @@
     {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
         {{ UI.buttonSeparator() }}
     {% endif %}
-
-    {% if form.vars.value.id %}
-	    {{ UI.cancelButton(path('dmkclub_memberbilling_view', { 'id': form.vars.value.id })) }}
-    {% else %}
-	    {{ UI.cancelButton(path('dmkclub_memberbilling_index')) }}
-    {% endif %}
-
+    {{ UI.cancelButton(path('dmkclub_sepacreditor_index')) }}
     {% set html = UI.saveAndCloseButton() %}
-    {% if form.vars.value.id or resource_granted('dmkclub_memberbilling_update') %}
+    {% if form.vars.value.id or resource_granted('dmkclub_sepacreditor_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}
@@ -36,13 +30,13 @@
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
             'entity':      form.vars.value,
-            'indexPath':   path('dmkclub_memberbilling_index'),
-            'indexLabel': 'dmkclub.member.memberbilling.entity_plural_label'|trans,
+            'indexPath':   path('dmkclub_sepacreditor_index'),
+            'indexLabel': 'dmkclub.payment.sepacreditor.entity_plural_label'|trans,
             'entityTitle': entity.name
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'dmkclub.member.memberbilling.entity_label'|trans}) %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'dmkclub.payment.sepacreditor.entity_label'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
@@ -53,55 +47,29 @@
 {% endblock breadcrumbs %}
 
 {% block content_data %}
-    {% set id = 'member-billing' %}
+    {% set id = 'sepacreditor-profile' %}
 
-    {% set processorFormData = [form_row(form.processor)] %}
-    {% if form.processorSettings is defined %}
-        {% set processorFormData = processorFormData|merge([form_widget(form.processorSettings)]) %}
-    {% endif %}
+    {% set formFields = [] %}
 
-    {% set formFields1 = [] %}
-    {% set formFields2 = [] %}
-
-    {% set formFields1 = formFields1|merge([
+    {% set formFields = formFields|merge([
         form_row(form.name),
-        form_row(form.startDate),
-        form_row(form.endDate),
-        form_row(form.segment),
-	   ]) %}
+        form_row(form.iban),
+        form_row(form.bic),
+        form_row(form.creditorId),
+    ]) %}
     {% if form.owner is defined %}
-        {% set formFields1 = formFields1|merge([form_row(form.owner)]) %}
+        {% set formFields = formFields|merge([form_row(form.owner)]) %}
     {% endif %}
 
-    {% set formFields2 = formFields2|merge([
-        form_row(form.template),
-        form_row(form.sepaCreditor),
-        form_row(form.exportFilesystem),
-        form_row(form.positionLabels),
-
-    ]) %}
 
     {% set dataBlocks = [{
             'title': 'General'|trans,
             'class': 'active',
             'subblocks': [
                 {
-                    'title': 'dmkclub.memberbilling_information'|trans,
-                    'data': formFields1
-                },
-                {
                     'title': '',
-                    'data': formFields2
+                    'data': formFields
                 },
-            ]
-        },
-        {
-            'title': 'dmkclub.member.memberbilling.block.processor_settings'|trans,
-            'subblocks': [
-                {
-                    'title': '',
-                    'data': processorFormData
-                }
             ]
         }]
     %}

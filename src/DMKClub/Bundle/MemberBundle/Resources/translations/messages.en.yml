@@ -62,6 +62,7 @@ dmkclub:
           fee_total.label:    Fee total
           start_date.label:    Start date
           end_date.label:      End date
+          sepa_creditor.label: SEPA account
           processor.label: Processor
           processor_config.label: Processor config
           position_labels.label: Position labels

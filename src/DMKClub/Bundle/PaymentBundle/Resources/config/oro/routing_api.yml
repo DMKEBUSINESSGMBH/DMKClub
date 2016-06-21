@@ -1,0 +1,3 @@
+dmkclub_payment_api:
+    resource:     "@DMKClubPaymentBundle/Controller/Api/Rest/SepaCreditorController.php"
+    type:         rest

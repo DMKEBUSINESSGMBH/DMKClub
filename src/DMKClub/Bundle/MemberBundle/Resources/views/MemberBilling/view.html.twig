@@ -82,17 +82,15 @@
         </div>
     {% endset %}
 
-    {% set settingsSubBlocks = [{'data' : [settingsWidget]}] %}
+    {% set generalSubBlocks = generalSubBlocks|merge(
+        [{'data': [settingsWidget]}]
+    ) %}
 
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
             'class': 'active',
             'subblocks': generalSubBlocks
-        },
-        {
-            'title': 'dmkclub.member.memberbilling.block.processor_settings'|trans,
-            'subblocks': settingsSubBlocks
         },
         {
             'title': 'dmkclub.member.fees.label'|trans,

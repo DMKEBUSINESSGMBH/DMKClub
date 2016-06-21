@@ -72,10 +72,10 @@ class Transaction {
 	 * @return string  '13.10.2016'
 	 */
 	public function getDebtorMandateSignDate() {
-	  return $this->debtorMandateSignDate;
+	  return $this->debtorMandateSignDate->format('d.m.Y');
 	}
 
-	public function setDebtorMandateSignDate($value) {
+	public function setDebtorMandateSignDate(\DateTime $value) {
 	  $this->debtorMandateSignDate = $value;
 	  return $this;
 	}

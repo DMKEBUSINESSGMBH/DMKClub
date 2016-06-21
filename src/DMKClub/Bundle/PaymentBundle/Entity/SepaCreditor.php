@@ -12,33 +12,44 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
-use DMKClub\Bundle\PaymentBundle\Model\ExtendBankAccount;
+use DMKClub\Bundle\PaymentBundle\Model\ExtendSepaCreditor;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
- * Class BankAccount
+ * Class SepaCreditor
  *
  * @package DMKClub\Bundle\DMKClubPaymentBundle\Entity
- * @ORM\Entity(repositoryClass="DMKClub\Bundle\PaymentBundle\Entity\Repository\BankAccountRepository")
- * @ORM\Table(name="dmkclub_bankaccount")
+ * @ORM\Entity(repositoryClass="DMKClub\Bundle\PaymentBundle\Entity\Repository\SepaCreditorRepository")
+ * @ORM\Table(name="dmkclub_sepacreditor")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-briefcase"
+ *              "icon"="icon-suitcase"
  *          },
- *          "note"={
- *              "immutable"=true
+ *          "ownership"={
+ *              "owner_type"="USER",
+ *              "owner_field_name"="owner",
+ *              "owner_column_name"="user_owner_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
  *          },
- *          "activity"={
- *              "immutable"=true
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
  *          },
- *          "attachment"={
- *              "immutable"=true
+ *          "form"={
+ *              "grid_name"="dmkclub-sepacreditor-grid",
+ *              "form_type"="dmkclub_sepacreditor_select"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
  */
-class BankAccount extends ExtendBankAccount {
+class SepaCreditor extends ExtendSepaCreditor {
 
 	/**
 	 * @var int
@@ -60,7 +71,7 @@ class BankAccount extends ExtendBankAccount {
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="account_owner", type="string", length=255, nullable=true)
+	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
 	 * @Soap\ComplexType("string", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
@@ -70,7 +81,7 @@ class BankAccount extends ExtendBankAccount {
 	 *      }
 	 * )
 	 */
-	protected $accountOwner;
+	protected $name;
 
 	/**
 	 * @var string
@@ -105,7 +116,7 @@ class BankAccount extends ExtendBankAccount {
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="bank_name", type="string", length=255, nullable=true)
+	 * @ORM\Column(name="creditor_id", type="string", length=255, nullable=true)
 	 * @Soap\ComplexType("string", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
@@ -115,7 +126,7 @@ class BankAccount extends ExtendBankAccount {
 	 *      }
 	 * )
 	 */
-	protected $bankName;
+	protected $creditorId;
 
 	/**
 	 * @var \DateTime $created
@@ -133,6 +144,28 @@ class BankAccount extends ExtendBankAccount {
 	 * )
 	 */
 	protected $created;
+
+	/**
+	 * @var User
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+	 * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $owner;
+	/**
+	 * @var Organization
+	 *
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "importexport"={
+	 *              "full"=false,
+	 *              "order"=460
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $organization;
 
 	/**
 	 * @var \DateTime $updated
@@ -172,21 +205,21 @@ class BankAccount extends ExtendBankAccount {
 		return $this;
 	}
 
-	public function getAccountOwner() {
-		return $this->accountOwner;
+	public function getName() {
+		return $this->name;
 	}
 
-	public function setAccountOwner($value) {
-		$this->accountOwner = $value;
+	public function setName($value) {
+		$this->name = $value;
 		return $this;
 	}
 
-	public function getBankName() {
-		return $this->bankName;
+	public function getCreditorId() {
+		return $this->creditorId;
 	}
 
-	public function setBankName($value) {
-		$this->bankName = $value;
+	public function setCreditorId($value) {
+		$this->creditorId = $value;
 		return $this;
 	}
 	public function getBic() {
@@ -204,6 +237,41 @@ class BankAccount extends ExtendBankAccount {
 	public function setIban($value) {
 		$this->iban = $value;
 		return $this;
+	}
+
+	/**
+	 * @return User
+	 */
+	public function getOwner() {
+		return $this->owner;
+	}
+
+	/**
+	 * @param User $user
+	 */
+	public function setOwner(User $user) {
+		$this->owner = $user;
+		return $this;
+	}
+
+	/**
+	 * Set organization
+	 *
+	 * @param Organization $organization
+	 * @return Member
+	 */
+	public function setOrganization(Organization $organization = null) {
+		$this->organization = $organization;
+		return $this;
+	}
+
+	/**
+	 * Get organization
+	 *
+	 * @return Organization
+	 */
+	public function getOrganization() {
+		return $this->organization;
 	}
 
 	/**
@@ -269,9 +337,9 @@ class BankAccount extends ExtendBankAccount {
 	 */
 	public function __toString() {
 		$data = array(
-			$this->getAccountOwner(),
+			$this->getName(),
 			',',
-			$this->getBankName(),
+			$this->getCreditorId(),
 			$this->getIban(),
 			$this->getBic(),
 		);

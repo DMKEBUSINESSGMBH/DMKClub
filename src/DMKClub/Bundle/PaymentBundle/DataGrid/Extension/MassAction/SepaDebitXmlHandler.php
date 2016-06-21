@@ -2,22 +2,28 @@
 namespace DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\AbstractQuery;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Symfony\Component\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
+use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
+use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
+
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
-use Doctrine\ORM\Query;
-use Psr\Log\LoggerInterface;
-use Doctrine\ORM\AbstractQuery;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
 use DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder;
 use DMKClub\Bundle\PaymentBundle\Sepa\Payment;
+use DMKClub\Bundle\PaymentBundle\Sepa\SepaException;
 use DMKClub\Bundle\PaymentBundle\Sepa\Transaction;
+use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
+use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
 
 class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	const FLUSH_BATCH_SIZE = 100;
@@ -33,11 +39,15 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	protected $translator;
 
 	/** @var \Psr\Log\LoggerInterface */
-	private $logger;
+	protected $logger;
 
 	/** @var DirectDebitBuilder */
-	private $sepaBuilder;
-	private $payment;
+	protected $sepaBuilder;
+	protected $payment;
+	/** @var FileSystemOperator */
+	protected $fileSystemOperator;
+	protected $router;
+	protected $attachmentManager;
 
 	/**
 	 * @param EntityManager $entityManager
@@ -46,11 +56,14 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	 * @param DirectDebitBuilder $sepaBuilder
 	 */
 	public function __construct(EntityManager $entityManager, TranslatorInterface $translator,
-			LoggerInterface $logger, DirectDebitBuilder $sepaBuilder) {
+			LoggerInterface $logger, $router, DirectDebitBuilder $sepaBuilder, FileSystemOperator $fso, AttachmentManager $attachmentManager) {
 		$this->entityManager = $entityManager;
 		$this->translator = $translator;
 		$this->logger = $logger;
+		$this->router = $router;
 		$this->sepaBuilder = $sepaBuilder;
+		$this->fileSystemOperator = $fso;
+		$this->attachmentManager = $attachmentManager;
 	}
 
 	/**
@@ -66,14 +79,20 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 		$this->entityManager->beginTransaction();
 		try {
 			set_time_limit(0);
- 			$iteration = $this->handleExport($options, $data, $query);
+ 			$result = $this->handleExport($options, $data, $query);
 			$this->entityManager->commit();
 		} catch (\Exception $e) {
 			$this->entityManager->rollback();
-			throw $e;
+
+			return new MassActionResponse(
+					false,
+					$this->translator->trans($e->getMessage())
+					,
+					[]
+			);
 		}
 
-		return $this->getResponse($args, $iteration);
+		return $this->getResponse($args, $result);
 	}
 
 	/**
@@ -89,59 +108,103 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 //		$data_identifier = $options['data_identifier'];
 		$entity_name =$options['entity_name'];
 
-		// TODO: implement
-
 		if (array_key_exists('values', $data) && !empty($data['values'])) {
 			$entity_ids = explode(',', $data['values']);
-			$iteration = count($entity_ids);
 			foreach ($entity_ids As $entityId) {
-				$this->handleItem($entityId, $entity_name);
+				if($this->handleItem($entityId, $entity_name))
+					$iteration++;
 			}
 		}
 		elseif($isAllSelected) {
 			$result = $query->iterate();
 			foreach ($result as $row) {
 				$row = reset($row);
-				$entityId = $row['id'];
-				$this->handleItem($entityId, $entity_name);
-				$iteration++;
+				$entityId = $row['id']; // sollte aus dem data_identifier geholt werden
+				if($this->handleItem($entityId, $entity_name))
+					$iteration++;
 			}
 		}
+		$ret = [$iteration];
 		if($iteration > 0) {
 			$xml = $this->sepaBuilder->buildXML();
-			$this->logger->error('SEPA fertig', ['XML' => $xml] );
+			$outputFormat = 'xml';
+			$fileName = $this->fileSystemOperator->generateTemporaryFileName('sepadirectdebit', $outputFormat);
+ 			$file = new \SplFileObject($fileName, 'w');
+ 			$ret[] = $fileName;
+ 			$bytes = $file->fwrite($xml);
+ 			$ret[] = $bytes;
+			$this->logger->info('SEPA xml file created', ['file' => $fileName, 'bytes' => $bytes, 'items' => $iteration] );
 		}
-
-		return $iteration;
+		return $ret;
 	}
 
 	private function handleItem($entityId, $entityName) {
+		$sepaItem = $this->resolveEntity($entityId, $entityName);
+		if(!($sepaItem instanceof SepaDirectDebitAwareInterface))
+			throw new SepaException('Entity does not implement SepaDirectDebitAwareInterface');
+
 		if(!$this->sepaBuilder->isInited()) {
 			// TODO: holen
-			$identifier = '4567';
-			$this->sepaBuilder->init($identifier, 'My Club');
+			// Wir benötigen Zugriff auf das MemberBilling
+			$paymentAware = $sepaItem->getPaymentAware();
+			$this->assertCreditor($paymentAware);
+
+			$identifier = $this->getUniqueMessageIdentification($paymentAware);
+			$this->sepaBuilder->init($identifier, $paymentAware->getInitiatingPartyName());
 			$this->logger->error('Init called');
 
 			$this->payment = new Payment();
-			$this->payment->setId('123')
-				->setCreditorName('My Club e.V.')
-				->setCreditorAccountIBAN('DE345678989998')
-				->setCreditorAgentBIC('CHEKDE81XXX')
-				->setCreditorId('DE87WRE8R');
+			$this->payment->setId($paymentAware->getPaymentId())
+				->setCreditorName($paymentAware->getCreditorName())
+				->setCreditorAccountIBAN($paymentAware->getCreditorIban())
+				->setCreditorAgentBIC($paymentAware->getCreditorBic())
+				->setCreditorId($paymentAware->getCreditorId());
 			$this->sepaBuilder->addPaymentInfo($this->payment);
 		}
-		$sepaItem = $this->resolveEntity($entityId, $entityName);
 
-		$transaction = new Transaction();
-		$transaction->setPayment($this->payment)
-			->setAmount('500')
-			->setDebtorName('Hans Testus')
-			->setDebtorBic('DEUTDEDBCHE')
-			->setDebtorIban('DE29870700240001641955')
-			->setDebtorMandateSignDate('13.10.2016')
-			->setRemittanceInformation('Mitgliedsbeitrag Verein');
-		$this->sepaBuilder->addPaymentTransaction($transaction);
+		$ret = false;
+		if($this->isSepaDirectDebitPossible($sepaItem)) {
+			$ret = true;
+			$transaction = new Transaction();
+			$transaction->setPayment($this->payment)
+			->setAmount($sepaItem->getSepaAmount())
+			->setDebtorName($sepaItem->getDebtorName())
+			->setDebtorBic($sepaItem->getDebtorBic())
+			->setDebtorIban($sepaItem->getDebtorIban())
+			->setDebtorMandateSignDate($sepaItem->getDebtorMandateSignDate())
+			->setRemittanceInformation($sepaItem->getRemittanceInformation());
+			$this->sepaBuilder->addPaymentTransaction($transaction);
+		}
+		return $ret;
+	}
 
+	protected function assertCreditor(SepaPaymentAwareInterface $paymentAware) {
+		if(!$paymentAware->getCreditorId() || !$paymentAware->getCreditorBic() ||
+				!$paymentAware->getCreditorIban()) {
+			$this->logger->error('Missing SEPA creditor data' , [
+					'creditorid'=>$paymentAware->getCreditorId(),
+					'bic'=>$paymentAware->getCreditorBic(),
+					'iban'=>$paymentAware->getCreditorIban(),
+			]);
+			throw new SepaException('Sepa creditor data not valid');
+		}
+	}
+	/**
+	 * Generate payment
+	 * @param SepaPaymentAwareInterface $paymentAware
+	 */
+	protected function getUniqueMessageIdentification(SepaPaymentAwareInterface $paymentAware) {
+		if($paymentAware->getUniqueMessageIdentification())
+			return $paymentAware->getUniqueMessageIdentification();
+		$date = new \DateTime();
+		return 'dmkclb'.$date->format('YmdHms');
+	}
+	/**
+	 *
+	 * @param SepaDirectDebitAwareInterface $sepaItem
+	 */
+	protected function isSepaDirectDebitPossible(SepaDirectDebitAwareInterface $sepaItem) {
+		return $sepaItem->getDebtorIban() && $sepaItem->getDebtorBic();
 	}
 
 	/**
@@ -159,8 +222,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	 * @param array $data
 	 * @return bool
 	 */
-	protected function isAllSelected($data)
-	{
+	protected function isAllSelected($data) {
 		return array_key_exists('inset', $data) && $data['inset'] === '0';
 	}
 
@@ -170,15 +232,29 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	 *
 	 * @return MassActionResponse
 	 */
-	protected function getResponse(MassActionHandlerArgs $args, $entitiesCount = 0)
-	{
+	protected function getResponse(MassActionHandlerArgs $args, $result) {
+		$entitiesCount = $result[0];
+		$fileName = $entitiesCount ? $result[1] : '';
+		$bytes = $entitiesCount ? $result[2] : 0;
+
 		$massAction      = $args->getMassAction();
+
 		$responseMessage = 'dmkclub.payment.datagrid.action.sepa_direct_debit_success_message';
 		$responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $responseMessage);
-
 		$successful = $entitiesCount > 0;
-		$options    = ['count' => $entitiesCount];
-		$options['url'] = 'fieldaet';
+		$url = '';
+		if($entitiesCount > 0) {
+			$url = $this->router->generate(
+					'oro_importexport_export_download',
+					['fileName' => basename($fileName)]
+			);
+		}
+		$responseData    = [
+				'count' => $entitiesCount,
+				'bytes' => $bytes,
+				'bytes_hr' => $this->attachmentManager->getFileSize($bytes),
+				'url' => $url,
+		];
 
 		return new MassActionResponse(
 				$successful,
@@ -187,7 +263,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 						$entitiesCount,
 						['%count%' => $entitiesCount]
 				),
-				$options
+				$responseData
 		);
 	}
 

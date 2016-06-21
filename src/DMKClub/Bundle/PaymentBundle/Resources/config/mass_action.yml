@@ -14,5 +14,7 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@translator"
             - "@logger"
-#            - "@oro_security.security_facade.link"
+            - "@router"
             - "@dmkclub.payment.sepa.direct_debit_builder"
+            - "@oro_importexport.file.file_system_operator"
+            - "@oro_attachment.manager"

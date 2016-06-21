@@ -112,8 +112,9 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 	protected function createDmkclubMemberBillingTable(Schema $schema) {
 		$table = $schema->createTable('dmkclub_member_billing');
 		$table->addColumn('id', 'integer', ['autoincrement' => true]);
-		$table->addColumn('template_id', 'integer', ['notnull' => false]);
+		$table->addColumn('creditor_id', 'integer', ['notnull' => false]);
 		$table->addColumn('organization_id', 'integer', ['notnull' => false]);
+		$table->addColumn('template_id', 'integer', ['notnull' => false]);
 		$table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
 		$table->addColumn('segment_id', 'integer', ['notnull' => false]);
 		$table->addColumn('start_date', 'date', ['notnull' => false]);
@@ -123,14 +124,15 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$table->addColumn('updated_at', 'datetime', []);
 		$table->addColumn('processor', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('processor_config', 'text', ['notnull' => false]);
+		$table->addColumn('fee_total', 'integer', ['notnull' => false]);
 		$table->addColumn('export_filesystem', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('position_labels', 'text', ['notnull' => false]);
-		$table->addColumn('fee_total', 'integer', ['notnull' => false]);
 		$table->setPrimaryKey(['id']);
 		$table->addIndex(['user_owner_id'], 'IDX_25B89C799EB185F9', []);
 		$table->addIndex(['organization_id'], 'IDX_25B89C7932C8A3DE', []);
 		$table->addIndex(['segment_id'], 'IDX_25B89C79DB296AAD', []);
 		$table->addIndex(['template_id'], 'IDX_25B89C795DA0FB8', []);
+		$table->addIndex(['creditor_id'], 'IDX_25B89C79DF91AC92', []);
 	}
 
 	/**
@@ -259,14 +261,20 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 	protected function addDmkclubMemberBillingForeignKeys(Schema $schema) {
 		$table = $schema->getTable('dmkclub_member_billing');
 		$table->addForeignKeyConstraint(
-				$schema->getTable('dmkclub_basics_twigtemplate'),
-				['template_id'],
-				['id'],
-				['onDelete' => 'SET NULL', 'onUpdate' => null]
+			$schema->getTable('dmkclub_sepacreditor'),
+			['creditor_id'],
+			['id'],
+			['onDelete' => 'SET NULL', 'onUpdate' => null]
 		);
 		$table->addForeignKeyConstraint(
 				$schema->getTable('oro_organization'),
 				['organization_id'],
+				['id'],
+				['onDelete' => 'SET NULL', 'onUpdate' => null]
+		);
+		$table->addForeignKeyConstraint(
+				$schema->getTable('dmkclub_basics_twigtemplate'),
+				['template_id'],
 				['id'],
 				['onDelete' => 'SET NULL', 'onUpdate' => null]
 		);

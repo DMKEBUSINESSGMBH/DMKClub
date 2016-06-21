@@ -672,18 +672,16 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	/**
 	 * @return User
 	 */
-	public function getOwner()
-	{
-	    return $this->owner;
+	public function getOwner() {
+		return $this->owner;
 	}
 
 	/**
 	 * @param User $user
 	 */
-	public function setOwner(User $user)
-	{
-	    $this->owner = $user;
-	    return $this;
+	public function setOwner(User $user) {
+		$this->owner = $user;
+		return $this;
 	}
 
 	/**
@@ -692,11 +690,9 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 * @param Organization $organization
 	 * @return Member
 	 */
-	public function setOrganization(Organization $organization = null)
-	{
-	    $this->organization = $organization;
-
-	    return $this;
+	public function setOrganization(Organization $organization = null) {
+		$this->organization = $organization;
+		return $this;
 	}
 
 	/**
@@ -704,9 +700,8 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 *
 	 * @return Organization
 	 */
-	public function getOrganization()
-	{
-	    return $this->organization;
+	public function getOrganization() {
+		return $this->organization;
 	}
 
 	/**

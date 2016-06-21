@@ -16,6 +16,8 @@ datagrid:
                     - m.paymentOption
                     - a.city
                     - c.birthday
+                    - b.iban
+                    - b.bic
                     - m.startDate
                     - m.endDate
                     - m.createdAt
@@ -26,6 +28,7 @@ datagrid:
                     left:
                         - { join: m.contact, alias: c }
                         - { join: m.postalAddress, alias: a }
+                        - { join: m.bankAccount, alias: b }
         columns:
             memberCode:
                 label:         dmkclub.member.member_code.label
@@ -50,6 +53,12 @@ datagrid:
             birthday:
                 label:         orocrm.contact.birthday.label
                 frontend_type: date
+            iban:
+                label:         dmkclub.payment.bankaccount.iban.label
+                renderable:    false
+            bic:
+                label:         dmkclub.payment.bankaccount.bic.label
+                renderable:    false
             startDate:
                 label:         dmkclub.member.start_date.label
                 frontend_type: date
@@ -95,6 +104,10 @@ datagrid:
                     data_name: a.city
                 birthday:
                     data_name: c.birthday
+                iban:
+                    data_name: b.iban
+                bic:
+                    data_name: b.bic
                 startDate:
                     data_name: m.startDate
                 endDate:
@@ -135,6 +148,12 @@ datagrid:
                 birthday:
                     type:      date
                     data_name: c.birthday
+                iban:
+                    type: string
+                    data_name: b.iban
+                bic:
+                    type: string
+                    data_name: b.bic
                 startDate:
                     type:      datetime
                     data_name: m.startDate

@@ -8,6 +8,17 @@ dmkclub:
             entity_description:  Represents a banking account
             account_owner.label: Kontoinhaber
             bank_name.label: Name der Bank
+        sepacreditor:
+            entity_label:        SEPA Mandat
+            entity_plural_label: SEPA Mandate
+            entity_description:  Represents a sepa creditor party
+            id.label:            Id
+            name.label:          Name des Mandats
+            iban.label:          IBAN
+            bic.label:           BIC
+            creditor_id.label:   Mandats ID
+            owner.label:         Owner
+            form.choose: Wähle SEPA Mandat
         bill:
             billfor: Rechnung für
             billnumber.label: Rechnungsnummer
@@ -26,3 +37,4 @@ creditcard: Kreditkarte
 cash: Barzahlung
 none: Keine
 accounting: Abrechnung
+"Sepa creditor data not valid":   Die Daten des SEPA-Mandats wurden nicht gefunden. Bitte prüfen Sie die SEPA-Einstellungen.

@@ -129,6 +129,15 @@ class MemberBillingType extends AbstractType {
 		);
 
 		$builder->add(
+				'sepaCreditor',
+				'dmkclub_sepacreditor_select',
+				[
+						'label' => 'dmkclub.member.memberbilling.sepa_creditor.label',
+						'required' => false,
+				]
+		);
+
+		$builder->add(
 				'template',
 				'dmkclub_basics_twigtemplate_select',
 				[
