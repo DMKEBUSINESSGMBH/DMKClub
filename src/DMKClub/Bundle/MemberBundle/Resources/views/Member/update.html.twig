@@ -25,9 +25,15 @@
 	    {{ UI.cancelButton(path('dmkclub_member_index')) }}
     {% endif %}
 
-    {% set html = UI.saveAndCloseButton() %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'dmkclub_member_view',
+        'params': {'id': '$id'}
+    }) %}
     {% if form.vars.value.id or resource_granted('dmkclub_member_update') %}
-        {% set html = html ~ UI.saveAndStayButton() %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'dmkclub_member_update',
+            'params': {'id': '$id'}
+        }) %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}
 {% endblock %}

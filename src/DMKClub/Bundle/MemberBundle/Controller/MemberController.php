@@ -71,24 +71,11 @@ class MemberController extends Controller
     {
     	/* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandler */
     	$handler = $this->get('oro_form.model.update_handler');
-    	$data = $handler->handleUpdate(
-    			$entity,
+    	$data = $handler->update($entity,
     			$this->get('dmkclub_member.member.form'),
-    			function (Member $entity) {
-    				return array(
-    						'route' => 'dmkclub_member_update',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
-    			function (Member $entity) {
-    				return array(
-    						'route' => 'dmkclub_member_view',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
     			$this->get('translator')->trans('dmkclub.member.message.saved'),
     			$this->get('dmkclub_member.member.form.handler')
-    	);
+    		);
     	return $data;
     }
 

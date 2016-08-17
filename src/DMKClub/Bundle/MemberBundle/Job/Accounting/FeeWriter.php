@@ -46,7 +46,7 @@ class FeeWriter implements ItemWriterInterface, StepExecutionAwareInterface {
 		$billings = [];
 		foreach ($items As $item) {
 			$this->em->persist($item);
-			$billings[$item->getBilling()->getId] = $item->getBilling();
+			$billings[$item->getBilling()->getId()] = $item->getBilling();
 			$this->stepExecution->incrementWriteCount();
 		}
 		$this->em->flush();

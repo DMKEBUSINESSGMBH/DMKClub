@@ -50,7 +50,7 @@ class MemberType extends AbstractType {
 					'required' => false))
 			->add('isHonorary', 'checkbox', array('required' => false, 'label' => 'dmkclub.member.is_honorary.label'))
 			->add('isFreeOfCharge', 'checkbox', array('required' => false, 'label' => 'dmkclub.member.is_free_of_charge.label'))
-			->add('owner')
+//			->add('owner')
 //			->add('organization')
 		;
 
@@ -87,36 +87,40 @@ class MemberType extends AbstractType {
 						'required'           => false
 				]
 			);
-    	$builder->add(
-        		'dataChannel',
-        		'orocrm_channel_select_type',
-        		[
-        				'required' => true,
-        				'label'    => 'orocrm.sales.b2bcustomer.data_channel.label',
-        				'entities' => [
-        						'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
-        				],
-        		]
+		$builder->add(
+			'dataChannel',
+			'orocrm_channel_select_type',
+			[
+				'required' => true,
+				'label'    => 'orocrm.sales.b2bcustomer.data_channel.label',
+				'entities' => [
+						'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
+				],
+			]
         );
-    }
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'DMKClub\Bundle\MemberBundle\Entity\Member',
-                'cascade_validation' => true,
-            )
-        );
-    }
+	}
+	/**
+	 * @param OptionsResolverInterface $resolver
+	 */
+	public function setDefaultOptions(OptionsResolverInterface $resolver) {
+		$resolver->setDefaults(
+			array(
+				'data_class' => 'DMKClub\Bundle\MemberBundle\Entity\Member',
+				'cascade_validation' => true,
+			)
+		);
+	}
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'dmkclub_member_member';
-    }
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getBlockPrefix();
+	}
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getBlockPrefix() {
+		return 'dmkclub_member_member';
+	}
 }

@@ -80,8 +80,8 @@ class MemberBillingType extends AbstractType {
 				)
 			)
 
-			->add('owner')
-			->add('organization')
+// 			->add('owner')
+// 			->add('organization')
 		;
 	}
 	protected function getFilesystems() {
