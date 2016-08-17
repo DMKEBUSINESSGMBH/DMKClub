@@ -45,7 +45,8 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  *          },
  *          "security"={
  *              "type"="ACL",
- *              "group_name"=""
+ *              "group_name"="",
+ *              "category"="dmkclub_data"
  *          },
  *          "form"={
  *              "form_type"="dmkclub_prcontact_select",

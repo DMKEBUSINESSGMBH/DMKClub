@@ -14,7 +14,6 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
 use Oro\Bundle\SegmentBundle\Query\StaticSegmentQueryBuilder;
 use Oro\Bundle\SegmentBundle\Query\DynamicSegmentQueryBuilder;
-use Symfony\Component\Validator\Constraints\Null;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;

@@ -1,18 +1,20 @@
 dmkclub:
     basics:
         twigtemplate:
-          entity_label:        Twig Template
-          entity_plural_label: Twig Templates
-          entity_description:  Represents Twig Templates for PDF generation
-          id.label:            Id
-          owner.label:         Owner
-          name.label:          Name
-          generator.label:     PDF Generator
-          template.label:      Template
-          orientation.label:   Orientation
-          page_format.label:   Page format
-          organization.label:  Organization
-          message.saved:       Saved
+            entity_label:        Twig Template
+            entity_plural_label: Twig Templates
+            entity_description:  Represents Twig Templates for PDF generation
+            id.label:            Id
+            owner.label:         Owner
+            name.label:          Name
+            generator.label:     PDF Generator
+            template.label:      Template
+            orientation.label:   Orientation
+            page_format.label:   Page format
+            organization.label:  Organization
+            message.saved:       Saved
+        privilege:
+            category.dmkclub_data.label: DMKClub Data
 
 dmkclub.basics.datagrid.action.success_message: "{0} No entities were exported|{1} One PDF was exported|]1,Inf[ %count% PDFs were exported"
 dmkclub.basics.datagrid.action.exportpdf: Export as PDF

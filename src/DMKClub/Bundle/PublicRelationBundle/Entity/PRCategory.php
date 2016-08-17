@@ -41,7 +41,8 @@ use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRCategory;
  *          },
  *          "security"={
  *              "type"="ACL",
- *              "group_name"=""
+ *              "group_name"="",
+ *              "category"="dmkclub_data"
  *          },
  *          "form"={
  *              "form_type"="dmkclub_prcategory_select",

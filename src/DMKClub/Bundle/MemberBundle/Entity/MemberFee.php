@@ -53,7 +53,8 @@ use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
  *          },
  *          "security"={
  *              "type"="ACL",
- *              "group_name"=""
+ *              "group_name"="",
+ *              "category"="dmkclub_data"
  *          },
  *          "dataaudit"={
  *              "auditable"=true

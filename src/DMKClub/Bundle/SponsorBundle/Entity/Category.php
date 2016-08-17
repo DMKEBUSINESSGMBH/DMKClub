@@ -41,7 +41,8 @@ use DMKClub\Bundle\SponsorBundle\Model\ExtendCategory;
  *          },
  *          "security"={
  *              "type"="ACL",
- *              "group_name"=""
+ *              "group_name"="",
+ *              "category"="dmkclub_data"
  *          },
  *          "form"={
  *              "form_type"="dmkclub_sponsorcategory_select",

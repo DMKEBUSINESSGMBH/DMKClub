@@ -6,6 +6,7 @@ parameters:
     dmkclub_basics.job.reader.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\ItemReader
     dmkclub_basics.job.processor.pdf.class:      DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfProcessor
     dmkclub_basics.job.writer.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfWriter
+    dmkclub_basics.provider.privilege_category_provider.class: DMKClub\Bundle\BasicsBundle\Provider\PrivilegeCategoryProvider
 
 services:
     dmkclub_basics.pdf.manager:
@@ -39,3 +40,7 @@ services:
         arguments:
             - "@knp_gaufrette.filesystem_map"
 
+    dmkclub_basics.provider.privilege_category_provider:
+        class: "%dmkclub_basics.provider.privilege_category_provider.class%"
+        tags:
+            - { name: oro_user.privilege_category}
