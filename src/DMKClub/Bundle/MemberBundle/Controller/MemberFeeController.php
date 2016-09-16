@@ -56,7 +56,7 @@ class MemberFeeController extends Controller {
 	 *
 	 * @Route("/pdf/{id}", name="dmkclub_memberfee_createpdf", requirements={"id"="\d+"}, defaults={"id"=0})
 	 * @AclAncestor("dmkclub_memberfee_view")
-	 * @Template("DMKClubMemberBundle:MemberFee:pdf.html.twig")
+	 * -> nicht notwendig! Template("DMKClubMemberBundle:MemberFee:pdf.html.twig")
 	 */
 	public function createPDFAction(MemberFee $entity) {
 		$responseData = [
