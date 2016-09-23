@@ -54,39 +54,39 @@
 
     {% set memberFees %}
         {% set memberFeeGrid = 'dmkclub-memberfees-grid-member' %}
-        {{ dataGrid.renderGrid(memberFeeGrid, {member: entity.id}) }}
+        {{ dataGrid.renderGrid(memberFeeGrid, {member: entity.id}, { cssClass: 'inner-grid' }) }}
     {% endset %}
 
-		{% set memberFeeDiscounts %}
-				{% set memberFeeDiscountGrid	 = 'dmkclub-memberfeediscounts-grid-member' %}
-		    {{ dataGrid.renderGrid(memberFeeDiscountGrid, {member: entity.id}) }}
-		    {% set dialogTitle = 'dmkclub.member.memberfeediscount.action.create.title'|trans %}
-				{{ UI.clientButton({
-						'dataUrl': path('dmkclub_member_memberfeediscount_create', { 'memberId': entity.id }),
-						'aCss': 'no-hash',
-						'iCss': 'icon-plus-sign',
-						'dataId': entity.id,
-						'title' : dialogTitle,
-						'label' : dialogTitle,
-						'widget' : {
-							'type' : 'dialog',
-							'multiple' : false,
-							'reload-grid-name' : 'dmkclub-memberfeediscounts-grid-member',
-							'options' : {
-								'stateEnabled': false,
-								'dialogOptions' : {
-									'title' : dialogTitle,
-									'allowMaximize': true,
-									'allowMinimize': true,
-									'dblclick': 'maximize',
-									'maximizedHeightDecreaseBy': 'minimize-bar',
-									'width': 600
-								}
-							}
-						}
-					})
-				}}
-		{% endset %}
+    {% set memberFeeDiscounts %}
+        {% set memberFeeDiscountGrid	 = 'dmkclub-memberfeediscounts-grid-member' %}
+        {{ dataGrid.renderGrid(memberFeeDiscountGrid, {member: entity.id}, { cssClass: 'inner-grid' }) }}
+        {% set dialogTitle = 'dmkclub.member.memberfeediscount.action.create.title'|trans %}
+    	{{ UI.clientButton({
+            	'dataUrl': path('dmkclub_member_memberfeediscount_create', { 'memberId': entity.id }),
+            	'aCss': 'no-hash',
+            	'iCss': 'icon-plus-sign',
+            	'dataId': entity.id,
+            	'title' : dialogTitle,
+            	'label' : dialogTitle,
+            	'widget' : {
+                	'type' : 'dialog',
+                	'multiple' : false,
+                	'reload-grid-name' : 'dmkclub-memberfeediscounts-grid-member',
+                	'options' : {
+                    	'stateEnabled': false,
+                    	'dialogOptions' : {
+                        	'title' : dialogTitle,
+                        	'allowMaximize': true,
+                        	'allowMinimize': true,
+                        	'dblclick': 'maximize',
+                        	'maximizedHeightDecreaseBy': 'minimize-bar',
+                        	'width': 600
+                    	}
+                	}
+            	}
+        	})
+    	}}
+    {% endset %}
 
 {#     {% set feeDiscountWidget %}#}
 {#         {{ oro_widget_render({#}
@@ -109,17 +109,17 @@
             'title': 'dmkclub.member.fees.label'|trans,
             'subblocks': [
                 {
-                  'title': 'dmkclub.member.fees.label'|trans,
-                	'data' : [
-                		memberFees
-                	]
-								},
+                    'title': 'dmkclub.member.fees.label'|trans,
+                    'data' : [
+                        memberFees
+                    ]
+                },
                 {
-                  'title': 'dmkclub.member.memberfeediscount.entity_label'|trans,
-                	'data' : [
-                		memberFeeDiscounts
-                	]
-								}
+                    'title': 'dmkclub.member.memberfeediscount.entity_label'|trans,
+                    'data' : [
+                       memberFeeDiscounts
+                    ]
+                }
             ]
         }
 ] %}
