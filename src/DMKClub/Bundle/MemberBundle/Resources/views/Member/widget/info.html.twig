@@ -36,34 +36,9 @@ Wird in der Detailansicht des Mitglieds verwendet
             {% endif %}
             {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
 
-            {% if entity.bankAccount is not empty %}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.account_owner.label'|trans, entity.bankAccount.accountOwner) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.iban.label'|trans, entity.bankAccount.iban) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.bic.label'|trans, entity.bankAccount.bic) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.bank_name.label'|trans, entity.bankAccount.bankName) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.direct_debit_valid_from.label'|trans, entity.bankAccount.directDebitValidFrom ? entity.bankAccount.directDebitValidFrom|oro_format_date : null) }}
-            {% endif %}
-
         </div>
         <div class="responsive-block">
-            {{ UI.renderProperty('dmkclub.member.member_code.label'|trans, entity.memberCode) }}
-            {{ UI.renderProperty('dmkclub.member.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
-            {%- if entity.endDate -%}
-            	{{ UI.renderProperty('dmkclub.member.end_date.label'|trans, entity.endDate|oro_format_date) }}
-            {% endif %}
-            {%- if entity.contact -%}
-	            {%- set birthdayData -%}
-	                {{ entity.contact.birthday is not empty ? entity.contact.birthday|oro_format_date : null }}
-	                {% if entity.contact.birthday is not empty %} ({{ entity.contact.birthday|age_string({'default': 'N/A'}) }}){% endif %}
-	            {%- endset -%}
-
-            	{{ UI.renderProperty('orocrm.contact.birthday.label'|trans, entity.contact.birthday ? birthdayData : null) }}
-	            {{ UI.renderProperty('orocrm.contact.gender.label'|trans, oro_gender(entity.contact.gender)) }}
-	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_active.label'|trans, entity.isActive) }}
-	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_honorary.label'|trans, entity.isHonorary) }}
-	            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_free_of_charge.label'|trans, entity.isFreeOfCharge) }}
-	          {% endif %}
-	          {{ entityConfig.renderDynamicFields(entity) }}
+            {{ entityConfig.renderDynamicFields(entity) }}
 
           </div>
     </div>

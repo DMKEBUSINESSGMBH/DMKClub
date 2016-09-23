@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
 
 {% set fullname = entity.name %}
 {% oro_title_set({params : {"%member.name%": fullname} }) %}
@@ -97,13 +98,47 @@
 {#         }) }}#}
 {#     {% endset %}#}
 
+    {% set memberAdditionalInfo %}
+            {{ UI.renderProperty('dmkclub.member.member_code.label'|trans, entity.memberCode) }}
+            {{ UI.renderProperty('dmkclub.member.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
+            {%- if entity.endDate -%}
+            	{{ UI.renderProperty('dmkclub.member.end_date.label'|trans, entity.endDate|oro_format_date) }}
+            {% endif %}
+            {%- if entity.contact -%}
+	            {%- set birthdayData -%}
+	                {{ entity.contact.birthday is not empty ? entity.contact.birthday|oro_format_date : null }}
+	                {% if entity.contact.birthday is not empty %} ({{ entity.contact.birthday|age_string({'default': 'N/A'}) }}){% endif %}
+	            {%- endset -%}
 
-    {% set generalSubBlocks = [{'data' : [memberInformationWidget]}] %}
+            	{{ UI.renderProperty('orocrm.contact.birthday.label'|trans, entity.contact.birthday ? birthdayData : null) }}
+	            {{ UI.renderProperty('orocrm.contact.gender.label'|trans, oro_gender(entity.contact.gender)) }}
+            {% endif %}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_active.label'|trans, entity.isActive) }}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_honorary.label'|trans, entity.isHonorary) }}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_free_of_charge.label'|trans, entity.isFreeOfCharge) }}
+            {% if entity.bankAccount is not empty %}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.account_owner.label'|trans, entity.bankAccount.accountOwner) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.iban.label'|trans, entity.bankAccount.iban) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.bic.label'|trans, entity.bankAccount.bic) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.bank_name.label'|trans, entity.bankAccount.bankName) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.direct_debit_valid_from.label'|trans, entity.bankAccount.directDebitValidFrom ? entity.bankAccount.directDebitValidFrom|oro_format_date : null) }}
+            {% endif %}
+
+    {% endset %}
+
+
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
             'class': 'active',
-            'subblocks': generalSubBlocks
+            'subblocks': [
+                {
+                	'data' : [memberInformationWidget],
+                },
+                {
+                	'data' : [memberAdditionalInfo],
+                }
+            ]
         },
         {
             'title': 'dmkclub.member.fees.label'|trans,
