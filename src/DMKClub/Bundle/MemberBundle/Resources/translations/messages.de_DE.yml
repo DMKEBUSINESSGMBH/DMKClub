@@ -1,1 +1,143 @@
-messages.de.yml
+
+dmkclub:
+    member:
+        entity_label:        Vereinsmitglied
+        entity_plural_label: Vereinsmitglieder
+        entity_description:  Mitgliedschaft im Verein
+        id.label:            Id
+        owner.label:         Owner
+        account.label:       Account
+        name.label:          Name
+        member_code.label:   Mitgliedsnummer
+        member_fees.label:   Beiträge
+        member_fee_discounts.label:  Ermäßigungen
+        is_active.label:     Aktives Mitglied
+        isActive.help:       Das Flag kennzeichnet aktive Spieler, Trainer und Offizielle des Vereins
+        is_honorary.label:   Ehrenmitglied
+        is_free_of_charge.label:   Beitragsfrei
+        contact.label:       Kontakt
+        payment_option.label:  Zahlungsweise
+        bank_account.label:   Bankverbindung
+        postal_address.label:  Postadresse
+        organization.label:  Organisation
+        start_date.label:    Eintrittsdatum
+        end_date.label:      Austrittsdatum
+        channel_type.member.label: Vereinsverwaltung
+        data_channel.label: Kanal
+        status.label: Status
+        status.proposal: Antragsteller
+        status.active: Laufende Mitgliedschaft
+        status.terminated: Beendete Mitgliedschaft
+
+        dashboard.memberType.label: Art des Mitglieds
+        dashboard.memberType.all: Alle
+        dashboard.members_in_active_chart.title: Aktive und passive Mitglieder
+        dashboard.members_in_active_chart.description: Das Tortendiagramm zeigt das Verhältnis von aktiven und passiven Mitgliedern
+        dashboard.members_in_active_chart.active: Aktiv
+        dashboard.members_in_active_chart.passive: Passiv
+        dashboard.members_gender_chart.title: Mitglieder nach Geschlecht
+        dashboard.members_gender_chart.description: Das Tortendiagramm zeigt das Verhältnis von Frauen und Männern im Verein
+        dashboard.members_gender_chart.unknown: Unbekannt
+        dashboard.members_gender_chart.female: Weiblich
+        dashboard.members_gender_chart.male: Männlich
+        dashboard.members_new_by_year_chart.title: Neue Mitglieder pro Jahr
+        dashboard.members_new_by_year_chart.description: Anzahl der neuen Mitglieder im Jahresvergleich
+        dashboard.members_age_chart.title: Altersstruktur Mitglieder
+        dashboard.members_age_chart.description: Verteilung der Mitglieder in Altersgruppen
+
+        memberbilling:
+          entity_label:        Abrechnung Mitgliedsbeitrag
+          entity_plural_label: Abrechnung Mitgliedsbeiträge
+          entity_description:  Represent membership billing definition
+          id.label:            Id
+          owner.label:         Owner
+          name.label:          Name
+          fee_total.label:     Gesamtsumme
+          start_date.label:    Startdatum
+          end_date.label:      Enddatum
+          sepa_creditor.label: SEPA Mandat
+          processor.label:     Prozessor
+          processor_config.label: Prozessor Einstellung
+          position_labels.label: Texte für Positionen
+          export_filesystem.label: Ziel für PDF-Export
+          fee.label:           Mitgliedsbeitrag
+          fee_discount.label:      Mitgliedsbeitrag reduziert
+          fee_admission.label:  Aufnahmegebühr für neue Mitglieder
+          fee_child.label:    Beitrag für Kinder
+          age_child.label:      Altersgrenze für Kinderbeitrag
+          member_fees.label:    Mitgliedsbeiträge
+          organization.label:  Organisation
+          data_channel.label: Kanal
+          block.processor_settings: Einstellungen
+          message.saved:        Einstellungen gespeichert
+          message.accounting.started: "Abrechnung ausgeführt. Betroffene Mitglieder: %d, übersprungen: %d, Fehler: %d"
+          message.correction.started: "Korrektur ausgeführt. Korrigierte Beiträge: %d, übersprungen: %d, Fehler: %d"
+          message.correction.nothingfound: "Es wurden noch keine Abrechnungen zur Korrektur markiert."
+          message.accounting.async.started: "Abrechnung gestartet. Betroffene Mitglieder: %d"
+          message.correction.async.started: "Korrektur gestartet. Betroffene Beiträge: %d"
+          action.createbills:   Abrechnung starten
+          action.createcorrections:   Korrektur starten
+          pdf.salutation.male:   "Sehr geehrter Herr "
+          pdf.salutation.female: "Sehr geehrte Frau "
+          pdf.salutation.unknown:   "Sehr geehrte(r) "
+          pdf.payment.none: ""
+          pdf.payment.cash: "Sofort zahlbar in bar."
+          pdf.payment.sepa_direct_debit: "Den Betrag ziehen wir per SEPA-Basis-Lastschriftmandat ein.<br>Die Abbuchung erfolgt am %d.%m.%Y."
+          pdf.payment.banktransfer: "Bitte überweisen Sie den Betrag bis zum %d.%m.%Y."
+          pdf.payment.creditcard: "Den Betrag ziehen wir per Kreditkarte ein.<br>Die Belastung erfolgt am %d.%m.%Y."
+        memberfee:
+          entity_label:        Mitgliedsbeitrag
+          entity_plural_label: Mitgliedsbeiträge
+          entity_description:  Represent a fee for membership
+          id.label:            Id
+          owner.label:         Owner
+          name.label:          Name
+          price_total.label:   Gesamtbeitrag
+          payed_total.label:   Bezahlt
+          correction_status.label:  Korrektur
+          start_date.label:    Startdatum
+          end_date.label:      Enddatum
+          organization.label:  Organisation
+          data_channel.label: Kanal
+          corrected.label:  korrigiert
+          action.mark_feecorrection: Korrektur markieren
+          action.unmark_feecorrection: Korrektur entfernen
+        memberfeeposition:
+          entity_label:        Position für Mitgliedsbeitrag
+          entity_plural_label: Position für Mitgliedsbeiträge
+          entity_description:  Represent a position for membership fee
+          id.label:            Id
+          owner.label:         Owner
+          member.label:        Mitglied
+          billing.label:       Abrechnung
+          positions.label:     Positionen
+          quantity.label:      Anzahl
+          price_total.label:   Gesamtpreis
+          price_single.label:  Einzelpreis
+        memberfeediscount:
+          entity_label:        Beitragsermäßigung Mitgliedsbeitrag
+          entity_plural_label: Beitragsermäßigungen Mitgliedsbeitrag
+          entity_description:  Represent a discount of membership fee
+          id.label:            Id
+          reason.label:        Grund
+          start_date.label:    Startdatum
+          end_date.label:      Enddatum
+          action.create.title: Neue Ermäßigung anlegen
+          action.update.title: Beitragsermäßigung aktualisieren
+
+        form.choose_status: Wählen Sie einen Mitgliedsstatus
+
+        message.saved: Member saved
+        fees.label: Mitgliedsbeiträge
+
+        accounting.processor.default: Standard Berechnung
+        accounting.processor.simple: Einfache Abrechnung
+    member_information: Angaben zum Mitglied
+    memberbilling_information: Daten zur Abrechnung
+    general_information: Allgemeine Informationen
+    entity_number: "%entityName% %entityNumber%"
+active: Laufende Mitgliedschaft
+proposal: Antragsteller
+terminated: Beendete Mitgliedschaft
+"Membership fee total": Beitragsumme gesamt
+"Payed total": Bezahlt
