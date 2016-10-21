@@ -484,7 +484,7 @@ datagrid:
                 join:
                     left:
                         - { join: f.billing, alias: b }
-                groupBy:  f.id
+                groupBy:  f.id, b.id
                 
             bind_parameters:
                 - member
