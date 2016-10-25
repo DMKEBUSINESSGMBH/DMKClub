@@ -95,6 +95,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 *              "auditable"=true
 	 *          },
 	 *          "importexport"={
+	 *              "identity"=true,
 	 *              "order"=20
 	 *          }
 	 *      }
@@ -120,6 +121,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 * @Oro\Versioned
 	 */
 	protected $startDate;
+
 	/**
 	 * @var \DateTime
 	 *
@@ -150,7 +152,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 *              "auditable"=true
 	 *          },
 	 *          "importexport"={
-	 *              "identity"=true,
 	 *              "order"=30
 	 *          }
 	 *      }
@@ -162,7 +163,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", mappedBy="member", cascade={"all"}, orphanRemoval=true)
 	 * @ConfigField(
 	 *      defaultValues={
-	 *      		"dataaudit"={"auditable"=true},
+	 *          "dataaudit"={"auditable"=true},
 	 *          "importexport"={"excluded"=true}
 	 *      }
 	 * )
@@ -174,7 +175,7 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount", mappedBy="member", cascade={"all"}, orphanRemoval=true)
 	 * @ConfigField(
 	 *      defaultValues={
-	 *      		"dataaudit"={"auditable"=true},
+	 *          "dataaudit"={"auditable"=true},
 	 *          "importexport"={"excluded"=true}
 	 *      }
 	 * )
