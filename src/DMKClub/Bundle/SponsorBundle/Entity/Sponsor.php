@@ -55,6 +55,9 @@ use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
  *              "grid_name"="dmkclub-sponsors-grid",
  *              "form_type"="dmkclub_sponsor_select"
  *          },
+ *          "tag"={
+ *              "enabled"=true
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }
@@ -62,7 +65,7 @@ use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
  * )
  * @Oro\Loggable
  */
-class Sponsor extends ExtendSponsor implements Taggable, ChannelAwareInterface, CustomerIdentityInterface {
+class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerIdentityInterface {
     use ChannelEntityTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
@@ -260,10 +263,6 @@ class Sponsor extends ExtendSponsor implements Taggable, ChannelAwareInterface, 
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $organization;
-    /**
-     * @var ArrayCollection
-     */
-    protected $tags;
 
     /**
      * {@inheritdoc}
@@ -517,37 +516,6 @@ class Sponsor extends ExtendSponsor implements Taggable, ChannelAwareInterface, 
     public function getEndDate()
     {
         return $this->endDate;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTaggableId()
-    {
-        return $this->getId();
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getTags()
-    {
-        if (null === $this->tags) {
-            $this->tags = new ArrayCollection();
-        }
-
-        return $this->tags;
-    }
-
-    /**
-     * @param $tags
-     * @return Contact
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
     }
 
     /**

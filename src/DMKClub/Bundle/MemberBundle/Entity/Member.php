@@ -55,6 +55,9 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  *              "grid_name"="dmkclub-members-grid",
  *              "form_type"="dmkclub_member_select"
  *          },
+ *          "tag"={
+ *              "enabled"=true
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }
@@ -63,7 +66,7 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  * @Oro\Loggable
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
-class Member extends ExtendMember implements Taggable, ChannelAwareInterface, CustomerIdentityInterface {
+class Member extends ExtendMember implements ChannelAwareInterface, CustomerIdentityInterface {
 	use ChannelEntityTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
@@ -395,18 +398,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	 * )
 	 */
 	protected $organization;
-	/**
-	 * @var ArrayCollection
-	 * Reihenfolge der Tags läßt sich nicht festlegen...
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "importexport"={
-	 *              "order"=400
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $tags;
 
 	/**
 	 * {@inheritdoc}
@@ -791,37 +782,6 @@ class Member extends ExtendMember implements Taggable, ChannelAwareInterface, Cu
 	public function getEndDate()
 	{
 	    return $this->endDate;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTaggableId()
-	{
-	    return $this->getId();
-	}
-
-	/**
-	 * @return ArrayCollection
-	 */
-	public function getTags()
-	{
-	    if (null === $this->tags) {
-	        $this->tags = new ArrayCollection();
-	    }
-
-	    return $this->tags;
-	}
-
-	/**
-	 * @param $tags
-	 * @return Contact
-	 */
-	public function setTags($tags)
-	{
-	    $this->tags = $tags;
-
-	    return $this;
 	}
 
 	/**

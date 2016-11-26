@@ -60,7 +60,7 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  * @Oro\Loggable
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
-class PRContact extends ExtendPRContact implements /*Taggable,*/ ChannelAwareInterface, CustomerIdentityInterface {
+class PRContact extends ExtendPRContact implements ChannelAwareInterface, CustomerIdentityInterface {
 	use ChannelEntityTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact

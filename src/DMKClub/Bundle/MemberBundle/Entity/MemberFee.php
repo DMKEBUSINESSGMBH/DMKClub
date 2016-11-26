@@ -56,6 +56,9 @@ use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
  *              "group_name"="",
  *              "category"="dmkclub_data"
  *          },
+ *          "tag"={
+ *              "enabled"=true
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }
@@ -63,7 +66,7 @@ use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
  * )
  * @Oro\Loggable
  */
-class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface, SepaDirectDebitAwareInterface {
+class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirectDebitAwareInterface {
 	const CORRECTION_STATUS_NONE = 0;
 	const CORRECTION_STATUS_OPEN = 1;
 	const CORRECTION_STATUS_DONE = 2;
@@ -240,10 +243,6 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface, 
 	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
 	 */
 	protected $organization;
-	/**
-	 * @var ArrayCollection
-	 */
-	protected $tags;
 
 	/**
 	 * {@inheritdoc}
@@ -477,37 +476,6 @@ class MemberFee extends ExtendMemberFee implements Taggable, PdfAwareInterface, 
 
 	public function setCorrectionStatus($value) {
 		$this->correctionStatus = $value;
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTaggableId()
-	{
-		return $this->getId();
-	}
-
-	/**
-	 * @return ArrayCollection
-	 */
-	public function getTags()
-	{
-		if (null === $this->tags) {
-			$this->tags = new ArrayCollection();
-		}
-
-		return $this->tags;
-	}
-
-	/**
-	 * @param $tags
-	 * @return Contact
-	 */
-	public function setTags($tags)
-	{
-		$this->tags = $tags;
-
 		return $this;
 	}
 

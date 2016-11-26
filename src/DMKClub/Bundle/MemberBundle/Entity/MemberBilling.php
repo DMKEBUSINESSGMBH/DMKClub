@@ -48,6 +48,9 @@ use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
  *              "group_name"="",
  *              "category"="dmkclub_data"
  *          },
+ *          "tag"={
+ *              "enabled"=true
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }
@@ -55,7 +58,7 @@ use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
  * )
  * @Oro\Loggable
  */
-class MemberBilling extends ExtendMemberBilling implements Taggable, SepaPaymentAwareInterface {
+class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInterface {
 	/**
 	 * @var int
 	 *
@@ -267,10 +270,6 @@ FEECORRECTION fee correction";
 	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
 	 */
 	protected $organization;
-	/**
-	 * @var ArrayCollection
-	 */
-	protected $tags;
 
 	/**
 	 * {@inheritdoc}
@@ -604,36 +603,6 @@ FEECORRECTION fee correction";
 	public function setPositionLabels($value) {
 		$this->positionLabels = $value;
 		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTaggableId() {
-		return $this->getId();
-	}
-
-	/**
-	 * @return ArrayCollection
-	 */
-	public function getTags()
-	{
-	    if (null === $this->tags) {
-	        $this->tags = new ArrayCollection();
-	    }
-
-	    return $this->tags;
-	}
-
-	/**
-	 * @param $tags
-	 * @return Contact
-	 */
-	public function setTags($tags)
-	{
-	    $this->tags = $tags;
-
-	    return $this;
 	}
 
 	/**
