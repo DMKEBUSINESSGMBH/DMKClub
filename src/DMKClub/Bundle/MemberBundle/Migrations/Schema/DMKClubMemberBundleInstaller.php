@@ -54,6 +54,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$this->createDmkclubMemberFeeTable($schema);
 		$this->createDmkclubMemberFeediscountTable($schema);
 		$this->createDmkclubMemberFeepositionTable($schema);
+		self::createDmkclubMemberProposalTable($schema);
 
 		/** Foreign keys generation **/
 		$this->addDmkclubMemberForeignKeys($schema);
@@ -61,6 +62,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$this->addDmkclubMemberFeeForeignKeys($schema);
 		$this->addDmkclubMemberFeediscountForeignKeys($schema);
 		$this->addDmkclubMemberFeepositionForeignKeys($schema);
+		self::addDmkclubMemberProposalForeignKeys($schema);
 
 		$this->comment->addCommentAssociation($schema, 'dmkclub_member');
 		self::addActivityAssociations($schema, $this->activityExtension);
@@ -200,6 +202,39 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$table->addColumn('sort_order', 'integer', ['notnull' => false]);
 		$table->setPrimaryKey(['id']);
 		$table->addIndex(['member_fee'], 'IDX_1ACE617A7ED44EE', []);
+	}
+	/**
+	 * Create dmkclub_memberproposal table
+	 *
+	 * @param Schema $schema
+	 */
+	public static function createDmkclubMemberProposalTable(Schema $schema)
+	{
+		$table = $schema->createTable('dmkclub_member_proposal');
+		$table->addColumn('id', 'integer', ['autoincrement' => true]);
+		$table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
+		$table->addColumn('bank_account', 'integer', ['notnull' => false]);
+		$table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
+		$table->addColumn('owner_id', 'integer', ['notnull' => false]);
+		$table->addColumn('postal_address', 'integer', ['notnull' => false]);
+		$table->addColumn('data_channel_id', 'integer', ['notnull' => false]);
+		$table->addColumn('firstname', 'string', ['notnull' => false, 'length' => 255]);
+		$table->addColumn('lastname', 'string', ['notnull' => false, 'length' => 255]);
+		$table->addColumn('email_address', 'string', ['notnull' => false, 'length' => 100]);
+		$table->addColumn('phone', 'string', ['notnull' => false, 'length' => 100]);
+		$table->addColumn('comment', 'text', []);
+		$table->addColumn('is_active', 'boolean', ['default' => '0']);
+		$table->addColumn('status', 'string', ['default' => 'active', 'notnull' => false, 'length' => 20]);
+		$table->addColumn('payment_option', 'string', ['default' => 'none', 'notnull' => false, 'length' => 20]);
+		$table->addColumn('created_at', 'datetime', []);
+		$table->addColumn('updated_at', 'datetime', []);
+		$table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_A0F68DCC1023C4EE');
+        $table->addIndex(['bank_account'], 'IDX_A0F68DCC53A23E0A', []);
+        $table->addIndex(['postal_address'], 'IDX_A0F68DCC972EFBF7', []);
+        $table->addIndex(['workflow_step_id'], 'IDX_A0F68DCC71FE882C', []);
+        $table->addIndex(['owner_id'], 'IDX_A0F68DCC7E3C61F9', []);
+        $table->addIndex(['data_channel_id'], 'IDX_A0F68DCCBDC09B73', []);
 	}
 
 	/**
@@ -355,6 +390,52 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 				['id'],
 				['onDelete' => 'CASCADE', 'onUpdate' => null]
 		);
+	}
+
+	/**
+	 * Add dmkclub_memberproposal foreign keys.
+	 *
+	 * @param Schema $schema
+	 */
+	public static function addDmkclubMemberProposalForeignKeys(Schema $schema)
+	{
+		$table = $schema->getTable('dmkclub_member_proposal');
+		$table->addForeignKeyConstraint(
+				$schema->getTable('oro_workflow_item'),
+				['workflow_item_id'],
+				['id'],
+				['onDelete' => 'SET NULL', 'onUpdate' => null]
+				);
+		$table->addForeignKeyConstraint(
+				$schema->getTable('dmkclub_bankaccount'),
+				['bank_account'],
+				['id'],
+				['onDelete' => 'SET NULL', 'onUpdate' => null]
+				);
+		$table->addForeignKeyConstraint(
+				$schema->getTable('oro_workflow_step'),
+				['workflow_step_id'],
+				['id'],
+				['onDelete' => 'SET NULL', 'onUpdate' => null]
+				);
+		$table->addForeignKeyConstraint(
+				$schema->getTable('oro_organization'),
+				['owner_id'],
+				['id'],
+				['onDelete' => 'SET NULL', 'onUpdate' => null]
+				);
+		$table->addForeignKeyConstraint(
+				$schema->getTable('oro_address'),
+				['postal_address'],
+				['id'],
+				['onDelete' => 'SET NULL', 'onUpdate' => null]
+				);
+		$table->addForeignKeyConstraint(
+				$schema->getTable('orocrm_channel'),
+				['data_channel_id'],
+				['id'],
+				['onDelete' => 'SET NULL', 'onUpdate' => null]
+				);
 	}
 
 	/**

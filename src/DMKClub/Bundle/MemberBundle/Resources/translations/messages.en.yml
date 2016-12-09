@@ -52,6 +52,16 @@ dmkclub:
         dashboard.members_age_chart.title: Members age groups
         dashboard.members_age_chart.description: 
         
+        memberproposal:
+          entity_label:        Membership Proposal
+          entity_plural_label: Membership Proposal
+          entity_description:  Represent a proposal of membership
+          id.label:            Id
+          owner.label:         Owner
+          firstname.label:     Firstname
+          lastname.label:      Lastname
+          email.label:         Email
+          phone.label:         Phone
         
         memberbilling:
           entity_label:        Membership Billing

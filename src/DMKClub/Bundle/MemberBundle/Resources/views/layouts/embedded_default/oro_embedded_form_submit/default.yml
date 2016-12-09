@@ -1,0 +1,23 @@
+layout:
+    actions:
+        - '@setBlockTheme':
+            themes: 'DMKClubMemberBundle:layouts:embedded_default/oro_embedded_form_submit/form.html.twig'
+        - '@setOption':
+            id:          embedded_form
+            optionName:  preferred_fields
+            optionValue: [firstName, lastName, emailAddress, phone]
+        - '@add':
+            id:          name_group
+            parentId:    embedded_form
+            blockType:   fieldset
+        - '@move':
+            id:       embedded_form_firstName
+            parentId: name_group
+        - '@move':
+            id:       embedded_form_lastName
+            parentId: name_group
+
+    conditions:
+        '@eq':
+            - $context.embedded_form_type
+            - 'dmkclub_member.memberproposal.embedded_form.type'

@@ -6,6 +6,8 @@ parameters:
     dmkclub_member.memberfeediscount.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     dmkclub_member.memberfee.manager.api.class:            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
+    dmkclub_member.memberproposal.entity.class:            DMKClub\Bundle\MemberBundle\Entity\MemberProposal
+
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
     dmkclub_member.country.datagrid_helper.class:          Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
