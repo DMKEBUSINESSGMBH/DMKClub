@@ -87,17 +87,17 @@ class MemberType extends AbstractType {
 						'required'           => false
 				]
 			);
-		$builder->add(
-			'dataChannel',
-			'orocrm_channel_select_type',
-			[
-				'required' => true,
-				'label'    => 'orocrm.sales.b2bcustomer.data_channel.label',
-				'entities' => [
-						'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
-				],
-			]
-        );
+			$builder->add(
+				'dataChannel',
+				'orocrm_channel_select_type',
+				[
+					'required' => true,
+					'label'    => 'orocrm.sales.b2bcustomer.data_channel.label',
+					'entities' => [
+							'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
+					],
+				]
+	        );
 	}
 	/**
 	 * @param OptionsResolverInterface $resolver

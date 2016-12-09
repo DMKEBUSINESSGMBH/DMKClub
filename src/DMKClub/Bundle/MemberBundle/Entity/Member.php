@@ -18,6 +18,7 @@ use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
+use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\AddressBundle\Entity\Address;
@@ -67,7 +68,7 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
 class Member extends ExtendMember implements ChannelAwareInterface, CustomerIdentityInterface {
-	use ChannelEntityTrait;
+	use ChannelEntityTrait, LifecycleTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
 	*/
@@ -186,42 +187,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 */
 	private $memberFeeDiscounts;
 
-
-	/**
-	 * @var \DateTime $createdAt
-	 *
-	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Oro\Versioned
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "entity"={
-	 *              "label"="oro.ui.created_at"
-	 *          },
-	 *          "importexport"={
-	 *              "excluded"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $createdAt;
-
-	/**
-	 * @var \DateTime $updatedAt
-	 *
-	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @Oro\Versioned
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "entity"={
-	 *              "label"="oro.ui.updated_at"
-	 *          },
-	 *          "importexport"={
-	 *              "excluded"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $updatedAt;
 
 	/**
 	 * @var Contact
@@ -784,56 +749,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	    return $this->endDate;
 	}
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getCreatedAt()
-	{
-	    return $this->createdAt;
-	}
-
-	/**
-	 * @param \DateTime $createdAt
-	 */
-	public function setCreatedAt(\DateTime $createdAt)
-	{
-	    $this->createdAt = $createdAt;
-	}
-
-	/**
-	 * @return \DateTime
-	 */
-	public function getUpdatedAt()
-	{
-	    return $this->updatedAt;
-	}
-
-	/**
-	 * @param \DateTime $updatedAt
-	 */
-	public function setUpdatedAt(\DateTime $updatedAt)
-	{
-	    $this->updatedAt = $updatedAt;
-	}
-	/**
-	 * Pre persist event listener
-	 *
-	 * @ORM\PrePersist
-	 */
-	public function prePersist()
-	{
-	    $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-	}
-
-	/**
-	 * Pre update event handler
-	 *
-	 * @ORM\PreUpdate
-	 */
-	public function preUpdate()
-	{
-	    $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-	}
 
 	/**
 	 * @return string
