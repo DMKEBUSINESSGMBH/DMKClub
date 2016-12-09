@@ -25,6 +25,7 @@ use Oro\Bundle\AddressBundle\Entity\Address;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 
 /**
  * Class Member
@@ -67,7 +68,7 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  * @Oro\Loggable
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
-class Member extends ExtendMember implements ChannelAwareInterface, CustomerIdentityInterface {
+class Member extends ExtendMember implements ChannelAwareInterface, CustomerIdentityInterface, EmailHolderInterface {
 	use ChannelEntityTrait, LifecycleTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
@@ -749,6 +750,20 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	    return $this->endDate;
 	}
 
+	/**
+	 *
+	 * @return string|NULL
+	 */
+	public function getEmail() {
+		$email = null;
+		if($this->getContact() != null) {
+			$mailAddress = $this->getContact()->getPrimaryEmail();
+			if($mailAddress != null) {
+				$email = $mailAddress->getEmail();
+			}
+		}
+		return $email;
+	}
 
 	/**
 	 * @return string
