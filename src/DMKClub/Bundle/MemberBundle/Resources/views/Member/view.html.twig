@@ -1,6 +1,8 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as macros %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
+{% import 'OroCRMSalesBundle::macros.html.twig' as sales %}
 
 {% set fullname = entity.name %}
 {% oro_title_set({params : {"%member.name%": fullname} }) %}
@@ -112,6 +114,8 @@
 
             	{{ UI.renderProperty('orocrm.contact.birthday.label'|trans, entity.contact.birthday ? birthdayData : null) }}
 	            {{ UI.renderProperty('orocrm.contact.gender.label'|trans, oro_gender(entity.contact.gender)) }}
+	            {{ macros.renderHtmlProperty('orocrm.contact.emails.label'|trans, entity.contact.emails.count ? sales.renderCollectionWithPrimaryElement(entity.contact.emails, true, entity.contact) : null) }}
+	            {{ macros.renderHtmlProperty('orocrm.contact.phones.label'|trans, entity.contact.phones.count ? sales.renderCollectionWithPrimaryElement(entity.contact.phones, false, entity.contact) : null) }}
             {% endif %}
             {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_active.label'|trans, entity.isActive) }}
             {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_honorary.label'|trans, entity.isHonorary) }}
