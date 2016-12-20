@@ -18,6 +18,6 @@ class PrivilegeCategoryProvider implements PrivilegeCategoryProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function getRolePrivilegeCategory() {
-		return new PrivilegeCategory(self::NAME, 'dmkclub.basics.privilege.category.dmkclub_data.label', true, 20);
+		return new PrivilegeCategory(self::NAME, 'dmkclub.basics.privilege.category.dmkclub_data.label', true, 9);
 	}
 }
