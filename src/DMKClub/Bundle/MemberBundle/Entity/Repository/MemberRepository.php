@@ -24,7 +24,7 @@ class MemberRepository extends EntityRepository {
 			->where('m.endDate IS NULL')
 			->groupBy('m.isActive');
 
-		$resultData = array();
+		$resultData = ['active' => 0, 'passive' => 0];
 		$data = $qb->getQuery()->getArrayResult();
 		foreach ($data as $row) {
 			$resultData[$row['isActive'] ? 'active' : 'passive'] = (int)$row['cnt'];
@@ -50,7 +50,7 @@ class MemberRepository extends EntityRepository {
 			$qb->setParameter('mtype', ($memberType == self::MEMBER_TYPE_ACTIVE ? '1' : '0'));
 		}
 
-		$resultData = array();
+		$resultData = [];
 		$data = $qb->getQuery()->getArrayResult();
 		foreach ($data as $row) {
 			$resultData[$row['gender'] ? $row['gender'] : 'unknown'] = (int)$row['cnt'];
@@ -106,7 +106,7 @@ class MemberRepository extends EntityRepository {
 		foreach ($data as $row) {
 			$age = $row['age'];
 			$label = $age .'0-'.($age+1) . '0: ' . $row['cnt'];
-      $resultData[]    = ['label' => $label, 'value' => (int)$row['cnt'],];
+			$resultData[] = ['label' => $label, 'value' => (int)$row['cnt'],];
 		}
 
 		return $resultData;
