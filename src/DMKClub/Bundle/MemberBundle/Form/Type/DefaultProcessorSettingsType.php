@@ -17,12 +17,32 @@ class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-					->add(DefaultProcessor::OPTION_FEE, 'money', array('required' => true, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.fee.label'))
-					->add(DefaultProcessor::OPTION_FEE_ADMISSION, 'money', array('required' => true, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_ADMISSION.'.label'))
-					->add(DefaultProcessor::OPTION_FEE_DISCOUNT, 'money', array('required' => false, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_DISCOUNT.'.label'))
-					->add(DefaultProcessor::OPTION_FEE_CHILD, 'money', array('required' => false, 'divisor' => 100, 'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_CHILD.'.label'))
-					->add(DefaultProcessor::OPTION_AGE_CHILD, 'integer', array('required' => true, 'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_AGE_CHILD.'.label'))
-					;
+            ->add(DefaultProcessor::OPTION_FEE, 'money', [
+            		'required' => true,
+            		'divisor' => 100,
+            		'label' => 'dmkclub.member.memberbilling.fee.label'
+            ])
+            ->add(DefaultProcessor::OPTION_FEE_ADMISSION, 'money', [
+            		'required' => true,
+            		'divisor' => 100,
+            		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_ADMISSION.'.label'
+            ])
+            ->add(DefaultProcessor::OPTION_FEE_DISCOUNT, 'money', [
+            		'required' => false,
+            		'divisor' => 100,
+            		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_DISCOUNT.'.label'
+            ])
+            ->add(DefaultProcessor::OPTION_FEE_CHILD, 'money', [
+            		'required' => false,
+            		'divisor' => 100,
+            		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_CHILD.'.label'
+            ])
+            ->add(DefaultProcessor::OPTION_AGE_CHILD, 'integer', [
+            		'required' => true,
+            		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_AGE_CHILD.'.label',
+            		'tooltip' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_AGE_CHILD.'.tooltip'
+            ])
+        ;
 
         parent::buildForm($builder, $options);
     }

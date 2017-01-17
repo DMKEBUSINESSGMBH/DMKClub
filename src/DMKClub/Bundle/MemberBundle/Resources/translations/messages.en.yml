@@ -72,6 +72,7 @@ dmkclub:
           fee_admission.label:  Fee admission for new Members
           fee_child.label:      Fee reduced for childs
           age_child.label:      max Age for child fee
+          age_child.tooltip:      This is the age when a member has to pay the full fee
           member_fees.label:    Member fees
           segment.label:  Segment
           template.label:  PDF Template
