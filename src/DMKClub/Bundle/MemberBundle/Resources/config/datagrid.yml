@@ -44,10 +44,10 @@ datagrid:
                 frontend_type: boolean
             status:
                 label:         dmkclub.member.status.label
-#                frontend_type: translatable
+                type:          translatable
             paymentOption:
                 label:         dmkclub.member.payment_option.label
-#                frontend_type: translatable
+                type:          translatable
             city:
                 label:         oro.address.city.label
             birthday:
@@ -131,31 +131,46 @@ datagrid:
                     type: string
                     data_name: c.lastName
                 isHonorary:
-                    type: string
+                    type: boolean
                     enabled: false
                     data_name: m.isHonorary
                 isActive:
-                    type: string
+                    type: boolean
                     enabled: false
                     data_name: m.active
                 status:
-                    type: string
+                    type: choice
                     data_name: m.status
+                    options:
+                        field_options:
+                            multiple:             true
+                            choices:              '@dmkclub_member.member.status_provider->getChoices'
+                            translatable_options: false
+                paymentOption:
+                    type: choice
+                    data_name: m.paymentOption
+                    options:
+                        field_options:
+                            multiple:             true
+                            choices:              '@dmkclub.payment.options_provider->getChoices'
+                            translatable_options: false
                 city:
                     type: string
-                    enabled: false
                     data_name: a.city
                 birthday:
                     type:      date
                     data_name: c.birthday
                 iban:
                     type: string
+                    enabled: false
                     data_name: b.iban
                 bic:
                     type: string
+                    enabled: false
                     data_name: b.bic
                 startDate:
                     type:      datetime
+                    enabled: false
                     data_name: m.startDate
                 endDate:
                     type:      datetime

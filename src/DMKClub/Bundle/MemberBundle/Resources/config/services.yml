@@ -1,7 +1,7 @@
 parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
     dmkclub_member.memberbilling.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
-    dmkclub_member.memberfee.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager
+    dmkclub_member.memberfee.manager.class:                DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager
 
     dmkclub_member.memberfeediscount.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     dmkclub_member.memberfee.manager.api.class:            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
