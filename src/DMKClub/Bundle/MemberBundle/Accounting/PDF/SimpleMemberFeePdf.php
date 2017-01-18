@@ -31,9 +31,9 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 
 	public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdfController, TranslatorInterface $translator, $twig) {
 		$this->tcpdfController = $tcpdfController;
-  	$this->translator = $translator;
-  	$this->twig = clone $twig;
-  	$this->twig->setLoader(new \Twig_Loader_String());
+		$this->translator = $translator;
+		$this->twig = clone $twig;
+		$this->twig->setLoader(new \Twig_Loader_String());
 
 	}
 
@@ -76,7 +76,7 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 	 * @param Member $member
 	 */
 	protected function writeAddress(\TCPDF $pdf, $pdfContext, Member $member) {
-		$y = 60;
+		$y = 70;
 		$w = 100;
 		$border = 0;
 		$lineDistance = $pdfContext->cellHeight + 0;
@@ -110,7 +110,7 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 	 * @param MemberFee $fee
 	 */
 	protected function writeContent(\TCPDF $pdf, $pdfContext, MemberFee $fee, $twigTemplate) {
-		$y = 100;
+		$y = 110;
 		$border = 0;
 		$lineDistance = $pdfContext->cellHeight + 0;
 
@@ -252,7 +252,7 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 		$pdf->setFontSubsetting(true);
 
 		$pdf->SetFont('helvetica', '', 12, '', true);
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetMargins(PDF_MARGIN_LEFT + 10, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 		return $pdf;
 	}
 }
