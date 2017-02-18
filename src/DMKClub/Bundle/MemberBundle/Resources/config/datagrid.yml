@@ -203,7 +203,7 @@ datagrid:
         options:
 #            entityHint: member
             export: true
-#            entity_pagination: true
+            entity_pagination: true
 #        views_list: '@orocrm_contact.contacts_view_list'
             
 
