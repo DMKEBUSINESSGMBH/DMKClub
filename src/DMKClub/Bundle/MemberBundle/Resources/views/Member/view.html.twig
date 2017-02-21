@@ -91,43 +91,12 @@
     	}}
     {% endset %}
 
-{#     {% set feeDiscountWidget %}#}
-{#         {{ oro_widget_render({#}
-{#             'widgetType': 'block',#}
-{#             'contentClasses': [],#}
-{#             'url': path('dmkclub_member_memberfeediscount_infoblock', {id: entity.id}),#}
-{#             'title': 'Member fee discount'|trans#}
-{#         }) }}#}
-{#     {% endset %}#}
 
     {% set memberAdditionalInfo %}
-            {{ UI.renderProperty('dmkclub.member.member_code.label'|trans, entity.memberCode) }}
-            {{ UI.renderProperty('dmkclub.member.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
-            {%- if entity.endDate -%}
-            	{{ UI.renderProperty('dmkclub.member.end_date.label'|trans, entity.endDate|oro_format_date) }}
-            {% endif %}
-            {%- if entity.contact -%}
-	            {%- set birthdayData -%}
-	                {{ entity.contact.birthday is not empty ? entity.contact.birthday|oro_format_date : null }}
-	                {% if entity.contact.birthday is not empty %} ({{ entity.contact.birthday|age_string({'default': 'N/A'}) }}){% endif %}
-	            {%- endset -%}
-
-            	{{ UI.renderProperty('orocrm.contact.birthday.label'|trans, entity.contact.birthday ? birthdayData : null) }}
-	            {{ UI.renderProperty('orocrm.contact.gender.label'|trans, oro_gender(entity.contact.gender)) }}
-	            {{ macros.renderHtmlProperty('orocrm.contact.emails.label'|trans, entity.contact.emails.count ? sales.renderCollectionWithPrimaryElement(entity.contact.emails, true, entity.contact) : null) }}
-	            {{ macros.renderHtmlProperty('orocrm.contact.phones.label'|trans, entity.contact.phones.count ? sales.renderCollectionWithPrimaryElement(entity.contact.phones, false, entity.contact) : null) }}
-            {% endif %}
-            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_active.label'|trans, entity.isActive) }}
-            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_honorary.label'|trans, entity.isHonorary) }}
-            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_free_of_charge.label'|trans, entity.isFreeOfCharge) }}
-            {% if entity.bankAccount is not empty %}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.account_owner.label'|trans, entity.bankAccount.accountOwner) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.iban.label'|trans, entity.bankAccount.iban) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.bic.label'|trans, entity.bankAccount.bic) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.bank_name.label'|trans, entity.bankAccount.bankName) }}
-              {{ UI.renderProperty('dmkclub.payment.bankaccount.direct_debit_valid_from.label'|trans, entity.bankAccount.directDebitValidFrom ? entity.bankAccount.directDebitValidFrom|oro_format_date : null) }}
-            {% endif %}
-
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url':         path('dmkclub_member_widget_additionalinfo', {id: entity.id})
+        }) }}
     {% endset %}
 
 

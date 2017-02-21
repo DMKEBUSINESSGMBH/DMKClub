@@ -103,6 +103,15 @@ class MemberController extends Controller
     {
         return ['entity' => $member];
     }
+    /**
+     * @Route("/widget/additionalinfo/{id}", name="dmkclub_member_widget_additionalinfo", requirements={"id"="\d+"}))
+     * @AclAncestor("dmkclub_member_view")
+     * @Template
+     */
+    public function additionalInfoAction(Member $member)
+    {
+        return ['entity' => $member];
+    }
 
     /**
      * Wird aufgerufen, um im Account einen Abschnitt für die Mitgliedschaft
