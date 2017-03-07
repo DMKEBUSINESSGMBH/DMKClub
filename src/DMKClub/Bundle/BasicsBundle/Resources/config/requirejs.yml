@@ -3,4 +3,4 @@ config:
         # Der Key wird in der URI verwendet und auf die Datei in Value gerouted
         'oro/datagrid/action/dmkgetpdf-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkgetpdf-action.js'
         'oro/datagrid/action/dmkexportpdf-mass-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkexportpdf-mass-action.js'
-        
+        'oro/datagrid/action/dmkdownloadpdf-mass-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkdownloadpdf-mass-action.js'

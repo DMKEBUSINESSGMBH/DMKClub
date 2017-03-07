@@ -459,6 +459,12 @@ datagrid:
                 data_identifier: f.id
                 label: dmkclub.basics.datagrid.action.exportpdf
                 icon: download-alt
+            downloadpdf:
+                type: dmkdownloadpdf
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.basics.datagrid.action.downloadpdf
+                icon: download-alt
             sepadebitxml:
                 type: dmksepadebitxml
                 entity_name: "%dmkclub_member.memberfee.entity.class%"
