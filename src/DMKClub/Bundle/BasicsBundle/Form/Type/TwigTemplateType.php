@@ -75,8 +75,6 @@ class TwigTemplateType extends AbstractType {
 					'label' => 'dmkclub.basics.twigtemplate.page_format.label',
 				)
 			)
-			->add('owner')
-			->add('organization')
 		;
 
 	}
