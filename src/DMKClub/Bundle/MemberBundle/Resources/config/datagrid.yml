@@ -329,8 +329,7 @@ datagrid:
                     - m.startDate
                     - m.endDate
                     - >
-                        (SELECT CASE WHEN p.flag IS NOT NULL THEN 1 ELSE 0 END 
-                        FROM DMKClubMemberBundle:MemberFeePosition p 
+                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
                         WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
                     - f.updatedAt
                 from:
@@ -360,7 +359,7 @@ datagrid:
                 frontend_type: boolean
             corrected:
                 label:         dmkclub.member.memberfee.corrected.label
-                frontend_type: boolean
+                frontend_type: number
             isActive:
                 label:         dmkclub.member.is_active.label
                 frontend_type: boolean
@@ -503,8 +502,7 @@ datagrid:
                     - b.id as bid
                     - b.name
                     - >
-                        (SELECT CASE WHEN p.flag IS NOT NULL THEN 1 ELSE 0 END 
-                        FROM DMKClubMemberBundle:MemberFeePosition p 
+                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
                         WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
                     - f.createdAt
                     - f.updatedAt
@@ -535,7 +533,7 @@ datagrid:
                 frontend_type: currency
             corrected:
                 label:         dmkclub.member.memberfee.corrected.label
-                frontend_type: boolean
+                frontend_type: number
             payedTotal:
                 label:         dmkclub.member.memberfee.payed_total.label
                 frontend_type: currency
