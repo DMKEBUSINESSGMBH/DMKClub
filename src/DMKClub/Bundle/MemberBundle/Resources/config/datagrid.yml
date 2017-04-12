@@ -323,6 +323,7 @@ datagrid:
                     - m.id as mid
                     - m.memberCode
                     - m.name
+                    - m.paymentOption
                     - f.correctionStatus
                     - m.isActive
                     - m.startDate
@@ -375,6 +376,9 @@ datagrid:
             endDate:
                 label:         dmkclub.member.end_date.label
                 frontend_type: datetime
+            paymentOption:
+                label:         dmkclub.member.payment_option.label
+                type:          translatable
             updatedAt:
                 label:         oro.ui.updated_at
                 frontend_type: datetime
@@ -428,6 +432,14 @@ datagrid:
                 memberCode:
                     type: string
                     data_name: m.memberCode
+                paymentOption:
+                    type: choice
+                    data_name: m.paymentOption
+                    options:
+                        field_options:
+                            multiple:             true
+                            choices:              '@dmkclub.payment.options_provider->getChoices'
+                            translatable_options: false
                 startDate:
                     type: date
                     data_name: m.startDate
