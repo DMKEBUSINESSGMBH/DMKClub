@@ -2,7 +2,6 @@
 
 namespace DMKClub\Bundle\MemberBundle\Tests\Unit\Accounting;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
@@ -55,7 +54,7 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataProvider() {
-		$year = (int)(new \DateTime(''))->format('Y');
+		$year = 2016;
 		$feeOptions = [
 				DefaultProcessor::OPTION_FEE => 1000,
 				DefaultProcessor::OPTION_FEE_DISCOUNT => 800,
@@ -109,6 +108,18 @@ class DefaultProcessorTest extends \PHPUnit_Framework_TestCase {
 							$this->buildMemberFeeDiscount('2015-07-01', '2016-12-31'),
 							$this->buildMemberFeeDiscount('2017-05-01', NULL),
 					]), 10400, 10400, 1, 'discount2full2discount'],
+
+				// Beitragsreduzierung für die letzten 2 Monate
+				[new \DateTime('2016-07-01'), new \DateTime('2017-06-30'), $feeOptions,
+						$this->buildMember('2015-08-01', NULL, '1970-05-13', [
+								$this->buildMemberFeeDiscount('2017-05-01', NULL),
+						]), 11600, 11600, 1, 'full2discount'],
+
+				// Beitragsreduzierung für die letzten 2 Monate
+				[new \DateTime('2017-01-01'), new \DateTime('2017-03-31'), $feeOptions,
+						$this->buildMember('2015-08-01', NULL, '1970-05-13', [
+								$this->buildMemberFeeDiscount('2017-02-01', NULL),
+						]), 2600, 2600, 1, 'full2discount'],
 
 		];
 	}

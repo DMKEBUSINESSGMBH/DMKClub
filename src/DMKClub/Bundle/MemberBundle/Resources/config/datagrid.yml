@@ -463,7 +463,6 @@ datagrid:
                 label: PDF
                 icon: file-alt
                 link: pdf_link
-#                rowAction: true
         mass_actions:
             exportpdf:
                 type: dmkexportpdf
