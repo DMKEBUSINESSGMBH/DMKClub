@@ -116,7 +116,9 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 
 		$pdf->SetY($y);
 		// Datum rechts
-		$pdf->Cell(0, $pdfContext->cellHeight, trim('Chemnitz, ' . strftime('%d.%m.%Y')), $border, false, 'R');
+		// FIXME: konfigurierbar machen
+		$billDate = $fee->getUpdatedAt();
+		$pdf->Cell(0, $pdfContext->cellHeight, trim('Chemnitz, ' . ($billDate->format('d.m.Y'))), $border, false, 'R');
 
 		$y += $lineDistance+3;
 		$pdf->SetY($y);
@@ -141,7 +143,7 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 			$line = array();
 			$line[] = $position->getDescription();
 			$line[] = number_format($position->getPriceTotal()/100, 2, ',', '.') . ' EUR';
-			$lines[] = '<td>'.implode('</td><td>',$line).'</td>';
+			$lines[] = '<td>'.implode('</td><td align="right">',$line).'</td>';
 		}
 		$table = '<table>';
 		$table .= '<tr>'.implode('</tr><tr>', $lines).'</tr>';
