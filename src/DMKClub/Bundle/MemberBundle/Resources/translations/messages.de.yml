@@ -81,11 +81,6 @@ dmkclub:
           pdf.salutation.male:   "Sehr geehrter Herr "
           pdf.salutation.female: "Sehr geehrte Frau "
           pdf.salutation.unknown:   "Sehr geehrte(r) "
-          pdf.payment.none: ""
-          pdf.payment.cash: "Sofort zahlbar in bar."
-          pdf.payment.sepa_direct_debit: "Den Betrag ziehen wir per SEPA-Basis-Lastschriftmandat ein.<br>Die Abbuchung erfolgt am %d.%m.%Y."
-          pdf.payment.banktransfer: "Bitte überweisen Sie den Betrag bis zum %d.%m.%Y."
-          pdf.payment.creditcard: "Den Betrag ziehen wir per Kreditkarte ein.<br>Die Belastung erfolgt am %d.%m.%Y."
         memberfee:
           entity_label:        Mitgliedsbeitrag
           entity_plural_label: Mitgliedsbeiträge
