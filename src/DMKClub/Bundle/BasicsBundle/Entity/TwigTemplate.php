@@ -4,8 +4,6 @@ namespace DMKClub\Bundle\BasicsBundle\Entity;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -38,7 +36,8 @@ use Symfony\Component\Yaml\Yaml;
  *          },
  *          "security"={
  *              "type"="ACL",
- *              "group_name"=""
+ *              "group_name"="",
+ *              "category"="dmkclub_data"
  *          },
  *          "dataaudit"={
  *              "auditable"=true

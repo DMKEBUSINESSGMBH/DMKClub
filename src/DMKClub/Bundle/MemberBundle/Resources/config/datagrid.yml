@@ -323,13 +323,13 @@ datagrid:
                     - m.id as mid
                     - m.memberCode
                     - m.name
+                    - m.paymentOption
                     - f.correctionStatus
                     - m.isActive
                     - m.startDate
                     - m.endDate
                     - >
-                        (SELECT CASE WHEN p.flag IS NOT NULL THEN 1 ELSE 0 END 
-                        FROM DMKClubMemberBundle:MemberFeePosition p 
+                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
                         WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
                     - f.updatedAt
                 from:
@@ -359,7 +359,7 @@ datagrid:
                 frontend_type: boolean
             corrected:
                 label:         dmkclub.member.memberfee.corrected.label
-                frontend_type: boolean
+                frontend_type: number
             isActive:
                 label:         dmkclub.member.is_active.label
                 frontend_type: boolean
@@ -381,6 +381,9 @@ datagrid:
             endDate:
                 label:         dmkclub.member.end_date.label
                 frontend_type: datetime
+            paymentOption:
+                label:         dmkclub.member.payment_option.label
+                type:          translatable
             updatedAt:
                 label:         oro.ui.updated_at
                 frontend_type: datetime
@@ -434,6 +437,14 @@ datagrid:
                 memberCode:
                     type: string
                     data_name: m.memberCode
+                paymentOption:
+                    type: choice
+                    data_name: m.paymentOption
+                    options:
+                        field_options:
+                            multiple:             true
+                            choices:              '@dmkclub.payment.options_provider->getChoices'
+                            translatable_options: false
                 startDate:
                     type: date
                     data_name: m.startDate
@@ -457,7 +468,6 @@ datagrid:
                 label: PDF
                 icon: file-alt
                 link: pdf_link
-#                rowAction: true
         mass_actions:
             exportpdf:
                 type: dmkexportpdf
@@ -498,8 +508,7 @@ datagrid:
                     - b.id as bid
                     - b.name
                     - >
-                        (SELECT CASE WHEN p.flag IS NOT NULL THEN 1 ELSE 0 END 
-                        FROM DMKClubMemberBundle:MemberFeePosition p 
+                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
                         WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
                     - f.createdAt
                     - f.updatedAt
@@ -530,7 +539,7 @@ datagrid:
                 frontend_type: currency
             corrected:
                 label:         dmkclub.member.memberfee.corrected.label
-                frontend_type: boolean
+                frontend_type: number
             payedTotal:
                 label:         dmkclub.member.memberfee.payed_total.label
                 frontend_type: currency

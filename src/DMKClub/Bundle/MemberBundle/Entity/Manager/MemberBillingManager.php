@@ -112,6 +112,11 @@ class MemberBillingManager implements ContainerAwareInterface {
 		$position->setQuantity(1);
 		$position->setPriceSingle($diff);
 		$position->setPriceTotal($diff);
+		$labels = $fee->getBilling()->getPositionLabelMap();
+		$correction = isset($labels[MemberFeePosition::FLAG_CORRECTION]) ?
+			$labels[MemberFeePosition::FLAG_CORRECTION] : 'Correction [DATE]';
+		$correction = str_replace('[DATE]', $fee->getUpdatedAt()->format('d.m.Y') ,$correction);
+		$position->setDescription($correction);
 		$position->setFlag(MemberFeePosition::FLAG_CORRECTION);
 		$fee->addPosition($position);
 		$fee->setPriceTotal($fee->getPriceTotal() + $diff);

@@ -4,7 +4,6 @@ namespace DMKClub\Bundle\MemberBundle\Accounting;
 
 
 use DMKClub\Bundle\MemberBundle\Form\Type\SimpleProcessorSettingsType;
-use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 /**
  */
