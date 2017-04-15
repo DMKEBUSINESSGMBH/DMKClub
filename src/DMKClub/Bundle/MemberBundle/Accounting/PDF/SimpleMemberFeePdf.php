@@ -111,22 +111,15 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 	 */
 	protected function writeContent(\TCPDF $pdf, $pdfContext, MemberFee $fee, $twigTemplate) {
 		$y = 110;
-		$border = 0;
-		$lineDistance = $pdfContext->cellHeight + 0;
+// 		$border = 0;
+// 		$lineDistance = $pdfContext->cellHeight + 0;
 
-		$pdf->SetY($y);
-		// Datum rechts
-		$pdf->Cell(0, $pdfContext->cellHeight, trim('Chemnitz, ' . strftime('%d.%m.%Y')), $border, false, 'R');
-
-		$y += $lineDistance+3;
 		$pdf->SetY($y);
 
 		// Den Content-String umsetzen
 		$html = $this->twig->render($twigTemplate->getTemplate(), array('entity' => $fee));
-		$html = str_replace('[BILLNUMBER]', $this->buildBillNumber($fee) ,$html);
 		$html = str_replace('[SALUTATION]', $this->buildSalutation($fee), $html);
 		$html = str_replace('[POSITIONS]', $this->buildPositions($fee), $html);
-		$html = str_replace('[PAYMENTINFO]', $this->buildPaymentInfo($fee), $html);
 
 		$pdf->writeHTMLCell(0, $pdfContext->cellHeight, $pdf->GetX(), $y, $html);
 	}
@@ -141,34 +134,14 @@ class SimpleMemberFeePdf implements GeneratorInterface {
 			$line = array();
 			$line[] = $position->getDescription();
 			$line[] = number_format($position->getPriceTotal()/100, 2, ',', '.') . ' EUR';
-			$lines[] = '<td>'.implode('</td><td>',$line).'</td>';
+			$lines[] = '<td>'.implode('</td><td align="right">',$line).'</td>';
 		}
 		$table = '<table>';
 		$table .= '<tr>'.implode('</tr><tr>', $lines).'</tr>';
 
 		return $table;
 	}
-	/**
-	 * Position bauen
-	 * @param MemberFee $fee
-	 * @throws \Exception
-	 */
-	protected function buildBillNumber(MemberFee $fee) {
-		$format = '%d%m/'.$fee->getMember()->getMemberCode().'/2110/%Y';
-		return strftime($format, time());
-	}
-	/**
-	 * Position bauen
-	 * @param MemberFee $fee
-	 * @throws \Exception
-	 */
-	protected function buildPaymentInfo(MemberFee $fee) {
-		$paymentOption = $fee->getMember()->getPaymentOption();
-		$payment = $this->translator->trans('dmkclub.member.memberbilling.pdf.payment.'.$paymentOption);
-		$date = new \DateTime('+1 month');
-		$payment = strftime($payment, $date->getTimestamp());
-		return $payment;
-	}
+
 	/**
 	 * Anredezeile bauen
 	 * @param MemberFee $fee

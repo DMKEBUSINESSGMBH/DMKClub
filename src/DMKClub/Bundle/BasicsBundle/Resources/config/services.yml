@@ -7,6 +7,7 @@ parameters:
     dmkclub_basics.job.processor.pdf.class:      DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfProcessor
     dmkclub_basics.job.writer.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfWriter
     dmkclub_basics.provider.privilege_category_provider.class: DMKClub\Bundle\BasicsBundle\Provider\PrivilegeCategoryProvider
+    dmkclub_basics.utility.datagrids.class:      DMKClub\Bundle\BasicsBundle\Utility\Datagrids
 
 services:
     dmkclub_basics.pdf.manager:
@@ -44,3 +45,6 @@ services:
         class: "%dmkclub_basics.provider.privilege_category_provider.class%"
         tags:
             - { name: oro_user.privilege_category}
+
+    dmkclub_basics.utility.datagrids:
+        class: "%dmkclub_basics.utility.datagrids.class%"

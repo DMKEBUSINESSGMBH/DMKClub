@@ -2,15 +2,10 @@
 
 namespace DMKClub\Bundle\BasicsBundle\Form\Type;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
 class TwigTemplateType extends AbstractType {
@@ -47,7 +42,8 @@ class TwigTemplateType extends AbstractType {
 					'required' => false,
 					'label' => 'dmkclub.basics.twigtemplate.template.label',
 					'attr'            => [
-						'class'                => 'template-editor',
+						'class' => 'template-editor',
+					    'style' => 'width:100%;min-height:300px',
 //						'data-wysiwyg-enabled' => true,
 					],
 // 					'wysiwyg_options' => [
@@ -75,8 +71,6 @@ class TwigTemplateType extends AbstractType {
 					'label' => 'dmkclub.basics.twigtemplate.page_format.label',
 				)
 			)
-			->add('owner')
-			->add('organization')
 		;
 
 	}

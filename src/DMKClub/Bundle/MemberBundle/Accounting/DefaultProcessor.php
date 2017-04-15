@@ -80,6 +80,7 @@ class DefaultProcessor extends AbstractProcessor {
 		$labelMap = $memberBilling->getPositionLabelMap();
 		// Monate ermitteln
 		$startDate = $memberBilling->getStartDate();
+
 		$endDate = $memberBilling->getEndDate();
 		$calculator = new TimeCalculator();
 		$months = $calculator->calculateTimePeriods($startDate, $endDate);
@@ -93,9 +94,10 @@ class DefaultProcessor extends AbstractProcessor {
 		$fee = 0;
 		// Über jeden Monat iterieren
 		/* @var $currentMonth \DateTime */
-		$currentMonthFirstDay = new \DateTime($startDate->format('Y-m-d'));
-		$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
+		$currentMonthFirstDay = $this->newDate($startDate->format('Y-m-d'));
+//		$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
 		foreach ($months As $interval) {
+
 			/* @var $interval \DateInterval */
 			if($this->isMembershipActive($member, $currentMonthFirstDay)) {
 				$periodFee = $feeFull;
@@ -109,8 +111,9 @@ class DefaultProcessor extends AbstractProcessor {
 			}
 			// War das Mitglied in dem Monat Mitglied?
 			$currentMonthFirstDay = $currentMonthFirstDay->add($interval);
-			$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
+//			$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
 		}
+
 		$this->writeLog("Fee: " . $fee . " from " . $startDate->format('Y-m-d') . ' to '.$endDate->format('Y-m-d'));
 
 		// $descriptionFeePosition = 'Beitrag vom [STARTDATE] bis [ENDDATE]';
@@ -148,6 +151,10 @@ class DefaultProcessor extends AbstractProcessor {
 		$memberFee->updatePriceTotal();
 
 		return $memberFee;
+	}
+	protected function newDate($formatString)
+	{
+		return new \DateTime($formatString, new \DateTimeZone('UTC'));
 	}
 	private function isNewMembership($member, $startDate, $endDate) {
 		return $member->getStartDate() >= $startDate && $member->getStartDate() <= $endDate;
@@ -191,6 +198,7 @@ class DefaultProcessor extends AbstractProcessor {
 	 */
 	protected function isMembershipDiscount(Member $member, $currentMonthLastDay) {
 		foreach($member->getMemberFeeDiscounts() As $feeDiscount) {
+			/* @var $feeDiscount \DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount */
 			// Ist das Datum in $month innerhalb der Discount-Zeit?
 			if($feeDiscount->contains($currentMonthLastDay)) {
 				return true;
