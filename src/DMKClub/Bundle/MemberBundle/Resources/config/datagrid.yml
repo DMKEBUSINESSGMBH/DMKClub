@@ -318,8 +318,8 @@ datagrid:
             query:
                 select:
                     - f.id
-                    - f.priceTotal/100 As priceTotal
-                    - f.payedTotal/100 As payedTotal
+                    - f.priceTotal As priceTotal
+                    - f.payedTotal As payedTotal
                     - m.id as mid
                     - m.memberCode
                     - m.name
@@ -365,9 +365,15 @@ datagrid:
                 frontend_type: boolean
             priceTotal:
                 label:         dmkclub.member.memberfee.price_total.label
+                type:          callback
+                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
+                data_name:     priceTotal
                 frontend_type: currency
             payedTotal:
                 label:         dmkclub.member.memberfee.payed_total.label
+                type:          callback
+                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
+                data_name:     payedTotal
                 frontend_type: currency
             startDate:
                 label:         dmkclub.member.start_date.label
