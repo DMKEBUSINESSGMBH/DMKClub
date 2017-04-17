@@ -92,15 +92,22 @@ class DefaultProcessor extends AbstractProcessor {
 		$ageChild = (int) $this->getOption(self::OPTION_AGE_CHILD);
 
 		$fee = 0;
-		// Über jeden Monat iterieren
+		// Über jeden Monat iterieren, den erste und den letzten Monat merken
+		$firstMonth2Pay = null;
+		$lastMonth2Pay = null;
 		/* @var $currentMonth \DateTime */
 		$currentMonthFirstDay = $this->newDate($startDate->format('Y-m-d'));
 //		$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
 		foreach ($months As $interval) {
 
-			/* @var $interval \DateInterval */
+		    // War das Mitglied in dem Monat Mitglied?
+		    /* @var $interval \DateInterval */
 			if($this->isMembershipActive($member, $currentMonthFirstDay)) {
-				$periodFee = $feeFull;
+			    if($firstMonth2Pay === null) {
+			        $firstMonth2Pay = clone $currentMonthFirstDay;
+			    }
+		        $lastMonth2Pay = clone $currentMonthFirstDay;
+			    $periodFee = $feeFull;
 				if($this->isMembershipChild($member, $currentMonthFirstDay, $ageChild)) {
 					$periodFee = $feeChild;
 				}
@@ -109,9 +116,13 @@ class DefaultProcessor extends AbstractProcessor {
 				}
 				$fee += $periodFee;
 			}
-			// War das Mitglied in dem Monat Mitglied?
 			$currentMonthFirstDay = $currentMonthFirstDay->add($interval);
 //			$currentMonthLastDay = $calculator->getLastDayInMonth($currentMonthFirstDay);
+		}
+		// Enddatum auf den Monatsletzten setzen
+		if($lastMonth2Pay) {
+		    $lastMonth2Pay->add($interval);
+		    $lastMonth2Pay->sub(new \DateInterval('P1D'));
 		}
 
 		$this->writeLog("Fee: " . $fee . " from " . $startDate->format('Y-m-d') . ' to '.$endDate->format('Y-m-d'));
@@ -121,8 +132,11 @@ class DefaultProcessor extends AbstractProcessor {
 				$labelMap[MemberFeePosition::FLAG_FEE] : 'MemberFeePosition::FLAG_FEE';
 
 		$dateFormat = 'd.m.Y';
-		$descriptionFeePosition = str_replace('[STARTDATE]', $startDate->format($dateFormat), $descriptionFeePosition);
-		$descriptionFeePosition = str_replace('[ENDDATE]', $endDate->format($dateFormat), $descriptionFeePosition);
+		// Bei unterjärigem Ein- und Austritt das passende Datum verwenden
+		$labelStartDate = $firstMonth2Pay ? $firstMonth2Pay : $startDate;
+		$labelEndDate = $lastMonth2Pay ? $lastMonth2Pay : $endDate;
+		$descriptionFeePosition = str_replace('[STARTDATE]', $labelStartDate->format($dateFormat), $descriptionFeePosition);
+		$descriptionFeePosition = str_replace('[ENDDATE]', $labelEndDate->format($dateFormat), $descriptionFeePosition);
 
 		$memberFee = new MemberFee();
 		$position = new MemberFeePosition();
