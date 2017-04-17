@@ -3,9 +3,7 @@ namespace DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\AbstractQuery;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Symfony\Component\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
 
@@ -16,8 +14,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
 use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
 
-use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
-use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
 use DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder;
 use DMKClub\Bundle\PaymentBundle\Sepa\Payment;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaException;
@@ -56,7 +52,8 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	 * @param DirectDebitBuilder $sepaBuilder
 	 */
 	public function __construct(EntityManager $entityManager, TranslatorInterface $translator,
-			LoggerInterface $logger, $router, DirectDebitBuilder $sepaBuilder, FileSystemOperator $fso, AttachmentManager $attachmentManager) {
+	       LoggerInterface $logger, $router, DirectDebitBuilder $sepaBuilder,
+	       FileSystemOperator $fso, AttachmentManager $attachmentManager) {
 		$this->entityManager = $entityManager;
 		$this->translator = $translator;
 		$this->logger = $logger;

@@ -1,9 +1,6 @@
 <?php
-
 namespace DMKClub\Bundle\MemberBundle\Accounting\PDF;
 
-
-use DMKClub\Bundle\MemberBundle\Form\Type\SimpleProcessorSettingsType;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\BasicsBundle\PDF\GeneratorInterface;
@@ -12,220 +9,275 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Twig\TwigEngine;
+
 /**
  */
-class SimpleMemberFeePdf implements GeneratorInterface {
-	const NAME = 'simplefee';
-	const FONT_FAMILY_DEFAULT = 'helvetica';
-	const FONT_FAMILY_BOLD = 'helveticaB';
+class SimpleMemberFeePdf implements GeneratorInterface
+{
 
-	/**
-	 * @var TranslatorInterface
-	 */
-	protected $translator;
-	/** @var TwigEngine */
-	protected $twig;
+    const NAME = 'simplefee';
 
-	/** @var \WhiteOctober\TCPDFBundle\Controller\TCPDFController */
-	protected $tcpdfController;
+    const FONT_FAMILY_DEFAULT = 'helvetica';
 
-	public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdfController, TranslatorInterface $translator, $twig) {
-		$this->tcpdfController = $tcpdfController;
-		$this->translator = $translator;
-		$this->twig = clone $twig;
-		$this->twig->setLoader(new \Twig_Loader_String());
+    const FONT_FAMILY_BOLD = 'helveticaB';
 
-	}
+    /**
+     *
+     * @var TranslatorInterface
+     */
+    protected $translator;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName() {
-		return self::NAME;
-	}
+    /** @var TwigEngine */
+    protected $twig;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getLabel() {
-		return $this->getName();
-	}
+    /** @var \WhiteOctober\TCPDFBundle\Controller\TCPDFController */
+    protected $tcpdfController;
 
-	/* (non-PHPdoc)
-	 * @see \DMKClub\Bundle\BasicsBundle\PDF\GeneratorInterface::execute()
-	 */
-	public function execute(TwigTemplate $twigTemplate, $filename, array $context = array()) {
-		$memberFee = $this->getMemberFee($context);
-		$pdf = $this->initPdf($twigTemplate);
-		$this->writeMetaData($pdf, $memberFee);
-		$pdf->AddPage();
+    public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdfController, TranslatorInterface $translator, $twig)
+    {
+        $this->tcpdfController = $tcpdfController;
+        $this->translator = $translator;
+        $this->twig = clone $twig;
+        $this->twig->setLoader(new \Twig_Loader_String());
+    }
 
-		$pdfContext = $this->createPdfContext();
-		$this->writeAddress($pdf, $pdfContext, $memberFee->getMember());
+    /**
+     *
+     * {@inheritdoc}
+     *
+     */
+    public function getName()
+    {
+        return self::NAME;
+    }
 
-		$this->writeContent($pdf, $pdfContext, $memberFee, $twigTemplate);
+    /**
+     *
+     * {@inheritdoc}
+     *
+     */
+    public function getLabel()
+    {
+        return $this->getName();
+    }
 
-		$pdf->lastPage();
-		$pdf->Output($filename, 'F');
+    /*
+     * (non-PHPdoc)
+     * @see \DMKClub\Bundle\BasicsBundle\PDF\GeneratorInterface::execute()
+     */
+    public function execute(TwigTemplate $twigTemplate, $filename, array $context = array())
+    {
+        $memberFee = $this->getMemberFee($context);
+        $pdf = $this->initPdf($twigTemplate);
+        $this->writeMetaData($pdf, $memberFee);
+        $pdf->AddPage();
 
-	}
-	/**
-	 * Adressblock
-	 * @param \TCPDF $pdf
-	 * @param \stdClass $pdfContext
-	 * @param Member $member
-	 */
-	protected function writeAddress(\TCPDF $pdf, $pdfContext, Member $member) {
-		$y = 70;
-		$w = 100;
-		$border = 0;
-		$lineDistance = $pdfContext->cellHeight + 0;
+        $pdfContext = $this->createPdfContext();
+        $this->writeAddress($pdf, $pdfContext, $memberFee->getMember());
 
-		$address = $member->getPostalAddress();
-		if(!$address)
-			return;
+        $this->writeContent($pdf, $pdfContext, $memberFee, $twigTemplate);
 
-		$pdf->SetY($y);
-		$pdf->Cell($w, $pdfContext->cellHeight, $this->getMemberName($address, $member), $border);
+        $pdf->lastPage();
+        $pdf->Output($filename, 'F');
+    }
 
-		if($address->getStreet()) {
-			$y += $lineDistance;
-			$pdf->SetY($y);
-			$pdf->Cell($w, $pdfContext->cellHeight, $address->getStreet(), $border);
-		}
-		if($address->getStreet2()) {
-			$y += $lineDistance;
-			$pdf->SetY($y);
-			$pdf->Cell($w, $pdfContext->cellHeight, $address->getStreet2(), $border);
-		}
-		$y += $lineDistance;
-		$pdf->SetY($y);
-		$pdf->Cell($w, $pdfContext->cellHeight, trim($address->getPostalCode() .' ' . $address->getCity()), $border);
-	}
+    /** @var \TCPDF */
+    protected $combinedPdf;
 
-	/**
-	 * Main content
-	 * @param \TCPDF $pdf
-	 * @param unknown $pdfContext
-	 * @param MemberFee $fee
-	 */
-	protected function writeContent(\TCPDF $pdf, $pdfContext, MemberFee $fee, $twigTemplate) {
-		$y = 110;
-// 		$border = 0;
-// 		$lineDistance = $pdfContext->cellHeight + 0;
+    public function combinedInit(TwigTemplate $twigTemplate)
+    {
+        $this->combinedPdf = $this->initPdf($twigTemplate);
+    }
 
-		$pdf->SetY($y);
+    public function combinedExecute(TwigTemplate $twigTemplate, array $context = array())
+    {
+        $memberFee = $this->getMemberFee($context);
+        $this->combinedPdf->AddPage();
+        $pdfContext = $this->createPdfContext();
+        $this->writeAddress($this->combinedPdf, $pdfContext, $memberFee->getMember());
 
-		// Den Content-String umsetzen
-		$html = $this->twig->render($twigTemplate->getTemplate(), array('entity' => $fee));
-		$html = str_replace('[SALUTATION]', $this->buildSalutation($fee), $html);
-		$html = str_replace('[POSITIONS]', $this->buildPositions($fee), $html);
+        $this->writeContent($this->combinedPdf, $pdfContext, $memberFee, $twigTemplate);
+    }
 
-		$pdf->writeHTMLCell(0, $pdfContext->cellHeight, $pdf->GetX(), $y, $html);
-	}
-	/**
-	 * Position bauen
-	 * @param MemberFee $fee
-	 * @throws \Exception
-	 */
-	protected function buildPositions(MemberFee $fee) {
-		$lines = array();
-		foreach($fee->getPositions() As $position) {
-			$line = array();
-			$line[] = $position->getDescription();
-			$line[] = number_format($position->getPriceTotal()/100, 2, ',', '.') . ' EUR';
-			$lines[] = '<td>'.implode('</td><td align="right">',$line).'</td>';
-		}
-		$table = '<table>';
-		$table .= '<tr>'.implode('</tr><tr>', $lines).'</tr>';
+    public function combinedFinalize($filename)
+    {
+        $this->combinedPdf->lastPage();
+        $this->combinedPdf->Output($filename, 'F');
+    }
 
-		return $table;
-	}
+    /**
+     * Adressblock
+     *
+     * @param \TCPDF $pdf
+     * @param \stdClass $pdfContext
+     * @param Member $member
+     */
+    protected function writeAddress(\TCPDF $pdf, $pdfContext, Member $member)
+    {
+        $y = 70;
+        $w = 100;
+        $border = 0;
+        $lineDistance = $pdfContext->cellHeight + 0;
 
-	/**
-	 * Anredezeile bauen
-	 * @param MemberFee $fee
-	 * @throws \Exception
-	 */
-	protected function buildSalutation(MemberFee $fee) {
-		$contact = $fee->getMember()->getContact();
-		if(!$contact)
-			throw new \Exception('No contact for member fee '.$fee->getId().' found');
-		$gender =  $contact->getGender();
-		$gender = $gender ? $gender : 'unknown';
-		$salutation = $this->translator->trans('dmkclub.member.memberbilling.pdf.salutation.'.$gender);
-		// Titel suchen
-		$prefix = $contact->getNamePrefix();
-		$prefix = $prefix ? $prefix : $fee->getMember()->getPostalAddress()->getNamePrefix();
-		$salutation = trim($salutation .' '.$prefix);
-		// Name
-		$name = $fee->getMember()->getPostalAddress()->getLastName();
-		$name = $name ? $name : $contact->getLastName();
-		$salutation = trim($salutation .' '.$name);
-		return $salutation;
+        $address = $member->getPostalAddress();
+        if (! $address)
+            return;
 
-	}
+        $pdf->SetY($y);
+        $pdf->Cell($w, $pdfContext->cellHeight, $this->getMemberName($address, $member), $border);
 
-	/**
-	 * Name des Mitglieds holen. Adresse hat Vorrang, Name im Mitglied ist Fallback.
-	 * @param Address $address
-	 * @param Member $member
-	 */
-	protected function getMemberName($address, $member) {
-		if($address->getFirstName() && $address->getLastName()) {
-			return $address->getFirstName() . ' ' . $address->getLastName();
-		}
-		return $member->getName();
-	}
-	protected function createPdfContext() {
-		$context = new \stdClass();
-		$context->cellHeight = 5;
-		return $context;
-	}
-	protected function writeMetaData(\TCPDF $pdf, MemberFee $memberFee) {
-		$pdf->SetTitle($this->translator->trans('dmkclub.payment.bill.billfor'). ' ' .$memberFee->getMember()->getName());
-	}
-	/**
-	 *
-	 * @param array $context
-	 * @return MemberFee
-	 */
-	protected function getMemberFee($context) {
-		return $context['entity'];
-	}
+        if ($address->getStreet()) {
+            $y += $lineDistance;
+            $pdf->SetY($y);
+            $pdf->Cell($w, $pdfContext->cellHeight, $address->getStreet(), $border);
+        }
+        if ($address->getStreet2()) {
+            $y += $lineDistance;
+            $pdf->SetY($y);
+            $pdf->Cell($w, $pdfContext->cellHeight, $address->getStreet2(), $border);
+        }
+        $y += $lineDistance;
+        $pdf->SetY($y);
+        $pdf->Cell($w, $pdfContext->cellHeight, trim($address->getPostalCode() . ' ' . $address->getCity()), $border);
+    }
 
+    /**
+     * Main content
+     *
+     * @param \TCPDF $pdf
+     * @param unknown $pdfContext
+     * @param MemberFee $fee
+     */
+    protected function writeContent(\TCPDF $pdf, $pdfContext, MemberFee $fee, $twigTemplate)
+    {
+        $y = 110;
+        // $border = 0;
+        // $lineDistance = $pdfContext->cellHeight + 0;
 
-	/**
-	 *
-	 * @param TwigTemplate $twigTemplate
-	 * @return \TCPDF
-	 */
-	protected function initPdf(TwigTemplate $twigTemplate) {
-		$orientation = $twigTemplate->getOrientation() ? $twigTemplate->getOrientation() : 'P';
-		// Format kann auch ein assoziatives Array sein.
-		$pageFormat = $twigTemplate->getPageFormat() ? $twigTemplate->getPageFormatStructured() : 'A4';
-		$pdf_a = false;
+        $pdf->SetY($y);
 
-		$pdf = $this->tcpdfController->create(
-				$orientation,
-				PDF_UNIT,
-				$pageFormat,
-				true,
-				'UTF-8',
-				false,
-				$pdf_a
-		);
-		$pdf->setPrintHeader(false);
-		$pdf->setPrintFooter(false);
+        // Den Content-String umsetzen
+        $html = $this->twig->render($twigTemplate->getTemplate(), array(
+            'entity' => $fee
+        ));
+        $html = str_replace('[SALUTATION]', $this->buildSalutation($fee), $html);
+        $html = str_replace('[POSITIONS]', $this->buildPositions($fee), $html);
 
-		$pdf->SetAuthor('dmkclub');
-		// 		$pdf->SetTitle('Prueba TCPDF');
-		// 		$pdf->SetSubject('Your client');
-		//		$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
-		$pdf->setFontSubsetting(true);
+        $pdf->writeHTMLCell(0, $pdfContext->cellHeight, $pdf->GetX(), $y, $html);
+    }
 
-		$pdf->SetFont('helvetica', '', 12, '', true);
-		$pdf->SetMargins(PDF_MARGIN_LEFT + 10, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-		return $pdf;
-	}
+    /**
+     * Position bauen
+     *
+     * @param MemberFee $fee
+     * @throws \Exception
+     */
+    protected function buildPositions(MemberFee $fee)
+    {
+        $lines = array();
+        foreach ($fee->getPositions() as $position) {
+            $line = array();
+            $line[] = $position->getDescription();
+            $line[] = number_format($position->getPriceTotal() / 100, 2, ',', '.') . ' EUR';
+            $lines[] = '<td>' . implode('</td><td align="right">', $line) . '</td>';
+        }
+        $table = '<table>';
+        $table .= '<tr>' . implode('</tr><tr>', $lines) . '</tr>';
+
+        return $table;
+    }
+
+    /**
+     * Anredezeile bauen
+     *
+     * @param MemberFee $fee
+     * @throws \Exception
+     */
+    protected function buildSalutation(MemberFee $fee)
+    {
+        $contact = $fee->getMember()->getContact();
+        if (! $contact)
+            throw new \Exception('No contact for member fee ' . $fee->getId() . ' found');
+        $gender = $contact->getGender();
+        $gender = $gender ? $gender : 'unknown';
+        $salutation = $this->translator->trans('dmkclub.member.memberbilling.pdf.salutation.' . $gender);
+        // Titel suchen
+        $prefix = $contact->getNamePrefix();
+        $prefix = $prefix ? $prefix : $fee->getMember()
+            ->getPostalAddress()
+            ->getNamePrefix();
+        $salutation = trim($salutation . ' ' . $prefix);
+        // Name
+        $name = $fee->getMember()
+            ->getPostalAddress()
+            ->getLastName();
+        $name = $name ? $name : $contact->getLastName();
+        $salutation = trim($salutation . ' ' . $name);
+        return $salutation;
+    }
+
+    /**
+     * Name des Mitglieds holen.
+     * Adresse hat Vorrang, Name im Mitglied ist Fallback.
+     *
+     * @param Address $address
+     * @param Member $member
+     */
+    protected function getMemberName($address, $member)
+    {
+        if ($address->getFirstName() && $address->getLastName()) {
+            return $address->getFirstName() . ' ' . $address->getLastName();
+        }
+        return $member->getName();
+    }
+
+    protected function createPdfContext()
+    {
+        $context = new \stdClass();
+        $context->cellHeight = 5;
+        return $context;
+    }
+
+    protected function writeMetaData(\TCPDF $pdf, MemberFee $memberFee)
+    {
+        $pdf->SetTitle($this->translator->trans('dmkclub.payment.bill.billfor') . ' ' . $memberFee->getMember()
+            ->getName());
+    }
+
+    /**
+     *
+     * @param array $context
+     * @return MemberFee
+     */
+    protected function getMemberFee($context)
+    {
+        return $context['entity'];
+    }
+
+    /**
+     *
+     * @param TwigTemplate $twigTemplate
+     * @return \TCPDF
+     */
+    protected function initPdf(TwigTemplate $twigTemplate)
+    {
+        $orientation = $twigTemplate->getOrientation() ? $twigTemplate->getOrientation() : 'P';
+        // Format kann auch ein assoziatives Array sein.
+        $pageFormat = $twigTemplate->getPageFormat() ? $twigTemplate->getPageFormatStructured() : 'A4';
+        $pdf_a = false;
+
+        $pdf = $this->tcpdfController->create($orientation, PDF_UNIT, $pageFormat, true, 'UTF-8', false, $pdf_a);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+        $pdf->SetAuthor('dmkclub');
+        // $pdf->SetTitle('Prueba TCPDF');
+        // $pdf->SetSubject('Your client');
+        // $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('helvetica', '', 12, '', true);
+        $pdf->SetMargins(PDF_MARGIN_LEFT + 10, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        return $pdf;
+    }
 }

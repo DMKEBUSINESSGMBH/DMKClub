@@ -10,10 +10,9 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
+use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 use Doctrine\ORM\Query;
 use Psr\Log\LoggerInterface;
-use Doctrine\ORM\AbstractQuery;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
 
 class DownloadPdfHandler implements MassActionHandlerInterface {
@@ -29,13 +28,12 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 	 */
 	protected $translator;
 
-	/** @var MemberFeeManager */
-	protected $feeManager;
-
 	/** @var \Psr\Log\LoggerInterface */
 	private $logger;
-	/** @var \DMKClub\Bundle\BasicsBundle\Job\JobExecutor */
-	private $jobExecutor;
+	/** @var \DMKClub\Bundle\BasicsBundle\PDF\Manager */
+	private $pdfManager;
+
+	protected $router;
 
 	/**
 	 * @param EntityManager $entityManager
@@ -46,14 +44,14 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 			EntityManager $entityManager,
 			TranslatorInterface $translator,
 			LoggerInterface $logger,
-			JobExecutor $jobExecutor,
-			MemberFeeManager $feeManager
+	        Manager $pdfManager,
+			$router
 	) {
 		$this->entityManager = $entityManager;
 		$this->translator = $translator;
 		$this->logger = $logger;
-		$this->jobExecutor = $jobExecutor;
-		$this->feeManager = $feeManager;
+		$this->router = $router;
+		$this->pdfManager = $pdfManager;
 	}
 
 	/**
@@ -69,14 +67,14 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 		$this->entityManager->beginTransaction();
 		try {
 			set_time_limit(0);
- 			$iteration = $this->handleExport($options, $data, $query);
+ 			$data = $this->handleExport($options, $data, $query);
 			$this->entityManager->commit();
 		} catch (\Exception $e) {
 			$this->entityManager->rollback();
 			throw $e;
 		}
 
-		return $this->getResponse($args, $iteration);
+		return $this->getResponse($args, $data);
 	}
 
 	/**
@@ -111,17 +109,26 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 			$iteration++;
 		}
 		if(array_key_exists('entity_ids', $jobData)) {
-			$jobType = 'export';
-			$jobName = 'dmkdownloadpdf';
 
-			// FIXME: Hier den Download vorbereiten
-			$this->jobExecutor->createJob($jobType, $jobName, $jobData, true);
+			$ids = explode(',', $jobData['entity_ids']);
+
+			$filename = $this->pdfManager->buildPdfCombined(function($pdfCallBack) use ($ids) {
+			    foreach ($ids As $id) {
+			        $memberFee = $this->getMemberFeeRepository()->findOneBy(['id' => $id]);
+			        $pdfCallBack($memberFee);
+			    }
+			});
 		}
 
-		return $iteration;
+		return ['items'=> $iteration, 'filename'=> $filename];
 	}
 
-
+	/**
+	 * @return \DMKClub\Bundle\MemberBundle\Entity\Repository\MemberFeeRepository
+	 */
+	public function getMemberFeeRepository() {
+	    return $this->entityManager->getRepository('DMKClubMemberBundle:MemberFee');
+	}
 
 	/**
 	 * @param array $data
@@ -138,14 +145,27 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 	 *
 	 * @return MassActionResponse
 	 */
-	protected function getResponse(MassActionHandlerArgs $args, $entitiesCount = 0)
+	protected function getResponse(MassActionHandlerArgs $args, $data = 0)
 	{
+	    $entitiesCount = $data['items'];
+	    $fileName = $data['filename'];
+
 		$massAction      = $args->getMassAction();
 		$responseMessage = 'dmkclub.basics.datagrid.action.success_message';
 		$responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $responseMessage);
 
 		$successful = $entitiesCount > 0;
 		$options    = ['count' => $entitiesCount];
+
+		$url = '';
+		if($entitiesCount > 0) {
+		    $url = $this->router->generate(
+		        'oro_importexport_export_download',
+		        ['fileName' => basename($fileName)]
+	        );
+		}
+		$options['url'] = $url;
+
 
 		return new MassActionResponse(
 				$successful,
@@ -157,5 +177,4 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 				$options
 		);
 	}
-
 }

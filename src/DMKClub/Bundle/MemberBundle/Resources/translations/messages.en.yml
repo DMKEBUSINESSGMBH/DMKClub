@@ -111,6 +111,8 @@ dmkclub:
           corrected.label:  corrected
           action.mark_feecorrection: Mark fee correction
           action.unmark_feecorrection: Unmark fee correction
+          action.download_bill: Download bill
+          action.export_bill: Export bill
         memberfeeposition:
           entity_label:        Membership fee position
           entity_plural_label: Membership fee positions

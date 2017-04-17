@@ -8,9 +8,10 @@ dmkclub:
           generator.label:     PDF Generator
         privilege:
             category.dmkclub_data.label: DMKClub Daten
-
-dmkclub.basics.datagrid.action.success_message: "{0} Es wurden keine PDFs exportiert|{1} Es wurde ein PDF exportiert|]1,Inf[ Es wurden %count% PDFs exportiert"
-dmkclub.basics.datagrid.action.exportpdf: PDF exportieren
+        datagrid:
+            action.success_message: "{0} Es wurden keine PDFs exportiert|{1} Es wurde ein PDF exportiert|]1,Inf[ Es wurden %count% PDFs exportiert"
+            action.exportpdf: PDF exportieren
+            download.exportpdf: PDF herunterladen
 
 dmkclub.basics.label.yes: Ja
 dmkclub.basics.label.no: Nein

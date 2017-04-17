@@ -465,7 +465,7 @@ datagrid:
             pdf:
                 type: dmkgetpdf
                 acl_resource: dmkclub_memberfee_view
-                label: PDF
+                label: dmkclub.member.memberfee.action.download_bill
                 icon: file-alt
                 link: pdf_link
         mass_actions:
@@ -473,13 +473,13 @@ datagrid:
                 type: dmkexportpdf
                 entity_name: "%dmkclub_member.memberfee.entity.class%"
                 data_identifier: f.id
-                label: dmkclub.basics.datagrid.action.exportpdf
+                label: dmkclub.member.memberfee.action.export_bill
                 icon: download-alt
             downloadpdf:
                 type: dmkdownloadpdf
                 entity_name: "%dmkclub_member.memberfee.entity.class%"
                 data_identifier: f.id
-                label: dmkclub.basics.datagrid.action.downloadpdf
+                label: dmkclub.member.memberfee.action.download_bill
                 icon: download-alt
             sepadebitxml:
                 type: dmksepadebitxml

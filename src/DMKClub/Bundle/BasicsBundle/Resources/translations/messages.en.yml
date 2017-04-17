@@ -16,8 +16,10 @@ dmkclub:
         privilege:
             category.dmkclub_data.label: DMKClub Data
 
-dmkclub.basics.datagrid.action.success_message: "{0} No entities were exported|{1} One PDF was exported|]1,Inf[ %count% PDFs were exported"
-dmkclub.basics.datagrid.action.exportpdf: Export as PDF
+        datagrid:
+            action.success_message: "{0} No entities were exported|{1} One PDF was exported|]1,Inf[ %count% PDFs were exported"
+            action.exportpdf: Export as PDF
+            action.downloadpdf: Download as PDF
 
 dmkclub.basics.menu.twigtemplate_list.description: Manage twig templates for PDF generation
 dmkclub.basics.label.yes: Yes

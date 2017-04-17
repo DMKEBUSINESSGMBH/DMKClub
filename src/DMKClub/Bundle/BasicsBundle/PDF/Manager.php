@@ -53,6 +53,31 @@ class Manager {
 		}
 		return $fileName;
 	}
+	public function buildPdfCombined($nextEntity) {
+	    $twigTemplate = null;
+	    $pdfGenerator = null;
+
+	    $nextEntity(function(PdfAwareInterface $entity) use ($twigTemplate, &$pdfGenerator) {
+	        if($twigTemplate === null)  {
+	            $twigTemplate = $entity->getTemplate();
+	            if(!$twigTemplate)
+	                throw new PdfException('No template instance found');
+	            if($pdfGenerator === null) {
+                    // Call generator
+	                $pdfGenerator = $this->getGeneratorByName($twigTemplate->getGenerator());
+	                $pdfGenerator->combinedInit($twigTemplate);
+	            }
+	            $pdfGenerator->combinedExecute($twigTemplate, ['entity' => $entity]);
+
+	        }
+
+	    });
+        $outputFormat = 'pdf';
+	    $fileName   = $this->fileSystemOperator->generateTemporaryFileName('pdfFile', $outputFormat);
+	    $pdfGenerator->combinedFinalize($fileName);
+
+	    return $fileName;
+	}
 	/**
 	 *
 	 * @param TwigTemplate $twigTemplate

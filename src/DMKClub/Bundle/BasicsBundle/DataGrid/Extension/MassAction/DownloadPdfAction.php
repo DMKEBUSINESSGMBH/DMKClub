@@ -4,7 +4,7 @@ namespace DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\AbstractMassAction;
 
-class ExportPdfAction extends AbstractMassAction {
+class DownloadPdfAction extends AbstractMassAction {
 
 	/** @var array */
 	protected $requiredOptions = ['entity_name', 'data_identifier'];
@@ -25,12 +25,12 @@ class ExportPdfAction extends AbstractMassAction {
 		}
 
 		if (empty($options['handler'])) {
-			$options['handler'] = 'dmkclub_basics.datagrid.mass_action.dmkexportpdf_handler';
+			$options['handler'] = 'dmkclub_basics.datagrid.mass_action.dmkdownloadpdf_handler';
 		}
 
 		if (empty($options['frontend_type'])) {
 			// Der Wert bezieht sich auf den Key in der requirejs.yml, wobei das "-action" weggelassen werden muss
-			$options['frontend_type'] = 'dmkexportpdf-mass';
+			$options['frontend_type'] = 'dmkdownloadpdf-mass';
 		}
 
 		if (empty($options['frontend_handle'])) {

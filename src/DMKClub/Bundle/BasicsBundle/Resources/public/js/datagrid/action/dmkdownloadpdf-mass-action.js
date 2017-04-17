@@ -2,8 +2,9 @@ define([
     'underscore',
     'oroui/js/messenger',
     'orotranslation/js/translator',
+    'oroui/js/mediator',
     'oro/datagrid/action/mass-action'
-], function(_, messenger, __, MassAction) {
+], function(_, messenger, __, mediator, MassAction) {
     'use strict';
 
     var DownloadPdfAction;
@@ -17,6 +18,18 @@ define([
      * @extends oro.datagrid.action.MassAction
      */
     DownloadPdfAction = MassAction.extend({
+    	_showAjaxSuccessMessage: function(data) {
+            var type = data.url ? 'success' : 'error';
+            var message = data.message || __(this.messages.error);
+            if (data.url) {
+            	var filename = data.url.split('/').reverse()[0];
+//            	filename = filename + ' (' + data.bytes_hr + ')'; 
+            	message = message +
+                ' <a class="no-hash" target="_blank" href="'+ data.url + '">' + filename + '</a>';
+            }
+            if(message)
+          	  mediator.execute('showMessage', type, message);
+        }
 
     });
 
