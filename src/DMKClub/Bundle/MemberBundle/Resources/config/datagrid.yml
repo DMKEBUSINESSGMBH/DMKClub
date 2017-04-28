@@ -342,6 +342,12 @@ datagrid:
                         - { join: f.member, alias: m }
             bind_parameters:
                 - billing
+#        totals:
+#            grand_total:
+#                columns:
+#                    priceTotal:
+#                        label: Gesamt
+#                        expr: 'SUM(f.priceTotal)/100'
         inline_editing:
             enable: true
             entity_name: "%dmkclub_member.memberfee.entity.class%"
@@ -499,6 +505,9 @@ datagrid:
                 data_identifier: f.id
                 label: dmkclub.member.memberfee.action.unmark_feecorrection
                 icon: minus
+        options:
+            export: true
+
 # ###
 # MemberFee grid in member
 # ###
