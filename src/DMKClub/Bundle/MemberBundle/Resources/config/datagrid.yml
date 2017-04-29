@@ -567,6 +567,10 @@ datagrid:
                 frontend_type: datetime
         properties:
             id: ~
+            delete_link:
+                type: url
+                route: dmkclub_api_delete_memberfee
+                params: [ id ]
             pdf_link:
                 type:       url
                 route:      dmkclub_memberfee_createpdf
