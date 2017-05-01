@@ -26,6 +26,8 @@ parameters:
     dmkclub_member.job.processor.feeaccounting.class:      DMKClub\Bundle\MemberBundle\Job\Accounting\FeeProcessor
     dmkclub_member.job.writer.feeaccounting.class:         DMKClub\Bundle\MemberBundle\Job\Accounting\FeeWriter
 
+    dmkclub_member.memberfee.form.entity_field.handler.class: DMKClub\Bundle\MemberBundle\Form\EntityField\Handler\MemberFeeHandler
+
 services:
     dmkclub_member.memberbilling.manager:
         class:     "%dmkclub_member.memberbilling.manager.class%"
@@ -95,6 +97,14 @@ services:
             - "@twig"
         tags:
             - { name: dmkclub_basics.pdfgenerator }
+
+######################
+    dmkclub_member.memberfee.form.entity_field.handler:
+        class: "%dmkclub_member.memberfee.form.entity_field.handler.class%"
+#        arguments:
+#            - "@twig"
+        tags:
+            - { name: oro_entity.form.entity_field.handler }
 
 ### Job Services
     dmkclub_member.job.reader.feeaccounting:

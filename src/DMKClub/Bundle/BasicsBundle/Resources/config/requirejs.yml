@@ -4,3 +4,4 @@ config:
         'oro/datagrid/action/dmkgetpdf-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkgetpdf-action.js'
         'oro/datagrid/action/dmkexportpdf-mass-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkexportpdf-mass-action.js'
         'oro/datagrid/action/dmkdownloadpdf-mass-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkdownloadpdf-mass-action.js'
+        'dmkclubbasics/js/app/views/editor/cent-editor-view': 'bundles/dmkclubbasics/js/app/views/editor/cent-editor-view.js'

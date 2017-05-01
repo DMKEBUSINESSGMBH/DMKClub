@@ -309,9 +309,10 @@ datagrid:
                 link: update_link
 
 # ###
-# MemberFee grid in billing
+# MemberFee grid base grid
 # ###
-    dmkclub-memberfees-grid-billing:
+    dmkclub-memberfees-grid-base:
+        extended_entity_name: "%dmkclub_member.memberfee.entity.class%"
         acl_resource: dmkclub_memberfee_view
         source:
             type: orm
@@ -320,20 +321,53 @@ datagrid:
                     - f.id
                     - f.priceTotal As priceTotal
                     - f.payedTotal As payedTotal
+                    - >
+                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
+                        WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
+                    - f.createdAt
+                    - f.updatedAt
+                    - f.correctionStatus
+                from:
+                    - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
+        inline_editing:
+            enable:       true
+            entity_name:  "%dmkclub_member.memberfee.entity.class%"
+            behaviour:    enable_selected
+        columns:
+            priceTotal:
+                label:         dmkclub.member.memberfee.price_total.label
+                type:          callback
+                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
+                data_name:     priceTotal
+                frontend_type: currency
+            payedTotal:
+                label:         dmkclub.member.memberfee.payed_total.label
+                type:          callback
+                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
+                data_name:     payedTotal
+                frontend_type: currency
+                inline_editing:
+                    enable:    true
+                    editor:
+#                        view:  oroform/js/app/views/editor/number-editor-view
+                        view:  dmkclubbasics/js/app/views/editor/cent-editor-view
+
+# ###
+# MemberFee grid in billing
+# ###
+    dmkclub-memberfees-grid-billing:
+        extends: dmkclub-memberfees-grid-base
+        source:
+            type: orm
+            query:
+                select:
                     - m.id as mid
                     - m.memberCode
                     - m.name
                     - m.paymentOption
-                    - f.correctionStatus
                     - m.isActive
                     - m.startDate
                     - m.endDate
-                    - >
-                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
-                        WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
-                    - f.updatedAt
-                from:
-                    - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
                 where:
                     and:
                         - f.billing = :billing
@@ -348,16 +382,13 @@ datagrid:
 #                    priceTotal:
 #                        label: Gesamt
 #                        expr: 'SUM(f.priceTotal)/100'
-        inline_editing:
-            enable: true
-            entity_name: "%dmkclub_member.memberfee.entity.class%"
         columns:
             memberCode:
                 label:         dmkclub.member.member_code.label
             name:
                 type:          link
                 route:         dmkclub_member_view
-                params: {id: mid}
+                params:        {id: mid}
                 label:         dmkclub.member.name.label
                 frontend_type: html
             correctionStatus:
@@ -369,18 +400,6 @@ datagrid:
             isActive:
                 label:         dmkclub.member.is_active.label
                 frontend_type: boolean
-            priceTotal:
-                label:         dmkclub.member.memberfee.price_total.label
-                type:          callback
-                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
-                data_name:     priceTotal
-                frontend_type: currency
-            payedTotal:
-                label:         dmkclub.member.memberfee.payed_total.label
-                type:          callback
-                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
-                data_name:     payedTotal
-                frontend_type: currency
             startDate:
                 label:         dmkclub.member.start_date.label
                 frontend_type: date
@@ -512,23 +531,13 @@ datagrid:
 # MemberFee grid in member
 # ###
     dmkclub-memberfees-grid-member:
-        acl_resource: dmkclub_memberfee_view
+        extends: dmkclub-memberfees-grid-base
         source:
             type: orm
             query:
                 select:
-                    - f.id
-                    - f.priceTotal/100 As priceTotal
-                    - f.payedTotal/100 As payedTotal
                     - b.id as bid
                     - b.name
-                    - >
-                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
-                        WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
-                    - f.createdAt
-                    - f.updatedAt
-                from:
-                    - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
                 where:
                     and:
                         - f.member = :member
@@ -539,9 +548,6 @@ datagrid:
                 
             bind_parameters:
                 - member
-        inline_editing:
-            enable: true
-            entity_name: "%dmkclub_member.memberfee.entity.class%"
         columns:
             name:
                 type:          link
@@ -549,15 +555,9 @@ datagrid:
                 params: {id: bid}
                 label:         dmkclub.member.memberbilling.name.label
                 frontend_type: html
-            priceTotal:
-                label:         dmkclub.member.memberfee.price_total.label
-                frontend_type: currency
             corrected:
                 label:         dmkclub.member.memberfee.corrected.label
                 frontend_type: number
-            payedTotal:
-                label:         dmkclub.member.memberfee.payed_total.label
-                frontend_type: currency
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
