@@ -339,13 +339,11 @@ datagrid:
                 type:          callback
                 callable:      "@dmkclub_basics.utility.datagrids->cent2float"
                 data_name:     priceTotal
-                frontend_type: currency
             payedTotal:
                 label:         dmkclub.member.memberfee.payed_total.label
                 type:          callback
                 callable:      "@dmkclub_basics.utility.datagrids->cent2float"
                 data_name:     payedTotal
-                frontend_type: currency
                 inline_editing:
                     enable:    true
                     editor:
