@@ -17,6 +17,10 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
  * @author "René Nitzsche"
  */
 class ItemReader extends AbstractReader {
+	const OPTION_MEMBERBILLING = 'memberbilling_id';
+	const OPTION_ENTITIES = 'entity_ids';
+	const OPTION_FEEDATE = 'fee_date';
+
 	/**
 	 * @var array
 	 */
@@ -31,6 +35,11 @@ class ItemReader extends AbstractReader {
 	 * @var array
 	 */
 	protected $entityIds;
+
+	/**
+	 * @var \DateTime
+	 */
+	protected $feeDate;
 
 	/**
 	 * @var \Doctrine\ORM\EntityManager
@@ -71,6 +80,7 @@ class ItemReader extends AbstractReader {
 					$memberFee = new MemberFee();
 					$memberFee->setMember($member);
 					$memberFee->setBilling($this->memberBilling);
+					$memberFee->setFeeDate($this->feeDate);
 					return $memberFee;
 				}
 			}
@@ -99,18 +109,28 @@ class ItemReader extends AbstractReader {
 	 * {@inheritdoc}
 	 */
 	protected function initializeFromContext(ContextInterface $context) {
-		if (! $context->hasOption('memberbilling_id')) {
-			throw new InvalidConfigurationException('Configuration reader must contain "memberbilling_id".');
+		if (! $context->hasOption(self::OPTION_MEMBERBILLING)) {
+		    throw new InvalidConfigurationException('Configuration reader must contain "'.self::OPTION_MEMBERBILLING.'".');
 		} else {
-			$bid = (int) $context->getOption('memberbilling_id');
+		    $bid = (int) $context->getOption(self::OPTION_MEMBERBILLING);
 			$this->memberBilling = $this->getMemberBillingRepository()->findOneById($bid);
 			if(!$this->memberBilling)
 				throw new InvalidConfigurationException('Cannot resolve member billing with id ['.$bid.'] .');
 		}
-		if (! $context->hasOption('entity_ids')) {
-			throw new InvalidConfigurationException('Configuration reader must contain "entity_ids".');
+		if (! $context->hasOption(self::OPTION_ENTITIES)) {
+		    throw new InvalidConfigurationException('Configuration reader must contain "'.self::OPTION_ENTITIES.'".');
 		} else {
-			$this->entityIds = explode(',', $context->getOption('entity_ids'));
+		    $this->entityIds = explode(',', $context->getOption(self::OPTION_ENTITIES));
 		}
+		if ( $context->hasOption(self::OPTION_FEEDATE)) {
+		    $this->feeDate = new \DateTime($context->getOption(self::OPTION_FEEDATE));
+		}
+		else {
+		    $this->feeDate = new \DateTime();
+		}
+
+
 	}
+
+
 }

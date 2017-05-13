@@ -150,6 +150,7 @@ class DMKClubMemberBundleInstaller implements Installation, ActivityExtensionAwa
 		$table->addColumn('billing', 'integer', ['notnull' => false]);
 		$table->addColumn('start_date', 'date', ['notnull' => false]);
 		$table->addColumn('end_date', 'date', ['notnull' => false]);
+		$table->addColumn('fee_date', 'date', ['notnull' => false]);
 		$table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);
 		$table->addColumn('price_total', 'integer', ['notnull' => false]);
 		$table->addColumn('payed_total', 'integer', ['notnull' => false]);

@@ -10,6 +10,7 @@ dmkclub:
         account.label:       Account
         name.label:          Name
         member_code.label:   Club ID
+        member_code_short.label:   Club ID
         member_fees.label:   Fees
         member_fee_discounts.label:   Fee discounts
         is_active.label:     Active member
@@ -101,11 +102,12 @@ dmkclub:
           member.label:        Member
           billing.label:       Billing
           positions.label:     Positions
-          price_total.label:   Fee total
-          payed_total.label:   Payed total
+          price_total.label:   Fee
+          payed_total.label:   Paid
           correction_status.label:  Correction
           start_date.label:    Start date
           end_date.label:      End date
+          fee_date.label:      Fee date
           organization.label:  Organization
           data_channel.label: Data channel
           corrected.label:  corrected

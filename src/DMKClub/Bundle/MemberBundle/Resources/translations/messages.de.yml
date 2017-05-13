@@ -9,6 +9,7 @@ dmkclub:
         account.label:       Account
         name.label:          Name
         member_code.label:   Mitgliedsnummer
+        member_code_short.label:  Mgl-Nr.
         member_fees.label:   Beiträge
         member_fee_discounts.label:  Ermäßigungen
         is_active.label:     Aktives Mitglied
@@ -88,11 +89,12 @@ dmkclub:
           id.label:            Id
           owner.label:         Owner
           name.label:          Name
-          price_total.label:   Gesamtbeitrag
+          price_total.label:   Beitrag
           payed_total.label:   Bezahlt
           correction_status.label:  Korrektur
           start_date.label:    Startdatum
           end_date.label:      Enddatum
+          fee_date.label:      Rechnungsdatum
           organization.label:  Organisation
           data_channel.label: Kanal
           corrected.label:  korrigiert
