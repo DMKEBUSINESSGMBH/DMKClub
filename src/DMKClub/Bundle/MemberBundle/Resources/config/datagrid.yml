@@ -16,6 +16,7 @@ datagrid:
                     - m.paymentOption
                     - a.city
                     - c.birthday
+                    - email.email
                     - b.iban
                     - b.bic
                     - m.startDate
@@ -27,6 +28,7 @@ datagrid:
                 join:
                     left:
                         - { join: m.contact, alias: c }
+                        - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
                         - { join: m.postalAddress, alias: a }
                         - { join: m.bankAccount, alias: b }
         columns:
@@ -53,6 +55,9 @@ datagrid:
             birthday:
                 label:         orocrm.contact.birthday.label
                 frontend_type: date
+            email:
+                renderable:    false
+                label:         orocrm.contact.email.label
             iban:
                 label:         dmkclub.payment.bankaccount.iban.label
                 renderable:    false
@@ -104,6 +109,8 @@ datagrid:
                     data_name: a.city
                 birthday:
                     data_name: c.birthday
+                email:
+                    data_name: email.email
                 iban:
                     data_name: b.iban
                 bic:
@@ -160,6 +167,10 @@ datagrid:
                 birthday:
                     type:      date
                     data_name: c.birthday
+                email:
+                    enabled: false
+                    type: string
+                    data_name: email.email
                 iban:
                     type: string
                     enabled: false
