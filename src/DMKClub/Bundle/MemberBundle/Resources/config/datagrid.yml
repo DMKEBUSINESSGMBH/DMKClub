@@ -330,7 +330,8 @@ datagrid:
                 from:
                     - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
         inline_editing:
-            enable:       true
+            # disable inline editing due to oro bug in combination with totals
+            enable:       false
             entity_name:  "%dmkclub_member.memberfee.entity.class%"
             behaviour:    enable_selected
         columns:
@@ -349,6 +350,12 @@ datagrid:
                     editor:
 #                        view:  oroform/js/app/views/editor/number-editor-view
                         view:  dmkclubbasics/js/app/views/editor/cent-editor-view
+        sorters:
+            columns:
+                priceTotal:
+                    data_name: f.priceTotal
+                payedTotal:
+                    data_name: f.payedTotal
 
 # ###
 # MemberFee grid in billing
@@ -374,12 +381,15 @@ datagrid:
                         - { join: f.member, alias: m }
             bind_parameters:
                 - billing
-#        totals:
-#            grand_total:
-#                columns:
-#                    priceTotal:
-#                        label: Gesamt
-#                        expr: 'SUM(f.priceTotal)/100'
+        totals:
+            grand_total:
+                columns:
+                    priceTotal:
+                        formatter: currency
+                        expr: 'SUM(f.priceTotal)/100'
+                    payedTotal:
+                        formatter: currency
+                        expr: 'SUM(f.payedTotal)/100'
         columns:
             memberCode:
                 label:         dmkclub.member.member_code.label
@@ -434,10 +444,6 @@ datagrid:
                     data_name: m.memberCode
                 name:
                     data_name: m.name
-                priceTotal:
-                    data_name: f.priceTotal
-                payedTotal:
-                    data_name: f.payedTotal
                 isActive:
                     data_name: m.isActive
                 startDate:
@@ -577,10 +583,6 @@ datagrid:
             columns:
                 name:
                     data_name: b.name
-                priceTotal:
-                    data_name: f.priceTotal
-                payedTotal:
-                    data_name: f.payedTotal
                 createdAt:
                     data_name: f.createdAt
                 updatedAt:
