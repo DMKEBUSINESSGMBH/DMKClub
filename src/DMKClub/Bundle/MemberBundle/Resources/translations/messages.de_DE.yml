@@ -94,7 +94,7 @@ dmkclub:
           correction_status.label:  Korrektur
           start_date.label:    Startdatum
           end_date.label:      Enddatum
-          fee_date.label:      Rechnungsdatum
+          bill_date.label:      Rechnungsdatum
           organization.label:  Organisation
           data_channel.label: Kanal
           corrected.label:  korrigiert

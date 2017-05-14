@@ -337,7 +337,7 @@ datagrid:
                         WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
                     - f.startDate
                     - f.endDate
-                    - f.feeDate
+                    - f.billDate
                     - f.createdAt
                     - f.updatedAt
                     - f.correctionStatus
@@ -364,8 +364,8 @@ datagrid:
                     editor:
 #                        view:  oroform/js/app/views/editor/number-editor-view
                         view:  dmkclubbasics/js/app/views/editor/cent-editor-view
-            feeDate:
-                label:         dmkclub.member.memberfee.fee_date.label
+            billDate:
+                label:         dmkclub.member.memberfee.bill_date.label
                 frontend_type: date
                 inline_editing:
                     enable:    true
@@ -394,9 +394,9 @@ datagrid:
                     type:      datetime
                     data_name: f.updatedAt
                     enabled: false
-                feeDate:
+                billDate:
                     type:      date
-                    data_name: f.feeDate
+                    data_name: f.billDate
                     enabled: false
                 startDate:
                     type:      date
@@ -412,8 +412,8 @@ datagrid:
                     data_name: f.priceTotal
                 payedTotal:
                     data_name: f.payedTotal
-                feeDate:
-                    data_name: f.feeDate
+                billDate:
+                    data_name: f.billDate
                 startDate:
                     data_name: f.startDate
                 endDate:

@@ -15,11 +15,11 @@ class AddFeeDate implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         $table = $schema->getTable('dmkclub_member_fee');
-        if ($table->hasColumn('fee_date')) {
+        if ($table->hasColumn('bill_date')) {
             return;
         }
-        $table->addColumn('fee_date', 'date', ['notnull' => false]);
+        $table->addColumn('bill_date', 'date', ['notnull' => false]);
 
-        $queries->addPostQuery(new UpdateFeeDateQuery());
+        $queries->addPostQuery(new UpdateBillDateQuery());
     }
 }

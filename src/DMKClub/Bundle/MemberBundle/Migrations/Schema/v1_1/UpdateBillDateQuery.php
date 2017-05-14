@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 
-class UpdateFeeDateQuery extends ParametrizedMigrationQuery
+class UpdateBillDateQuery extends ParametrizedMigrationQuery
 {
 
     /**
@@ -17,7 +17,7 @@ class UpdateFeeDateQuery extends ParametrizedMigrationQuery
     {
         $logger = new ArrayLogger();
         $logger->info(
-            'Update fee date from createdAt field.'
+            'Update bill date from createdAt field.'
         );
         $this->doExecute($logger, true);
 
@@ -38,7 +38,7 @@ class UpdateFeeDateQuery extends ParametrizedMigrationQuery
      */
     public function doExecute(LoggerInterface $logger, $dryRun = false)
     {
-        $sql = 'UPDATE dmkclub_member_fee SET fee_date = created_at';
+        $sql = 'UPDATE dmkclub_member_fee SET bill_date = created_at';
 
         $this->logQuery($logger, $sql);
         if (!$dryRun) {

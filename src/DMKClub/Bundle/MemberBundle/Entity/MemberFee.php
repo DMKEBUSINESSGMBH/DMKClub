@@ -117,7 +117,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 	/**
 	 * @var \DateTime
 	 *
-	 * @ORM\Column(name="fee_date", type="date", nullable=true)
+	 * @ORM\Column(name="bill_date", type="date", nullable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -130,7 +130,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 	 * )
 	 * @Oro\Versioned
 	 */
-	protected $feeDate;
+	protected $billDate;
 
 	/**
 	 * @var string
@@ -434,26 +434,26 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 	}
 
 	/**
-	 * Set feeDate
+	 * Set bill date
 	 *
-	 * @param \DateTime $feeDate
+	 * @param \DateTime $date
 	 * @return Member
 	 */
-	public function setFeeDate($date)
+	public function setBillDate($date)
 	{
-	    $this->feeDate = $date;
+	    $this->billDate = $date;
 
 	    return $this;
 	}
 
 	/**
-	 * Get feeDate
+	 * Get bill date
 	 *
 	 * @return \DateTime
 	 */
-	public function getFeeDate()
+	public function getBillDate()
 	{
-	    return $this->feeDate;
+	    return $this->billDate;
 	}
 
 	public function getPositionsByFlag($flag) {
