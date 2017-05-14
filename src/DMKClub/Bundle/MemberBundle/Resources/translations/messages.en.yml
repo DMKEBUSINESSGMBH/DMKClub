@@ -87,8 +87,10 @@ dmkclub:
           message.accounting.async.started: "Fee accounting started. Members to evaluate: %d"
           message.correction.async.started: "Fee correction started. Fees to evaluate: %d"
 
-          action.createbills:   Start accounting
-          action.createcorrections:   Start correction
+          action.createbills:           Start accounting
+          action.createcorrections:     Start correction
+          action.refreshsummary.label:  Refresh
+          action.refreshsummary.info:   Refresh summary
           pdf.salutation.male:   "Dear Mr. "
           pdf.salutation.female: "Dear Mrs. "
           pdf.salutation.unknown:   "Dear "
