@@ -244,7 +244,7 @@ class MemberBillingManager implements ContainerAwareInterface {
 			$jobData[ItemReader::OPTION_ENTITIES] = implode(',', $ids);
 			// TODO: hier das Fee-Date rein
 			$date = new \DateTime();
-			$jobData[ItemReader::OPTION_FEEDATE] = $date->format('c');
+			$jobData[ItemReader::OPTION_BILLDATE] = $date->format('c');
 			$jobType = 'export';
 			$jobName = 'dmkfeeaccounting';
 

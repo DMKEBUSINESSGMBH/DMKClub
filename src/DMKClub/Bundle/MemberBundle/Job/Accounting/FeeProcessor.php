@@ -45,7 +45,7 @@ class FeeProcessor implements ItemProcessorInterface {
 				// Ohne Beitrag muss kein Datensatz angelegt werden
 				return null;
 			}
-			$memberFee->setFeeDate($item->getFeeDate());
+			$memberFee->setBillDate($item->getBillDate());
 			$memberFee->setOrganization($memberFee->getBilling()->getOrganization());
 			$memberFee->setOwner($memberFee->getBilling()->getOwner());
 		}

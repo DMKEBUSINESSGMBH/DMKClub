@@ -19,7 +19,7 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 class ItemReader extends AbstractReader {
 	const OPTION_MEMBERBILLING = 'memberbilling_id';
 	const OPTION_ENTITIES = 'entity_ids';
-	const OPTION_FEEDATE = 'fee_date';
+	const OPTION_BILLDATE = 'bill_date';
 
 	/**
 	 * @var array
@@ -39,7 +39,7 @@ class ItemReader extends AbstractReader {
 	/**
 	 * @var \DateTime
 	 */
-	protected $feeDate;
+	protected $billDate;
 
 	/**
 	 * @var \Doctrine\ORM\EntityManager
@@ -80,7 +80,7 @@ class ItemReader extends AbstractReader {
 					$memberFee = new MemberFee();
 					$memberFee->setMember($member);
 					$memberFee->setBilling($this->memberBilling);
-					$memberFee->setFeeDate($this->feeDate);
+					$memberFee->setBillDate($this->billDate);
 					return $memberFee;
 				}
 			}
@@ -122,11 +122,11 @@ class ItemReader extends AbstractReader {
 		} else {
 		    $this->entityIds = explode(',', $context->getOption(self::OPTION_ENTITIES));
 		}
-		if ( $context->hasOption(self::OPTION_FEEDATE)) {
-		    $this->feeDate = new \DateTime($context->getOption(self::OPTION_FEEDATE));
+		if ( $context->hasOption(self::OPTION_BILLDATE)) {
+		    $this->billDate = new \DateTime($context->getOption(self::OPTION_BILLDATE));
 		}
 		else {
-		    $this->feeDate = new \DateTime();
+		    $this->billDate = new \DateTime();
 		}
 
 
