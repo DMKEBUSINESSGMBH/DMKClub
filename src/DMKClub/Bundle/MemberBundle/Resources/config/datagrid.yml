@@ -376,12 +376,17 @@ datagrid:
                         - { join: f.member, alias: m }
             bind_parameters:
                 - billing
-#        totals:
-#            grand_total:
-#                columns:
-#                    priceTotal:
-#                        label: Gesamt
-#                        expr: 'SUM(f.priceTotal)/100'
+        totals:
+            grand_total:
+                columns:
+                    priceTotal:
+                        formatter: currency
+                        divisor: 100
+                        expr: 'SUM(f.priceTotal)'
+                    payedTotal:
+                        formatter: currency
+                        divisor: 100
+                        expr: 'SUM(f.payedTotal)'
         columns:
             memberCode:
                 label:         dmkclub.member.member_code.label

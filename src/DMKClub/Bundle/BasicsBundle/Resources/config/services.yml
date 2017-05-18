@@ -9,7 +9,20 @@ parameters:
     dmkclub_basics.provider.privilege_category_provider.class: DMKClub\Bundle\BasicsBundle\Provider\PrivilegeCategoryProvider
     dmkclub_basics.utility.datagrids.class:      DMKClub\Bundle\BasicsBundle\Utility\Datagrids
 
+    dmkclub_basics.datagrid.extension.totals.class:  DMKClub\Bundle\BasicsBundle\DataGrid\Extension\Totals\OrmTotalsExtension
+
 services:
+
+    oro_datagrid.extension.totals:
+        class: "%dmkclub_basics.datagrid.extension.totals.class%"
+        arguments:
+            - '@translator'
+            - '@oro_locale.formatter.number'
+            - '@oro_locale.formatter.date_time'
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: oro_datagrid.extension }
+
     dmkclub_basics.pdf.manager:
         class: "%dmkclub_basics.pdf.manager.class%"
         arguments:
