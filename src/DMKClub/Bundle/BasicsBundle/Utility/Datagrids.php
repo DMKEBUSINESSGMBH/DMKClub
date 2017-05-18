@@ -16,7 +16,7 @@ class Datagrids
 
             $result = $record->getValue($dataName);
             $result = $result / 100;
-            return $result;
+            return number_format($result, 2);
         };
     }
 }

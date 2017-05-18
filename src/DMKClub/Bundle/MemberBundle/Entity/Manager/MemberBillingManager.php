@@ -17,6 +17,7 @@ use Oro\Bundle\SegmentBundle\Query\DynamicSegmentQueryBuilder;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
+use DMKClub\Bundle\MemberBundle\Job\Accounting\ItemReader;
 
 class MemberBillingManager implements ContainerAwareInterface {
 	/**
@@ -232,14 +233,18 @@ class MemberBillingManager implements ContainerAwareInterface {
 					break;
 			}
 		}
+
 		if(!$async) {
 			$this->em->flush();
 			// jetzt die Summe holen und im Billing speichern
 			$this->updateSummary($memberBilling);
 		}
 		else {
-			$jobData['memberbilling_id'] = $memberBilling->getId();
-			$jobData['entity_ids'] = implode(',', $ids);
+			$jobData[ItemReader::OPTION_MEMBERBILLING] = $memberBilling->getId();
+			$jobData[ItemReader::OPTION_ENTITIES] = implode(',', $ids);
+			// TODO: hier das Fee-Date rein
+			$date = new \DateTime();
+			$jobData[ItemReader::OPTION_BILLDATE] = $date->format('c');
 			$jobType = 'export';
 			$jobName = 'dmkfeeaccounting';
 

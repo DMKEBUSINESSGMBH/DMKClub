@@ -132,13 +132,16 @@ class DefaultProcessor extends AbstractProcessor {
 				$labelMap[MemberFeePosition::FLAG_FEE] : 'MemberFeePosition::FLAG_FEE';
 
 		$dateFormat = 'd.m.Y';
-		// Bei unterjärigem Ein- und Austritt das passende Datum verwenden
+		// Bei unterjährigem Ein- und Austritt das passende Datum verwenden
 		$labelStartDate = $firstMonth2Pay ? $firstMonth2Pay : $startDate;
 		$labelEndDate = $lastMonth2Pay ? $lastMonth2Pay : $endDate;
 		$descriptionFeePosition = str_replace('[STARTDATE]', $labelStartDate->format($dateFormat), $descriptionFeePosition);
 		$descriptionFeePosition = str_replace('[ENDDATE]', $labelEndDate->format($dateFormat), $descriptionFeePosition);
 
 		$memberFee = new MemberFee();
+		$memberFee->setStartDate($labelStartDate);
+		$memberFee->setEndDate($labelEndDate);
+
 		$position = new MemberFeePosition();
 		$memberFee->addPosition($position);
 

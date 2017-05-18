@@ -8,6 +8,12 @@
 {% block navButtons %}
   {% if resource_granted('dmkclub_memberbilling_create') %}
     {{ UI.button({
+    		'path' : path('dmkclub_memberbilling_refreshsummary', { id: entity.id }),
+    		'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberbilling.action.refreshsummary.info'|trans ,
+    		'aCss' : 'btn-primary',
+    		'label' : 'dmkclub.member.memberbilling.action.refreshsummary.label'|trans
+		}) }}
+    {{ UI.button({
     		'path' : path('dmkclub_memberbilling_createbills', { id: entity.id }),
     		'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberbilling.action.createbills'|trans ,
     		'aCss' : 'btn-primary',

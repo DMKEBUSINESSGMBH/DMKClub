@@ -16,6 +16,7 @@ datagrid:
                     - m.paymentOption
                     - a.city
                     - c.birthday
+                    - email.email
                     - b.iban
                     - b.bic
                     - m.startDate
@@ -27,6 +28,7 @@ datagrid:
                 join:
                     left:
                         - { join: m.contact, alias: c }
+                        - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
                         - { join: m.postalAddress, alias: a }
                         - { join: m.bankAccount, alias: b }
         columns:
@@ -53,6 +55,9 @@ datagrid:
             birthday:
                 label:         orocrm.contact.birthday.label
                 frontend_type: date
+            email:
+                renderable:    false
+                label:         orocrm.contact.email.label
             iban:
                 label:         dmkclub.payment.bankaccount.iban.label
                 renderable:    false
@@ -104,6 +109,8 @@ datagrid:
                     data_name: a.city
                 birthday:
                     data_name: c.birthday
+                email:
+                    data_name: email.email
                 iban:
                     data_name: b.iban
                 bic:
@@ -160,6 +167,10 @@ datagrid:
                 birthday:
                     type:      date
                     data_name: c.birthday
+                email:
+                    enabled: false
+                    type: string
+                    data_name: email.email
                 iban:
                     type: string
                     enabled: false
@@ -324,13 +335,17 @@ datagrid:
                     - >
                         (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
                         WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
+                    - f.startDate
+                    - f.endDate
+                    - f.billDate
                     - f.createdAt
                     - f.updatedAt
                     - f.correctionStatus
                 from:
                     - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
         inline_editing:
-            enable:       true
+            # disable inline editing due to oro bug in combination with totals
+            enable:       false
             entity_name:  "%dmkclub_member.memberfee.entity.class%"
             behaviour:    enable_selected
         columns:
@@ -339,18 +354,77 @@ datagrid:
                 type:          callback
                 callable:      "@dmkclub_basics.utility.datagrids->cent2float"
                 data_name:     priceTotal
-                frontend_type: currency
             payedTotal:
                 label:         dmkclub.member.memberfee.payed_total.label
                 type:          callback
                 callable:      "@dmkclub_basics.utility.datagrids->cent2float"
                 data_name:     payedTotal
-                frontend_type: currency
                 inline_editing:
                     enable:    true
                     editor:
 #                        view:  oroform/js/app/views/editor/number-editor-view
                         view:  dmkclubbasics/js/app/views/editor/cent-editor-view
+            billDate:
+                label:         dmkclub.member.memberfee.bill_date.label
+                frontend_type: date
+                inline_editing:
+                    enable:    true
+            startDate:
+                label:         dmkclub.member.memberfee.start_date.label
+                frontend_type: date
+            endDate:
+                label:         dmkclub.member.memberfee.end_date.label
+                frontend_type: date
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+                renderable:    false
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+                renderable:    false
+
+        filters:
+            columns:
+                createdAt:
+                    type:      datetime
+                    data_name: f.createdAt
+                    enabled: false
+                updatedAt:
+                    type:      datetime
+                    data_name: f.updatedAt
+                    enabled: false
+                billDate:
+                    type:      date
+                    data_name: f.billDate
+                    enabled: false
+                startDate:
+                    type:      date
+                    data_name: f.startDate
+                endDate:
+                    type:      date
+                    data_name: f.endDate
+                    enabled: false
+
+        sorters:
+            columns:
+                priceTotal:
+                    data_name: f.priceTotal
+                payedTotal:
+                    data_name: f.payedTotal
+                billDate:
+                    data_name: f.billDate
+                startDate:
+                    data_name: f.startDate
+                endDate:
+                    data_name: f.endDate
+                createdAt:
+                    type:      datetime
+                    data_name: f.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: f.updatedAt
+
 
 # ###
 # MemberFee grid in billing
@@ -366,8 +440,8 @@ datagrid:
                     - m.name
                     - m.paymentOption
                     - m.isActive
-                    - m.startDate
-                    - m.endDate
+                    - m.startDate As mbrStart
+                    - m.endDate As mbrEnd
                 where:
                     and:
                         - f.billing = :billing
@@ -389,7 +463,7 @@ datagrid:
                         expr: 'SUM(f.payedTotal)'
         columns:
             memberCode:
-                label:         dmkclub.member.member_code.label
+                label:         dmkclub.member.member_code_short.label
             name:
                 type:          link
                 route:         dmkclub_member_view
@@ -405,18 +479,17 @@ datagrid:
             isActive:
                 label:         dmkclub.member.is_active.label
                 frontend_type: boolean
-            startDate:
+            mbrStart:
                 label:         dmkclub.member.start_date.label
                 frontend_type: date
-            endDate:
+                renderable:    false
+            mbrEnd:
                 label:         dmkclub.member.end_date.label
                 frontend_type: datetime
+                renderable:    false
             paymentOption:
                 label:         dmkclub.member.payment_option.label
                 type:          translatable
-            updatedAt:
-                label:         oro.ui.updated_at
-                frontend_type: datetime
         properties:
             id: ~
             delete_link:
@@ -441,22 +514,16 @@ datagrid:
                     data_name: m.memberCode
                 name:
                     data_name: m.name
-                priceTotal:
-                    data_name: f.priceTotal
-                payedTotal:
-                    data_name: f.payedTotal
                 isActive:
                     data_name: m.isActive
-                startDate:
+                mbrStart:
                     data_name: m.startDate
                 correctionStatus:
                     data_name: f.correctionStatus
                 corrected:
                     data_name: corrected
-                endDate:
+                mbrEnd:
                     data_name: m.endDate
-                updatedAt:
-                    data_name: f.updatedAt
             default:
                 name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
@@ -475,15 +542,13 @@ datagrid:
                             multiple:             true
                             choices:              '@dmkclub.payment.options_provider->getChoices'
                             translatable_options: false
-                startDate:
+                mbrStart:
                     type: date
                     data_name: m.startDate
-                endDate:
+                    enabled: false
+                mbrEnd:
                     type:      date
                     data_name: m.endDate
-                updatedAt:
-                    type:      datetime
-                    data_name: f.updatedAt
                     enabled: false
         actions:
             delete:
@@ -553,6 +618,8 @@ datagrid:
                 
             bind_parameters:
                 - member
+        inline_editing:
+            enable:       true
         columns:
             name:
                 type:          link
@@ -563,13 +630,6 @@ datagrid:
             corrected:
                 label:         dmkclub.member.memberfee.corrected.label
                 frontend_type: number
-            createdAt:
-                label:         oro.ui.created_at
-                frontend_type: datetime
-                renderable:    false
-            updatedAt:
-                label:         oro.ui.updated_at
-                frontend_type: datetime
         properties:
             id: ~
             delete_link:
@@ -584,14 +644,6 @@ datagrid:
             columns:
                 name:
                     data_name: b.name
-                priceTotal:
-                    data_name: f.priceTotal
-                payedTotal:
-                    data_name: f.payedTotal
-                createdAt:
-                    data_name: f.createdAt
-                updatedAt:
-                    data_name: f.updatedAt
             default:
                 name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
@@ -599,13 +651,6 @@ datagrid:
                 name:
                     type: string
                     data_name: b.name
-                createdAt:
-                    type:      datetime
-                    data_name: f.createdAt
-                updatedAt:
-                    type:      datetime
-                    data_name: f.updatedAt
-                    enabled: false
         actions:
             delete:
                 type:         delete

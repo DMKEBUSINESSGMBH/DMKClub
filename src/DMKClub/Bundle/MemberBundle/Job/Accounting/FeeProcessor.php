@@ -33,26 +33,27 @@ class FeeProcessor implements ItemProcessorInterface {
 	/**
 	 * Processes entity to generate pdf
 	 *
-	 * @param MemberFee $memberFee
+	 * @param MemberFee $item
 	 * @return MemberFee
 	 * @throws RuntimeException
 	 */
-	public function process($memberFee) {
+	public function process($item) {
 
 		try {
-			$memberFee = $this->billingManager->calculateMemberFee($memberFee->getBilling(), $memberFee->getMember());
+			$memberFee = $this->billingManager->calculateMemberFee($item->getBilling(), $item->getMember());
 			if($memberFee->getPriceTotal() == 0) {
 				// Ohne Beitrag muss kein Datensatz angelegt werden
 				return null;
 			}
+			$memberFee->setBillDate($item->getBillDate());
 			$memberFee->setOrganization($memberFee->getBilling()->getOrganization());
 			$memberFee->setOwner($memberFee->getBilling()->getOwner());
 		}
 		catch(\Exception $e) {
 			// Abbruch bei Fehler
 			$this->logger->error('MemberFee calculation fails', [
-					'member id' => $memberFee->getMember()->getId(),
-					'billing id' => $memberFee->getBilling()->getId(),
+					'member id' => $item->getMember()->getId(),
+					'billing id' => $item->getBilling()->getId(),
 					'error' => $e->getMessage(),
 			]);
 			return null;

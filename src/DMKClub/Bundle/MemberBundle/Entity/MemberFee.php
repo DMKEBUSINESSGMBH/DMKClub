@@ -115,6 +115,24 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 	protected $endDate;
 
 	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="bill_date", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "order"=85
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $billDate;
+
+	/**
 	 * @var string
 	 *
 	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
@@ -413,6 +431,29 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 	public function getEndDate()
 	{
 		return $this->endDate;
+	}
+
+	/**
+	 * Set bill date
+	 *
+	 * @param \DateTime $date
+	 * @return Member
+	 */
+	public function setBillDate($date)
+	{
+	    $this->billDate = $date;
+
+	    return $this;
+	}
+
+	/**
+	 * Get bill date
+	 *
+	 * @return \DateTime
+	 */
+	public function getBillDate()
+	{
+	    return $this->billDate;
 	}
 
 	public function getPositionsByFlag($flag) {

@@ -45,6 +45,7 @@ class FeeWriter implements ItemWriterInterface, StepExecutionAwareInterface {
 	public function write(array $items) {
 		$billings = [];
 		foreach ($items As $item) {
+			/* @var $item \DMKClub\Bundle\MemberBundle\Entity\MemberFee */
 			$this->em->persist($item);
 			$billings[$item->getBilling()->getId()] = $item->getBilling();
 			$this->stepExecution->incrementWriteCount();
