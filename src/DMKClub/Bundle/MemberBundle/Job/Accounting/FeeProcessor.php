@@ -2,14 +2,11 @@
 
 namespace DMKClub\Bundle\MemberBundle\Job\Accounting;
 
-use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
-use Oro\Bundle\ImportExportBundle\Processor\ContextAwareProcessor;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Psr\Log\LoggerInterface;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Die Klasse erzeugt die MemberFee
@@ -21,10 +18,6 @@ class FeeProcessor implements ItemProcessorInterface {
 	private $logger;
 	private $billingManager;
 
-	/**
-	 * TODO:
-	 * @param Manager $pdfManager
-	 */
 	public function __construct(MemberBillingManager $billingManager, LoggerInterface $logger) {
 		$this->billingManager = $billingManager;
 		$this->logger = $logger;
@@ -40,7 +33,7 @@ class FeeProcessor implements ItemProcessorInterface {
 	public function process($item) {
 
 		try {
-			$memberFee = $this->billingManager->calculateMemberFee($item->getBilling(), $item->getMember());
+		    $memberFee = $this->billingManager->calculateMemberFee($item->getBilling(), $item->getMember());
 			if($memberFee->getPriceTotal() == 0) {
 				// Ohne Beitrag muss kein Datensatz angelegt werden
 				return null;
@@ -50,11 +43,14 @@ class FeeProcessor implements ItemProcessorInterface {
 			$memberFee->setOwner($memberFee->getBilling()->getOwner());
 		}
 		catch(\Exception $e) {
-			// Abbruch bei Fehler
+		    // Abbruch bei Fehler
+		    error_log(print_r([
+		        'error' => $e->getMessage(),
+		        'billing id' => $item->getBilling()->getId(),
+		    ], true));
 			$this->logger->error('MemberFee calculation fails', [
-					'member id' => $item->getMember()->getId(),
-					'billing id' => $item->getBilling()->getId(),
-					'error' => $e->getMessage(),
+			    'error' => $e->getMessage(),
+			    'billing id' => $item->getBilling()->getId(),
 			]);
 			return null;
 		}

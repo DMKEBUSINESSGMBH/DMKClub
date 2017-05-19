@@ -77,13 +77,15 @@ dmkclub:
           message.correction.nothingfound: "Es wurden noch keine Abrechnungen zur Korrektur markiert."
           message.accounting.async.started: "Abrechnung gestartet. Betroffene Mitglieder: %d"
           message.correction.async.started: "Korrektur gestartet. Betroffene Beiträge: %d"
-          action.createbills:   Abrechnung starten
-          action.createcorrections:   Korrektur starten
+
+          action.createbills.data:      Abrechnungsdaten
+          action.createbills:           Abrechnung starten
+          action.createcorrections:     Korrektur starten
           action.refreshsummary.label:  Aktualisieren
           action.refreshsummary.info:   Beitragssumme und gezahlte Beiträge aktualisieren
-          pdf.salutation.male:   "Sehr geehrter Herr "
-          pdf.salutation.female: "Sehr geehrte Frau "
-          pdf.salutation.unknown:   "Sehr geehrte(r) "
+          pdf.salutation.male:          "Sehr geehrter Herr "
+          pdf.salutation.female:        "Sehr geehrte Frau "
+          pdf.salutation.unknown:       "Sehr geehrte(r) "
         memberfee:
           entity_label:        Mitgliedsbeitrag
           entity_plural_label: Mitgliedsbeiträge

@@ -77,7 +77,7 @@ class ItemReader extends AbstractReader {
 					$nextItem = array_key_exists($itemIdx, $this->entityIds) ? $this->entityIds[$itemIdx] : NULL;
 				}
 				else {
-					$memberFee = new MemberFee();
+				    $memberFee = new MemberFee();
 					$memberFee->setMember($member);
 					$memberFee->setBilling($this->memberBilling);
 					$memberFee->setBillDate($this->billDate);

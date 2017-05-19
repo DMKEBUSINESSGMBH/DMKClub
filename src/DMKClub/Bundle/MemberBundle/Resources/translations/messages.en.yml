@@ -87,6 +87,7 @@ dmkclub:
           message.accounting.async.started: "Fee accounting started. Members to evaluate: %d"
           message.correction.async.started: "Fee correction started. Fees to evaluate: %d"
 
+          action.createbills.data:      Accounting data
           action.createbills:           Start accounting
           action.createcorrections:     Start correction
           action.refreshsummary.label:  Refresh

@@ -2,16 +2,9 @@
 
 namespace DMKClub\Bundle\MemberBundle\Job\Accounting;
 
-use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
-use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
-use Oro\Bundle\ImportExportBundle\Processor\ContextAwareProcessor;
-use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use DMKClub\Bundle\BasicsBundle\PDF\PdfException;
-use Gaufrette\Filesystem;
 use Doctrine\ORM\EntityManager;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
 
@@ -47,13 +40,15 @@ class FeeWriter implements ItemWriterInterface, StepExecutionAwareInterface {
 		foreach ($items As $item) {
 			/* @var $item \DMKClub\Bundle\MemberBundle\Entity\MemberFee */
 			$this->em->persist($item);
+
 			$billings[$item->getBilling()->getId()] = $item->getBilling();
 			$this->stepExecution->incrementWriteCount();
 		}
 		$this->em->flush();
 		// Jetzt noch die Summe aktualisieren
-		foreach($billings As $billing)
-			$this->billingManager->updateSummary($billing);
+		foreach($billings As $billing) {
+		    $this->billingManager->updateSummary($billing);
+		}
 
 	}
 	/* (non-PHPdoc)

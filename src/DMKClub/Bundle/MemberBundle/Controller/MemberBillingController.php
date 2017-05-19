@@ -108,7 +108,7 @@ class MemberBillingController extends Controller
             ->getProcessor($entity)
             ->formatSettings($options);
         $entity->setPayedTotal($this->getBillingManager()
-            ->getPayedTotal($entity));
+            ->getPaidTotal($entity));
 
         return [
             'entity' => $entity,
@@ -139,21 +139,33 @@ class MemberBillingController extends Controller
     }
 
     /**
-     * @Route("/createbills/{id}", name="dmkclub_memberbilling_createbills", requirements={"id"="\d+"})
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function getCreateBillsForm()
+    {
+        return $this->get('dmkclub_member.createbills.form');
+    }
+    /**
+     * @Route("/{id}/createbills", name="dmkclub_memberbilling_createbills", requirements={"id"="\d+"})
      * @AclAncestor("dmkclub_memberbilling_create")
      * @Template
      */
     public function createBillsAction(MemberBilling $entity)
     {
-        // Info an den Manager übergeben
-        $ret = $this->getBillingManager()->startAccounting($entity);
+        $form = $this->getCreateBillsForm();
+        $response = [
+            'entity' => $entity,
+            'saved' => false,
+            'form' => $form->createView(),
+        ];
 
-        $this->get('session')
-            ->getFlashBag()
-            ->add('success', $this->buildMessage('dmkclub.member.memberbilling.message.accounting' . ($ret['async'] ? '.async' : '') . '.started', $ret));
-        return new RedirectResponse($this->generateUrl('dmkclub_memberbilling_view', [
-            'id' => $entity->getId()
-        ]));
+        // Form auswerten
+        if ($ret = $this->get('dmkclub_member.createbills.form.handler')->process($entity)) {
+            $response['message'] = $this->buildMessage('dmkclub.member.memberbilling.message.accounting' . ($ret['async'] ? '.async' : '') . '.started', $ret);
+            $response['saved'] = true;
+        }
+
+        return $response;
     }
 
     /**
