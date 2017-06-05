@@ -344,11 +344,14 @@ datagrid:
                 from:
                     - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
         inline_editing:
-            # disable inline editing due to oro bug in combination with totals
-            enable:       false
+            enable:       true
             entity_name:  "%dmkclub_member.memberfee.entity.class%"
             behaviour:    enable_selected
         columns:
+            id:
+                label:         dmkclub.member.memberfee.id.label
+                frontend_type: number
+                renderable:    false
             priceTotal:
                 label:         dmkclub.member.memberfee.price_total.label
                 type:          callback
@@ -386,6 +389,10 @@ datagrid:
 
         filters:
             columns:
+                id:
+                    type:      number
+                    data_name: f.id
+                    enabled: false
                 createdAt:
                     type:      datetime
                     data_name: f.createdAt
@@ -408,6 +415,8 @@ datagrid:
 
         sorters:
             columns:
+                id:
+                    data_name: f.id
                 priceTotal:
                     data_name: f.priceTotal
                 payedTotal:
