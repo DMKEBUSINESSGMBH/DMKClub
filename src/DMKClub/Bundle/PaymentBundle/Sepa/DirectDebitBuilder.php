@@ -42,6 +42,7 @@ class DirectDebitBuilder {
 				'debtorBic'             => $transaction->getDebtorBic(),
 				'debtorName'						=> $transaction->getDebtorName(),
 				'debtorMandate'         => $transaction->getDebtorMandate(),
+				// TODO: check date!
 				'debtorMandateSignDate' => $transaction->getDebtorMandateSignDate(),
 				'remittanceInformation' => $transaction->getRemittanceInformation(),
 		));

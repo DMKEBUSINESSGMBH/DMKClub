@@ -626,8 +626,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 	 * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getDebtorMandateSignDate()
 	 */
 	public function getDebtorMandateSignDate() {
-		// TODO:
-		return new \DateTime();
+		return $this->getBillDate() ? $this->getBillDate() : new \DateTime();
 	}
 
 	/* (non-PHPdoc)
