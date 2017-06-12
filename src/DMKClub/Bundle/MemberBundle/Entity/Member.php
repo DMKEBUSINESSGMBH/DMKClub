@@ -57,6 +57,9 @@ use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
  *              "grid_name"="dmkclub-members-grid",
  *              "form_type"="dmkclub_member_select"
  *          },
+ *          "comment"={
+ *              "enabled"=true
+ *          },
  *          "tag"={
  *              "enabled"=true
  *          },
