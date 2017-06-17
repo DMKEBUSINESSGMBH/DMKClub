@@ -135,6 +135,7 @@ dmkclub:
           reason.label:        Reason
           start_date.label:    Start date
           end_date.label:      End date
+          member.label:        Member
           action.create.title: Create new fee discount
           action.update.title: Update fee discount
 

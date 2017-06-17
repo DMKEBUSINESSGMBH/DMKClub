@@ -126,6 +126,7 @@ dmkclub:
           reason.label:        Grund
           start_date.label:    Startdatum
           end_date.label:      Enddatum
+          member.label:        Mitglied
           action.create.title: Neue Ermäßigung anlegen
           action.update.title: Beitragsermäßigung aktualisieren
 
