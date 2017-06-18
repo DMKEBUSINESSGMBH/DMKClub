@@ -46,89 +46,147 @@ dmkclub:
         dashboard.members_age_chart.title: Altersstruktur Mitglieder
         dashboard.members_age_chart.description: Verteilung der Mitglieder in Altersgruppen
 
-        memberbilling:
-          entity_label:        Abrechnung Mitgliedsbeitrag
-          entity_plural_label: Abrechnung Mitgliedsbeiträge
-          entity_description:  Represent membership billing definition
-          id.label:            Id
-          owner.label:         Owner
-          name.label:          Name
-          fee_total.label:     Gesamtsumme
-          start_date.label:    Startdatum
-          end_date.label:      Enddatum
-          sepa_creditor.label: SEPA Mandat
-          processor.label:     Prozessor
-          processor_config.label: Prozessor Einstellung
-          position_labels.label: Texte für Positionen
-          export_filesystem.label: Ziel für PDF-Export
-          fee.label:            Mitgliedsbeitrag
-          fee_discount.label:   Mitgliedsbeitrag reduziert
-          fee_admission.label:  Aufnahmegebühr für neue Mitglieder
-          fee_child.label:      Beitrag für Kinder
-          age_child.label:      Altersgrenze für Kinderbeitrag
-          age_child.tooltip:    Das Alter, ab dem das Mitglied den vollen Beitrag bezahlen muss.
-          member_fees.label:    Mitgliedsbeiträge
-          organization.label:   Organisation
-          data_channel.label:   Kanal
-          block.processor_settings: Einstellungen
-          message.saved:        Einstellungen gespeichert
-          message.accounting.started: "Abrechnung ausgeführt. Betroffene Mitglieder: %d, übersprungen: %d, Fehler: %d"
-          message.correction.started: "Korrektur ausgeführt. Korrigierte Beiträge: %d, übersprungen: %d, Fehler: %d"
-          message.correction.nothingfound: "Es wurden noch keine Abrechnungen zur Korrektur markiert."
-          message.accounting.async.started: "Abrechnung gestartet. Betroffene Mitglieder: %d"
-          message.correction.async.started: "Korrektur gestartet. Betroffene Beiträge: %d"
+        memberproposal:
+            entity_label:        Mitgliedsantrag
+            entity_plural_label: Mitgliedsanträge
+            entity_description:  Represent a proposal of membership
+            id.label:            Id
+            owner.label:         Eigentümer
+            name_prefix.label:   Namensprefix
+            first_name.label:    Vorname
+            middle_name.label:   Zweiter Vorname
+            last_name.label:     Nachname
+            name_suffix.label:   Namenssuffix
+            email_address.label: Email
+            phone.label:         Telefon
+            birthday.label:      Geburtstag
+            comment.label:       Kommentar
+            is_active.label:     Aktives Mitglied
+            job_title.label:     Beruf
+            payment_option.label:   Zahlungsart
+            payment_interval.label: Zahlungsintervall
+            postal_address.label: Postanschrift
+            status.label:        Status
+            data_channel.label:  Datenkanal
+            bank_account.label:  Bankverbindung
+            member.label:        Mitglied
+            organization.label:  Organisation
+            message:
+                saved:           Der Mitgliedsantrag wurde gespeichert
+            labels:
+                information_widget: Angaben zum Antragsteller
+        memberproposaladdress:
+            entity_label:        Adresse für Mitgliedsantrag
+            entity_plural_label: Adressen für Mitgliedsantrag
+            entity_description:  Represent an address for proposal of membership
+            id.label:            Id
+            label.label:         Label
+            name_prefix.label:   Namensprefix
+            first_name.label:    Vorname
+            middle_name.label:   Zweiter Vorname
+            last_name.label:     Nachname
+            name_suffix.label:   Namenssuffix
+            city.label:          Stadt
+            postal_code.label:   Postleitzahl
+            region.label:        Region
+            region_text.label:   Name der Region
+            street.label:        Straße
+            street2.label:       Straße 2
+            country.label:       Land
+            organization.label:  Organisation
 
-          action.createbills.data:      Abrechnungsdaten
-          action.createbills:           Abrechnung starten
-          action.createcorrections:     Korrektur starten
-          action.refreshsummary.label:  Aktualisieren
-          action.refreshsummary.info:   Beitragssumme und gezahlte Beiträge aktualisieren
-          pdf.salutation.male:          "Sehr geehrter Herr "
-          pdf.salutation.female:        "Sehr geehrte Frau "
-          pdf.salutation.unknown:       "Sehr geehrte(r) "
+        memberproposalbankaccount:
+            entity_label:        Bankkonto für Mitgliedsantrag
+            entity_plural_label: Bankkonten für Mitgliedsantrag
+            entity_description:  Represent a bank account for proposal of membership
+            id.label:            Id
+            account_owner.label: Kontoinhaber
+            bank_name.label: Name der Bank
+            direct_debit_valid_from.label: Lastschrift gültig ab
+
+        memberbilling:
+            entity_label:        Abrechnung Mitgliedsbeitrag
+            entity_plural_label: Abrechnung Mitgliedsbeiträge
+            entity_description:  Represent membership billing definition
+            id.label:            Id
+            owner.label:         Owner
+            name.label:          Name
+            fee_total.label:     Gesamtsumme
+            start_date.label:    Startdatum
+            end_date.label:      Enddatum
+            sepa_creditor.label: SEPA Mandat
+            processor.label:     Prozessor
+            processor_config.label: Prozessor Einstellung
+            position_labels.label: Texte für Positionen
+            export_filesystem.label: Ziel für PDF-Export
+            fee.label:            Mitgliedsbeitrag
+            fee_discount.label:   Mitgliedsbeitrag reduziert
+            fee_admission.label:  Aufnahmegebühr für neue Mitglieder
+            fee_child.label:      Beitrag für Kinder
+            age_child.label:      Altersgrenze für Kinderbeitrag
+            age_child.tooltip:    Das Alter, ab dem das Mitglied den vollen Beitrag bezahlen muss.
+            member_fees.label:    Mitgliedsbeiträge
+            organization.label:   Organisation
+            data_channel.label:   Kanal
+            block.processor_settings: Einstellungen
+            message.saved:        Einstellungen gespeichert
+            message.accounting.started: "Abrechnung ausgeführt. Betroffene Mitglieder: %d, übersprungen: %d, Fehler: %d"
+            message.correction.started: "Korrektur ausgeführt. Korrigierte Beiträge: %d, übersprungen: %d, Fehler: %d"
+            message.correction.nothingfound: "Es wurden noch keine Abrechnungen zur Korrektur markiert."
+            message.accounting.async.started: "Abrechnung gestartet. Betroffene Mitglieder: %d"
+            message.correction.async.started: "Korrektur gestartet. Betroffene Beiträge: %d"
+  
+            action.createbills.data:      Abrechnungsdaten
+            action.createbills:           Abrechnung starten
+            action.createcorrections:     Korrektur starten
+            action.refreshsummary.label:  Aktualisieren
+            action.refreshsummary.info:   Beitragssumme und gezahlte Beiträge aktualisieren
+            pdf.salutation.male:          "Sehr geehrter Herr "
+            pdf.salutation.female:        "Sehr geehrte Frau "
+            pdf.salutation.unknown:       "Sehr geehrte(r) "
         memberfee:
-          entity_label:        Mitgliedsbeitrag
-          entity_plural_label: Mitgliedsbeiträge
-          entity_description:  Represent a fee for membership
-          id.label:            Id
-          owner.label:         Owner
-          name.label:          Name
-          price_total.label:   Beitrag
-          payed_total.label:   Bezahlt
-          correction_status.label:  Korrektur
-          start_date.label:    Startdatum
-          end_date.label:      Enddatum
-          bill_date.label:      Rechnungsdatum
-          organization.label:  Organisation
-          data_channel.label: Kanal
-          corrected.label:  korrigiert
-          action.mark_feecorrection: Korrektur markieren
-          action.unmark_feecorrection: Korrektur entfernen
-          action.download_bill: Rechnung herunterladen
-          action.export_bill:   Rechnung exportieren
+            entity_label:        Mitgliedsbeitrag
+            entity_plural_label: Mitgliedsbeiträge
+            entity_description:  Represent a fee for membership
+            id.label:            Id
+            owner.label:         Owner
+            name.label:          Name
+            price_total.label:   Beitrag
+            payed_total.label:   Bezahlt
+            correction_status.label:  Korrektur
+            start_date.label:    Startdatum
+            end_date.label:      Enddatum
+            bill_date.label:      Rechnungsdatum
+            organization.label:  Organisation
+            data_channel.label: Kanal
+            corrected.label:  korrigiert
+            action.mark_feecorrection: Korrektur markieren
+            action.unmark_feecorrection: Korrektur entfernen
+            action.download_bill: Rechnung herunterladen
+            action.export_bill:   Rechnung exportieren
         memberfeeposition:
-          entity_label:        Position für Mitgliedsbeitrag
-          entity_plural_label: Position für Mitgliedsbeiträge
-          entity_description:  Represent a position for membership fee
-          id.label:            Id
-          owner.label:         Owner
-          member.label:        Mitglied
-          billing.label:       Abrechnung
-          positions.label:     Positionen
-          quantity.label:      Anzahl
-          price_total.label:   Gesamtpreis
-          price_single.label:  Einzelpreis
+            entity_label:        Position für Mitgliedsbeitrag
+            entity_plural_label: Position für Mitgliedsbeiträge
+            entity_description:  Represent a position for membership fee
+            id.label:            Id
+            owner.label:         Owner
+            member.label:        Mitglied
+            billing.label:       Abrechnung
+            positions.label:     Positionen
+            quantity.label:      Anzahl
+            price_total.label:   Gesamtpreis
+            price_single.label:  Einzelpreis
         memberfeediscount:
-          entity_label:        Beitragsermäßigung Mitgliedsbeitrag
-          entity_plural_label: Beitragsermäßigungen Mitgliedsbeitrag
-          entity_description:  Represent a discount of membership fee
-          id.label:            Id
-          reason.label:        Grund
-          start_date.label:    Startdatum
-          end_date.label:      Enddatum
-          member.label:        Mitglied
-          action.create.title: Neue Ermäßigung anlegen
-          action.update.title: Beitragsermäßigung aktualisieren
+            entity_label:        Beitragsermäßigung Mitgliedsbeitrag
+            entity_plural_label: Beitragsermäßigungen Mitgliedsbeitrag
+            entity_description:  Represent a discount of membership fee
+            id.label:            Id
+            reason.label:        Grund
+            start_date.label:    Startdatum
+            end_date.label:      Enddatum
+            member.label:        Mitglied
+            action.create.title: Neue Ermäßigung anlegen
+            action.update.title: Beitragsermäßigung aktualisieren
 
         form.choose_status: Wählen Sie einen Mitgliedsstatus
 

@@ -1,5 +1,6 @@
 parameters:
     dmkclub.payment.options_provider.class:           DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider
+    dmkclub.payment.intervals_provider.class:         DMKClub\Bundle\PaymentBundle\Provider\PaymentIntervalsProvider
     dmkclub.payment.twig.class:                       DMKClub\Bundle\PaymentBundle\Twig\PaymentExtension
     dmkclub.payment.sepa.direct_debit_builder.class:  DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder
     dmkclub.payment.sepacreditor.entity.class:        DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor
@@ -11,9 +12,15 @@ services:
         class: "%dmkclub.payment.options_provider.class%"
         arguments:
             - "@translator"
+    dmkclub.payment.intervals_provider:
+        class: "%dmkclub.payment.intervals_provider.class%"
+        arguments:
+            - "@translator"
     dmkclub.payment.twig.extension:
         class:                        "%dmkclub.payment.twig.class%"
-        arguments:                    ["@dmkclub.payment.options_provider"]
+        arguments:
+            - "@dmkclub.payment.options_provider"
+            - "@dmkclub.payment.intervals_provider"
         tags:
             - { name: twig.extension }
 

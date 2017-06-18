@@ -1,10 +1,10 @@
 <?php
 
-namespace DMKClub\Bundle\PaymentBundle\Model;
+namespace DMKClub\Bundle\MemberBundle\Model;
 
 use DMKClub\Bundle\PaymentBundle\Entity\AbstractBankAccount;
 
-class ExtendBankAccount extends AbstractBankAccount
+class ExtendMemberProposalBankAccount extends AbstractBankAccount
 {
     /**
      * Constructor

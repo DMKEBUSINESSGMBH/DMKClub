@@ -8,3 +8,17 @@ DMKClub\Bundle\MemberBundle\Entity\Member:
             - NotBlank: ~
         memberCode:
             - NotBlank: ~
+DMKClub\Bundle\MemberBundle\Entity\MemberProposal:
+    properties:
+        firstName:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        lastName:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        birthday:
+            - LessThanOrEqual:
+                value: now
+                message: Das Geburtsdatum liegt in der Zukunft.

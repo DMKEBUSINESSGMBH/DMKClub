@@ -216,6 +216,167 @@ datagrid:
             export: true
             entity_pagination: true
 #        views_list: '@orocrm_contact.contacts_view_list'
+
+# ###
+# Member proposal
+###
+    dmkclub-member-proposals-grid:
+        extended_entity_name: "%dmkclub_member.memberproposal.entity.class%"
+        acl_resource: dmkclub_member_proposal_view
+        source:
+            type: orm
+            query:
+                select:
+                    - mp.id
+                    - mp.namePrefix
+                    - mp.firstName
+                    - mp.middleName
+                    - mp.lastName
+                    - mp.nameSuffix
+                    - mp.birthday
+                    - mp.paymentOption
+                    - mp.paymentInterval
+                    - mp.emailAddress
+                    - mp.phone
+                    - mp.isActive
+                    - mp.jobTitle
+                    - a.city
+                    - a.postalCode
+                    - a.street
+                    - b.iban
+                    - b.bankName
+                    
+                from:
+                    - { table: "%dmkclub_member.memberproposal.entity.class%", alias: mp }
+                join:
+                    left:
+                        - { join: mp.postalAddress, alias: a }
+                        - { join: mp.bankAccount, alias: b }
+        columns:
+            id:
+                label:         dmkclub.member.memberproposal.id.label
+                renderable:    false
+            namePrefix:
+                label:         dmkclub.member.memberproposal.name_prefix.label
+                renderable:    false
+            firstName:
+                label:         dmkclub.member.memberproposal.first_name.label
+            middleName:
+                label:         dmkclub.member.memberproposal.middle_name.label
+                renderable:    false
+            lastName:
+                label:         dmkclub.member.memberproposal.last_name.label
+            nameSuffix:
+                label:         dmkclub.member.memberproposal.name_suffix.label
+                renderable:    false
+            birthday:
+                label:         dmkclub.member.memberproposal.birthday.label
+                frontend_type: date
+            isActive:
+                label:         dmkclub.member.memberproposal.is_active.label
+                renderable:    false
+            paymentOption:
+                label:         dmkclub.member.memberproposal.payment_option.label
+            paymentInterval:
+                label:         dmkclub.member.memberproposal.payment_interval.label
+#                renderable:    false
+            emailAddress:
+                label:         dmkclub.member.memberproposal.email_address.label
+            phone:
+                label:         dmkclub.member.memberproposal.phone.label
+                renderable:    false
+            street:
+                label:         dmkclub.member.memberproposaladdress.street.label
+                renderable:    false
+            postalCode:
+                label:         dmkclub.member.memberproposaladdress.postal_code.label
+                renderable:    false
+            city:
+                label:         dmkclub.member.memberproposaladdress.city.label
+            iban:
+                label:         dmkclub.member.memberproposalbankaccount.iban.label
+            bankName:
+                label:         dmkclub.member.memberproposalbankaccount.bank_name.label
+                renderable:    false
+        sorters:
+            columns:
+                lastName:
+                    data_name: mp.lastName
+                firstName:
+                    data_name: mp.firstName
+                isActive:
+                    data_name: mp.isActive
+                paymentOption:
+                    data_name: mp.paymentOption
+                city:
+                    data_name: a.city
+                birthday:
+                    data_name: mp.birthday
+                emailAddress:
+                    data_name: mp.emailAddress
+                iban:
+                    data_name: b.iban
+                bankName:
+                    data_name: b.bankName
+        filters:
+            columns:
+                firstName:
+                    type: string
+                    enabled: false
+                    data_name: mp.firstName
+                lastName:
+                    type: string
+                    data_name: mp.lastName
+                isActive:
+                    type: boolean
+                    enabled: false
+                    data_name: mp.active
+                paymentOption:
+                    type: choice
+                    data_name: mp.paymentOption
+                    options:
+                        field_options:
+                            multiple:             true
+                            choices:              '@dmkclub.payment.options_provider->getChoices'
+                            translatable_options: false
+                city:
+                    type: string
+                    data_name: mp.city
+                birthday:
+                    type:      date
+                    data_name: mp.birthday
+                emailAddress:
+                    enabled: false
+                    type: string
+                    data_name: mp.emailAddress
+                iban:
+                    type: string
+                    enabled: false
+                    data_name: b.iban
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      dmkclub_member_proposal_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_member_proposal_update
+                params:     [ id ]
+        actions:
+            view:
+                type: navigate
+                acl_resource: dmkclub_member_proposal_view
+                label: oro.grid.action.view
+                icon: eye-open
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                acl_resource: dmkclub_member_proposal_update
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
             
 
 # ###

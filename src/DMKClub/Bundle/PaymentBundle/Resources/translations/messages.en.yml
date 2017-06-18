@@ -33,4 +33,11 @@ dmkclub:
         creditcard: Creditcard
         none: None
         form.choose: Choose payment option
+    payment_interval:
+        yearly:         yearly
+        half_yearly:    half-yearly
+        quarterly:      quarterly
+        monthly:        monthly
+        form.choose:    Choose payment interval
+        
 accounting: Accounting

@@ -3,20 +3,27 @@
 namespace DMKClub\Bundle\PaymentBundle\Twig;
 
 use DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider;
+use DMKClub\Bundle\PaymentBundle\Provider\PaymentIntervalsProvider;
 
 class PaymentExtension extends \Twig_Extension
 {
     /**
-     * @var MemberStatusProvider
+     * @var PaymentOptionsProvider
      */
     protected $paymentOptionProvider;
 
     /**
+     * @var PaymentIntervalsProvider
+     */
+    protected $paymentIntervalProvider;
+
+    /**
      * @param MemberStatusProvider $paymentOptionProvider
      */
-    public function __construct(PaymentOptionsProvider $paymentOptionProvider)
+    public function __construct(PaymentOptionsProvider $paymentOptionProvider, PaymentIntervalsProvider $paymentIntervalProvider)
     {
         $this->paymentOptionProvider = $paymentOptionProvider;
+        $this->paymentIntervalProvider = $paymentIntervalProvider;
     }
 
     /**
@@ -26,9 +33,10 @@ class PaymentExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'dmkclub_paymentoption' => new \Twig_Function_Method($this, 'getPaymentOptionLabel'),
-        );
+            'dmkclub_paymentinterval' => new \Twig_Function_Method($this, 'getPaymentIntervalLabel'),
+        ];
     }
 
     /**
@@ -42,6 +50,19 @@ class PaymentExtension extends \Twig_Extension
         }
 
         return $this->paymentOptionProvider->getLabelByName($name);
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getPaymentIntervalLabel($name)
+    {
+        if (!$name) {
+            return null;
+        }
+
+        return $this->paymentIntervalProvider->getLabelByName($name);
     }
 
     /**

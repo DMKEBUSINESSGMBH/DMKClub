@@ -9,11 +9,19 @@ orocrm_channel:
           navigation_items:
               - application_menu.customers_tab.dmkclub_member
               - application_menu.accounting_tab.dmkclub_memberbilling
+       -
+          name: DMKClub\Bundle\MemberBundle\Entity\MemberProposal
+          dependent:
+              - DMKClub\Bundle\MemberBundle\Entity\MemberProposalAddress
+              - DMKClub\Bundle\MemberBundle\Entity\MemberProposalBankAccount
+          navigation_items:
+              - application_menu.customers_tab.dmkclub_memberproposal
 
    channel_types:
         member:
             label: dmkclub.member.channel_type.member.label
             entities:
                 - DMKClub\Bundle\MemberBundle\Entity\Member
+                - DMKClub\Bundle\MemberBundle\Entity\MemberProposal
             customer_identity: DMKClub\Bundle\MemberBundle\Entity\Member
 #            lifetime_value: lifetime

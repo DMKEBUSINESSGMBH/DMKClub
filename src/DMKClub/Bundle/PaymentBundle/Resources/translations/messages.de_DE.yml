@@ -30,7 +30,14 @@ dmkclub:
         cash: Barzahlung
         none: Keine
         form.choose: Wählen Sie ein Zahlungsart
-"Financial data": Finanzen
+    payment_interval:
+        yearly:         jährlich
+        half_yearly:    halbjährlich
+        quarterly:      quartalsweise
+        monthly:        monatlich
+        form.choose:    Wählen Sie ein Zahlungsinterval
+
+"Financial and address": Finanzen und Adresse
 
 sepa_direct_debit: Sepa Bankeinzug
 banktransfer: Überweisung

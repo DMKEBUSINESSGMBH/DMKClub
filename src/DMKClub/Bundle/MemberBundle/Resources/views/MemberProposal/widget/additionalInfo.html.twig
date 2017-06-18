@@ -1,0 +1,33 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
+{% import 'OroCRMSalesBundle::macros.html.twig' as sales %}
+{# 
+Einzeltemplate für ein Mitglied.
+Wird im Account verwendet
+ #}
+
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {%- set birthdayData -%}
+                {{ entity.birthday is not empty ? entity.birthday|oro_format_date : null }}
+                {% if entity.birthday is not empty %} ({{ entity.birthday|age_string({'default': 'N/A'}) }}){% endif %}
+            {%- endset -%}
+
+        	{{ UI.renderProperty('dmkclub.member.memberproposal.birthday.label'|trans, entity.birthday ? birthdayData : null) }}
+            {{ UI.renderHtmlProperty('dmkclub.member.memberproposal.email_address.label'|trans, entity.emailAddress) }}
+            {{ UI.renderHtmlProperty('dmkclub.member.memberproposal.phone.label'|trans, entity.phone) }}
+
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_active.label'|trans, entity.isActive) }}
+            {% if entity.bankAccount is not empty %}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.account_owner.label'|trans, entity.bankAccount.accountOwner) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.iban.label'|trans, entity.bankAccount.iban) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.bic.label'|trans, entity.bankAccount.bic) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.bank_name.label'|trans, entity.bankAccount.bankName) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.direct_debit_valid_from.label'|trans, entity.bankAccount.directDebitValidFrom ? entity.bankAccount.directDebitValidFrom|oro_format_date : null) }}
+            {% endif %}
+
+		</div>
+    </div>
+</div>

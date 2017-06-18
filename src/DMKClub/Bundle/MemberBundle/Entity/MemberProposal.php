@@ -2,53 +2,51 @@
 
 namespace DMKClub\Bundle\MemberBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposal;
-use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\AddressBundle\Entity\Address;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
-use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
+use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 
 /**
  * Class MemberProposal
  *
- * @package DMKClub\Bundle\DMKClubMemberBundle\Entity
- * @ORM\Entity(repositoryClass="DMKClub\Bundle\MemberBundle\Entity\Repository\MemberProposalRepository")
  * @ORM\Table(name="dmkclub_member_proposal")
+ * @ORM\Entity(repositoryClass="DMKClub\Bundle\MemberBundle\Entity\Repository\MemberProposalRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @Oro\Loggable
  * @Config(
- *      routeName="dmkclub_memberproposal_index",
- *      routeView="dmkclub_memberproposal_view",
+ *      routeName="dmkclub_member_proposal_index",
+ *      routeView="dmkclub_member_proposal_view",
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-envelope"
  *          },
  *          "ownership"={
- *              "owner_type"="ORGANIZATION",
+ *              "owner_type"="USER",
  *              "owner_field_name"="owner",
- *              "owner_column_name"="owner_id"
+ *              "owner_column_name"="owner_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
  *          },
  *          "security"={
  *              "type"="ACL",
  *              "group_name"="",
  *              "category"="dmkclub_data"
+ *          },
+ *          "comment"={
+ *              "enabled"=true
  *          },
  *          "tag"={
  *              "enabled"=true
@@ -58,9 +56,12 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  *          }
  *      }
  * )
- * @Oro\Loggable
  */
-class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterface {
+class MemberProposal extends ExtendMemberProposal implements
+    ChannelAwareInterface,
+    FullNameInterface,
+    EmailHolderInterface
+    {
 	use ChannelEntityTrait, LifecycleTrait;
 
 	/**
@@ -69,7 +70,6 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -83,27 +83,24 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
+	 * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
 	 * @Oro\Versioned
 	 * @ConfigField(
-	 *      defaultValues={
-	 *          "dataaudit"={
-	 *              "auditable"=true
-	 *          },
-	 *          "importexport"={
-	 *              "order"=30
-	 *          }
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true},
+	 *      "importexport"={
+	 *          "order"=30
 	 *      }
+	 *  }
 	 * )
 	 */
-	protected $firstname;
+	protected $namePrefix;
+
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
+	 * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
 	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
@@ -111,12 +108,62 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 *              "auditable"=true
 	 *          },
 	 *          "importexport"={
-	 *              "order"=31
+	 *              "order"=40
 	 *          }
 	 *      }
 	 * )
 	 */
-	protected $lastname;
+	protected $firstName;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true},
+	 *      "importexport"={
+	 *          "order"=50
+	 *      }
+	 *  }
+	 * )
+	 */
+	protected $middleName;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "order"=60
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $lastName;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true},
+	 *      "importexport"={
+	 *          "order"=70
+	 *      }
+	 *  }
+	 * )
+	 */
+	protected $nameSuffix;
 
 	/**
 	 * @var string
@@ -133,9 +180,30 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	protected $phone;
 
 	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="birthday", type="date", nullable=true)
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "order"=80
+	 *          },
+	 *          "merge"={
+	 *              "display"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $birthday;
+
+	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="comment", type="text")
+	 * @ORM\Column(name="comment", type="text", nullable=true)
 	 */
 	protected $comment;
 
@@ -147,7 +215,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 * @ConfigField(
 	 * 	defaultValues={"dataaudit"={"auditable"=true},
 	 *          "importexport"={
-	 *              "order"=40
+	 *              "order"=100
 	 *          }
 	 *  }
 	 * )
@@ -159,7 +227,6 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 * @var string
 	 *
 	 * @ORM\Column(name="status", type="string", length=20, nullable=true, options={"default" : "active"})
-	 * @Soap\ComplexType("string", nillable=true)
 	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
@@ -167,7 +234,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 *              "auditable"=true
 	 *          },
 	 *          "importexport"={
-	 *              "order"=70
+	 *              "order"=110
 	 *          }
 	 *      }
 	 * )
@@ -178,7 +245,6 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 * @var string
 	 *
 	 * @ORM\Column(name="payment_option", type="string", length=20, nullable=true, options={"default" : "none"})
-	 * @Soap\ComplexType("string", nillable=true)
 	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
@@ -186,7 +252,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 *              "auditable"=true
 	 *          },
 	 *          "importexport"={
-	 *              "order"=80
+	 *              "order"=120
 	 *          }
 	 *      }
 	 * )
@@ -194,9 +260,43 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	protected $paymentOption;
 
 	/**
-	 * @var Account
+	 * @var string
 	 *
-	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\PaymentBundle\Entity\BankAccount", cascade="PERSIST")
+	 * @ORM\Column(name="payment_interval", type="integer", nullable=false, options={"default" : "12"})
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "order"=125
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $paymentInterval = 12;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="job_title", type="string", length=255, nullable=true)
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true},
+	 *      "importexport"={
+	 *          "order"=130
+	 *      }
+	 *  }
+	 * )
+	 */
+	protected $jobTitle;
+
+
+	/**
+	 *
+	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\MemberProposalBankAccount", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(name="bank_account", referencedColumnName="id", onDelete="SET NULL")
 	 * @Oro\Versioned
 	 * @ConfigField(
@@ -206,7 +306,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 *          },
 	 *          "importexport"={
 	 *              "full"=true,
-	 *              "order"=85
+	 *              "order"=140
 	 *          }
 	 *      }
 	 * )
@@ -216,7 +316,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	/**
 	 * @var Address $postalAddress
 	 *
-	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\MemberProposalAddress", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(name="postal_address", referencedColumnName="id", onDelete="SET NULL")
 	 * @ConfigField(
 	 *      defaultValues={
@@ -228,6 +328,59 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 * )
 	 */
 	protected $postalAddress;
+
+	/**
+	 * @var Member
+	 *
+	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="proposals")
+	 * @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true},
+	 *      "importexport"={
+	 *          "order"=160,
+	 *          "short"=true
+	 *      }
+	 *  }
+	 * )
+	 */
+	protected $member;
+
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(type="datetime")
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "entity"={
+	 *              "label"="oro.ui.created_at"
+	 *          },
+	 *          "importexport"={
+	 *              "excluded"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $createdAt;
+
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(type="datetime", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "entity"={
+	 *              "label"="oro.ui.updated_at"
+	 *          },
+	 *          "importexport"={
+	 *              "excluded"=true
+	 *          }
+	 *      }
+	 * )
+	 */
+	protected $updatedAt;
+
 
 	/**
 	 * @var WorkflowItem
@@ -245,13 +398,31 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 */
 	protected $workflowStep;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+	/**
+	 * @var User
+	 *
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+	 * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+	 * @Oro\Versioned
+	 * @ConfigField(
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true},
+	 *      "importexport"={
+	 *          "order"=180,
+	 *          "short"=true
+	 *      }
+	 *  }
+	 * )
+	 */
+	protected $owner;
+
+	/**
+	 * @var Organization
+	 *
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	protected $organization;
 
 
 	/**
@@ -260,8 +431,6 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	public function __construct()
 	{
 	    parent::__construct();
-	    $this->memberFees = new \Doctrine\Common\Collections\ArrayCollection();
-	    $this->memberFeeDiscounts = new \Doctrine\Common\Collections\ArrayCollection();
 
 	}
 
@@ -269,7 +438,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 * Set endDate
 	 *
 	 * @param \DateTime $endDate
-	 * @return Member
+	 * @return MemberProposal
 	 */
 	public function setId($id)
 	{
@@ -289,12 +458,32 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	}
 
 	/**
-	 * @param string $name
-	 * @return Member
+	 * @param string $namePrefix
+	 *
+	 * @return MemberProposal
 	 */
-	public function setFirstname($name)
+	public function setNamePrefix($namePrefix)
 	{
-		$this->firstname = $name;
+	    $this->namePrefix = $namePrefix;
+
+	    return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNamePrefix()
+	{
+	    return $this->namePrefix;
+	}
+
+	/**
+	 * @param string $name
+	 * @return MemberProposal
+	 */
+	public function setFirstName($name)
+	{
+		$this->firstName = $name;
 
 		return $this;
 	}
@@ -303,18 +492,39 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 *
 	 * @return string
 	 */
-	public function getFirstname()
+	public function getFirstName()
 	{
-		return $this->firstname;
+		return $this->firstName;
 	}
 
 	/**
-	 * @param string $name
-	 * @return Member
+	 * @return string
 	 */
-	public function setLastname($name)
+	public function getMiddleName()
 	{
-		$this->lastname = $name;
+	    return $this->middleName;
+	}
+
+	/**
+	 * @param string $middleName
+	 *
+	 * @return MemberProposal
+	 */
+	public function setMiddleName($middleName)
+	{
+	    $this->middleName = $middleName;
+
+	    return $this;
+	}
+
+
+	/**
+	 * @param string $name
+	 * @return MemberProposal
+	 */
+	public function setLastName($name)
+	{
+		$this->lastName = $name;
 
 		return $this;
 	}
@@ -323,9 +533,53 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 *
 	 * @return string
 	 */
-	public function getLastname()
+	public function getLastName()
 	{
-		return $this->lastname;
+		return $this->lastName;
+	}
+
+	/**
+	 * @param string $nameSuffix
+	 *
+	 * @return MemberProposal
+	 */
+	public function setNameSuffix($nameSuffix)
+	{
+	    $this->nameSuffix = $nameSuffix;
+
+	    return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNameSuffix()
+	{
+	    return $this->nameSuffix;
+	}
+
+	/**
+	 * Set job title
+	 *
+	 * @param string $jobTitle
+	 *
+	 * @return MemberProposal
+	 */
+	public function setJobTitle($jobTitle)
+	{
+	    $this->jobTitle = $jobTitle;
+
+	    return $this;
+	}
+
+	/**
+	 * Get job title
+	 *
+	 * @return string
+	 */
+	public function getJobTitle()
+	{
+	    return $this->jobTitle;
 	}
 
 	/**
@@ -345,6 +599,14 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * @see \Oro\Bundle\EmailBundle\Model\EmailHolderInterface::getEmail()
+	 */
+	public function getEmail() {
+	    $this->getEmailAddress();
+	}
+
+	/**
 	 * @param string $phone
 	 */
 	public function setPhone($phone)
@@ -359,6 +621,27 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	{
 		return $this->phone;
 	}
+
+	/**
+	 * @param \DateTime $birthday
+	 *
+	 * @return $this
+	 */
+	public function setBirthday($birthday)
+	{
+	    $this->birthday = $birthday;
+
+	    return $this;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getBirthday()
+	{
+	    return $this->birthday;
+	}
+
 
 	/**
 	 * @param string $comment
@@ -379,7 +662,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	/**
 	 * @param bool $isActive
 	 *
-	 * @return Customer
+	 * @return MemberProposal
 	 */
 	public function setIsActive($isActive)
 	{
@@ -405,7 +688,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 
 	/**
 	 * @param string $value
-	 * @return Member
+	 * @return MemberProposal
 	 */
 	public function setStatus($value) {
 		$this->status = $value;
@@ -421,7 +704,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 
 	/**
 	 * @param string $value
-	 * @return Member
+	 * @return MemberProposal
 	 */
 	public function setPaymentOption($value) {
 		$this->paymentOption = $value;
@@ -429,7 +712,23 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	}
 
 	/**
-	 * @return \DMKClub\Bundle\PaymentBundle\Entity\BankAccount
+	 * @return string
+	 */
+	public function getPaymentInterval() {
+	    return $this->paymentInterval;
+	}
+
+	/**
+	 * @param string $value
+	 * @return MemberProposal
+	 */
+	public function setPaymentInterval($value) {
+	    $this->paymentInterval = $value;
+	    return $this;
+	}
+
+	/**
+	 * @return MemberProposalBankAccount
 	 */
 	public function getBankAccount() {
 		return $this->bankAccount;
@@ -437,8 +736,8 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 
 	/**
 	 *
-	 * @param \DMKClub\Bundle\PaymentBundle\Entity\BankAccount $value
-	 * @return \DMKClub\Bundle\MemberBundle\Entity\Member
+	 * @param MemberProposalBankAccount $value
+	 * @return MemberProposal
 	 */
 	public function setBankAccount($value) {
 		$this->bankAccount = $value;
@@ -456,10 +755,53 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	/**
 	 * @param Address $address
 	 */
-	public function setPostalAddress(Address $address)
+	public function setPostalAddress(MemberProposalAddress $address)
 	{
 		$this->postalAddress = $address;
-	  return $this;
+        return $this;
+	}
+
+	/**
+	 * @param Member $member
+	 *
+	 * @return MemberProposal
+	 */
+	public function setMember($member)
+	{
+	    $this->member = $member;
+
+	    return $this;
+	}
+
+	/**
+	 * @return Member
+	 */
+	public function getMember()
+	{
+	    return $this->member;
+	}
+
+	/**
+	 * Set organization
+	 *
+	 * @param Organization $organization
+	 * @return MemberProposal
+	 */
+	public function setOrganization(Organization $organization = null)
+	{
+	    $this->organization = $organization;
+
+	    return $this;
+	}
+
+	/**
+	 * Get organization
+	 *
+	 * @return Organization
+	 */
+	public function getOrganization()
+	{
+	    return $this->organization;
 	}
 
 	/**
@@ -470,11 +812,15 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	}
 
 	/**
-	 * @param Organization $organization
+	 * @param User $owningUser
+	 *
+	 * @return MemberProposal
 	 */
-	public function setOwner(Organization $organization) {
-		$this->owner = $organization;
-		return $this;
+	public function setOwner($owningUser)
+	{
+	    $this->owner = $owningUser;
+
+	    return $this;
 	}
 
 	/**
@@ -482,6 +828,7 @@ class MemberProposal extends ExtendMemberProposal implements ChannelAwareInterfa
 	 */
 	public function __toString()
 	{
-	    return (string) $this->getName();
+	    return (string) $this->getLastname() . ', ' . $this->getFirstname();
 	}
+
 }

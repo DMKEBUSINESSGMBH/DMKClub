@@ -9,8 +9,10 @@ parameters:
     dmkclub_member.createbills.form.type.class:     DMKClub\Bundle\MemberBundle\Form\Type\CreateBillsType
     dmkclub_member.createbills.form.handler.class:  DMKClub\Bundle\MemberBundle\Form\Handler\CreateBillsHandler
 
-    dmkclub_member.memberproposal.embedded_form.class:            DMKClub\Bundle\MemberBundle\Form\Type\MemberProposalType
-    dmkclub_member.memberproposal.embedded_form.handler.class:    DMKClub\Bundle\MemberBundle\Form\Handler\MemberProposalHandler
+    dmkclub_member.memberproposal.form.class:            DMKClub\Bundle\MemberBundle\Form\Type\MemberProposalType
+    dmkclub_member.memberproposal.form.handler.class:    DMKClub\Bundle\MemberBundle\Form\Handler\MemberProposalHandler
+    dmkclub_member.memberproposal.address.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\ProposalAddressType
+    dmkclub_member.memberproposal.bankaccount.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\ProposalBankAccountType
 
 
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
@@ -38,11 +40,23 @@ services:
         tags:
             - { name: form.type, alias: dmkclub_member_member_api }
 
-    dmkclub_member.memberproposal.embedded_form.type:
-        class: "%dmkclub_member.memberproposal.embedded_form.class%"
+    dmkclub_member.memberproposal.type:
+        class: "%dmkclub_member.memberproposal.form.class%"
+        arguments:
+            - "@translator"
         tags:
             - { name: oro_embedded_form, label: dmkclub.member.memberproposal.entity_label }
             - { name: form.type, alias: dmkclub_member_memberproposal }
+
+    dmkclub_member.memberproposal.address.form.type:
+        class: "%dmkclub_member.memberproposal.address.form.type.class%"
+        tags:
+            - { name: form.type, alias: dmkclub_member_proposal_address }
+
+    dmkclub_member.memberproposal.bankaccount.form.type:
+        class: "%dmkclub_member.memberproposal.bankaccount.form.type.class%"
+        tags:
+            - { name: form.type, alias: dmkclub_member_proposal_bankaccount }
 
     dmkclub_member.memberbilling.form.type:
         class: "%dmkclub_member.memberbilling.form.type.class%"
@@ -98,6 +112,26 @@ services:
             - { dataChannelField : true }
             # das letzte Arg wird nicht genutzt...
 
+    dmkclub_member.memberproposal_address.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - "dmkclub_member_proposal_address_form"
+            - "dmkclub_member_proposal_address"
+            - ~
+            - { data_class: "%dmkclub_member.memberproposal.entity.class%" }
+
+    dmkclub_member.memberproposal_bankaccount.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - "dmkclub_member_proposal_bankaccount_form"
+            - "dmkclub_member_proposal_bankaccount"
+            - ~
+            - { data_class: "%dmkclub_member.memberproposal.entity.class%" }
+
     dmkclub_member.memberbilling.form:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
@@ -152,8 +186,8 @@ services:
             - "@request"
             - "@doctrine.orm.entity_manager"
 
-    dmkclub_member.memberproposal.embedded_form.handler:
-        class: "%dmkclub_member.memberproposal.embedded_form.handler.class%"
+    dmkclub_member.memberproposal.form.handler:
+        class: "%dmkclub_member.memberproposal.form.handler.class%"
         scope: request
         arguments:
             - "@dmkclub_member.memberproposal.form"

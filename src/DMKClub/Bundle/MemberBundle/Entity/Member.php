@@ -191,6 +191,17 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 */
 	private $memberFeeDiscounts;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberProposal", mappedBy="member")
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={"auditable"=true},
+	 *          "importexport"={"excluded"=true}
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	private $memberProposals;
 
 	/**
 	 * @var Contact

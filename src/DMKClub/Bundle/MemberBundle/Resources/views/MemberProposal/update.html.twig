@@ -1,0 +1,139 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
+
+{% set fullname = entity|oro_format_name|default('N/A') %}
+{% oro_title_set({ params : {"%member.name%": fullname} }) %}
+
+{% set formAction = form.vars.value.id ? path('dmkclub_member_proposal_update', { 'id': form.vars.value.id }) : path('dmkclub_member_proposal_create')  %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {% block stylesheets %}
+        {{ form_stylesheet(form) }}
+    {% endblock %}
+{% endblock %}
+
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+
+    {% if form.vars.value.id %}
+	    {{ UI.cancelButton(path('dmkclub_member_proposal_view', { 'id': form.vars.value.id })) }}
+    {% else %}
+	    {{ UI.cancelButton(path('dmkclub_member_proposal_index')) }}
+    {% endif %}
+
+    {% set html = UI.saveAndCloseButton({
+        'route': 'dmkclub_member_proposal_view',
+        'params': {'id': '$id'}
+    }) %}
+    {% if form.vars.value.id or resource_granted('dmkclub_member_proposal_update') %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'dmkclub_member_proposal_update',
+            'params': {'id': '$id'}
+        }) %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('dmkclub_member_proposal_index'),
+            'indexLabel': 'dmkclub.member.memberproposal.entity_plural_label'|trans,
+            'entityTitle': fullname
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'dmkclub.member.memberproposal.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+
+
+{% block content_data %}
+    {% set id = 'member-proposal' %}
+
+    {% set formFields = [] %}
+
+    {% set formFields = formFields|merge([
+        form_row(form.namePrefix),
+        form_row(form.firstName),
+        form_row(form.middleName),
+        form_row(form.lastName),
+        form_row(form.nameSuffix),
+        
+        form_row(form.dataChannel)
+
+    ]) %}
+    {% if form.owner is defined %}
+        {% set formFields = formFields|merge([form_row(form.owner)]) %}
+    {% endif %}
+
+    {% set dataBlocks = [{
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': 'dmkclub.member.memberproposal.labels.information_widget'|trans,
+                    'data': formFields
+                },
+                {
+                    'title': ''|trans,
+                    'data': [
+                        form_row(form.isActive),
+                        form_row(form.birthday),
+                        form_row(form.jobTitle),
+                        form_row(form.comment),
+                    ]
+                },
+            ]
+        }]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge( [{
+        'title' : 'Financial and address'|trans,
+        'subblocks': [
+        {
+            'title': 'dmkclub.member.bank_account.label'|trans,
+            'data': [
+                form_widget(form.bankAccount),
+                form_row(form.paymentOption),
+                form_row(form.paymentInterval)
+            ]
+        },
+        {
+            'title': 'dmkclub.member.postal_address.label'|trans,
+            'data': [form_widget(form.postalAddress)]
+        },
+        ]
+    }] ) %}
+
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% set data =
+        {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'dataBlocks': dataBlocks,
+        }
+    %}
+    {{ parent() }}
+{% endblock content_data %}

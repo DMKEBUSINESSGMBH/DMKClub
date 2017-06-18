@@ -53,101 +53,150 @@ dmkclub:
         dashboard.members_age_chart.description: 
         
         memberproposal:
-          entity_label:        Membership Proposal
-          entity_plural_label: Membership Proposal
-          entity_description:  Represent a proposal of membership
-          id.label:            Id
-          owner.label:         Owner
-          firstname.label:     Firstname
-          lastname.label:      Lastname
-          email.label:         Email
-          phone.label:         Phone
+            entity_label:        Membership Proposal
+            entity_plural_label: Membership Proposal
+            entity_description:  Represent a proposal of membership
+            id.label:            Id
+            owner.label:         Owner
+            name_prefix.label:   Name prefix
+            first_name.label:    Firstname
+            middle_name.label:   Middlename
+            last_name.label:     Lastname
+            name_suffix.label:   Name suffix
+            email_address.label: Email
+            phone.label:         Phone
+            birthday.label:      Birthday
+            comment.label:       Comment
+            is_active.label:     Is active
+            job_title.label:     Job title
+            payment_option.label: Payment option
+            payment_interval.label: Payment interval
+            postal_address.label: Postal address
+            status.label:        Status
+            data_channel.label:  Data channel
+            bank_account.label:  Bank account
+            member.label:        Member
+            organization.label:  Organization
+            message:
+                saved:           Member proposal saved
+            labels:
+                information_widget: "Proposal Information"
+        memberproposaladdress:
+            entity_label:        Proposal address
+            entity_plural_label: Proposal addresses
+            entity_description:  Represent an address for proposal of membership
+            id.label:            Id
+            name_prefix.label:   Name prefix
+            label.label:         Label
+            first_name.label:    Firstname
+            middle_name.label:   Middlename
+            last_name.label:     Lastname
+            name_suffix.label:   Name suffix
+            city.label:          City
+            postal_code.label:   Postal code
+            region.label:        Region
+            region_text.label:   Region text
+            street.label:        Street
+            street2.label:       Street2
+            country.label:       Country
+            organization.label:  Organization
+
+        memberproposalbankaccount:
+            entity_label:        Proposal bank account
+            entity_plural_label: Proposal bank accounts
+            entity_description:  Represent a bank account for proposal of membership
+            id.label:            Id
+            account_owner.label: Account owner
+            iban.label: IBAN
+            bic.label: BIC
+            bank_name.label: Bank
+            direct_debit_valid_from.label: DirectDebit valid from
         
         memberbilling:
-          entity_label:        Membership Billing
-          entity_plural_label: Membership Billings
-          entity_description:  Represent membership billing definition
-          id.label:            Id
-          owner.label:         Owner
-          name.label:          Name
-          fee_total.label:    Fee total
-          start_date.label:    Start date
-          end_date.label:      End date
-          sepa_creditor.label: SEPA account
-          processor.label: Processor
-          processor_config.label: Processor config
-          position_labels.label: Position labels
-          export_filesystem.label: Target for pdf exports
-          fee.label:    Membership Fee
-          fee_discount.label:      Discount Fee
-          fee_admission.label:  Fee admission for new Members
-          fee_child.label:      Fee reduced for childs
-          age_child.label:      max Age for child fee
-          age_child.tooltip:      This is the age when a member has to pay the full fee
-          member_fees.label:    Member fees
-          segment.label:  Segment
-          template.label:  PDF Template
-          organization.label:  Organization
-          data_channel.label: Data channel
-          block.processor_settings: Settings
-          message.saved: Settings saved
-          message.accounting.started: "Fee accounting executed. Members evaluated: %d, skipped: %d, errors: %d"
-          message.correction.started: "Fee correction executed. Fees corrected: %d, skipped: %d, errors: %d"
-          message.correction.nothingfound: "No selected fees for correction found."
-          message.accounting.async.started: "Fee accounting started. Members to evaluate: %d"
-          message.correction.async.started: "Fee correction started. Fees to evaluate: %d"
-
-          action.createbills.data:      Accounting data
-          action.createbills:           Start accounting
-          action.createcorrections:     Start correction
-          action.refreshsummary.label:  Refresh
-          action.refreshsummary.info:   Refresh summary
-          pdf.salutation.male:   "Dear Mr. "
-          pdf.salutation.female: "Dear Mrs. "
-          pdf.salutation.unknown:   "Dear "
+            entity_label:        Membership Billing
+            entity_plural_label: Membership Billings
+            entity_description:  Represent membership billing definition
+            id.label:            Id
+            owner.label:         Owner
+            name.label:          Name
+            fee_total.label:    Fee total
+            start_date.label:    Start date
+            end_date.label:      End date
+            sepa_creditor.label: SEPA account
+            processor.label: Processor
+            processor_config.label: Processor config
+            position_labels.label: Position labels
+            export_filesystem.label: Target for pdf exports
+            fee.label:    Membership Fee
+            fee_discount.label:      Discount Fee
+            fee_admission.label:  Fee admission for new Members
+            fee_child.label:      Fee reduced for childs
+            age_child.label:      max Age for child fee
+            age_child.tooltip:      This is the age when a member has to pay the full fee
+            member_fees.label:    Member fees
+            segment.label:  Segment
+            template.label:  PDF Template
+            organization.label:  Organization
+            data_channel.label: Data channel
+            block.processor_settings: Settings
+            message.saved: Settings saved
+            message.accounting.started: "Fee accounting executed. Members evaluated: %d, skipped: %d, errors: %d"
+            message.correction.started: "Fee correction executed. Fees corrected: %d, skipped: %d, errors: %d"
+            message.correction.nothingfound: "No selected fees for correction found."
+            message.accounting.async.started: "Fee accounting started. Members to evaluate: %d"
+            message.correction.async.started: "Fee correction started. Fees to evaluate: %d"
+  
+            action.createbills.data:      Accounting data
+            action.createbills:           Start accounting
+            action.createcorrections:     Start correction
+            action.refreshsummary.label:  Refresh
+            action.refreshsummary.info:   Refresh summary
+            pdf.salutation.male:   "Dear Mr. "
+            pdf.salutation.female: "Dear Mrs. "
+            pdf.salutation.unknown:   "Dear "
         memberfee:
-          entity_label:        Membership fee
-          entity_plural_label: Membership fees
-          entity_description:  Represent a fee for membership
-          id.label:            Id
-          owner.label:         Owner
-          name.label:          Name
-          member.label:        Member
-          billing.label:       Billing
-          positions.label:     Positions
-          price_total.label:   Fee
-          payed_total.label:   Paid
-          correction_status.label:  Correction
-          start_date.label:    Start date
-          end_date.label:      End date
-          bill_date.label:      Bill date
-          organization.label:  Organization
-          data_channel.label: Data channel
-          corrected.label:  corrected
-          action.mark_feecorrection: Mark fee correction
-          action.unmark_feecorrection: Unmark fee correction
-          action.download_bill: Download bill
-          action.export_bill: Export bill
+            entity_label:        Membership fee
+            entity_plural_label: Membership fees
+            entity_description:  Represent a fee for membership
+            id.label:            Id
+            owner.label:         Owner
+            name.label:          Name
+            member.label:        Member
+            billing.label:       Billing
+            positions.label:     Positions
+            price_total.label:   Fee
+            payed_total.label:   Paid
+            correction_status.label:  Correction
+            start_date.label:    Start date
+            end_date.label:      End date
+            bill_date.label:      Bill date
+            organization.label:  Organization
+            data_channel.label: Data channel
+            corrected.label:  corrected
+            action.mark_feecorrection: Mark fee correction
+            action.unmark_feecorrection: Unmark fee correction
+            action.download_bill: Download bill
+            action.export_bill: Export bill
         memberfeeposition:
-          entity_label:        Membership fee position
-          entity_plural_label: Membership fee positions
-          entity_description:  Represent a position for membership fee
-          id.label:            Id
-          owner.label:         Owner
-          quantity.label:      Quantity
-          price_total.label:   Price total
-          price_single.label:  Price single
+            entity_label:        Membership fee position
+            entity_plural_label: Membership fee positions
+            entity_description:  Represent a position for membership fee
+            id.label:            Id
+            owner.label:         Owner
+            quantity.label:      Quantity
+            price_total.label:   Price total
+            price_single.label:  Price single
         memberfeediscount:
-          entity_label:        Membership fee discount
-          entity_plural_label: Membership fee discounts
-          entity_description:  Represent a discount of membership fee
-          id.label:            Id
-          reason.label:        Reason
-          start_date.label:    Start date
-          end_date.label:      End date
-          member.label:        Member
-          action.create.title: Create new fee discount
-          action.update.title: Update fee discount
+            entity_label:        Membership fee discount
+            entity_plural_label: Membership fee discounts
+            entity_description:  Represent a discount of membership fee
+            id.label:            Id
+            reason.label:        Reason
+            start_date.label:    Start date
+            end_date.label:      End date
+            member.label:        Member
+            action.create.title: Create new fee discount
+            action.update.title: Update fee discount
 
         accounting.processor.default: Default accounting
         accounting.processor.simple: Simple accounting

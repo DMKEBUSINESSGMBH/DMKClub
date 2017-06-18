@@ -1,0 +1,18 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridName = 'dmkclub-member-proposals-grid' %}
+{% set pageTitle = 'dmkclub.member.memberproposal.entity_plural_label'|trans %}
+
+
+{% block navButtons %}
+
+    {% if resource_granted('dmkclub_member_proposal_create') %}
+        <div class="btn-group">
+            {{ UI.addButton({
+                'path' : path('dmkclub_member_proposal_create'),
+                'entity_label': 'dmkclub.member.memberproposal.entity_label'|trans
+            }) }}
+        </div>
+    {% endif %}
+{% endblock %}

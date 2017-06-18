@@ -1,11 +1,12 @@
 parameters:
     dmkclub_payment.form.type.payment_options.class:        DMKClub\Bundle\PaymentBundle\Form\Type\PaymentOptionsType
-    dmkclub_payment.form.type.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType
+    dmkclub_payment.form.type.payment_intervals.class:      DMKClub\Bundle\PaymentBundle\Form\Type\PaymentIntervalsType
+    dmkclub_payment.form.type.bank_account.class:           DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType
     dmkclub_payment.form.handler.bank_account.class:        DMKClub\Bundle\PaymentBundle\Form\Handler\BankAccount
 
-    dmkclub_payment.form.type.sepa_creditor.class:        DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorType
-    dmkclub_payment.form.handler.sepa_creditor.class:        DMKClub\Bundle\PaymentBundle\Form\Handler\SepaCreditorHandler
-    dmkclub_payment.form.type.sepacreditor_select.class: DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorSelectType
+    dmkclub_payment.form.type.sepa_creditor.class:          DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorType
+    dmkclub_payment.form.handler.sepa_creditor.class:       DMKClub\Bundle\PaymentBundle\Form\Handler\SepaCreditorHandler
+    dmkclub_payment.form.type.sepacreditor_select.class:    DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorSelectType
 
 services:
 # ####
@@ -18,6 +19,13 @@ services:
             - "@dmkclub.payment.options_provider"
         tags:
             - { name: form.type, alias: dmkclub_paymentoptions }
+
+    dmkclub.form.type.payment_intervals:
+        class: "%dmkclub_payment.form.type.payment_intervals.class%"
+        arguments:
+            - "@dmkclub.payment.intervals_provider"
+        tags:
+            - { name: form.type, alias: dmkclub_paymentintervals }
 
     # Bankaccount form type
     dmkclub_payment.form.type.bank_account:

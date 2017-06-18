@@ -8,6 +8,16 @@ oro_menu_config:
                 routes:      ['/^dmkclub_member_(index|view)$/']
                 position:    210
                 description: 'dmkclub.member.entity_plural_label'
+
+        dmkclub_memberproposal:
+            label:   'dmkclub.member.memberproposal.entity_plural_label'
+            route:   'dmkclub_member_proposal_index'
+            display: false
+            extras:
+                routes:      ['/^dmkclub_member_proposal_(index|view)$/']
+                position:    220
+                description: 'dmkclub.member.memberproposal.entity_plural_label'
+
         dmkclub_memberbilling:
             label:   'dmkclub.member.memberbilling.entity_plural_label'
             route:   'dmkclub_memberbilling_index'
@@ -23,6 +33,7 @@ oro_menu_config:
                 customers_tab:
                     children:
                         dmkclub_member: ~
+                        dmkclub_memberproposal: ~
                 accounting_tab:
                     children:
                         dmkclub_memberbilling: ~
@@ -31,6 +42,9 @@ oro_titles:
     dmkclub_member_index: ~
     dmkclub_member_view:  "%%member.name%%"
     dmkclub_member_update:  "%%member.name%% - Edit"
+    dmkclub_member_proposal_index: ~
+    dmkclub_member_proposal_view:  "%%member.name%%"
+    dmkclub_member_proposal_update:  "%%member.name%% - Edit"
     dmkclub_memberbilling_index: ~
     dmkclub_memberbilling_view:  "%%memberbilling.name%%"
     dmkclub_memberbilling_update: '%%memberbilling.name%% - Edit'
