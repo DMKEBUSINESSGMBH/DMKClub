@@ -233,6 +233,8 @@ datagrid:
                     - mp.middleName
                     - mp.lastName
                     - mp.nameSuffix
+                    - s.id as status
+                    - s.name as statusLabel
                     - mp.birthday
                     - mp.paymentOption
                     - mp.paymentInterval
@@ -252,6 +254,7 @@ datagrid:
                     left:
                         - { join: mp.postalAddress, alias: a }
                         - { join: mp.bankAccount, alias: b }
+                        - { join: mp.status, alias: s }
         columns:
             id:
                 label:         dmkclub.member.memberproposal.id.label
@@ -269,6 +272,9 @@ datagrid:
             nameSuffix:
                 label:         dmkclub.member.memberproposal.name_suffix.label
                 renderable:    false
+            status:
+                label:         dmkclub.member.memberproposal.status.label
+                choices: "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('memberproposal_status')"
             birthday:
                 label:         dmkclub.member.memberproposal.birthday.label
                 frontend_type: date
@@ -304,6 +310,8 @@ datagrid:
                     data_name: mp.lastName
                 firstName:
                     data_name: mp.firstName
+                status:
+                    data_name: s.priority
                 isActive:
                     data_name: mp.isActive
                 paymentOption:
@@ -327,6 +335,10 @@ datagrid:
                 lastName:
                     type: string
                     data_name: mp.lastName
+                status:
+                    type:      enum
+                    data_name: mp.status
+                    enum_code: memberproposal_status
                 isActive:
                     type: boolean
                     enabled: false
@@ -377,6 +389,9 @@ datagrid:
                 label: oro.grid.action.update
                 icon: edit
                 link: update_link
+        options:
+            export: true
+            entity_pagination: true
             
 
 # ###

@@ -64,6 +64,8 @@ class MemberProposal extends ExtendMemberProposal implements
     {
 	use ChannelEntityTrait, LifecycleTrait;
 
+	const INTERNAL_STATUS_CODE = 'memberproposal_status';
+
 	/**
 	 * @var int
 	 *
@@ -222,24 +224,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 */
 	protected $isActive = false;
 
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="status", type="string", length=20, nullable=true, options={"default" : "active"})
-	 * @Oro\Versioned
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "dataaudit"={
-	 *              "auditable"=true
-	 *          },
-	 *          "importexport"={
-	 *              "order"=110
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $status;
 
 	/**
 	 * @var string
@@ -677,22 +661,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	public function getIsActive()
 	{
 	    return $this->isActive;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getStatus() {
-		return $this->status;
-	}
-
-	/**
-	 * @param string $value
-	 * @return MemberProposal
-	 */
-	public function setStatus($value) {
-		$this->status = $value;
-	  return $this;
 	}
 
 	/**

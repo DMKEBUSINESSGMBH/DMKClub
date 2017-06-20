@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class MemberProposalType extends AbstractType
 {
@@ -60,6 +61,16 @@ class MemberProposalType extends AbstractType
             'required' => false,
             'label' => self::LABEL_PREFIX.'name_suffix.label'
         ])
+        ->add(
+            'status',
+            'oro_enum_select',
+            [
+                'label' => self::LABEL_PREFIX.'status.label',
+                'enum_code' => 'memberproposal_status',
+                'required' => true,
+                'constraints' => [new Assert\NotNull()]
+            ]
+            )
         ->add('birthday', 'oro_date', [
             'required' => false,
             'years' => ['1800', date('Y')],

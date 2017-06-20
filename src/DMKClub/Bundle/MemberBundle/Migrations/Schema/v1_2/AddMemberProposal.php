@@ -1,6 +1,6 @@
 <?php
 
-namespace DMKClub\Bundle\MemberBundle\Migrations\Schema;
+namespace DMKClub\Bundle\MemberBundle\Migrations\Schema\v1_2;
 
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
