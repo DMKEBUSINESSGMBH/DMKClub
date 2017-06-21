@@ -26,8 +26,20 @@ class BankAccountType extends AbstractType {
 		$builder
 			->add('id', 'hidden')
 			->add('accountOwner', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.account_owner.label'))
-			->add('iban', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.iban.label'))
-			->add('bic', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.bic.label'))
+			->add('iban', 'text', [
+			    'required' => false,
+			    'label' => 'dmkclub.payment.bankaccount.iban.label',
+			    'constraints' => [
+			        new \Symfony\Component\Validator\Constraints\Iban(),
+			    ]
+			])
+			->add('bic', 'text', [
+			    'required' => false,
+			    'label' => 'dmkclub.payment.bankaccount.bic.label',
+			    'constraints' => [
+			        new \Symfony\Component\Validator\Constraints\Bic(),
+			    ]
+			])
 			->add('bankName', 'text', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.bank_name.label'))
 			->add('directDebitValidFrom', 'oro_date', array('required' => false, 'label' => 'dmkclub.payment.bankaccount.direct_debit_valid_from.label'))
 			;
