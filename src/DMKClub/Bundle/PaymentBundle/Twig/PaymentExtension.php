@@ -22,6 +22,7 @@ class PaymentExtension extends \Twig_Extension
      */
     public function __construct(PaymentOptionsProvider $paymentOptionProvider, PaymentIntervalsProvider $paymentIntervalProvider)
     {
+        // deprecated
         $this->paymentOptionProvider = $paymentOptionProvider;
         $this->paymentIntervalProvider = $paymentIntervalProvider;
     }
@@ -48,8 +49,7 @@ class PaymentExtension extends \Twig_Extension
         if (!$name) {
             return null;
         }
-
-        return $this->paymentOptionProvider->getLabelByName($name);
+        return $name->getName();
     }
 
     /**
@@ -61,8 +61,7 @@ class PaymentExtension extends \Twig_Extension
         if (!$name) {
             return null;
         }
-
-        return $this->paymentIntervalProvider->getLabelByName($name);
+        return $name->getName();
     }
 
     /**

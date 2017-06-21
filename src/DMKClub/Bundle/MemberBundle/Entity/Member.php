@@ -285,24 +285,24 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 */
 	protected $status;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="payment_option", type="string", length=20, nullable=true, options={"default" : "none"})
-	 * @Soap\ComplexType("string", nillable=true)
-	 * @Oro\Versioned
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "dataaudit"={
-	 *              "auditable"=true
-	 *          },
-	 *          "importexport"={
-	 *              "order"=80
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $paymentOption;
+// 	/**
+// 	 * @var string
+// 	 *
+// 	 * @ORM\Column(name="payment_option", type="string", length=20, nullable=true, options={"default" : "none"})
+// 	 * @Soap\ComplexType("string", nillable=true)
+// 	 * @Oro\Versioned
+// 	 * @ConfigField(
+// 	 *      defaultValues={
+// 	 *          "dataaudit"={
+// 	 *              "auditable"=true
+// 	 *          },
+// 	 *          "importexport"={
+// 	 *              "order"=80
+// 	 *          }
+// 	 *      }
+// 	 * )
+// 	 */
+// 	protected $paymentOption;
 
 	/**
 	 * @var Account
@@ -523,30 +523,15 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 		return $this->status;
 	}
 
-	/**
-	 * @param string $value
-	 * @return Member
-	 */
-	public function setStatus($value) {
-		$this->status = $value;
-	  return $this;
-	}
+// 	/**
+// 	 * @param string $value
+// 	 * @return Member
+// 	 */
+// 	public function setStatus($value) {
+// 		$this->status = $value;
+// 	  return $this;
+// 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPaymentOption() {
-		return $this->paymentOption;
-	}
-
-	/**
-	 * @param string $value
-	 * @return Member
-	 */
-	public function setPaymentOption($value) {
-		$this->paymentOption = $value;
-		return $this;
-	}
 
 	/**
 	 * @return \DMKClub\Bundle\PaymentBundle\Entity\BankAccount

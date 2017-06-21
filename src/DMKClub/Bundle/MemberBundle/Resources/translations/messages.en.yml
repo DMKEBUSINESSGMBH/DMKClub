@@ -13,6 +13,8 @@ dmkclub:
         member_code_short.label:   Club ID
         member_fees.label:   Fees
         member_fee_discounts.label:   Fee discounts
+        payment_option.label: Payment option
+        payment_interval.label: Payment interval
         is_active.label:     Active member
         isActive.help:       Activate this flag for active players, coaches and officials
         is_honorary.label:   Honorary member
@@ -204,6 +206,7 @@ dmkclub:
     memberbilling_information: Billing Information
     general_information: General Information
     entity_number: "%entityName% %entityNumber%"
+
 active: Active
 proposal: Proposal
 terminated: Terminated

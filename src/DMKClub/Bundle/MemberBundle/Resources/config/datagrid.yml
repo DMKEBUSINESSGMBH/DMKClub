@@ -13,7 +13,10 @@ datagrid:
                     - m.isHonorary
                     - m.isActive
                     - m.status
-                    - m.paymentOption
+                    - po.id as paymentOption
+                    - po.name as paymentOptionLabel
+                    - pi.id as paymentInterval
+                    - pi.name as paymentIntervalLabel
                     - a.city
                     - c.birthday
                     - email.email
@@ -31,6 +34,8 @@ datagrid:
                         - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
                         - { join: m.postalAddress, alias: a }
                         - { join: m.bankAccount, alias: b }
+                        - { join: m.payment_option, alias: po }
+                        - { join: m.payment_interval, alias: pi }
         columns:
             memberCode:
                 label:         dmkclub.member.member_code.label
@@ -47,8 +52,13 @@ datagrid:
             status:
                 label:         dmkclub.member.status.label
                 type:          translatable
-            paymentOption:
+            paymentOptionLabel:
                 label:         dmkclub.member.payment_option.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
+                type:          translatable
+            paymentIntervalLabel:
+                label:         dmkclub.member.payment_interval.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentintval')"
                 type:          translatable
             city:
                 label:         oro.address.city.label
@@ -103,8 +113,10 @@ datagrid:
                     data_name: m.isActive
                 status:
                     data_name: m.status
-                paymentOption:
-                    data_name: m.paymentOption
+                paymentOptionLabel:
+                    data_name: paymentOptionLabel
+                paymentIntervalLabel:
+                    data_name: paymentIntervalLabel
                 city:
                     data_name: a.city
                 birthday:
@@ -153,14 +165,15 @@ datagrid:
                             multiple:             true
                             choices:              '@dmkclub_member.member.status_provider->getChoices'
                             translatable_options: false
-                paymentOption:
-                    type: choice
-                    data_name: m.paymentOption
-                    options:
-                        field_options:
-                            multiple:             true
-                            choices:              '@dmkclub.payment.options_provider->getChoices'
-                            translatable_options: false
+                paymentOptionLabel:
+                    type:      enum
+                    data_name: m.payment_option
+                    enum_code: dmkclb_paymentoption
+
+                paymentIntervalLabel:
+                    type:      enum
+                    data_name: m.payment_interval
+                    enum_code: dmkclb_paymentintval
                 city:
                     type: string
                     data_name: a.city
@@ -236,8 +249,10 @@ datagrid:
                     - s.id as status
                     - s.name as statusLabel
                     - mp.birthday
-                    - mp.paymentOption
-                    - mp.paymentInterval
+                    - po.id as paymentOption
+                    - po.name as paymentOptionLabel
+                    - pi.id as paymentInterval
+                    - pi.name as paymentIntervalLabel
                     - mp.emailAddress
                     - mp.phone
                     - mp.isActive
@@ -255,6 +270,8 @@ datagrid:
                         - { join: mp.postalAddress, alias: a }
                         - { join: mp.bankAccount, alias: b }
                         - { join: mp.status, alias: s }
+                        - { join: mp.payment_option, alias: po }
+                        - { join: mp.payment_interval, alias: pi }
         columns:
             id:
                 label:         dmkclub.member.memberproposal.id.label
@@ -272,19 +289,21 @@ datagrid:
             nameSuffix:
                 label:         dmkclub.member.memberproposal.name_suffix.label
                 renderable:    false
-            status:
+            statusLabel:
                 label:         dmkclub.member.memberproposal.status.label
-                choices: "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('memberproposal_status')"
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('memberproposal_status')"
             birthday:
                 label:         dmkclub.member.memberproposal.birthday.label
                 frontend_type: date
             isActive:
                 label:         dmkclub.member.memberproposal.is_active.label
                 renderable:    false
-            paymentOption:
+            paymentOptionLabel:
                 label:         dmkclub.member.memberproposal.payment_option.label
-            paymentInterval:
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
+            paymentIntervalLabel:
                 label:         dmkclub.member.memberproposal.payment_interval.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentintval')"
 #                renderable:    false
             emailAddress:
                 label:         dmkclub.member.memberproposal.email_address.label
@@ -310,12 +329,14 @@ datagrid:
                     data_name: mp.lastName
                 firstName:
                     data_name: mp.firstName
-                status:
+                statusLabel:
                     data_name: s.priority
                 isActive:
                     data_name: mp.isActive
-                paymentOption:
-                    data_name: mp.paymentOption
+                paymentOptionLabel:
+                    data_name: paymentOptionLabel
+                paymentIntervalLabel:
+                    data_name: paymentInterval
                 city:
                     data_name: a.city
                 birthday:
@@ -335,7 +356,7 @@ datagrid:
                 lastName:
                     type: string
                     data_name: mp.lastName
-                status:
+                statusLabel:
                     type:      enum
                     data_name: mp.status
                     enum_code: memberproposal_status
@@ -343,14 +364,15 @@ datagrid:
                     type: boolean
                     enabled: false
                     data_name: mp.active
-                paymentOption:
-                    type: choice
+                paymentOptionLabel:
+                    type:      enum
                     data_name: mp.paymentOption
-                    options:
-                        field_options:
-                            multiple:             true
-                            choices:              '@dmkclub.payment.options_provider->getChoices'
-                            translatable_options: false
+                    enum_code: dmkclb_paymentoption
+
+                paymentIntervalLabel:
+                    type:      enum
+                    data_name: mp.paymentInterval
+                    enum_code: dmkclb_paymentintval
                 city:
                     type: string
                     data_name: mp.city
@@ -623,7 +645,8 @@ datagrid:
                     - m.id as mid
                     - m.memberCode
                     - m.name
-                    - m.paymentOption
+                    - po.id as paymentOption
+                    - po.name as paymentOptionLabel
                     - m.isActive
                     - m.startDate As mbrStart
                     - m.endDate As mbrEnd
@@ -633,6 +656,7 @@ datagrid:
                 join:
                     left:
                         - { join: f.member, alias: m }
+                        - { join: m.payment_option, alias: po }
             bind_parameters:
                 - billing
         totals:
@@ -672,8 +696,9 @@ datagrid:
                 label:         dmkclub.member.end_date.label
                 frontend_type: datetime
                 renderable:    false
-            paymentOption:
+            paymentOptionLabel:
                 label:         dmkclub.member.payment_option.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
                 type:          translatable
         properties:
             id: ~
@@ -719,14 +744,10 @@ datagrid:
                 memberCode:
                     type: string
                     data_name: m.memberCode
-                paymentOption:
-                    type: choice
-                    data_name: m.paymentOption
-                    options:
-                        field_options:
-                            multiple:             true
-                            choices:              '@dmkclub.payment.options_provider->getChoices'
-                            translatable_options: false
+                paymentOptionLabel:
+                    type:      enum
+                    data_name: m.payment_option
+                    enum_code: dmkclb_paymentoption
                 mbrStart:
                     type: date
                     data_name: m.startDate

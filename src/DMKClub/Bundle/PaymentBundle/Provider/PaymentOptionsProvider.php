@@ -5,6 +5,11 @@ namespace DMKClub\Bundle\PaymentBundle\Provider;
 use Symfony\Component\Translation\TranslatorInterface;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
 
+/**
+ *
+ * @deprecated
+ *
+ */
 class PaymentOptionsProvider
 {
     /**

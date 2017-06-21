@@ -6,8 +6,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
 
-class MemberType extends AbstractType {
+class MemberType extends AbstractType
+{
+    const LABEL_PREFIX = 'dmkclub.member.';
 
 	/** @var TranslatorInterface */
 	protected $translator;
@@ -40,7 +44,17 @@ class MemberType extends AbstractType {
 			->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.end_date.label'))
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
 			->add('status', 'dmkclub_memberstatus', array('required' => true, 'label' => 'dmkclub.member.status.label'))
-			->add('paymentOption', 'dmkclub_paymentoptions', array('required' => true, 'label' => 'dmkclub.member.payment_option.label'))
+			->add('paymentOption', 'oro_enum_select', [
+			    'required' => true,
+			    'label' => self::LABEL_PREFIX.'payment_option.label',
+			    'enum_code' => PaymentOption::INTERNAL_ENUM_CODE,
+
+			])
+			->add('paymentInterval', 'oro_enum_select', [
+			    'required' => true,
+			    'enum_code' => PaymentInterval::INTERNAL_ENUM_CODE,
+			    'label' => self::LABEL_PREFIX.'payment_interval.label'
+			])
 			->add('isActive', 'checkbox', array(
 					'tooltip' => $this->translator->trans('dmkclub.member.isActive.help'),
 					'label' => 'dmkclub.member.is_active.label',

@@ -18,6 +18,8 @@ use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedSqlMigrationQuery;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
 
 class DMKClubMemberBundleInstaller implements Installation,
     ExtendExtensionAwareInterface, ActivityExtensionAwareInterface, CommentExtensionAwareInterface
@@ -52,7 +54,7 @@ class DMKClubMemberBundleInstaller implements Installation,
 	 */
 	public function getMigrationVersion()
 	{
-	    return 'v1_3';
+	    return 'v1_4';
 	}
 
 	/**
@@ -93,6 +95,7 @@ class DMKClubMemberBundleInstaller implements Installation,
 		self::addActivityAssociations4Proposal($schema, $this->activityExtension);
 
 		self::addMemberProposalStatusField($schema, $queries, $this->extendExtension);
+		self::addPaymentEnums($schema, $queries, $this->extendExtension);
 	}
 
 
@@ -120,7 +123,7 @@ class DMKClubMemberBundleInstaller implements Installation,
 		$table->addColumn('updated_at', 'datetime', []);
 		$table->addColumn('is_active', 'boolean', ['default' => '0']);
 		$table->addColumn('status', 'string', ['default' => 'active', 'notnull' => false, 'length' => 20]);
-		$table->addColumn('payment_option', 'string', ['default' => 'none', 'notnull' => false, 'length' => 20]);
+//		$table->addColumn('payment_option', 'string', ['default' => 'none', 'notnull' => false, 'length' => 20]);
 		$table->addColumn('is_honorary', 'boolean', ['default' => '0']);
 		$table->addColumn('is_free_of_charge', 'boolean', ['default' => '0']);
 		$table->setPrimaryKey(['id']);
@@ -307,8 +310,8 @@ class DMKClubMemberBundleInstaller implements Installation,
 	    $table->addColumn('birthday', 'date', ['notnull' => false, 'comment' => '(DC2Type:date)']);
 	    $table->addColumn('comment', 'text', ['notnull' => false]);
 	    $table->addColumn('is_active', 'boolean', ['default' => '0']);
-	    $table->addColumn('payment_option', 'string', ['default' => 'none', 'notnull' => false, 'length' => 20]);
-	    $table->addColumn('payment_interval', 'integer', ['default' => '12', 'notnull' => true]);
+// 	    $table->addColumn('payment_option', 'string', ['default' => 'none', 'notnull' => false, 'length' => 20]);
+// 	    $table->addColumn('payment_interval', 'integer', ['default' => '12', 'notnull' => true]);
 	    $table->addColumn('job_title', 'string', ['notnull' => false, 'length' => 255]);
 	    $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
 	    $table->addColumn('updatedat', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
@@ -564,6 +567,74 @@ class DMKClubMemberBundleInstaller implements Installation,
 	 * @param Schema $schema
 	 * @param QueryBag $queries
 	 */
+	public static function addPaymentEnums(Schema $schema, QueryBag $queries, ExtendExtension $extendExtension)
+	{
+	    $extendExtension->addEnumField(
+	        $schema,
+	        'dmkclub_member_proposal',
+	        'payment_option',
+	        PaymentOption::INTERNAL_ENUM_CODE,
+	        false,
+	        false,
+	        [
+	            'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+	            'datagrid' => ['is_visible' => DatagridScope::IS_VISIBLE_TRUE],
+	            'dataaudit' => ['auditable' => true],
+	            'importexport' => ["order" => 120, "short" => true]
+	        ]
+        );
+	    $extendExtension->addEnumField(
+	        $schema,
+	        'dmkclub_member_proposal',
+	        'payment_interval',
+	        PaymentInterval::INTERNAL_ENUM_CODE,
+	        false,
+	        false,
+	        [
+	            'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+	            'datagrid' => ['is_visible' => DatagridScope::IS_VISIBLE_TRUE],
+	            'dataaudit' => ['auditable' => true],
+	            'importexport' => ["order" => 125, "short" => true]
+	        ]
+        );
+
+	    $extendExtension->addEnumField(
+	        $schema,
+	        'dmkclub_member',
+	        'payment_option',
+	        PaymentOption::INTERNAL_ENUM_CODE,
+	        false,
+	        false,
+	        [
+	            'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+	            'datagrid' => ['is_visible' => DatagridScope::IS_VISIBLE_TRUE],
+	            'dataaudit' => ['auditable' => true],
+	            'importexport' => ["order" => 120, "short" => true]
+	        ]
+        );
+	    $extendExtension->addEnumField(
+	        $schema,
+	        'dmkclub_member',
+	        'payment_interval',
+	        PaymentInterval::INTERNAL_ENUM_CODE,
+	        false,
+	        false,
+	        [
+	            'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+	            'datagrid' => ['is_visible' => DatagridScope::IS_VISIBLE_TRUE],
+	            'dataaudit' => ['auditable' => true],
+	            'importexport' => ["order" => 125, "short" => true]
+	        ]
+        );
+
+	}
+
+	/**
+	 * Add proposal status Enum field and initialize default enum values
+	 *
+	 * @param Schema $schema
+	 * @param QueryBag $queries
+	 */
 	public static function addMemberProposalStatusField(Schema $schema, QueryBag $queries, ExtendExtension $extendExtension)
 	{
 	    $immutableCodes = ['initial','in_progress', 'joined', 'refused'];
@@ -600,7 +671,7 @@ class DMKClubMemberBundleInstaller implements Installation,
 	            'dataaudit' => ['auditable' => true],
 	            'importexport' => ["order" => 130, "short" => true]
 	        ]
-	        );
+        );
 
 	    $options = new OroOptions();
 	    $options->set(

@@ -67,7 +67,8 @@ class MemberFixture extends AbstractTemplateRepository implements TemplateFixtur
 				$entity->setIsActive( TRUE );
 				$entity->setStatus ( MemberStatus::ACTIVE );
 				$entity->setStartDate( new \DateTime () );
-				$entity->setPaymentOption(PaymentOption::SEPA_DIRECT_DEBIT);
+                // TODO: ENUM export prüfen
+//				$entity->setPaymentOption(PaymentOption::SEPA_DIRECT_DEBIT);
 				$entity->setMemberCode(123);
 
 				return;

@@ -6,6 +6,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
 
 class MemberProposalType extends AbstractType
 {
@@ -76,12 +78,14 @@ class MemberProposalType extends AbstractType
             'years' => ['1800', date('Y')],
             'label' => self::LABEL_PREFIX.'birthday.label'
         ])
-        ->add('paymentOption', 'dmkclub_paymentoptions', [
+        ->add('paymentOption', 'oro_enum_select', [
             'required' => true,
+            'enum_code' => PaymentOption::INTERNAL_ENUM_CODE,
             'label' => 'dmkclub.member.payment_option.label'
         ])
-        ->add('paymentInterval', 'dmkclub_paymentintervals', [
+        ->add('paymentInterval', 'oro_enum_select', [
             'required' => true,
+            'enum_code' => PaymentInterval::INTERNAL_ENUM_CODE,
             'label' => self::LABEL_PREFIX.'payment_interval.label'
         ])
         ->add('emailAddress', 'text', [

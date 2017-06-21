@@ -20,11 +20,10 @@ Wird in der Detailansicht des Antrags verwendet
             {{ channel.renderChannelProperty(entity, 'orocrm.sales.b2bcustomer.data_channel.label') }}
 
 
-
             {% if entity.postalAddress is not empty %}
                 {{ UI.renderHtmlProperty('orocrm.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
-            {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
+            {{ UI.renderProperty('dmkclub.member.memberproposal.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
             {{ UI.renderProperty('dmkclub.member.memberproposal.payment_interval.label'|trans, dmkclub_paymentinterval(entity.paymentInterval)) }}
 
         </div>

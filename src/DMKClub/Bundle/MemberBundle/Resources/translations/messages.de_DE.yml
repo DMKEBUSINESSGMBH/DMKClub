@@ -12,6 +12,8 @@ dmkclub:
         member_code_short.label:  Mgl-Nr.
         member_fees.label:   Beiträge
         member_fee_discounts.label:  Ermäßigungen
+        payment_option.label:   Zahlungsart
+        payment_interval.label: Zahlungsintervall
         is_active.label:     Aktives Mitglied
         isActive.help:       Das Flag kennzeichnet aktive Spieler, Trainer und Offizielle des Vereins
         is_honorary.label:   Ehrenmitglied

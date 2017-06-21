@@ -6,6 +6,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
 
+/**
+ *
+ * @deprecated
+ *
+ */
 class PaymentIntervalsProvider
 {
     /**

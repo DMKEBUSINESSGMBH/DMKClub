@@ -39,5 +39,14 @@ dmkclub:
         quarterly:      quarterly
         monthly:        monthly
         form.choose:    Choose payment interval
-        
+
+oro.entityextend.enums:
+    dmkclub_paymentoption:
+        entity_label: Payment option
+        entity_plural_label: Payment options
+
+    dmkclub_paymentinterval:
+        entity_label: Payment interval
+        entity_plural_label: Payment intervals
+
 accounting: Accounting

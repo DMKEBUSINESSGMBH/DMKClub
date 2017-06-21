@@ -40,9 +40,14 @@ dmkclub:
 "Financial and address": Finanzen und Adresse
 
 sepa_direct_debit: Sepa Bankeinzug
-banktransfer: Überweisung
+"Bank transfer": Überweisung
 creditcard: Kreditkarte
 cash: Barzahlung
 none: Keine
 accounting: Abrechnung
 "Sepa creditor data not valid":   Die Daten des SEPA-Mandats wurden nicht gefunden. Bitte prüfen Sie die SEPA-Einstellungen.
+
+yearly: jährlich
+"half-yearly": halbjährlich
+quarterly: quartalsweise
+monthly: monatlich

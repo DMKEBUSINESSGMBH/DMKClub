@@ -35,6 +35,7 @@ Wird in der Detailansicht des Mitglieds verwendet
                 {{ UI.renderHtmlProperty('orocrm.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
             {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
+            {{ UI.renderProperty('dmkclub.member.payment_interval.label'|trans, dmkclub_paymentinterval(entity.paymentInterval)) }}
 
         </div>
         <div class="responsive-block">
