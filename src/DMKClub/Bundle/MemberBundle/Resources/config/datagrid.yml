@@ -366,12 +366,12 @@ datagrid:
                     data_name: mp.active
                 paymentOptionLabel:
                     type:      enum
-                    data_name: mp.paymentOption
+                    data_name: mp.payment_option
                     enum_code: dmkclb_paymentoption
 
                 paymentIntervalLabel:
                     type:      enum
-                    data_name: mp.paymentInterval
+                    data_name: mp.payment_interval
                     enum_code: dmkclb_paymentintval
                 city:
                     type: string
