@@ -246,8 +246,7 @@ datagrid:
                     - mp.middleName
                     - mp.lastName
                     - mp.nameSuffix
-                    - s.id as status
-                    - s.name as statusLabel
+                    - IDENTITY(mp.status) as status
                     - mp.birthday
                     - po.id as paymentOption
                     - po.name as paymentOptionLabel
@@ -262,6 +261,8 @@ datagrid:
                     - a.street
                     - b.iban
                     - b.bankName
+                    - mp.createdAt
+                    - mp.updatedAt
                     
                 from:
                     - { table: "%dmkclub_member.memberproposal.entity.class%", alias: mp }
@@ -269,7 +270,6 @@ datagrid:
                     left:
                         - { join: mp.postalAddress, alias: a }
                         - { join: mp.bankAccount, alias: b }
-                        - { join: mp.status, alias: s }
                         - { join: mp.payment_option, alias: po }
                         - { join: mp.payment_interval, alias: pi }
         columns:
@@ -289,7 +289,7 @@ datagrid:
             nameSuffix:
                 label:         dmkclub.member.memberproposal.name_suffix.label
                 renderable:    false
-            statusLabel:
+            status:
                 label:         dmkclub.member.memberproposal.status.label
                 choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('memberproposal_status')"
             birthday:
@@ -323,14 +323,26 @@ datagrid:
             bankName:
                 label:         dmkclub.member.memberproposalbankaccount.bank_name.label
                 renderable:    false
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+                renderable:    false
+
+        inline_editing:
+            enable:       true
+            entity_name:  "%dmkclub_member.memberproposal.entity.class%"
+            behaviour:    enable_selected
         sorters:
             columns:
                 lastName:
                     data_name: mp.lastName
                 firstName:
                     data_name: mp.firstName
-                statusLabel:
-                    data_name: s.priority
+                status:
+                    data_name: mp.status
                 isActive:
                     data_name: mp.isActive
                 paymentOptionLabel:
@@ -347,6 +359,12 @@ datagrid:
                     data_name: b.iban
                 bankName:
                     data_name: b.bankName
+                createdAt:
+                    data_name: mp.createdAt
+                updatedAt:
+                    data_name: mp.updatedAt
+            default:
+                createdAt: DESC
         filters:
             columns:
                 firstName:
@@ -356,7 +374,8 @@ datagrid:
                 lastName:
                     type: string
                     data_name: mp.lastName
-                statusLabel:
+#                statusLabel:
+                status:
                     type:      enum
                     data_name: mp.status
                     enum_code: memberproposal_status
@@ -414,7 +433,17 @@ datagrid:
         options:
             export: true
             entity_pagination: true
-            
+        appearances:
+            board:
+                dmkclub-memberproposals: #unique board id
+                    label: Board
+                    group_by:
+                        property: status
+                        order_by:
+                            priority: ASC
+                    card_view: dmkclubmember/js/app/views/board/proposal-card-view
+                    default_transition:
+                        class: orodatagrid/js/app/transitions/update-main-property-transition
 
 # ###
 # MemberBilling base grid

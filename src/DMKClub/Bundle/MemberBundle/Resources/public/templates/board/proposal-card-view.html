@@ -1,0 +1,7 @@
+<div class="card-actions" data-placeholder-for="actions"></div>
+<div class="card-title"><a href="<%- view_link %>" data-action="navigate" title="<%- name %>"><%- firstName %> <%- lastName %></a></div>
+<div class="card-additional">
+    <% if (city) { %><div class="card-additional-line"><%- postalCode %> <%- city %><% } else { %>&nbsp;</div><% } %>
+</div>
+<div class="card-date"><%= _.__("oro.activitylist.created_at.label") %> <%- datetimeFormatter.formatDate(createdAt) %></div>
+<div class="card-date"><%= _.__("oro.activitylist.updated_at.label") %> <%- datetimeFormatter.formatDate(updatedAt) %></div>
