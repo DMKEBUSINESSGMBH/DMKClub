@@ -5,22 +5,18 @@ namespace DMKClub\Bundle\MemberBundle\Entity;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
-use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\AddressBundle\Entity\Address;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
@@ -111,6 +107,25 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 * @Oro\Versioned
 	 */
 	protected $memberCode;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="member_code_int", type="integer", nullable=true, options={"default" : 0})
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
+	 *          "importexport"={
+	 *              "identity"=true,
+	 *              "order"=21
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $memberCodeInt;
 
 	/**
 	 * @var \DateTime
@@ -523,14 +538,14 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 		return $this->status;
 	}
 
-// 	/**
-// 	 * @param string $value
-// 	 * @return Member
-// 	 */
-// 	public function setStatus($value) {
-// 		$this->status = $value;
-// 	  return $this;
-// 	}
+    /**
+     * @param string $value
+     * @return Member
+     */
+    public function setStatus($value) {
+        $this->status = $value;
+        return $this;
+    }
 
 
 	/**
@@ -703,6 +718,28 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	    return $this->memberCode;
 	}
 
+	public function getMemberCodeInt()
+	{
+	    return $this->memberCodeInt;
+	}
+
+	public function setMemberCodeInt(string $memberCodeInt)
+	{
+	    $this->memberCodeInt = $memberCodeInt;
+	    return $this;
+	}
+
+	public function getMemberProposals()
+	{
+	    return $this->memberProposals;
+	}
+
+	public function setMemberProposals($memberProposals)
+	{
+	    $this->memberProposals = $memberProposals;
+	    return $this;
+	}
+
 	/**
 	 * Set startDate
 	 *
@@ -765,10 +802,23 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	}
 
 	/**
+	 * Pre persist event listener
+	 *
+	 * @ORM\PrePersist
+	 * @ORM\PreUpdate
+	 */
+	public function ensureMemberCodeInt()
+	{
+	    $this->memberCodeInt = (int) $this->memberCode;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function __toString()
 	{
 	    return (string) $this->getName();
 	}
+
+
 }

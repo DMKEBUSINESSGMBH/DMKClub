@@ -1,0 +1,64 @@
+{% form_theme form with ['OroCRMContactBundle:Include:fields.html.twig', 'OroFormBundle:Form:fields.html.twig', _self] %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+<div class="widget-content">
+
+    {% if saved %}
+        <script type="text/javascript">
+        require(['underscore', 'orotranslation/js/translator', 'oroui/js/widget-manager',
+                 'oroui/js/messenger', 'oroui/js/mediator'],
+        function(_, __, widgetManager, messenger, mediator) {
+            widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                messenger.notificationFlashMessage('success', '{{ message }}');
+                widget.remove();
+                mediator.execute('redirectTo', {url: '{{ path('dmkclub_member_view', {'id': entity.member.id}) }}'}, {redirect: true});
+            });
+        });
+        </script>
+    {% else %}
+        {% if not form.vars.valid and form_errors(form) %}
+        <div class="alert alert-error" style="margin:0">
+            <div class="message">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+        {% endif %}
+
+        <form id="{{ form.vars.id }}" name="{{ form.vars.name }}"
+              action="{{ path('dmkclub_member_proposal_createmember', {'id': entity.id})}}"
+              method="post" class="form-register form-dialog">
+            <fieldset class="form-horizontal">
+                {% set id = 'create-member' %}
+            
+                {% set formFields = [] %}
+            
+                {% set formFields = formFields|merge([
+                    form_row(form.memberCode),
+                    form_row(form.startDate),
+                    form_row(form.gender),
+                ]) %}
+            
+                {% set dataBlocks = [{
+                    'title': 'General'|trans,
+                    'class': 'active',
+                    'subblocks': [{
+                        'title': 'dmkclub.member.memberproposal.action.createmember.data'|trans,
+                        'data': formFields
+                    }]
+                }] %}
+            
+                {% set data = {
+                    'formErrors': form_errors(form)? form_errors(form) : null,
+                    'dataBlocks': dataBlocks,
+                } %}
+                {{ UI.scrollData(id, data, form) }}
+
+                <div class="widget-actions form-actions" style="display: none;">
+                    <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                    <button class="btn btn-primary" type="submit">{{ 'dmkclub.member.memberproposal.action.createmember'|trans }}</button>
+                </div>
+            </fieldset>
+        </form>
+        {{ oro_form_js_validation(form) }}
+    {% endif %}
+
+</div>

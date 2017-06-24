@@ -224,43 +224,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 */
 	protected $isActive = false;
 
-
-// 	/**
-// 	 * @var string
-// 	 *
-// 	 * @ORM\Column(name="payment_option", type="string", length=20, nullable=true, options={"default" : "none"})
-// 	 * @Oro\Versioned
-// 	 * @ConfigField(
-// 	 *      defaultValues={
-// 	 *          "dataaudit"={
-// 	 *              "auditable"=true
-// 	 *          },
-// 	 *          "importexport"={
-// 	 *              "order"=120
-// 	 *          }
-// 	 *      }
-// 	 * )
-// 	 */
-// 	protected $paymentOption;
-
-// 	/**
-// 	 * @var string
-// 	 *
-// 	 * @ORM\Column(name="payment_interval", type="integer", nullable=false, options={"default" : "12"})
-// 	 * @Oro\Versioned
-// 	 * @ConfigField(
-// 	 *      defaultValues={
-// 	 *          "dataaudit"={
-// 	 *              "auditable"=true
-// 	 *          },
-// 	 *          "importexport"={
-// 	 *              "order"=125
-// 	 *          }
-// 	 *      }
-// 	 * )
-// 	 */
-// 	protected $paymentInterval = 12;
-
 	/**
 	 * @var string
 	 *
@@ -316,7 +279,7 @@ class MemberProposal extends ExtendMemberProposal implements
 	/**
 	 * @var Member
 	 *
-	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="proposals")
+	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberProposals")
 	 * @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
 	 * @Oro\Versioned
 	 * @ConfigField(
@@ -587,7 +550,7 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @see \Oro\Bundle\EmailBundle\Model\EmailHolderInterface::getEmail()
 	 */
 	public function getEmail() {
-	    $this->getEmailAddress();
+	    return $this->getEmailAddress();
 	}
 
 	/**
@@ -662,38 +625,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	{
 	    return $this->isActive;
 	}
-
-// 	/**
-// 	 * @return string
-// 	 */
-// 	public function getPaymentOption() {
-// 		return $this->paymentOption;
-// 	}
-
-// 	/**
-// 	 * @param string $value
-// 	 * @return MemberProposal
-// 	 */
-// 	public function setPaymentOption($value) {
-// 		$this->paymentOption = $value;
-// 		return $this;
-// 	}
-
-// 	/**
-// 	 * @return string
-// 	 */
-// 	public function getPaymentInterval() {
-// 	    return $this->paymentInterval;
-// 	}
-
-// 	/**
-// 	 * @param string $value
-// 	 * @return MemberProposal
-// 	 */
-// 	public function setPaymentInterval($value) {
-// 	    $this->paymentInterval = $value;
-// 	    return $this;
-// 	}
 
 	/**
 	 * @return MemberProposalBankAccount

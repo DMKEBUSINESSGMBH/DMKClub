@@ -13,6 +13,8 @@ parameters:
     dmkclub_member.memberproposal.form.handler.class:    DMKClub\Bundle\MemberBundle\Form\Handler\MemberProposalHandler
     dmkclub_member.memberproposal.address.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\ProposalAddressType
     dmkclub_member.memberproposal.bankaccount.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\ProposalBankAccountType
+    dmkclub_member.memberproposal.createmember.form.type.class:    DMKClub\Bundle\MemberBundle\Form\Type\CreateMemberByProposalType
+    dmkclub_member.memberproposal.createmember.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\CreateMemberByProposalHandler
 
 
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
@@ -57,6 +59,13 @@ services:
         class: "%dmkclub_member.memberproposal.bankaccount.form.type.class%"
         tags:
             - { name: form.type, alias: dmkclub_member_proposal_bankaccount }
+
+    dmkclub_member.memberproposal.createmember.form.type:
+        class: "%dmkclub_member.memberproposal.createmember.form.type.class%"
+        arguments:
+            - "@translator"
+        tags:
+            - { name: form.type, alias: dmkclub_member_creatememberbyproposal }
 
     dmkclub_member.memberbilling.form.type:
         class: "%dmkclub_member.memberbilling.form.type.class%"
@@ -132,6 +141,14 @@ services:
             - ~
             - { data_class: "%dmkclub_member.memberproposal.entity.class%" }
 
+    dmkclub_member.memberproposal.createmember.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - "dmkclub_member_creatememberbyproposal_form"
+            - "dmkclub_member_creatememberbyproposal"
+
     dmkclub_member.memberbilling.form:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
@@ -193,6 +210,15 @@ services:
             - "@dmkclub_member.memberproposal.form"
             - "@request"
             - "@doctrine.orm.entity_manager"
+
+    dmkclub_member.memberproposal.createmember.form.handler:
+        class: "%dmkclub_member.memberproposal.createmember.form.handler.class%"
+        scope: request
+        arguments:
+            - "@dmkclub_member.memberproposal.createmember.form"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
+            - "@dmkclub_member.member.manager"
 
     dmkclub_member.memberbilling.form.handler:
         class: "%dmkclub_member.memberbilling.form.handler.class%"

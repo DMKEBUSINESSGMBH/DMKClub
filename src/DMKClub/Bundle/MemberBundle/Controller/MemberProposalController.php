@@ -126,4 +126,35 @@ class MemberProposalController extends Controller
         return ['entity' => $member];
     }
 
+    /**
+     * Create member by proposal
+     * @Route("/{id}/createmember", name="dmkclub_member_proposal_createmember", requirements={"id"="\d+"})
+     * @Template
+     * @AclAncestor("dmkclub_member_create")
+     */
+    public function createMemberAction(MemberProposal $entity)
+    {
+        $form = $this->getCreateMemberForm();
+        $response = [
+            'entity' => $entity,
+            'saved' => false,
+        ];
+
+        // Form auswerten
+        if ($this->get('dmkclub_member.memberproposal.createmember.form.handler')->process($entity)) {
+            $response['message'] = 'finished';
+            $response['saved'] = true;
+        }
+        $response['form'] = $form->createView();
+
+        return $response;
+    }
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function getCreateMemberForm()
+    {
+        return $this->get('dmkclub_member.memberproposal.createmember.form');
+    }
+
 }

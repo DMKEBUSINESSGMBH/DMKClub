@@ -11,6 +11,8 @@ dmkclub:
         name.label:          Name
         member_code.label:   Club ID
         member_code_short.label:   Club ID
+        member_code_int.label:   Club ID (Number)
+        member_code_int_short.label:   Club ID (Number)
         member_fees.label:   Fees
         member_fee_discounts.label:   Fee discounts
         payment_option.label: Payment option
@@ -79,6 +81,10 @@ dmkclub:
             bank_account.label:  Bank account
             member.label:        Member
             organization.label:  Organization
+            action:
+                createmember:       Create member
+                createmember.data:  Additional information for membership
+            
             message:
                 saved:           Member proposal saved
             labels:

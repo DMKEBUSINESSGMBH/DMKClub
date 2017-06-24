@@ -116,6 +116,7 @@ class DMKClubMemberBundleInstaller implements Installation,
 		$table->addColumn('account_id', 'integer', ['notnull' => false]);
 		$table->addColumn('contact_id', 'integer', ['notnull' => false]);
 		$table->addColumn('member_code', 'string', ['notnull' => false, 'length' => 255]);
+		$table->addColumn('member_code_int', 'integer', ['notnull' => false, 'default' => 0]);
 		$table->addColumn('start_date', 'date', ['notnull' => false]);
 		$table->addColumn('end_date', 'date', ['notnull' => false]);
 		$table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);

@@ -8,6 +8,30 @@
 {% oro_title_set({params : {"%member.name%": fullname} }) %}
 
 {% block navButtons %}
+    {% if not entity.member %}
+        {{ UI.clientButton({
+            'dataUrl' : path('dmkclub_member_proposal_createmember', { id: entity.id }),
+            'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberproposal.action.createmember'|trans ,
+            'aCss' : 'btn-primary',
+            'label' : 'dmkclub.member.memberproposal.action.createmember'|trans,
+            'widget' : {
+                'type' : 'dialog',
+                'multiple' : false,
+                'options' : {
+                    'stateEnabled': false,
+                    'dialogOptions' : {
+                        'title' : 'dmkclub.member.memberproposal.action.createmember'|trans,
+                        'allowMaximize': true,
+                        'allowMinimize': true,
+                        'dblclick': 'maximize',
+                        'maximizedHeightDecreaseBy': 'minimize-bar',
+                        'width': 600
+                    }
+                }
+            }
+    	}) }}
+    {% endif %}
+
     {{ UI.cancelButton(path('dmkclub_member_proposal_index')) }}
     {% if resource_granted('EDIT', entity) %}
         {{ UI.editButton({

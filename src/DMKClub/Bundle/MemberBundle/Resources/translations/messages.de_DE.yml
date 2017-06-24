@@ -10,6 +10,8 @@ dmkclub:
         name.label:          Name
         member_code.label:   Mitgliedsnummer
         member_code_short.label:  Mgl-Nr.
+        member_code_int.label:   Mitgliedsnummer (Zahl)
+        member_code_int_short.label:   Mgl-Nr. (Zahl)
         member_fees.label:   Beiträge
         member_fee_discounts.label:  Ermäßigungen
         payment_option.label:   Zahlungsart
@@ -73,6 +75,9 @@ dmkclub:
             bank_account.label:  Bankverbindung
             member.label:        Mitglied
             organization.label:  Organisation
+            action:
+                createmember:       Mitglied aufnehmen
+                createmember.data:  Zusätzliche Informationen zur Mitgliedschaft
             message:
                 saved:           Der Mitgliedsantrag wurde gespeichert
             labels:

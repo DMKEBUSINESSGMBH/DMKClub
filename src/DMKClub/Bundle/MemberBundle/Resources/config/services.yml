@@ -1,5 +1,6 @@
 parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
+    dmkclub_member.member.manager.class:                   DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager
     dmkclub_member.memberbilling.manager.class:            DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager
     dmkclub_member.memberfee.manager.class:                DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager
 
@@ -40,6 +41,11 @@ services:
             - "@oro_segment.query.dynamic_segment.query_builder"
             - "@oro_segment.query.static_segment.query_builder"
             - "@dmkclub_basics.job_executor"
+    dmkclub_member.member.manager:
+        class:     "%dmkclub_member.member.manager.class%"
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@service_container"
 
     dmkclub_member.memberfee.manager:
         class:     "%dmkclub_member.memberfee.manager.class%"
