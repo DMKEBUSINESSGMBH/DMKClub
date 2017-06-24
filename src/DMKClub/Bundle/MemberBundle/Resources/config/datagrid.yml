@@ -292,6 +292,9 @@ datagrid:
             status:
                 label:         dmkclub.member.memberproposal.status.label
                 choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('memberproposal_status')"
+#                context:
+#                    enum_code: memberproposal_status
+#                frontend_type: enum
             birthday:
                 label:         dmkclub.member.memberproposal.birthday.label
                 frontend_type: date
