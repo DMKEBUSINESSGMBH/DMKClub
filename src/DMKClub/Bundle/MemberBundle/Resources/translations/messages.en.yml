@@ -77,6 +77,9 @@ dmkclub:
             payment_interval.label: Payment interval
             postal_address.label: Postal address
             status.label:        Status
+            discount_reason.label:        Reason
+            discount_start_date.label:    Start date
+            discount_end_date.label:      End date
             data_channel.label:  Data channel
             bank_account.label:  Bank account
             member.label:        Member

@@ -1,0 +1,13 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
+{% import 'OroCRMSalesBundle::macros.html.twig' as sales %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderProperty('dmkclub.member.memberproposal.discount_start_date.label'|trans, entity.discountStartDate ? entity.discountStartDate|oro_format_date : null) }}
+            {{ UI.renderProperty('dmkclub.member.memberproposal.discount_end_date.label'|trans, entity.discountEndDate ? entity.discountEndDate|oro_format_date : null) }}
+            {{ UI.renderProperty('dmkclub.member.memberproposal.discount_reason.label'|trans, entity.discountReason) }}
+        </div>
+    </div>
+</div>

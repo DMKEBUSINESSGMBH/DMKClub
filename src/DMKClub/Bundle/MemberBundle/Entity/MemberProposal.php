@@ -277,6 +277,42 @@ class MemberProposal extends ExtendMemberProposal implements
 	protected $postalAddress;
 
 	/**
+	 * @var \Date
+	 *
+	 * @ORM\Column(name="discount_start_date", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $discountStartDate;
+	/**
+	 * @var \Date
+	 *
+	 * @ORM\Column(name="discount_end_date", type="date", nullable=true)
+	 * @ConfigField(
+	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          }
+	 *      }
+	 * )
+	 * @Oro\Versioned
+	 */
+	protected $discountEndDate;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="discount_reason", type="string", length=255, nullable=true)
+	 */
+	protected $discountReason;
+
+	/**
 	 * @var Member
 	 *
 	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberProposals")
@@ -658,6 +694,39 @@ class MemberProposal extends ExtendMemberProposal implements
 	{
 		$this->postalAddress = $address;
         return $this;
+	}
+
+	public function getDiscountStartDate()
+	{
+	    return $this->discountStartDate;
+	}
+
+	public function setDiscountStartDate($discountStartDate)
+	{
+	    $this->discountStartDate = $discountStartDate;
+	    return $this;
+	}
+
+	public function getDiscountEndDate()
+	{
+	    return $this->discountEndDate;
+	}
+
+	public function setDiscountEndDate($discountEndDate)
+	{
+	    $this->discountEndDate = $discountEndDate;
+	    return $this;
+	}
+
+	public function getDiscountReason()
+	{
+	    return $this->discountReason;
+	}
+
+	public function setDiscountReason($discountReason)
+	{
+	    $this->discountReason = $discountReason;
+	    return $this;
 	}
 
 	/**

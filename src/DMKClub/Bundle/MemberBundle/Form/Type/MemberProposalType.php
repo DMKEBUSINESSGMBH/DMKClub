@@ -105,6 +105,20 @@ class MemberProposalType extends AbstractType
             'required' => false,
             'label' => self::LABEL_PREFIX.'job_title.label'
         ])
+        ->add('discountReason', 'text', [
+            'required' => false,
+            'label' => self::LABEL_PREFIX.'discount_reason.label'
+        ])
+        ->add('discountStartDate', 'oro_date', [
+            'required' => false,
+            'label' => self::LABEL_PREFIX.'discount_start_date.label'
+
+        ])
+        ->add('discountEndDate', 'oro_date', [
+            'required' => false,
+            'label' => self::LABEL_PREFIX.'discount_end_date.label'
+
+        ])
         ->add('comment', 'textarea', [
             'label' => self::LABEL_PREFIX.'comment.label'
         ]);

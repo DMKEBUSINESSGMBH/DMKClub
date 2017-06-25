@@ -88,6 +88,13 @@
         }) }}
     {% endset %}
 
+    {% set memberDiscountInfo %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url':         path('dmkclub_member_proposal_widget_discountinfo', {id: entity.id})
+        }) }}
+    {% endset %}
+
 
     {% set dataBlocks = [
         {
@@ -99,6 +106,10 @@
                 },
                 {
                 	'data' : [memberAdditionalInfo],
+                },
+                {
+                    'title': 'dmkclub.member.memberfeediscount.entity_label'|trans,
+                    'data': [memberDiscountInfo],
                 }
             ]
         }

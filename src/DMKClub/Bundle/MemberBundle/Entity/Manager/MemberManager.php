@@ -15,6 +15,7 @@ use Oro\Bundle\AddressBundle\Entity\Address;
 use DMKClub\Bundle\PaymentBundle\Entity\BankAccount;
 use DMKClub\Bundle\MemberBundle\Model\MemberStatus;
 use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
+use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 
 class MemberManager implements ContainerAwareInterface {
 	/**
@@ -64,16 +65,28 @@ class MemberManager implements ContainerAwareInterface {
             $phone->setPrimary(true);
             $contact->addPhone($phone);
         }
-        if($entity->getPostalAddress()) {
+        if($proposalAddress = $entity->getPostalAddress()) {
             $address = new Address();
             $address->setCity($entity->getPostalAddress()->getCity());
             $address->setCountry($entity->getPostalAddress()->getCountry());
-            $address->setFirstName($entity->getPostalAddress()->getFirstName());
+
+            $useMemberName = (!$proposalAddress->getFirstName() && !$proposalAddress->getLastName());
+            $address->setFirstName(
+                $useMemberName ? $entity->getFirstName() : $proposalAddress->getFirstName()
+            );
             $address->setLabel($entity->getPostalAddress()->getLabel());
-            $address->setLastName($entity->getPostalAddress()->getLastName());
-            $address->setMiddleName($entity->getPostalAddress()->getMiddleName());
-            $address->setNamePrefix($entity->getPostalAddress()->getNamePrefix());
-            $address->setNameSuffix($entity->getPostalAddress()->getNameSuffix());
+            $address->setLastName(
+                $useMemberName ? $entity->getLastName() : $proposalAddress->getLastName()
+            );
+            $address->setMiddleName(
+                $useMemberName ? $entity->getMiddleName() : $proposalAddress->getMiddleName()
+            );
+            $address->setNamePrefix(
+                $useMemberName ? $entity->getNamePrefix() : $proposalAddress->getNamePrefix()
+            );
+            $address->setNameSuffix(
+                $useMemberName ? $entity->getNameSuffix() : $proposalAddress->getNameSuffix()
+            );
             $address->setPostalCode($entity->getPostalAddress()->getPostalCode());
             $address->setRegion($entity->getPostalAddress()->getRegion());
             $address->setRegionText($entity->getPostalAddress()->getRegionText());
@@ -92,6 +105,14 @@ class MemberManager implements ContainerAwareInterface {
             $bankAccount->setDirectDebitValidFrom($entity->getBankAccount()->getDirectDebitValidFrom());
 
             $member->setBankAccount($bankAccount);
+        }
+        if ($entity->getDiscountStartDate()) {
+            $feeDiscount = new MemberFeeDiscount();
+            $feeDiscount->setStartDate($entity->getDiscountStartDate());
+            $feeDiscount->setEndDate($entity->getDiscountEndDate());
+            $feeDiscount->setReason($entity->getDiscountReason());
+
+            $member->addMemberFeeDiscount($feeDiscount);
         }
         $contact
             ->setBirthday($entity->getBirthday())

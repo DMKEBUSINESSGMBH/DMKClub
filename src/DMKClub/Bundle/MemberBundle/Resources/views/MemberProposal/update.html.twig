@@ -87,6 +87,8 @@
         form_row(form.nameSuffix),
         form_row(form.emailAddress),
         form_row(form.phone),
+        form_row(form.paymentOption),
+        form_row(form.paymentInterval),
         
         form_row(form.dataChannel)
 
@@ -113,6 +115,14 @@
                         form_row(form.comment),
                     ]
                 },
+                {
+                    'title': 'dmkclub.member.memberfeediscount.entity_label'|trans,
+                    'data': [
+                        form_row(form.discountStartDate),
+                        form_row(form.discountEndDate),
+                        form_row(form.discountReason),
+                    ]
+                },
             ]
         }]
     %}
@@ -123,9 +133,7 @@
         {
             'title': 'dmkclub.member.bank_account.label'|trans,
             'data': [
-                form_widget(form.bankAccount),
-                form_row(form.paymentOption),
-                form_row(form.paymentInterval)
+                form_widget(form.bankAccount)
             ]
         },
         {

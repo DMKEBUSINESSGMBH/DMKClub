@@ -127,6 +127,16 @@ class MemberProposalController extends Controller
     }
 
     /**
+     * @Route("/widget/discountinfo/{id}", name="dmkclub_member_proposal_widget_discountinfo", requirements={"id"="\d+"}))
+     * @AclAncestor("dmkclub_member_proposal_view")
+     * @Template
+     */
+    public function discountInfoAction(MemberProposal $member)
+    {
+        return ['entity' => $member];
+    }
+
+    /**
      * Create member by proposal
      * @Route("/{id}/createmember", name="dmkclub_member_proposal_createmember", requirements={"id"="\d+"})
      * @Template

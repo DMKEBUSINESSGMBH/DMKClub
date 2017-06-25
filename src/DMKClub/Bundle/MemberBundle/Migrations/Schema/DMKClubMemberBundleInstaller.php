@@ -314,6 +314,9 @@ class DMKClubMemberBundleInstaller implements Installation,
 // 	    $table->addColumn('payment_option', 'string', ['default' => 'none', 'notnull' => false, 'length' => 20]);
 // 	    $table->addColumn('payment_interval', 'integer', ['default' => '12', 'notnull' => true]);
 	    $table->addColumn('job_title', 'string', ['notnull' => false, 'length' => 255]);
+	    $table->addColumn('discount_start_date', 'date', ['notnull' => false]);
+	    $table->addColumn('discount_end_date', 'date', ['notnull' => false]);
+	    $table->addColumn('discount_reason', 'string', ['notnull' => false, 'length' => 255]);
 	    $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
 	    $table->addColumn('updatedat', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
 	    $table->addIndex(['bank_account'], 'idx_a0f68dcc53a23e0a', []);
