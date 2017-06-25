@@ -192,6 +192,8 @@ services:
             - "@dmkclub_member.member.form"
             - "@request"
             - "@doctrine.orm.entity_manager"
+            - "@dmkclub.payment.sepa.iban.openiban"
+            - "@logger"
         tags:
             - { name: oro_tag.tag_manager }
 
@@ -210,6 +212,8 @@ services:
             - "@dmkclub_member.memberproposal.form"
             - "@request"
             - "@doctrine.orm.entity_manager"
+            - "@dmkclub.payment.sepa.iban.openiban"
+            - "@logger"
 
     dmkclub_member.memberproposal.createmember.form.handler:
         class: "%dmkclub_member.memberproposal.createmember.form.handler.class%"

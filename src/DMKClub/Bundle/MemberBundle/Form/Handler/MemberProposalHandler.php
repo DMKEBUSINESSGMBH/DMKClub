@@ -7,8 +7,9 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use OroCRM\Bundle\ContactUsBundle\Entity\ContactRequest;
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
+use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
+use Monolog\Logger;
 
 class MemberProposalHandler
 {
@@ -21,16 +22,21 @@ class MemberProposalHandler
     /** @var EntityManager */
     protected $em;
 
+    protected $openIban;
+    protected $logger;
+
     /**
      * @param FormInterface $form
      * @param Request       $request
      * @param EntityManager $em
      */
-    public function __construct(FormInterface $form, Request $request, EntityManager $em)
+    public function __construct(FormInterface $form, Request $request, EntityManager $em, OpenIBAN $openIban, Logger $logger)
     {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->em      = $em;
+        $this->form     = $form;
+        $this->request  = $request;
+        $this->em       = $em;
+        $this->openIban = $openIban;
+        $this->logger   = $logger;
     }
 
     /**
@@ -48,14 +54,34 @@ class MemberProposalHandler
             $this->getForm()->submit($this->request);
 
             if ($this->getForm()->isValid()) {
-                $this->em->persist($entity);
-                $this->em->flush();
+
+                $this->onSuccess($entity);
 
                 return true;
             }
         }
 
         return false;
+    }
+    protected function onSuccess(MemberProposal $entity)
+    {
+        $bankAccount = $entity->getBankAccount();
+        if($bankAccount && $bankAccount->getIban() && !$bankAccount->getBic()) {
+            try {
+                $bankData = $this->openIban->lookupBic($bankAccount->getIban());
+                if($bankData) {
+                    $bankAccount->setBic($bankData->bic);
+                    if(!$bankAccount->getBankName()) {
+                        $bankAccount->setBankName($bankData->name);
+                    }
+                }
+            }
+            catch(\Exception $e) {
+                $this->logger->error('IBAN validation failed', ['e' => $e]);
+            }
+        }
+        $this->em->persist($entity);
+        $this->em->flush();
     }
 
     /**

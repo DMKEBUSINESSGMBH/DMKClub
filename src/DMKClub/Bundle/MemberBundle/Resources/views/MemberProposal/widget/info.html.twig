@@ -26,6 +26,13 @@ Wird in der Detailansicht des Antrags verwendet
             {{ UI.renderProperty('dmkclub.member.memberproposal.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
             {{ UI.renderProperty('dmkclub.member.memberproposal.payment_interval.label'|trans, dmkclub_paymentinterval(entity.paymentInterval)) }}
 
+            {%- if resource_granted('dmkclub_member_view') and entity.member -%}
+                {% set memberView = '<a href="' ~ path('dmkclub_member_view', {'id': entity.member.id}) ~ '">' ~ entity.member|oro_format_name|escape ~ '</a>' %}
+            {%- else -%}
+                {% set memberView = entity.member ? entity.member|oro_format_name|escape : '' %}
+            {%- endif -%}
+            {{ UI.renderHtmlProperty('dmkclub.member.memberproposal.member.label'|trans, memberView) }}
+
         </div>
         <div class="responsive-block">
             {{ entityConfig.renderDynamicFields(entity) }}

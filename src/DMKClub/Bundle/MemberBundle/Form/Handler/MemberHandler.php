@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use Oro\Bundle\TagBundle\Entity\TagManager;
+use Monolog\Logger;
+use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
 
 class MemberHandler
 {
@@ -22,6 +24,9 @@ class MemberHandler
     /** @var ObjectManager */
     protected $manager;
 
+    protected $openIban;
+    protected $logger;
+
     /**
      * @param FormInterface          $form
      * @param Request                $request
@@ -31,11 +36,15 @@ class MemberHandler
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager
+        ObjectManager $manager,
+        OpenIBAN $openIban,
+        Logger $logger
     ) {
-        $this->form                   = $form;
-        $this->request                = $request;
-        $this->manager                = $manager;
+        $this->form      = $form;
+        $this->request   = $request;
+        $this->manager   = $manager;
+        $this->openIban  = $openIban;
+        $this->logger    = $logger;
     }
 
     /**
@@ -69,7 +78,23 @@ class MemberHandler
 	 * @param Member $entity
 	 */
 	protected function onSuccess(Member $entity) {
-		$this->manager->persist($entity);
+	    $bankAccount = $entity->getBankAccount();
+	    if($bankAccount && $bankAccount->getIban() && !$bankAccount->getBic()) {
+	        try {
+	            $bankData = $this->openIban->lookupBic($bankAccount->getIban());
+	            if($bankData) {
+	                $bankAccount->setBic($bankData->bic);
+	                if(!$bankAccount->getBankName()) {
+	                    $bankAccount->setBankName($bankData->name);
+	                }
+	            }
+	        }
+	        catch(\Exception $e) {
+	            $this->logger->error('IBAN validation failed', ['e' => $e]);
+	        }
+	    }
+
+	    $this->manager->persist($entity);
 		$this->manager->flush();
 		$this->tagManager->saveTagging($entity);
 	}
