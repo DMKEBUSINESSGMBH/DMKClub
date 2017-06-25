@@ -723,7 +723,7 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	    return $this->memberCodeInt;
 	}
 
-	public function setMemberCodeInt(string $memberCodeInt)
+	public function setMemberCodeInt($memberCodeInt)
 	{
 	    $this->memberCodeInt = $memberCodeInt;
 	    return $this;

@@ -8,6 +8,7 @@ datagrid:
                 select:
                     - m.id
                     - m.memberCode
+                    - m.memberCodeInt
                     - c.firstName
                     - c.lastName
                     - m.isHonorary
@@ -39,6 +40,9 @@ datagrid:
         columns:
             memberCode:
                 label:         dmkclub.member.member_code.label
+                renderable:    false
+            memberCodeInt:
+                label:         dmkclub.member.member_code_int.label
             firstName:
                 label:         orocrm.contact.first_name.label
             lastName:
@@ -103,6 +107,8 @@ datagrid:
             columns:
                 memberCode:
                     data_name: m.memberCode
+                memberCodeInt:
+                    data_name: m.memberCodeInt
                 lastName:
                     data_name: c.lastName
                 firstName:
@@ -142,6 +148,10 @@ datagrid:
                 memberCode:
                     type: string
                     data_name: m.memberCode
+                memberCodeInt:
+                    type: number
+                    data_name: m.memberCodeInt
+                    enabled: false
                 firstName:
                     type: string
                     enabled: false
