@@ -419,6 +419,13 @@ datagrid:
                     type: string
                     enabled: false
                     data_name: b.iban
+                createdAt:
+                    type:      datetime
+                    data_name: mp.createdAt
+                    enabled: false
+                updatedAt:
+                    type:      datetime
+                    data_name: mp.updatedAt
         properties:
             id: ~
             view_link:
