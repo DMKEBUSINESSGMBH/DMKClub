@@ -291,23 +291,31 @@ datagrid:
                 renderable:    false
             firstName:
                 label:         dmkclub.member.memberproposal.first_name.label
+                inline_editing:
+                    enable:    true
             middleName:
                 label:         dmkclub.member.memberproposal.middle_name.label
                 renderable:    false
             lastName:
                 label:         dmkclub.member.memberproposal.last_name.label
+                inline_editing:
+                    enable:    true
             nameSuffix:
                 label:         dmkclub.member.memberproposal.name_suffix.label
                 renderable:    false
             status:
                 label:         dmkclub.member.memberproposal.status.label
-                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('memberproposal_status')"
-#                context:
-#                    enum_code: memberproposal_status
-#                frontend_type: enum
+#                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('memberproposal_status')"
+                context:
+                    enum_code: memberproposal_status
+                frontend_type: enum
+                inline_editing:
+                    enable:    true
             birthday:
                 label:         dmkclub.member.memberproposal.birthday.label
                 frontend_type: date
+                inline_editing:
+                    enable:    true
             isActive:
                 label:         dmkclub.member.memberproposal.is_active.label
                 renderable:    false
