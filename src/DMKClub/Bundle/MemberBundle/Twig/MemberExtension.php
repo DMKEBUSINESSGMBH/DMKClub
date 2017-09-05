@@ -3,6 +3,9 @@
 namespace DMKClub\Bundle\MemberBundle\Twig;
 
 use DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider;
+use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager;
+use DMKClub\Bundle\MemberBundle\Entity\Member;
+use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 class MemberExtension extends \Twig_Extension
 {
@@ -11,12 +14,17 @@ class MemberExtension extends \Twig_Extension
      */
     protected $statusProvider;
 
+    /** @var MemberManager */
+    protected $mbrManager;
+
     /**
      * @param MemberStatusProvider $statusProvider
+     * @param MemberManager $mbrManager
      */
-    public function __construct(MemberStatusProvider $statusProvider)
+    public function __construct(MemberStatusProvider $statusProvider, MemberManager $mbrManager)
     {
         $this->statusProvider = $statusProvider;
+        $this->mbrManager = $mbrManager;
     }
 
     /**
@@ -26,9 +34,10 @@ class MemberExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'dmkclub_memberstatus' => new \Twig_Function_Method($this, 'getMemberStatusLabel'),
-        );
+            'dmkclub_memberByContact' => new \Twig_Function_Method($this, 'getMemberByContact'),
+        ];
     }
 
     /**
@@ -43,6 +52,16 @@ class MemberExtension extends \Twig_Extension
 
         return $this->statusProvider->getLabelByName($name);
     }
+
+    /**
+     * @param Contact $contact
+     * @return Member|null
+     */
+    public function getMemberByContact(Contact $contact)
+    {
+        return $this->mbrManager->findMemberByContact($contact);
+    }
+
 
     /**
      * Returns the name of the extension.

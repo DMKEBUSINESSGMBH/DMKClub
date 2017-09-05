@@ -80,7 +80,9 @@ services:
             - "@translator"
     dmkclub_member.member.twig.extension:
         class:                        "%dmkclub_member.member.twig.class%"
-        arguments:                    ["@dmkclub_member.member.status_provider"]
+        arguments:
+            - "@dmkclub_member.member.status_provider"
+            - "@dmkclub_member.member.manager"
         tags:
             - { name: twig.extension }
 

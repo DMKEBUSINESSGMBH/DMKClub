@@ -39,6 +39,9 @@ dmkclub:
 
         message.saved: Member saved
         fees.label: Membership fee
+        links:
+            contact2member.title: "Member ID: %memberid%"
+            contact2member.label: Open member
 
         dashboard.memberType.label: Member type
         dashboard.memberType.all: All

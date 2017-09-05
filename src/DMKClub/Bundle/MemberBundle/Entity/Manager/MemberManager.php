@@ -136,6 +136,17 @@ class MemberManager implements ContainerAwareInterface {
 
     /**
      *
+     * @param Contact $contact
+     *
+     * @return Member|NULL
+     */
+    public function findMemberByContact(Contact $contact)
+    {
+        return $this->getMemberRepository()->findOneBy(['contact' => $contact->getId()]);
+    }
+
+    /**
+     *
      * @return MemberRepository
      */
 	public function getMemberRepository() {

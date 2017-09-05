@@ -34,6 +34,10 @@ dmkclub:
         status.active: Laufende Mitgliedschaft
         status.terminated: Beendete Mitgliedschaft
 
+        links:
+            contact2member.title: "Mitglieds-Nr: %memberid%"
+            contact2member.label: Zum Mitglied
+
         dashboard.memberType.label: Art des Mitglieds
         dashboard.memberType.all: Alle
         dashboard.members_in_active_chart.title: Aktive und passive Mitglieder

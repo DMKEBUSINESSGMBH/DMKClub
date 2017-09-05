@@ -1,0 +1,14 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set member = dmkclub_memberByContact(entity) %}
+{% if member %}
+{{ UI.button({
+    'path': path('dmkclub_member_view', { 'id': member.id }),
+    'aCss': 'btn-success',
+    'iCss': 'icon-forward',
+    'id': 'bp-view',
+    'title' : 'dmkclub.member.links.contact2member.title'|trans({'%memberid%': member.memberCode}),
+    'label' : 'dmkclub.member.links.contact2member.label'|trans
+})
+}}
+{% endif %}
