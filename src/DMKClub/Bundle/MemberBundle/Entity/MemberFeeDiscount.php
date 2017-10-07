@@ -18,9 +18,6 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFeeDiscount;
  *   defaultValues={
  *     "entity"={
  *       "icon"="icon-list-alt"
- *     },
- *     "dataaudit"={
- *       "auditable"=true
  *     }
  *   }
  * )
@@ -41,22 +38,14 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount
     /**
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFeeDiscounts")
      * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      * @Oro\Versioned
      */
-    private $member;
+    protected $member;
 
     /**
      *
      * @var \Date
      * @ORM\Column(name="start_date", type="date", nullable=true)
-     * @ConfigField(
-     * defaultValues={
-     *     "dataaudit"={
-     *       "auditable"=true
-     *     }
-     *   }
-     * )
      * @Oro\Versioned
      */
     protected $startDate;
@@ -65,13 +54,6 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount
      *
      * @var \Date
      * @ORM\Column(name="end_date", type="date", nullable=true)
-     * @ConfigField(
-     *   defaultValues={
-     *     "dataaudit"={
-     *       "auditable"=true
-     *     }
-     *   }
-     * )
      * @Oro\Versioned
      */
     protected $endDate;
@@ -219,6 +201,14 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount
      */
     public function __toString()
     {
-        return (string) $this->getId();
+        $data = [
+            $this->getReason(),
+            ',',
+            $this->getStartDate()->format('d.m.Y'),
+            ' - ',
+            ($this->getEndDate() ? $this->getEndDate()->format('d.m.Y') : '...')
+        ];
+        $str = implode('', $data);
+        return $str;
     }
 }
