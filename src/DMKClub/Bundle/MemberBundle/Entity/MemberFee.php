@@ -698,7 +698,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
         return $this->getBilling()->getName() . ' - ' . $this->getId();
     }
 
-    /**
+    /*
      * (non-PHPdoc)
      *
      * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface::isSepaDirectDebitPossible()

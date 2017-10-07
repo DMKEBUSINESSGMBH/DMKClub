@@ -132,6 +132,13 @@ dmkclub:
             processor.label:     Prozessor
             processor_config.label: Prozessor Einstellung
             position_labels.label: Texte für Positionen
+            position_labels.tooltip: >
+              Placeholder for positions:
+              <pre>
+              FEE Beitrag vom [STARTDATE] bis [ENDDATE]<br/>
+              ADMISSION  Aufnahmegebühr<br/>
+              FEECORRECTION Beitragskorrektur<br/>
+              </pre>
             export_filesystem.label: Ziel für PDF-Export
             fee.label:            Mitgliedsbeitrag
             fee_discount.label:   Mitgliedsbeitrag reduziert
@@ -140,6 +147,9 @@ dmkclub:
             age_child.label:      Altersgrenze für Kinderbeitrag
             age_child.tooltip:    Das Alter, ab dem das Mitglied den vollen Beitrag bezahlen muss.
             member_fees.label:    Mitgliedsbeiträge
+            segment.label:        Mitgliedersegment
+            template.label:       PDF Template
+            template.tooltip:     PDF Template für die Generierung des Rechnungsdokuments
             organization.label:   Organisation
             data_channel.label:   Kanal
             block.processor_settings: Einstellungen

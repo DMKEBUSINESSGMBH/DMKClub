@@ -133,25 +133,33 @@ dmkclub:
             id.label:            Id
             owner.label:         Owner
             name.label:          Name
-            fee_total.label:    Fee total
+            fee_total.label:     Fee total
             start_date.label:    Start date
             end_date.label:      End date
             sepa_creditor.label: SEPA account
-            processor.label: Processor
-            processor_config.label: Processor config
-            position_labels.label: Position labels
+            processor.label:     Processor
+            processor_config.label:  Processor config
+            position_labels.label:   Position labels
+            position_labels.tooltip: >
+              Placeholder for positions:
+              <pre>
+              FEE Fee from [STARTDATE] to [ENDDATE]<br/>
+              ADMISSION  admission fee<br/>
+              FEECORRECTION fee correction<br/>
+              </pre>
             export_filesystem.label: Target for pdf exports
-            fee.label:    Membership Fee
-            fee_discount.label:      Discount Fee
+            fee.label:            Membership Fee
+            fee_discount.label:   Discount Fee
             fee_admission.label:  Fee admission for new Members
             fee_child.label:      Fee reduced for childs
             age_child.label:      max Age for child fee
-            age_child.tooltip:      This is the age when a member has to pay the full fee
+            age_child.tooltip:    This is the age when a member has to pay the full fee
             member_fees.label:    Member fees
-            segment.label:  Segment
-            template.label:  PDF Template
-            organization.label:  Organization
-            data_channel.label: Data channel
+            segment.label:        Member segment
+            template.label:       PDF Template
+            template.tooltip:     PDF Template for bill document
+            organization.label:   Organization
+            data_channel.label:   Data channel
             block.processor_settings: Settings
             message.saved: Settings saved
             message.accounting.started: "Fee accounting executed. Members evaluated: %d, skipped: %d, errors: %d"

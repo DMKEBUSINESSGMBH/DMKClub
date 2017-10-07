@@ -70,7 +70,11 @@ class MemberBillingType extends AbstractType {
 			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.memberbilling.name.label'))
 			->add('startDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.start_date.label'))
 			->add('endDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.end_date.label'))
-			->add('positionLabels', 'textarea', array('required' => true, 'label' => 'dmkclub.member.memberbilling.position_labels.label'))
+			->add('positionLabels', 'textarea', [
+			    'required' => true,
+			    'label' => 'dmkclub.member.memberbilling.position_labels.label',
+			    'tooltip' => 'dmkclub.member.memberbilling.position_labels.tooltip'
+			])
 
 			->add('exportFilesystem', 'choice', array(
 					'required' => false,
@@ -79,9 +83,6 @@ class MemberBillingType extends AbstractType {
 					'empty_value' => 'dmkclub.form.choose',
 				)
 			)
-
-// 			->add('owner')
-// 			->add('organization')
 		;
 	}
 	protected function getFilesystems() {
@@ -120,7 +121,7 @@ class MemberBillingType extends AbstractType {
 				'segment',
 				'dmkclub_member_segment_select_type',
 				[
-						'label' => 'oro.segment.entity_label',
+						'label' => 'dmkclub.member.memberbilling.segment.label',
 						'required' => false,
 						'entities' => [
 								'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
@@ -141,8 +142,9 @@ class MemberBillingType extends AbstractType {
 				'template',
 				'dmkclub_basics_twigtemplate_select',
 				[
-						'label' => 'dmkclub.member.memberbilling.template.label',
-						'required' => false,
+				    'label' => 'dmkclub.member.memberbilling.template.label',
+					'required' => false,
+				    'tooltip' => 'dmkclub.member.memberbilling.template.tooltip'
 				]
 		);
 
