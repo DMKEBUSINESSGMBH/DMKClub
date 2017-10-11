@@ -20,6 +20,7 @@ use DMKClub\Bundle\PaymentBundle\Sepa\SepaException;
 use DMKClub\Bundle\PaymentBundle\Sepa\Transaction;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 
 class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	const FLUSH_BATCH_SIZE = 100;
@@ -70,13 +71,11 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 		$data = $args->getData();
 		$massAction = $args->getMassAction();
 		$options = $massAction->getOptions()->toArray();
- 		$query = $args->getResults()->getSource();
-// 		$query->getQuery()->getAST()->
 
 		$this->entityManager->beginTransaction();
 		try {
 			set_time_limit(0);
- 			$result = $this->handleExport($options, $data, $query);
+			$result = $this->handleExport($options, $data, $args->getResults());
 			$this->entityManager->commit();
 		} catch (\Exception $e) {
 			$this->entityManager->rollback();
@@ -98,7 +97,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 	 * @param Query $query Die Query des Datagrids
 	 * @return int
 	 */
-	protected function handleExport($options, $data, $query) {
+	protected function handleExport($options, $data, IterableResultInterface $results) {
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
 
@@ -113,12 +112,11 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface {
 			}
 		}
 		elseif($isAllSelected) {
-			$result = $query->iterate();
-			foreach ($result as $row) {
-				$row = reset($row);
-				$entityId = $row['id']; // sollte aus dem data_identifier geholt werden
-				if($this->handleItem($entityId, $entity_name))
+			foreach ($results as $result) {
+			    $entityId = $result->getValue('id');
+				if($this->handleItem($entityId, $entity_name)) {
 					$iteration++;
+				}
 			}
 		}
 		$ret = [$iteration];

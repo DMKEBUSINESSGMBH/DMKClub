@@ -747,8 +747,10 @@ datagrid:
                 frontend_type: html
             firstName:
                 label:         orocrm.contact.first_name.label
+                renderable:    false
             lastName:
                 label:         orocrm.contact.last_name.label
+                renderable:    false
             correctionStatus:
                 label:         dmkclub.member.memberfee.correction_status.label
                 frontend_type: boolean
@@ -897,6 +899,12 @@ datagrid:
                 data_identifier: f.id
                 label: dmkclub.member.memberfee.action.unmark_feecorrection
                 icon: minus
+            dmksendmemberfee:
+                type: dmksendmemberfee
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.send_memberfee
+                icon: envelope
         options:
             export: true
 

@@ -11,6 +11,7 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use Doctrine\ORM\Query;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 
 class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 	const MARK = 'MARK';
@@ -58,13 +59,10 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 		$massAction = $args->getMassAction();
 		$options = $massAction->getOptions()->toArray();
 
- 		$query = $args->getResults()->getSource();
-// 		$query->getQuery()->getAST()->
-
 		$this->entityManager->beginTransaction();
 		try {
 			set_time_limit(0);
- 			$iteration = $this->handleFeeCorrection($options, $data, $query);
+			$iteration = $this->handleFeeCorrection($options, $data, $args->getResults());
 			$this->entityManager->commit();
 		} catch (\Exception $e) {
 			$this->entityManager->rollback();
@@ -80,7 +78,7 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 	 * @param Query $query Die Query des Datagrids
 	 * @return int
 	 */
-	protected function handleFeeCorrection($options, $data, $query) {
+	protected function handleFeeCorrection($options, $data, IterableResultInterface $results) {
 		$markType = $options['mark_type'];
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
@@ -95,11 +93,10 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface {
 		}
 		// FIXME: wir benötigen noch den aktuellen memberBilling
 		if ($feeIds || $isAllSelected) {
-			$result = $query->iterate();
-			foreach ($result as $row) {
+			foreach ($results as $result) {
 				/** @var MemberFee $entity */
-				$entity = reset($row);
-				$entity = $this->feeManager->getMemberFeeRepository()->find($entity['id']);
+				$entityId = $result->getValue('id');
+				$entity = $this->feeManager->getMemberFeeRepository()->find($entityId);
 
 				if ($this->securityFacade->isGranted('EDIT', $entity)) {
 					$this->feeManager->setFeeCorrectionStatus($entity, $markType === self::MARK);

@@ -3,6 +3,9 @@ parameters:
     dmkclub_member.mass_action.unmark_memberfee_correction.class:   DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionUnmarkAction
     dmkclub_member.mass_action.mark_memberfee_correction_handler.class:   DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionHandler
 
+    dmkclub_member.mass_action.send_memberfee.class:   DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\SendMemberFeeAction
+    dmkclub_member.mass_action.send_memberfee_handler.class:   DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\SendMemberFeeHandler
+
 services:
     dmkclub_member.datagrid.mass_action.mark_fee_correction:
         class: "%dmkclub_member.mass_action.mark_memberfee_correction.class%"
@@ -23,4 +26,17 @@ services:
             - "@translator"
             - "@oro_security.security_facade.link"
             - "@dmkclub_member.memberfee.manager"
-            
+
+    dmkclub_member.datagrid.mass_action.send_memberfee:
+        class: "%dmkclub_member.mass_action.send_memberfee.class%"
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: dmksendmemberfee }
+
+    dmkclub_member.datagrid.mass_action.send_memberfee_handler:
+        class: "%dmkclub_member.mass_action.send_memberfee_handler.class%"
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@translator"
+            - "@oro_security.security_facade.link"
+            - "@dmkclub_member.memberfee.manager"

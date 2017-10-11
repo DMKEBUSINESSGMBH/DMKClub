@@ -14,6 +14,7 @@ use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 use Doctrine\ORM\Query;
 use Psr\Log\LoggerInterface;
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 
 class DownloadPdfHandler implements MassActionHandlerInterface {
 	const FLUSH_BATCH_SIZE = 100;
@@ -61,13 +62,11 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 		$data = $args->getData();
 		$massAction = $args->getMassAction();
 		$options = $massAction->getOptions()->toArray();
- 		$query = $args->getResults()->getSource();
-// 		$query->getQuery()->getAST()->
 
 		$this->entityManager->beginTransaction();
 		try {
 			set_time_limit(0);
- 			$data = $this->handleExport($options, $data, $query);
+			$data = $this->handleExport($options, $data, $args->getResults());
 			$this->entityManager->commit();
 		} catch (\Exception $e) {
 			$this->entityManager->rollback();
@@ -80,10 +79,10 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 	/**
 	 * @param array $options
 	 * @param array $data
-	 * @param Query $query Die Query des Datagrids
+	 * @param IterableResultInterface $results
 	 * @return int
 	 */
-	protected function handleExport($options, $data, $query) {
+	protected function handleExport($options, $data, IterableResultInterface $results) {
 		$isAllSelected = $this->isAllSelected($data);
 		$iteration = 0;
 
@@ -98,10 +97,8 @@ class DownloadPdfHandler implements MassActionHandlerInterface {
 		}
 		elseif($isAllSelected) {
 			$entityIds = [];
-			$result = $query->iterate();
-			foreach ($result as $row) {
-				$row = reset($row);
-				$entityIds[] = $row['id'];
+			foreach ($results as $result) {
+			    $entityIds[] = $result->getValue('id');
 			}
 			$jobData['entity_ids'] = implode(',',$entityIds);
 

@@ -195,10 +195,12 @@ dmkclub:
             organization.label:  Organization
             data_channel.label: Data channel
             corrected.label:  corrected
-            action.mark_feecorrection: Mark fee correction
-            action.unmark_feecorrection: Unmark fee correction
-            action.download_bill: Download bill
-            action.export_bill: Export bill
+            action:
+                mark_feecorrection: Mark fee correction
+                unmark_feecorrection: Unmark fee correction
+                send_memberfee:     Send fee by email
+                download_bill:      Download bill
+                export_bill:        Export bill
         memberfeeposition:
             entity_label:        Membership fee position
             entity_plural_label: Membership fee positions

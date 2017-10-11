@@ -183,10 +183,12 @@ dmkclub:
             organization.label:  Organisation
             data_channel.label: Kanal
             corrected.label:  korrigiert
-            action.mark_feecorrection: Korrektur markieren
-            action.unmark_feecorrection: Korrektur entfernen
-            action.download_bill: Rechnung herunterladen
-            action.export_bill:   Rechnung exportieren
+            action:
+                mark_feecorrection: Korrektur markieren
+                unmark_feecorrection: Korrektur entfernen
+                send_memberfee:  Rechnung versenden
+                download_bill:   Rechnung herunterladen
+                export_bill:     Rechnung exportieren
         memberfeeposition:
             entity_label:        Position für Mitgliedsbeitrag
             entity_plural_label: Position für Mitgliedsbeiträge
