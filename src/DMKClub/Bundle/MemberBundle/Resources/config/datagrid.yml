@@ -701,12 +701,16 @@ datagrid:
                 select:
                     - m.id as mid
                     - m.memberCode
+                    - m.memberCodeInt
                     - m.name
+                    - c.firstName
+                    - c.lastName
                     - po.id as paymentOption
                     - po.name as paymentOptionLabel
                     - m.isActive
                     - m.startDate As mbrStart
                     - m.endDate As mbrEnd
+                    - email.email
                 where:
                     and:
                         - f.billing = :billing
@@ -714,6 +718,8 @@ datagrid:
                     left:
                         - { join: f.member, alias: m }
                         - { join: m.payment_option, alias: po }
+                        - { join: m.contact, alias: c }
+                        - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
             bind_parameters:
                 - billing
         totals:
@@ -730,12 +736,19 @@ datagrid:
         columns:
             memberCode:
                 label:         dmkclub.member.member_code_short.label
+                renderable:    false
+            memberCodeInt:
+                label:         dmkclub.member.member_code_int.label
             name:
                 type:          link
                 route:         dmkclub_member_view
                 params:        {id: mid}
                 label:         dmkclub.member.name.label
                 frontend_type: html
+            firstName:
+                label:         orocrm.contact.first_name.label
+            lastName:
+                label:         orocrm.contact.last_name.label
             correctionStatus:
                 label:         dmkclub.member.memberfee.correction_status.label
                 frontend_type: boolean
@@ -757,6 +770,9 @@ datagrid:
                 label:         dmkclub.member.payment_option.label
                 choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
                 type:          translatable
+            email:
+                renderable:    false
+                label:         orocrm.contact.email.label
         properties:
             id: ~
             delete_link:
@@ -779,8 +795,14 @@ datagrid:
             columns:
                 memberCode:
                     data_name: m.memberCode
+                memberCodeInt:
+                    data_name: m.memberCodeInt
                 name:
                     data_name: m.name
+                lastName:
+                    data_name: c.lastName
+                firstName:
+                    data_name: c.firstName
                 isActive:
                     data_name: m.isActive
                 mbrStart:
@@ -791,6 +813,8 @@ datagrid:
                     data_name: corrected
                 mbrEnd:
                     data_name: m.endDate
+                email:
+                    data_name: email.email
             default:
                 name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
@@ -798,9 +822,25 @@ datagrid:
                 name:
                     type: string
                     data_name: m.name
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                    enabled: false
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                    enabled: false
                 memberCode:
                     type: string
                     data_name: m.memberCode
+                memberCodeInt:
+                    type: number
+                    data_name: m.memberCodeInt
+                    enabled: false
+                email:
+                    type: string
+                    data_name: email.email
+                    enabled: false
                 paymentOptionLabel:
                     type:      enum
                     data_name: m.payment_option
