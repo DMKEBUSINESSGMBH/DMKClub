@@ -40,3 +40,5 @@ services:
             - "@translator"
             - "@oro_security.security_facade.link"
             - "@dmkclub_member.memberfee.manager"
+            - "@dmkclub_member.mailer.processor"
+            - "@logger"

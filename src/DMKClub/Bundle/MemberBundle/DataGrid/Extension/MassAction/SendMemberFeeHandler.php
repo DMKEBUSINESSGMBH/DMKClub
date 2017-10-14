@@ -2,14 +2,22 @@
 namespace DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query;
+
 use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
-use Doctrine\ORM\Query;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+
+use Psr\Log\LoggerInterface;
+
+use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
+use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
+use DMKClub\Bundle\MemberBundle\Mailer\Processor;
+use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 
 class SendMemberFeeHandler implements MassActionHandlerInterface
 {
@@ -34,18 +42,33 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
     /** @var MemberFeeManager */
     protected $feeManager;
 
+    /** @var Processor */
+    protected $mailer;
+
+    /** @var LoggerInterface */
+    protected $logger;
+
     /**
      *
      * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
      * @param ServiceLink $securityFacadeLink
      */
-    public function __construct(EntityManager $entityManager, TranslatorInterface $translator, ServiceLink $securityFacadeLink, MemberFeeManager $feeManager)
+    public function __construct(
+        EntityManager $entityManager,
+        TranslatorInterface $translator,
+        ServiceLink $securityFacadeLink,
+        MemberFeeManager $feeManager,
+        Processor $mailer,
+        LoggerInterface $logger
+    )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->securityFacade = $securityFacadeLink->getService();
         $this->feeManager = $feeManager;
+        $this->mailer = $mailer;
+        $this->logger = $logger;
     }
 
     /**
@@ -63,14 +86,14 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
         $this->entityManager->beginTransaction();
         try {
             set_time_limit(0);
-            $iteration = $this->handleSendMemberFee($options, $data, $args->getResults());
+            $result = $this->handleSendMemberFee($options, $data, $args->getResults());
             $this->entityManager->commit();
         } catch (\Exception $e) {
             $this->entityManager->rollback();
-            throw $e;
+            return $this->getErrorResponse($args, $e);
         }
 
-        return $this->getResponse($args, $iteration);
+        return $this->getResponse($args, $result);
     }
 
     /**
@@ -79,12 +102,13 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
      * @param array $data
      * @param Query $query
      *            Die Query des Datagrids
-     * @return int
+     * @return [] keys: iteration, errors
      */
     protected function handleSendMemberFee($options, $data, IterableResultInterface $results)
     {
         $isAllSelected = $this->isAllSelected($data);
         $iteration = 0;
+        $errorCnt = 0;
 
         $feeIds = [];
         if (array_key_exists('values', $data)) {
@@ -92,13 +116,29 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
         }
         if ($feeIds || $isAllSelected) {
             foreach ($results as $result) {
-                /** @var MemberFee $entity */
+                /* @var MemberFee $entity */
                 $entityId = $result->getValue('id');
                 $entity = $this->feeManager->getMemberFeeRepository()->find($entityId);
 
-                // SEND EMAIL
+                try {
+                    // SEND EMAIL
+                    $this->mailer->sendBillToMemberEmail($entity);
+                }
+                catch (TemplateNotFoundException $tnfe) {
+                    // Ohne Template wird keine Mail verschickt werden.
+                    throw $tnfe;
+                }
+                catch (\Exception $e) {
+                    $this->logger->error(sprintf('Fee mailing failed for member %s (%s), fee-id: %d, Error: %s',
+                        $entity->getMember()->getName(),
+                        $entity->getMember()->getId(),
+                        $entity->getId(),
+                        $e->getMessage()
+                    ));
+                    // Diese Exception wird nicht weitergegeben, damit der Rest versendet wird
+                    $errorCnt += 1;
+                }
 
-                // $this->entityManager->persist($entity);
 
                 if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
                     $this->entityManager->flush();
@@ -110,7 +150,7 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
             $this->entityManager->flush();
         }
 
-        return $iteration;
+        return ['iteration'=>$iteration, 'errors' => $errorCnt];
     }
 
     /**
@@ -130,19 +170,47 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
      *
      * @return MassActionResponse
      */
-    protected function getResponse(MassActionHandlerArgs $args, $entitiesCount = 0)
+    protected function getResponse(MassActionHandlerArgs $args, $result)
     {
+        $entitiesCount = $result['iteration'];
+        $errors = $result['errors'];
+
         $massAction = $args->getMassAction();
-        $responseMessage = 'oro.email.datagrid.mark.success_message'; // FIXME!!
+//        $responseMessage = 'oro.email.datagrid.mark.success_message'; // FIXME!!
+        $responseMessage = 'dmkclub.member.memberfee.action.send_memberfee.success_message';
         $responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $responseMessage);
 
         $successful = $entitiesCount > 0;
         $options = [
-            'count' => $entitiesCount
+            'count' => $entitiesCount,
+            'errors' => $errors,
         ];
 
         return new MassActionResponse($successful, $this->translator->transChoice($responseMessage, $entitiesCount, [
-            '%count%' => $entitiesCount
+            '%count%' => $entitiesCount,
+            '%errors%' => $errors,
+        ]), $options);
+    }
+
+    /**
+     *
+     * @param MassActionHandlerArgs $args
+     * @param int $entitiesCount
+     *
+     * @return MassActionResponse
+     */
+    protected function getErrorResponse(MassActionHandlerArgs $args, \Exception $e)
+    {
+        $massAction = $args->getMassAction();
+        $responseMessage = 'dmkclub.basics.datagrid.action.error_message';
+        $responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][error]', $responseMessage);
+
+        $options = [
+            'msg' => $e->getMessage(),
+        ];
+
+        return new MassActionResponse(false, $this->translator->trans($responseMessage, [
+            '%msg%' => $e->getMessage()
         ]), $options);
     }
 }

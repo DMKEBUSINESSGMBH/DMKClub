@@ -881,6 +881,12 @@ datagrid:
                 data_identifier: f.id
                 label: dmkclub.member.memberfee.action.download_bill
                 icon: download-alt
+            dmksendmemberfee:
+                type: dmksendmemberfee
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.send_memberfee.label
+                icon: envelope
             sepadebitxml:
                 type: dmksepadebitxml
                 entity_name: "%dmkclub_member.memberfee.entity.class%"
@@ -899,12 +905,6 @@ datagrid:
                 data_identifier: f.id
                 label: dmkclub.member.memberfee.action.unmark_feecorrection
                 icon: minus
-            dmksendmemberfee:
-                type: dmksendmemberfee
-                entity_name: "%dmkclub_member.memberfee.entity.class%"
-                data_identifier: f.id
-                label: dmkclub.member.memberfee.action.send_memberfee
-                icon: envelope
         options:
             export: true
 

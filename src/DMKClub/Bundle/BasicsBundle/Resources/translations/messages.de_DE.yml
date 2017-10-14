@@ -10,8 +10,10 @@ dmkclub:
             category.dmkclub_data.label: DMKClub Daten
 
         datagrid:
-            action.success_message: "{0} Es wurden keine PDFs exportiert|{1} Es wurde ein PDF exportiert|]1,Inf[ Es wurden %count% PDFs exportiert"
-            action.exportpdf: PDF exportieren
+            action:
+                error_message: "Fehler bei der Verarbeitung: %msg%"
+                success_message: "{0} Es wurden keine PDFs exportiert|{1} Es wurde ein PDF exportiert|]1,Inf[ Es wurden %count% PDFs exportiert"
+                exportpdf: PDF exportieren
             download.exportpdf: PDF herunterladen
 
 dmkclub.basics.label.yes: Ja

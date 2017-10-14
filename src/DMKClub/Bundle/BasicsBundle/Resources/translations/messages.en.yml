@@ -21,6 +21,9 @@ dmkclub:
             action.exportpdf: Export as PDF
             action.downloadpdf: Download as PDF
 
+            action:
+                error_message: "Error processing action: %msg%"
+
 dmkclub.basics.menu.twigtemplate_list.description: Manage twig templates for PDF generation
 dmkclub.basics.label.yes: Yes
 dmkclub.basics.label.no: No
