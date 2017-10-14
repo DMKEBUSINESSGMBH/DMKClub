@@ -738,7 +738,7 @@ datagrid:
                 label:         dmkclub.member.member_code_short.label
                 renderable:    false
             memberCodeInt:
-                label:         dmkclub.member.member_code_int.label
+                label:         dmkclub.member.member_code_int_short.label
             name:
                 type:          link
                 route:         dmkclub_member_view
@@ -839,6 +839,9 @@ datagrid:
                     type: number
                     data_name: m.memberCodeInt
                     enabled: false
+                isActive:
+                    type: boolean
+                    data_name: m.active
                 email:
                     type: string
                     data_name: email.email
