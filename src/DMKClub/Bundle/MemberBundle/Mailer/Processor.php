@@ -28,7 +28,7 @@ class Processor extends BaseProcessor
     {
         $member = $fee->getMember();
         // Create PDF
-        $fileName = $this->pdfManager->buildPdf($fee);
+        $fileName = $this->buildFeePdf($fee);
         $attachment = new Attachment($fileName);
 
         return $this->getEmailTemplateAndSendEmail(
@@ -39,4 +39,13 @@ class Processor extends BaseProcessor
         );
     }
 
+    /**
+     *
+     * @param MemberFee $fee
+     * @return string path to pdf file
+     */
+    protected function buildFeePdf(MemberFee $fee)
+    {
+        return $this->pdfManager->buildPdf($fee);
+    }
 }
