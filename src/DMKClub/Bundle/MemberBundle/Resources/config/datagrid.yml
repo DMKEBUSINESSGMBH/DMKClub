@@ -166,7 +166,7 @@ datagrid:
                 isActive:
                     type: boolean
                     enabled: false
-                    data_name: m.active
+                    data_name: m.isActive
                 status:
                     type: choice
                     data_name: m.status
@@ -841,7 +841,7 @@ datagrid:
                     enabled: false
                 isActive:
                     type: boolean
-                    data_name: m.active
+                    data_name: m.isActive
                 email:
                     type: string
                     data_name: email.email
