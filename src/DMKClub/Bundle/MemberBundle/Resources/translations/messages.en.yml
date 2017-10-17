@@ -200,7 +200,7 @@ dmkclub:
                 unmark_feecorrection: Unmark fee correction
                 send_memberfee:
                     label:             Send fee by email
-                    success_message:   "{0} No fees were marked|{1} One fee was sent. Errors: %errors% |]1,Inf[ %count% fees were sent. Errors: %errors%"
+                    success_message:   "{0} No fees were marked|{1} One fee was scheduled to sent. |]1,Inf[ %count% fees were scheduled to sent."
                 download_bill:      Download bill
                 export_bill:        Export bill
         memberfeeposition:

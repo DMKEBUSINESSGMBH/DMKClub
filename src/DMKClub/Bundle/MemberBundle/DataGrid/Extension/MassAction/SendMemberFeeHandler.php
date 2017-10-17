@@ -14,14 +14,14 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use Psr\Log\LoggerInterface;
 
-use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
+use JMS\JobQueueBundle\Entity\Job;
+use DMKClub\Bundle\MemberBundle\Command\SendFeeMailsCommand;
 
 class SendMemberFeeHandler implements MassActionHandlerInterface
 {
-
     const FLUSH_BATCH_SIZE = 100;
 
     /**
@@ -108,51 +108,42 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
     {
         $isAllSelected = $this->isAllSelected($data);
         $iteration = 0;
-        $errorCnt = 0;
 
         $feeIds = [];
         if (array_key_exists('values', $data)) {
             $feeIds = explode(',', $data['values']);
         }
         if ($feeIds || $isAllSelected) {
+            $idBag = [];
             foreach ($results as $result) {
-                /* @var MemberFee $entity */
+                $iteration ++;
                 $entityId = $result->getValue('id');
-                $entity = $this->feeManager->getMemberFeeRepository()->find($entityId);
-
-                try {
-                    // SEND EMAIL
-                    $this->mailer->sendBillToMemberEmail($entity);
-                }
-                catch (TemplateNotFoundException $tnfe) {
-                    // Ohne Template wird keine Mail verschickt werden.
-                    throw $tnfe;
-                }
-                catch (\Exception $e) {
-                    $this->logger->error(sprintf('Fee mailing failed for member %s (%s), fee-id: %d, Error: %s',
-                        $entity->getMember()->getName(),
-                        $entity->getMember()->getId(),
-                        $entity->getId(),
-                        $e->getMessage()
-                    ));
-                    // Diese Exception wird nicht weitergegeben, damit der Rest versendet wird
-                    $errorCnt += 1;
-                }
-
+                $idBag[] = $entityId;
 
                 if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
+                    $this->scheduleSendCommand($idBag);
+                    $idBag = [];
                     $this->entityManager->flush();
                     $this->entityManager->clear();
                 }
-                $iteration ++;
+            }
+            if (!empty($idBag)) {
+                $this->scheduleSendCommand($idBag);
             }
 
             $this->entityManager->flush();
         }
 
-        return ['iteration'=>$iteration, 'errors' => $errorCnt];
+        return $iteration;
     }
 
+    protected function scheduleSendCommand($ids)
+    {
+        $idArg = implode(',', $ids);
+        $job = new Job(SendFeeMailsCommand::NAME, ['ids' => $idArg]);
+        $this->entityManager->persist($job);
+        $this->entityManager->flush();
+    }
     /**
      *
      * @param array $data
@@ -170,25 +161,20 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
      *
      * @return MassActionResponse
      */
-    protected function getResponse(MassActionHandlerArgs $args, $result)
+    protected function getResponse(MassActionHandlerArgs $args, $entitiesCount)
     {
-        $entitiesCount = $result['iteration'];
-        $errors = $result['errors'];
 
         $massAction = $args->getMassAction();
-//        $responseMessage = 'oro.email.datagrid.mark.success_message'; // FIXME!!
         $responseMessage = 'dmkclub.member.memberfee.action.send_memberfee.success_message';
         $responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $responseMessage);
 
         $successful = $entitiesCount > 0;
         $options = [
             'count' => $entitiesCount,
-            'errors' => $errors,
         ];
 
         return new MassActionResponse($successful, $this->translator->transChoice($responseMessage, $entitiesCount, [
             '%count%' => $entitiesCount,
-            '%errors%' => $errors,
         ]), $options);
     }
 
