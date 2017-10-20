@@ -48,9 +48,13 @@ class SendFeeMailsCommand extends ContainerAwareCommand {
 	{
 	    return $this->getContainer()->get('dmkclub_member.mailer.processor');
 	}
+
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
-		$this->output = $output;
+
+	    $this->initLanguage();
+
+	    $this->output = $output;
 		$ids = $input->getArgument('ids');
 		try {
 		    $result = $this->processEmails(explode(',', $ids));
@@ -93,5 +97,13 @@ class SendFeeMailsCommand extends ContainerAwareCommand {
 	        }
 	    }
 	    return ['cnt' => $iteration, 'errors' => $errorCnt];
+	}
+
+	protected function initLanguage()
+	{
+	    /* @var \Oro\Bundle\ConfigBundle\Config\ConfigManager */
+	    $configManager = $this->getContainer()->get('oro_config.global');
+	    $t = $this->getContainer()->get('translator');
+	    $t->setLocale($configManager->get('oro_locale.language'));
 	}
 }

@@ -119,7 +119,7 @@ class BaseProcessor
         return $this->managerRegistry
             ->getManagerForClass('OroEmailBundle:EmailTemplate')
             ->getRepository('OroEmailBundle:EmailTemplate')
-            ->findOneBy(['name' => $emailTemplateName]);
+            ->findByName($emailTemplateName);
     }
 
     /**
