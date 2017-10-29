@@ -84,9 +84,9 @@ class MemberType extends AbstractType
 				);
 			$builder->add(
 					'contact',
-					'orocrm_contact_select',
+					'oro_contact_select',
 					[
-							'label'    => 'orocrm.sales.b2bcustomer.contact.label',
+							'label'    => 'dmkclub.member.contact.label',
 							'required' => true,
 					]
 				);
@@ -100,10 +100,10 @@ class MemberType extends AbstractType
 			);
 			$builder->add(
 				'dataChannel',
-				'orocrm_channel_select_type',
+				'oro_channel_select_type',
 				[
 					'required' => true,
-					'label'    => 'orocrm.sales.b2bcustomer.data_channel.label',
+					'label'    => 'oro.sales.b2bcustomer.data_channel.label',
 					'entities' => [
 							'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
 					],

@@ -1,6 +1,6 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
-{% import 'OroCRMSalesBundle::macros.html.twig' as sales %}
+{% import 'OroSalesBundle::macros.html.twig' as sales %}
 {# 
 Einzeltemplate für ein Mitglied.
 Wird im Account verwendet
@@ -21,10 +21,10 @@ Wird im Account verwendet
 	                {% if entity.contact.birthday is not empty %} ({{ entity.contact.birthday|age_string({'default': 'N/A'}) }}){% endif %}
 	            {%- endset -%}
 
-            	{{ UI.renderProperty('orocrm.contact.birthday.label'|trans, entity.contact.birthday ? birthdayData : null) }}
-	            {{ UI.renderProperty('orocrm.contact.gender.label'|trans, oro_gender(entity.contact.gender)) }}
-	            {{ UI.renderHtmlProperty('orocrm.contact.emails.label'|trans, entity.contact.emails.count ? sales.renderCollectionWithPrimaryElement(entity.contact.emails, true, entity.contact) : null) }}
-	            {{ UI.renderHtmlProperty('orocrm.contact.phones.label'|trans, entity.contact.phones.count ? sales.renderCollectionWithPrimaryElement(entity.contact.phones, false, entity.contact) : null) }}
+            	{{ UI.renderProperty('oro.contact.birthday.label'|trans, entity.contact.birthday ? birthdayData : null) }}
+	            {{ UI.renderProperty('oro.contact.gender.label'|trans, oro_gender(entity.contact.gender)) }}
+	            {{ UI.renderHtmlProperty('oro.contact.emails.label'|trans, entity.contact.emails.count ? sales.renderCollectionWithPrimaryElement(entity.contact.emails, true, entity.contact) : null) }}
+	            {{ UI.renderHtmlProperty('oro.contact.phones.label'|trans, entity.contact.phones.count ? sales.renderCollectionWithPrimaryElement(entity.contact.phones, false, entity.contact) : null) }}
             {% endif %}
             {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_active.label'|trans, entity.isActive) }}
             {{ CLUBUI.renderPropertyBoolean('dmkclub.member.is_honorary.label'|trans, entity.isHonorary) }}
