@@ -70,12 +70,12 @@
 {% block stats %}
     {{ parent() }}
     <li>
-        <div class="pull-right label label-info orocrm-channel-lifetime-value-label">
+        <div class="pull-right label label-info oro-channel-lifetime-value-label">
         {{ 'Membership fee total'|trans }}: {{ CUI.cent2Euro(entity.feeTotal) }}
         </div>
     </li>
     <li>
-        <div class="pull-right label label-success orocrm-channel-lifetime-value-label">
+        <div class="pull-right label label-success oro-channel-lifetime-value-label">
         {{ 'Paid total'|trans }}: {{ CUI.cent2Euro(entity.payedTotal) }}
         </div>
     </li>

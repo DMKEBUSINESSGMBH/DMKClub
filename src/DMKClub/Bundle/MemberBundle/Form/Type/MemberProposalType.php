@@ -140,7 +140,7 @@ class MemberProposalType extends AbstractType
             'label' => 'dmkclub.member.bank_account.label',
             'required' => false
         ]);
-        $builder->add('dataChannel', 'orocrm_channel_select_type', [
+        $builder->add('dataChannel', 'oro_channel_select_type', [
             'required' => true,
             'label' => 'orocrm.sales.b2bcustomer.data_channel.label',
             'entities' => [

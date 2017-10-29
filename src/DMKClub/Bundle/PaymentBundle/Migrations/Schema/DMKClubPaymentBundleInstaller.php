@@ -11,8 +11,9 @@ use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
 use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedSqlMigrationQuery;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 
-class DMKClubPaymentBundleInstaller implements Installation
+class DMKClubPaymentBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
 
     /**
@@ -39,6 +40,9 @@ class DMKClubPaymentBundleInstaller implements Installation
         $this->createDmkclubSepacreditorTable($schema);
 
         $this->addDmkclubSepacreditorForeignKeys($schema);
+
+        self::addPaymentIntervalEnum($schema, $queries, $this->extendExtension);
+        self::addPaymentOptionEnum($schema, $queries, $this->extendExtension);
     }
 
     /**
@@ -233,5 +237,13 @@ class DMKClubPaymentBundleInstaller implements Installation
             $queries->addQuery($dropFieldsQuery);
             $i ++;
         }
+    }
+
+    /**
+     * @param ExtendExtension $extendExtension
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

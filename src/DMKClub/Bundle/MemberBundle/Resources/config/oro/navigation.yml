@@ -41,11 +41,11 @@ navigation:
 
     titles:
         dmkclub_member_index: ~
-        dmkclub_member_view:  "%%member.name%%"
-        dmkclub_member_update:  "%%member.name%% - Edit"
+        dmkclub_member_view:  "%member.name%"
+        dmkclub_member_update:  "%member.name% - Edit"
         dmkclub_member_proposal_index: ~
-        dmkclub_member_proposal_view:  "%%member.name%%"
-        dmkclub_member_proposal_update:  "%%member.name%% - Edit"
+        dmkclub_member_proposal_view:  "%member.name%"
+        dmkclub_member_proposal_update:  "%member.name% - Edit"
         dmkclub_memberbilling_index: ~
-        dmkclub_memberbilling_view:  "%%memberbilling.name%%"
-        dmkclub_memberbilling_update: '%%memberbilling.name%% - Edit'
+        dmkclub_memberbilling_view:  "%memberbilling.name%"
+        dmkclub_memberbilling_update: '%memberbilling.name% - Edit'

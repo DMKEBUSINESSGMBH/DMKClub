@@ -16,13 +16,13 @@ Wird im Account verwendet
         {% endset %}
         {{ UI.renderHtmlProperty('dmkclub.member.name.label'|trans, member_name_link) }}
 
-        {%- if resource_granted('orocrm_contact_view') and member.contact -%}
-            {% set contactView = '<a href="' ~ path('orocrm_contact_view', {'id': member.contact.id}) ~ '">' ~ member.contact|oro_format_name|escape ~ '</a>' %}
+        {%- if resource_granted('oro_contact_view') and member.contact -%}
+            {% set contactView = '<a href="' ~ path('oro_contact_view', {'id': member.contact.id}) ~ '">' ~ member.contact|oro_format_name|escape ~ '</a>' %}
         {%- else -%}
             {% set contactView = member.contact ? member.contact|oro_format_name : '' %}
         {%- endif -%}
 
-        {{ UI.renderHtmlProperty('orocrm.sales.lead.contact.label'|trans, contactView) }}
+        {{ UI.renderHtmlProperty('dmkclub.member.contact.label'|trans, contactView) }}
 
     </div>
 </div>

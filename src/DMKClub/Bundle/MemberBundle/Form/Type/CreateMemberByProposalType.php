@@ -49,7 +49,7 @@ class CreateMemberByProposalType extends AbstractType {
     	    ])
     	    ->add('gender', 'oro_gender', [
     	        'required' => false,
-    	        'label' => 'orocrm.contact.gender.label',
+    	        'label' => 'oro.contact.gender.label',
     	        'constraints' => [
     	            new Assert\NotNull([
     	               'message' => 'This is a required field.'

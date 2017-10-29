@@ -2,7 +2,7 @@
 {% import 'OroTagBundle::macros.html.twig' as tag %}
 {% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 {% import 'OroAddressBundle::macros.html.twig' as address %}
-{% import 'OroCRMChannelBundle::macros.html.twig' as channel %}
+{% import 'OroChannelBundle::macros.html.twig' as channel %}
 {% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
 
 {#
@@ -17,11 +17,11 @@ Wird in der Detailansicht des Antrags verwendet
             {{ UI.renderProperty('dmkclub.member.memberproposal.last_name.label'|trans, entity.lastName) }}
             {{ UI.renderProperty('dmkclub.member.memberproposal.name_suffix.label'|trans, entity.nameSuffix) }}
 
-            {{ channel.renderChannelProperty(entity, 'orocrm.sales.b2bcustomer.data_channel.label') }}
+            {{ channel.renderChannelProperty(entity, 'dmkclub.member.memberproposal.data_channel.label') }}
 
 
             {% if entity.postalAddress is not empty %}
-                {{ UI.renderHtmlProperty('orocrm.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
+                {{ UI.renderHtmlProperty('dmkclub.member.memberproposal.postal_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
             {{ UI.renderProperty('dmkclub.member.memberproposal.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
             {{ UI.renderProperty('dmkclub.member.memberproposal.payment_interval.label'|trans, dmkclub_paymentinterval(entity.paymentInterval)) }}

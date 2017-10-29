@@ -15,10 +15,10 @@ Wird in der Detailansicht des Mitglieds verwendet
             {{ UI.renderProperty('dmkclub.member.name.label'|trans, entity.name) }}
             {{ UI.renderProperty('dmkclub.member.status.label'|trans, dmkclub_memberstatus(entity.status)) }}
 
-            {{ channel.renderChannelProperty(entity, 'orocrm.sales.b2bcustomer.data_channel.label') }}
+            {{ channel.renderChannelProperty(entity, 'oro.sales.b2bcustomer.data_channel.label') }}
 
             {%- if resource_granted('oro_account_view') and entity.account -%}
-                {% set accountView = '<a href="' ~ path('orocrm_account_view', {'id': entity.account.id}) ~ '">' ~ entity.account|escape ~ '</a>' %}
+                {% set accountView = '<a href="' ~ path('oro_account_view', {'id': entity.account.id}) ~ '">' ~ entity.account|escape ~ '</a>' %}
             {%- else -%}
                 {% set accountView = entity.account ? entity.account|escape : '' %}
             {%- endif -%}
@@ -32,7 +32,7 @@ Wird in der Detailansicht des Mitglieds verwendet
             {{ UI.renderHtmlProperty('dmkclub.member.contact.label'|trans, contactView) }}
 
             {% if entity.postalAddress is not empty %}
-                {{ UI.renderHtmlProperty('orocrm.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
+                {{ UI.renderHtmlProperty('oro.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
             {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
             {{ UI.renderProperty('dmkclub.member.payment_interval.label'|trans, dmkclub_paymentinterval(entity.paymentInterval)) }}

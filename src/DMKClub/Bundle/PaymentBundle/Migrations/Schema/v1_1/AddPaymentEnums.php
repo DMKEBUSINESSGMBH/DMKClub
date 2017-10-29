@@ -12,8 +12,8 @@ use Oro\Bundle\MigrationBundle\Migration\OrderedMigrationInterface;
 use DMKClub\Bundle\PaymentBundle\Migrations\Schema\DMKClubPaymentBundleInstaller;
 
 class AddPaymentEnums implements Migration,
-ExtendExtensionAwareInterface,
-OrderedMigrationInterface
+    ExtendExtensionAwareInterface,
+    OrderedMigrationInterface
 {
 
     /** @var ExtendExtension */
