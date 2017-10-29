@@ -1,4 +1,4 @@
-oro_dashboard_config:
+dashboards:
     dashboards:
         dmkclub_dashboard:
             twig: OroDashboardBundle:Index:default.html.twig

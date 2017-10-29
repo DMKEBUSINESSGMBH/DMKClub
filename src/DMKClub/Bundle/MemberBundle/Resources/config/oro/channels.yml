@@ -1,4 +1,4 @@
-orocrm_channel:
+channels:
    entity_data:
        -
           name: DMKClub\Bundle\MemberBundle\Entity\Member
@@ -25,3 +25,5 @@ orocrm_channel:
                 - DMKClub\Bundle\MemberBundle\Entity\MemberProposal
             customer_identity: DMKClub\Bundle\MemberBundle\Entity\Member
 #            lifetime_value: lifetime
+            system: false
+            priority: -20

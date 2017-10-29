@@ -1,4 +1,4 @@
-orocrm_channel:
+channels:
    entity_data:
        -
           name: DMKClub\Bundle\PublicRelationBundle\Entity\PRContact

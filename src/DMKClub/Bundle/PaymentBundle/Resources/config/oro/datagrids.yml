@@ -1,4 +1,4 @@
-datagrid:
+datagrids:
     dmkclub-sepacreditor-grid:
         extended_entity_name: "%dmkclub.payment.sepacreditor.entity.class%"
         acl_resource: dmkclub_sepacreditor_view

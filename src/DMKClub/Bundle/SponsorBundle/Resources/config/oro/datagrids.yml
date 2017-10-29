@@ -1,4 +1,4 @@
-datagrid:
+datagridss:
     dmkclub-sponsors-grid:
         extended_entity_name: "%dmkclub.sponsor.entity.class%"
         acl_resource: dmkclub_sponsor_view

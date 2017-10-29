@@ -1,0 +1,10 @@
+navigation:
+    menu_config:
+        items:
+            accounting_tab:
+                label: 'accounting'
+                uri: '#'
+                display: false
+                extras:
+                    icon: icon-money
+                    position: 11

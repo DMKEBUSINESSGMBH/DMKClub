@@ -1,0 +1,35 @@
+search:
+    DMKClub\Bundle\SponsorBundle\Entity\Sponsor:
+        alias: dmkclub_sponsor
+        label: dmkclub.sponsor.entity_plural_label
+        route:
+            name: dmkclub_sponsor_view
+            parameters:
+                id: id
+        search_template: DMKClubSponsorBundle:Sponsor:searchResult.html.twig
+        fields:
+            -
+                name:                   name
+                target_type:            text
+                target_fields:          [name]
+            -
+                name:                  dataChannel
+                relation_type:         many-to-one
+                relation_fields:
+                    -
+                        name:          id
+                        target_type:   integer
+                        target_fields: [dataChannelId]
+    DMKClub\Bundle\SponsorBundle\Entity\Category:
+        alias: dmkclub_sponsorcategory
+        label: dmkclub.sponsorcategory.entity_plural_label
+        route:
+            name: dmkclub_sponsorcategory_view
+            parameters:
+                id: id
+        search_template: DMKClubSponsorBundle:Category:searchResult.html.twig
+        fields:
+            -
+                name:                   name
+                target_type:            text
+                target_fields:          [name]

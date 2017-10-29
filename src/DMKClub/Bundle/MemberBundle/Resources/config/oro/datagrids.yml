@@ -1,4 +1,4 @@
-datagrid:
+datagrids:
     dmkclub-members-grid:
         extended_entity_name: "%dmkclub_member.member.entity.class%"
         acl_resource: dmkclub_member_view
@@ -142,7 +142,7 @@ datagrid:
                 updatedAt:
                     data_name: m.updatedAt
             default:
-                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                lastName:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 memberCode:

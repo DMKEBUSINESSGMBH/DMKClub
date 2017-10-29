@@ -1,4 +1,4 @@
-datagrid:
+datagrids:
     dmkclub-prcontacts-grid:
         extended_entity_name: "%dmkclub.prcontact.entity.class%"
         acl_resource: dmkclub_prcontact_view
