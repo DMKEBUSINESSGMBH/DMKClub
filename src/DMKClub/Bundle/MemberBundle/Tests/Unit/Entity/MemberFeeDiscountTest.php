@@ -2,11 +2,6 @@
 
 namespace DMKClub\Bundle\MemberBundle\Tests\Unit\Entity;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
-use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
-use DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 
 class MemberFeeDiscountTest extends \PHPUnit_Framework_TestCase {

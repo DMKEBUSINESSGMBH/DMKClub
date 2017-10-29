@@ -2,8 +2,6 @@
 
 namespace DMKClub\Bundle\BasicsBundle\Form\Handler;
 
-use OroCRM\Bundle\ChannelBundle\Provider\RequestChannelProvider;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

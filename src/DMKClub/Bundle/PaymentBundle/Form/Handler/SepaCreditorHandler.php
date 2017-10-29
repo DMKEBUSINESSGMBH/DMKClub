@@ -2,13 +2,11 @@
 
 namespace DMKClub\Bundle\PaymentBundle\Form\Handler;
 
-use OroCRM\Bundle\ChannelBundle\Provider\RequestChannelProvider;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
 use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
 

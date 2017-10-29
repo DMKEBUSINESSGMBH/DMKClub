@@ -6,31 +6,25 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Oro\Bundle\DashboardBundle\Migrations\Data\ORM\AbstractDashboardFixture;
 
-class LoadDashboardData extends AbstractDashboardFixture implements DependentFixtureInterface {
+class LoadDashboardData extends AbstractDashboardFixture implements DependentFixtureInterface
+{
 	/**
-	 *
 	 * @ERROR!!!
-	 *
 	 */
-	public function getDependencies() {
-		return [
-				'Oro\Bundle\DashboardBundle\Migrations\Data\ORM\LoadDashboardData'
-		];
+	public function getDependencies()
+	{
+		return ['Oro\Bundle\DashboardBundle\Migrations\Data\ORM\LoadDashboardData'];
 	}
 
 	/**
-	 *
 	 * @ERROR!!!
-	 *
 	 */
 	public function load(ObjectManager $manager) {
 		// to update existing one
-		$dashboard = $this->findAdminDashboardModel ( $manager, // pass ObjectManager
-			'dmkclub_dashboard' ); // dashboard name
+		$dashboard = $this->findAdminDashboardModel($manager, 'dmkclub_dashboard' );
 		if (! $dashboard) {
 			// create new dashboard
-			$dashboard = $this->createAdminDashboardModel ( $manager, // pass ObjectManager
-				'dmkclub_dashboard' ); // dashboard name
+			$dashboard = $this->createAdminDashboardModel ( $manager,'dmkclub_dashboard' );
 			$dashboard->setLabel(
 					 $this->container->get('translator')->trans('dmkclub.dashboard.title.main')
 			);

@@ -206,7 +206,7 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
 	/**
 	 * @var Contact
 	 *
-	 * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\ContactBundle\Entity\Contact", cascade="PERSIST")
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\ContactBundle\Entity\Contact", cascade="PERSIST")
 	 * @ORM\JoinColumn(name="contact_id", referencedColumnName="id", onDelete="SET NULL")
 	 * @ConfigField(
 	 *      defaultValues={
@@ -325,7 +325,7 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
 	/**
 	 * @var Account
 	 *
-	 * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
 	 * @ORM\JoinColumn(name="account_id", referencedColumnName="id", onDelete="SET NULL")
 	 * @ConfigField(
 	 *      defaultValues={

@@ -2,13 +2,10 @@
 
 namespace DMKClub\Bundle\MemberBundle\Controller\Dashboard;
 
-use Oro\Bundle\EntityExtendBundle\Twig\EnumExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use OroCRM\Bundle\SalesBundle\Entity\Repository\SalesFunnelRepository;
 use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
 
 class DashboardController extends Controller {

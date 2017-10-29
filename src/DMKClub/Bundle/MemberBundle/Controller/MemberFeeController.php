@@ -6,19 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\MemberBundle\Entity\Member;
-use OroCRM\Bundle\AccountBundle\Entity\Account;
-use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
 use FOS\RestBundle\Util\Codes;
-use DMKClub\Bundle\BasicsBundle\Utility\Strings;
 
 /**
  * @Route("/memberfee")

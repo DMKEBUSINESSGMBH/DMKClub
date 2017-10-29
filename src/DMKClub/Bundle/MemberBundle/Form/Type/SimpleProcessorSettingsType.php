@@ -29,7 +29,6 @@ class SimpleProcessorSettingsType extends AbstractProcessorSettingsType
     {
         $resolver->setDefaults(
             [
-//                'data_class' => 'OroCRM\Bundle\CampaignBundle\Entity\InternalTransportSettings'
             ]
         );
     }

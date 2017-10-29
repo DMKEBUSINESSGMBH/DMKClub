@@ -2,13 +2,10 @@
 
 namespace DMKClub\Bundle\SponsorBundle\Form\Handler;
 
-use OroCRM\Bundle\ChannelBundle\Provider\RequestChannelProvider;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
 
 class CategoryHandler
@@ -26,7 +23,6 @@ class CategoryHandler
 	 * @param FormInterface          $form
 	 * @param Request                $request
 	 * @param ObjectManager          $manager
-	 * @param RequestChannelProvider $requestChannelProvider
 	 */
 	public function __construct(
 			FormInterface $form,

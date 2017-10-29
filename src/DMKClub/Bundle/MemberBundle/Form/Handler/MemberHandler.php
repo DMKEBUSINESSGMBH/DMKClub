@@ -2,16 +2,16 @@
 
 namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
-use OroCRM\Bundle\ChannelBundle\Provider\RequestChannelProvider;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
+
 use Oro\Bundle\TagBundle\Entity\TagManager;
-use Monolog\Logger;
+
+use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
+use Monolog\Logger;
 
 class MemberHandler
 {
@@ -31,7 +31,6 @@ class MemberHandler
      * @param FormInterface          $form
      * @param Request                $request
      * @param ObjectManager          $manager
-     * @param RequestChannelProvider $requestChannelProvider
      */
     public function __construct(
         FormInterface $form,

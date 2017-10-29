@@ -1,14 +1,14 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
-use OroCRM\Bundle\ChannelBundle\Provider\RequestChannelProvider;
+use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
+
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\TagBundle\Entity\TagManager;
+
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
-use DMKClub\Bundle\MemberBundle\Model\ProcessorSettings;
-use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
 
 class CreateBillsHandler

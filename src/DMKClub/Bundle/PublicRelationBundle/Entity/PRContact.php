@@ -114,7 +114,7 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface {
 	/**
 	 * @var Account
 	 *
-	 * @ORM\ManyToOne(targetEntity="OroCRM\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
+	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
 	 * @ORM\JoinColumn(name="account_id", referencedColumnName="id", onDelete="SET NULL")
 	 */
 	protected $account;

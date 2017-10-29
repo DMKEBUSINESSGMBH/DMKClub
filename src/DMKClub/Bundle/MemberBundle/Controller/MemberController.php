@@ -12,8 +12,8 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\MemberBundle\Entity\Member;
-use OroCRM\Bundle\AccountBundle\Entity\Account;
-use OroCRM\Bundle\ChannelBundle\Entity\Channel;
+use Oro\Bundle\AccountBundle\Entity\Account;
+use Oro\Bundle\ChannelBundle\Entity\Channel;
 
 /**
  * @Route("/member")
@@ -126,8 +126,8 @@ class MemberController extends Controller
      *      name="dmkclub_member_widget_account_member_info",
      *      requirements={"accountId"="\d+", "channelId"="\d+"}
      * )
-     * @ParamConverter("account", class="OroCRMAccountBundle:Account", options={"id" = "accountId"})
-     * @ParamConverter("channel", class="OroCRMChannelBundle:Channel", options={"id" = "channelId"})
+     * @ParamConverter("account", class="OroAccountBundle:Account", options={"id" = "accountId"})
+     * @ParamConverter("channel", class="OroChannelBundle:Channel", options={"id" = "channelId"})
      * @AclAncestor("dmkclub_member_view")
      * @Template
      */
@@ -145,7 +145,7 @@ class MemberController extends Controller
      *        name="dmkclub_member_widget_member_info",
      *        requirements={"id"="\d+", "channelId"="\d+"}
      * )
-     * @ParamConverter("channel", class="OroCRMChannelBundle:Channel", options={"id" = "channelId"})
+     * @ParamConverter("channel", class="OroChannelBundle:Channel", options={"id" = "channelId"})
      * @AclAncestor("dmkclub_member_view")
      * @Template
      */

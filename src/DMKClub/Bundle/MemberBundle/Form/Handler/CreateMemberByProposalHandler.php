@@ -1,20 +1,16 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
-use OroCRM\Bundle\ChannelBundle\Provider\RequestChannelProvider;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
+
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
-use OroCRM\Bundle\ContactBundle\Entity\ContactEmail;
-use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
-use Oro\Bundle\AddressBundle\Entity\Address;
-use DMKClub\Bundle\PaymentBundle\Entity\BankAccount;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use DMKClub\Bundle\MemberBundle\Model\MemberStatus;
-use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager;
 
 class CreateMemberByProposalHandler

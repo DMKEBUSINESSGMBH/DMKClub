@@ -40,8 +40,8 @@ class MemberFixture extends AbstractTemplateRepository implements TemplateFixtur
 	public function fillEntityData($key, $entity) {
 		$addressRepo = $this->templateManager->getEntityRepository ( 'Oro\Bundle\AddressBundle\Entity\Address' );
 		$userRepo = $this->templateManager->getEntityRepository ( 'Oro\Bundle\UserBundle\Entity\User' );
-		$contactRepo = $this->templateManager->getEntityRepository ( 'OroCRM\Bundle\ContactBundle\Entity\Contact' );
-		$channelRepo = $this->templateManager->getEntityRepository ( 'OroCRM\Bundle\ChannelBundle\Entity\Channel' );
+		$contactRepo = $this->templateManager->getEntityRepository ( 'Oro\Bundle\ContactBundle\Entity\Contact' );
+		$channelRepo = $this->templateManager->getEntityRepository ( 'Oro\Bundle\ChannelBundle\Entity\Channel' );
 		$organizationRepo = $this->templateManager->getEntityRepository ( 'Oro\Bundle\OrganizationBundle\Entity\Organization' );
 
 		switch ($key) {

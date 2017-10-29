@@ -5,7 +5,7 @@ namespace DMKClub\Bundle\MemberBundle\Twig;
 use DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use Oro\Bundle\ContactBundle\Entity\Contact;
 
 class MemberExtension extends \Twig_Extension
 {

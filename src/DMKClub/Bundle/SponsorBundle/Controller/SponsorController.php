@@ -11,8 +11,8 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
-use OroCRM\Bundle\AccountBundle\Entity\Account;
-use OroCRM\Bundle\ChannelBundle\Entity\Channel;
+use Oro\Bundle\AccountBundle\Entity\Account;
+use Oro\Bundle\ChannelBundle\Entity\Channel;
 
 
 /**
@@ -111,20 +111,20 @@ class SponsorController extends Controller {
         ];
     }
     /**
-     * Wird aufgerufen, um im Account einen Abschnitt für die Sponsoren 
+     * Wird aufgerufen, um im Account einen Abschnitt für die Sponsoren
      * einzublenden. Die Einbindung erfolgt über die placeholder.yml
      * Die Methode stellt die Sponsoren-Datensätze des aktuellen Accounts
      * im entsprechenden Channel bereit.
-     * Die eigentlichen Datensätze werden dann in der Route 
+     * Die eigentlichen Datensätze werden dann in der Route
      * dmkclub_sponsor_widget_sponsor_info gerendert.
-     * 
+     *
      * @Route(
      *      "/widget/sponsor-info/account/{accountId}/channel/{channelId}",
      *      name="dmkclub_sponsor_widget_account_sponsor_info",
      *      requirements={"accountId"="\d+", "channelId"="\d+"}
      * )
-     * @ParamConverter("account", class="OroCRMAccountBundle:Account", options={"id" = "accountId"})
-     * @ParamConverter("channel", class="OroCRMChannelBundle:Channel", options={"id" = "channelId"})
+     * @ParamConverter("account", class="OroAccountBundle:Account", options={"id" = "accountId"})
+     * @ParamConverter("channel", class="OroChannelBundle:Channel", options={"id" = "channelId"})
      * @AclAncestor("orocrm_sales_b2bcustomer_view")
      * @Template
      */
@@ -143,7 +143,7 @@ class SponsorController extends Controller {
      *        name="dmkclub_sponsor_widget_sponsor_info",
      *        requirements={"id"="\d+", "channelId"="\d+"}
      * )
-     * @ParamConverter("channel", class="OroCRMChannelBundle:Channel", options={"id" = "channelId"})
+     * @ParamConverter("channel", class="OroChannelBundle:Channel", options={"id" = "channelId"})
      * @AclAncestor("orocrm_magento_customer_view")
      * @Template
      */

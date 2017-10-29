@@ -2,8 +2,6 @@
 
 namespace DMKClub\Bundle\SponsorBundle\Form\Handler;
 
-use OroCRM\Bundle\ChannelBundle\Provider\RequestChannelProvider;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,7 +24,6 @@ class SponsorHandler
 	 * @param FormInterface          $form
 	 * @param Request                $request
 	 * @param ObjectManager          $manager
-	 * @param RequestChannelProvider $requestChannelProvider
 	 */
 	public function __construct(
 			FormInterface $form,

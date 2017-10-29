@@ -2,10 +2,7 @@
 
 namespace DMKClub\Bundle\MemberBundle\Tests\Unit\Accounting;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
-use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor;
 
 class SimpleProcessorTest extends \PHPUnit_Framework_TestCase {

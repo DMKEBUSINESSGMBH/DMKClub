@@ -5,7 +5,7 @@ namespace DMKClub\Bundle\MemberBundle\Tests\Unit\Accounting;
 use DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use Oro\Bundle\ContactBundle\Entity\Contact;
 use Psr\Log\NullLogger;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
