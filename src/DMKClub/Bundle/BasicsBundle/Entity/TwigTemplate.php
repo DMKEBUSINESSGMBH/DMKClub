@@ -2,13 +2,10 @@
 
 namespace DMKClub\Bundle\BasicsBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Symfony\Component\Yaml\Yaml;
@@ -44,7 +41,6 @@ use Symfony\Component\Yaml\Yaml;
  *          }
  *      }
  * )
- * @Oro\Loggable
  */
 class TwigTemplate {
 	/**
@@ -53,7 +49,6 @@ class TwigTemplate {
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *      }
@@ -65,8 +60,6 @@ class TwigTemplate {
 	 * @var string
 	 *
 	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -81,8 +74,6 @@ class TwigTemplate {
 	 * @var string
 	 *
 	 * @ORM\Column(name="template", type="text")
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -98,8 +89,6 @@ class TwigTemplate {
 	 * Generatorklasse für PDF-Dateien
 	 *
 	 * @ORM\Column(name="generator", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -122,8 +111,6 @@ class TwigTemplate {
 	 * @var string
 	 *
 	 * @ORM\Column(name="orientation", type="string", length=50, nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -137,8 +124,6 @@ class TwigTemplate {
 	 * @var string
 	 *
 	 * @ORM\Column(name="page_format", type="text")
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -154,7 +139,6 @@ class TwigTemplate {
 	 * @var \DateTime $createdAt
 	 *
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={
@@ -169,7 +153,6 @@ class TwigTemplate {
 	 * @var \DateTime $updatedAt
 	 *
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={

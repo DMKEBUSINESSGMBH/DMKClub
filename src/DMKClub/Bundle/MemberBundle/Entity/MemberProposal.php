@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
@@ -14,10 +13,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposal;
 use Oro\Bundle\AddressBundle\Entity\Address;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
+use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 
 /**
  * Class MemberProposal
@@ -25,7 +23,6 @@ use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
  * @ORM\Table(name="dmkclub_member_proposal")
  * @ORM\Entity(repositoryClass="DMKClub\Bundle\MemberBundle\Entity\Repository\MemberProposalRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Loggable
  * @Config(
  *      routeName="dmkclub_member_proposal_index",
  *      routeView="dmkclub_member_proposal_view",
@@ -58,7 +55,6 @@ use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
  * )
  */
 class MemberProposal extends ExtendMemberProposal implements
-    ChannelAwareInterface,
     FullNameInterface,
     EmailHolderInterface
     {
@@ -86,7 +82,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *  defaultValues={
 	 *      "dataaudit"={"auditable"=true},
@@ -103,7 +98,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -121,7 +115,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *  defaultValues={
 	 *      "dataaudit"={"auditable"=true},
@@ -137,7 +130,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -155,7 +147,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *  defaultValues={
 	 *      "dataaudit"={"auditable"=true},
@@ -185,7 +176,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var \DateTime
 	 *
 	 * @ORM\Column(name="birthday", type="date", nullable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -213,7 +203,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var boolean
 	 *
 	 * @ORM\Column(type="boolean", name="is_active", options={"default" : false})
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 * 	defaultValues={"dataaudit"={"auditable"=true},
 	 *          "importexport"={
@@ -228,7 +217,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="job_title", type="string", length=255, nullable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *  defaultValues={
 	 *      "dataaudit"={"auditable"=true},
@@ -245,7 +233,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 *
 	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\MemberProposalBankAccount", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(name="bank_account", referencedColumnName="id", onDelete="SET NULL")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -287,7 +274,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $discountStartDate;
 	/**
@@ -301,7 +287,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $discountEndDate;
 
@@ -317,7 +302,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 *
 	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberProposals")
 	 * @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *  defaultValues={
 	 *      "dataaudit"={"auditable"=true},
@@ -386,7 +370,6 @@ class MemberProposal extends ExtendMemberProposal implements
 	 *
 	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
 	 * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *  defaultValues={
 	 *      "dataaudit"={"auditable"=true},

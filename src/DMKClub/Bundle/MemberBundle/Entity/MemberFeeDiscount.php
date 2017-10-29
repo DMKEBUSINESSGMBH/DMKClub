@@ -1,11 +1,8 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFeeDiscount;
 
 /**
@@ -31,14 +28,12 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Soap\ComplexType("int", nillable=true)
      */
     protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFeeDiscounts")
      * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
-     * @Oro\Versioned
      */
     protected $member;
 
@@ -46,7 +41,6 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount
      *
      * @var \Date
      * @ORM\Column(name="start_date", type="date", nullable=true)
-     * @Oro\Versioned
      */
     protected $startDate;
 
@@ -54,7 +48,6 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount
      *
      * @var \Date
      * @ORM\Column(name="end_date", type="date", nullable=true)
-     * @Oro\Versioned
      */
     protected $endDate;
 

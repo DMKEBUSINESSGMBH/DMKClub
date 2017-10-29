@@ -2,24 +2,17 @@
 
 namespace DMKClub\Bundle\PublicRelationBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
-use DMKClub\Bundle\SponsorBundle\Model\ExtendCategory;
 use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRContact;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
-use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
+use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
+use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 
 /**
  * Class P/R Contact
@@ -57,10 +50,9 @@ use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
  *          }
  *      }
  * )
- * @Oro\Loggable
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
-class PRContact extends ExtendPRContact implements ChannelAwareInterface, CustomerIdentityInterface {
+class PRContact extends ExtendPRContact implements ChannelAwareInterface {
 	use ChannelEntityTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
@@ -71,7 +63,6 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface, Custom
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -87,8 +78,6 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface, Custom
 	 * @var string
 	 *
 	 * @ORM\Column(name="name", type="string", length=255)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -134,7 +123,6 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface, Custom
 	 * @var \DateTime $createdAt
 	 *
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={
@@ -149,7 +137,6 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface, Custom
 	 * @var \DateTime $updatedAt
 	 *
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={

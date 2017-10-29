@@ -2,18 +2,12 @@
 
 namespace DMKClub\Bundle\PublicRelationBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
 use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRCategory;
 
@@ -53,7 +47,6 @@ use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRCategory;
  *          }
  *      }
  * )
- * @Oro\Loggable
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
 class PRCategory extends ExtendPRCategory {
@@ -66,7 +59,6 @@ class PRCategory extends ExtendPRCategory {
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -82,8 +74,6 @@ class PRCategory extends ExtendPRCategory {
 	 * @var string
 	 *
 	 * @ORM\Column(name="name", type="string", length=255)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -103,7 +93,6 @@ class PRCategory extends ExtendPRCategory {
 	 * @var \DateTime $createdAt
 	 *
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={
@@ -118,7 +107,6 @@ class PRCategory extends ExtendPRCategory {
 	 * @var \DateTime $updatedAt
 	 *
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={

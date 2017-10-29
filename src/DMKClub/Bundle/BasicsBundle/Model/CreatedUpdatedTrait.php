@@ -3,7 +3,6 @@
 namespace DMKClub\Bundle\BasicsBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 trait CreatedUpdatedTrait {
@@ -12,7 +11,6 @@ trait CreatedUpdatedTrait {
 	 * @var \DateTime $createdAt
 	 *
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={
@@ -30,7 +28,6 @@ trait CreatedUpdatedTrait {
 	 * @var \DateTime $updatedAt
 	 *
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={

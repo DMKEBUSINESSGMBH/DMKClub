@@ -2,28 +2,18 @@
 
 namespace DMKClub\Bundle\SponsorBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
-
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 use DMKClub\Bundle\SponsorBundle\Model\ExtendSponsor;
-use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\AddressBundle\Entity\Address;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
-use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
+use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
+use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 
 /**
  * Class Sponsor
@@ -63,9 +53,8 @@ use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
  *          }
  *      }
  * )
- * @Oro\Loggable
  */
-class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerIdentityInterface {
+class Sponsor extends ExtendSponsor implements ChannelAwareInterface {
     use ChannelEntityTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
@@ -76,7 +65,6 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerId
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -101,7 +89,6 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerId
      *          }
      *      }
      * )
-     * @Oro\Versioned
      */
     protected $startDate;
     /**
@@ -118,7 +105,6 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerId
      *          }
      *      }
      * )
-     * @Oro\Versioned
      */
     protected $endDate;
 
@@ -126,8 +112,6 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerId
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @Soap\ComplexType("string")
-     * @Oro\Versioned
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -147,7 +131,6 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerId
      * @var \DateTime $createdAt
      *
      * @ORM\Column(type="datetime", name="created_at")
-     * @Oro\Versioned
      * @ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -162,7 +145,6 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface, CustomerId
      * @var \DateTime $updatedAt
      *
      * @ORM\Column(type="datetime", name="updated_at")
-     * @Oro\Versioned
      * @ConfigField(
      *      defaultValues={
      *          "entity"={

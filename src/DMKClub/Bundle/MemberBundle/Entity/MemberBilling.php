@@ -2,21 +2,15 @@
 
 namespace DMKClub\Bundle\MemberBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\IntegrationBundle\Model\IntegrationEntityTrait;
 
-use Oro\Bundle\TagBundle\Entity\Taggable;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberBilling;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
@@ -56,7 +50,6 @@ use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
  *          }
  *      }
  * )
- * @Oro\Loggable
  */
 class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInterface {
 	/**
@@ -65,7 +58,6 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *      }
@@ -85,7 +77,6 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $startDate;
 	/**
@@ -99,7 +90,6 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $endDate;
 
@@ -107,8 +97,6 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
 	 * @var string
 	 *
 	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -123,8 +111,6 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
 	 * @var string
 	 *
 	 * @ORM\Column(name="processor", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -139,8 +125,6 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
 	 * @var string
 	 *
 	 * @ORM\Column(name="processor_config", type="text", nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -157,8 +141,6 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
 	 * @var string
 	 *
 	 * @ORM\Column(name="position_labels", type="text", nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -175,8 +157,6 @@ FEECORRECTION fee correction";
 	 * @var string
 	 *
 	 * @ORM\Column(name="export_filesystem", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -202,7 +182,6 @@ FEECORRECTION fee correction";
 	 * @var \DateTime $createdAt
 	 *
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={
@@ -217,7 +196,6 @@ FEECORRECTION fee correction";
 	 * @var \DateTime $updatedAt
 	 *
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "entity"={
@@ -231,7 +209,6 @@ FEECORRECTION fee correction";
 	/**
 	 * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", mappedBy="billing", cascade={"all"}, orphanRemoval=true)
 	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-	 * @Oro\Versioned
 	 */
 	protected $memberFees;
 

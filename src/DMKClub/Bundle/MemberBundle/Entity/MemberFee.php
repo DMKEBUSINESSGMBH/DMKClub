@@ -1,13 +1,11 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
@@ -50,7 +48,6 @@ use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
  *     }
  *   }
  * )
- * @Oro\Loggable
  */
 class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirectDebitAwareInterface
 {
@@ -67,7 +64,6 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Soap\ComplexType("int", nillable=true)
      * @ConfigField(
      *   defaultValues={
      *     "importexport"={
@@ -84,15 +80,12 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @ORM\Column(name="start_date", type="date", nullable=true)
      * @ConfigField(
      * defaultValues={
-     * "dataaudit"={
-     * "auditable"=true
-     * },
-     * "importexport"={
-     * "order"=75
-     * }
+     *   "dataaudit"={"auditable"=true},
+     *   "importexport"={
+     *     "order"=75
+     *   }
      * }
      * )
-     * @Oro\Versioned
      */
     protected $startDate;
 
@@ -102,49 +95,41 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @ORM\Column(name="end_date", type="date", nullable=true)
      * @ConfigField(
      * defaultValues={
-     * "dataaudit"={
-     * "auditable"=true
-     * },
-     * "importexport"={
-     * "order"=80
-     * }
+     *   "dataaudit"={"auditable"=true},
+     *   "importexport"={
+     *     "order"=80
+     *   }
      * }
      * )
-     * @Oro\Versioned
      */
     protected $endDate;
 
     /**
      *
-     * @var \DateTime @ORM\Column(name="bill_date", type="date", nullable=true)
+     * @var \DateTime
+     * @ORM\Column(name="bill_date", type="date", nullable=true)
      * @ConfigField(
      * defaultValues={
-     * "dataaudit"={
-     * "auditable"=true
-     * },
-     * "importexport"={
-     * "order"=85
-     * }
+     *   "dataaudit"={"auditable"=true},
+     *   "importexport"={
+     *     "order"=85
+     *   }
      * }
      * )
-     * @Oro\Versioned
      */
     protected $billDate;
 
     /**
      *
-     * @var string @ORM\Column(name="name", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string")
-     * @Oro\Versioned
+     * @var string
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      * @ConfigField(
      * defaultValues={
-     * "dataaudit"={
-     * "auditable"=true
-     * },
-     * "importexport"={
-     * "identity"=true,
-     * "order"=30
-     * }
+     *   "dataaudit"={"auditable"=true},
+     *   "importexport"={
+     *     "identity"=true,
+     *     "order"=30
+     *   }
      * }
      * )
      */
@@ -154,7 +139,6 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberBilling", inversedBy="memberFees")
      * @ORM\JoinColumn(name="billing", referencedColumnName="id", onDelete="CASCADE")
      * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
      */
     protected $billing;
 
@@ -162,34 +146,35 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFees")
      * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
      * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
      */
     protected $member;
 
     /**
      * @ORM\OneToMany(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition", mappedBy="memberFee", cascade={"all"}, orphanRemoval=true)
      * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
      */
     protected $positions;
 
     /**
      *
-     * @var integer @ORM\Column(name="price_total", type="integer", nullable=true)
+     * @var integer
+     * @ORM\Column(name="price_total", type="integer", nullable=true)
      */
     private $priceTotal;
 
     /**
      *
-     * @var integer @ORM\Column(name="payed_total", type="integer", nullable=true)
-     *      @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+     * @var integer
+     * @ORM\Column(name="payed_total", type="integer", nullable=true)
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
     private $payedTotal;
 
     /**
      *
-     * @var integer @ORM\Column(name="correction_status", type="integer", nullable=true)
-     *      @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+     * @var integer
+     * @ORM\Column(name="correction_status", type="integer", nullable=true)
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
     private $correctionStatus;
 
@@ -197,16 +182,11 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      *
      * @var \DateTime $createdAt
      * @ORM\Column(type="datetime", name="created_at")
-     * @Oro\Versioned
      * @ConfigField(
-     * defaultValues={
-     * "entity"={
-     * "label"="oro.ui.created_at"
-     * },
-     * "importexport"={
-     * "excluded"=true
-     * }
-     * }
+     *   defaultValues={
+     *     "entity"={"label"="oro.ui.created_at"},
+     *     "importexport"={"excluded"=true}
+     *   }
      * )
      */
     protected $createdAt;
@@ -215,16 +195,11 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      *
      * @var \DateTime $updatedAt
      * @ORM\Column(type="datetime", name="updated_at")
-     * @Oro\Versioned
      * @ConfigField(
-     * defaultValues={
-     * "entity"={
-     * "label"="oro.ui.updated_at"
-     * },
-     * "importexport"={
-     * "excluded"=true
-     * }
-     * }
+     *   defaultValues={
+     *     "entity"={"label"="oro.ui.updated_at"},
+     *     "importexport"={"excluded"=true}
+     *   }
      * )
      */
     protected $updatedAt;

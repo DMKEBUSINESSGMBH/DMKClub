@@ -1,9 +1,7 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFeePosition;
@@ -33,16 +31,17 @@ class MemberFeePosition extends ExtendMemberFeePosition
 
     /**
      *
-     * @var int @ORM\Id
-     *      @ORM\Column(type="integer", name="id")
-     *      @ORM\GeneratedValue(strategy="AUTO")
-     *      @Soap\ComplexType("int", nillable=true)
+     * @var int
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="id")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      *
-     * @var float @ORM\Column(name="quantity", type="float", nullable=true)
+     * @var float
+     * @ORM\Column(name="quantity", type="float", nullable=true)
      */
     private $quantity;
 
@@ -50,49 +49,55 @@ class MemberFeePosition extends ExtendMemberFeePosition
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberFee", inversedBy="positions")
      * @ORM\JoinColumn(name="member_fee", referencedColumnName="id", onDelete="CASCADE")
      * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
-     * @Oro\Versioned
      */
     private $memberFee;
 
     /**
      *
-     * @var string @ORM\Column(name="flag", type="string", length=255, nullable=true)
+     * @var string
+     * @ORM\Column(name="flag", type="string", length=255, nullable=true)
      */
     private $flag;
 
     /**
      *
-     * @var string @ORM\Column(name="unit", type="string", length=255, nullable=true)
+     * @var string
+     * @ORM\Column(name="unit", type="string", length=255, nullable=true)
      */
     private $unit;
 
     /**
      *
-     * @var string @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @var string
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
      *
-     * @var float @ORM\Column(name="price_single", type="integer", nullable=true)
+     * @var float
+     * @ORM\Column(name="price_single", type="integer", nullable=true)
      */
     private $priceSingle;
 
     /**
      *
-     * @var float @ORM\Column(name="price_total", type="integer", nullable=true)
+     * @var float
+     * @ORM\Column(name="price_total", type="integer", nullable=true)
      */
     private $priceTotal;
 
     /**
      *
-     * @var double @ORM\Column(name="tax_amount", type="integer", nullable=true)
+     * @var double
+     * @ORM\Column(name="tax_amount", type="integer", nullable=true)
      */
     private $taxAmount;
 
     /**
      *
-     * @var integer @ORM\Column(name="sort_order", type="integer", nullable=true)
+     * @var integer
+     * @ORM\Column(name="sort_order", type="integer", nullable=true)
      */
     private $sortOrder;
 

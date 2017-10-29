@@ -2,13 +2,8 @@
 
 namespace DMKClub\Bundle\PaymentBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
@@ -58,7 +53,6 @@ class SepaCreditor extends ExtendSepaCreditor {
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -73,7 +67,6 @@ class SepaCreditor extends ExtendSepaCreditor {
 	 * @var string
 	 *
 	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -88,7 +81,6 @@ class SepaCreditor extends ExtendSepaCreditor {
 	 * @var string
 	 *
 	 * @ORM\Column(name="iban", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -103,7 +95,6 @@ class SepaCreditor extends ExtendSepaCreditor {
 	 * @var string
 	 *
 	 * @ORM\Column(name="bic", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -118,7 +109,6 @@ class SepaCreditor extends ExtendSepaCreditor {
 	 * @var string
 	 *
 	 * @ORM\Column(name="creditor_id", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={

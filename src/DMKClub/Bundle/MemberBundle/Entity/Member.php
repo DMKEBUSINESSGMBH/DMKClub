@@ -2,25 +2,21 @@
 
 namespace DMKClub\Bundle\MemberBundle\Entity;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use Oro\Bundle\ContactBundle\Entity\Contact;
 
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
 use Oro\Bundle\AddressBundle\Entity\Address;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelAwareInterface;
-use OroCRM\Bundle\ChannelBundle\Model\ChannelEntityTrait;
-use OroCRM\Bundle\ChannelBundle\Model\CustomerIdentityInterface;
+use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
+use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 
 /**
@@ -64,10 +60,9 @@ use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
  *          }
  *      }
  * )
- * @Oro\Loggable
  * Die Angaben in "form" dienen dem create_select_form_inline
  */
-class Member extends ExtendMember implements ChannelAwareInterface, CustomerIdentityInterface, EmailHolderInterface {
+class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderInterface {
 	use ChannelEntityTrait, LifecycleTrait;
 	/*
 	 * Fields have to be duplicated here to enable dataaudit and soap transformation only for contact
@@ -78,7 +73,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @Soap\ComplexType("int", nillable=true)
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "importexport"={
@@ -104,7 +98,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $memberCode;
 
@@ -123,7 +116,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $memberCodeInt;
 
@@ -141,7 +133,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $startDate;
 
@@ -159,7 +150,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 *          }
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	protected $endDate;
 
@@ -167,8 +157,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 * @var string
 	 *
 	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
-	 * @Soap\ComplexType("string")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -190,7 +178,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 *          "importexport"={"excluded"=true}
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	private $memberFees;
 
@@ -202,7 +189,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 *          "importexport"={"excluded"=true}
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	private $memberFeeDiscounts;
 
@@ -214,7 +200,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 *          "importexport"={"excluded"=true}
 	 *      }
 	 * )
-	 * @Oro\Versioned
 	 */
 	private $memberProposals;
 
@@ -241,7 +226,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 * @var boolean
 	 *
 	 * @ORM\Column(type="boolean", name="is_active", options={"default" : false})
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 * 	defaultValues={"dataaudit"={"auditable"=true},
 	 *          "importexport"={
@@ -257,7 +241,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 * @var boolean
 	 *
 	 * @ORM\Column(type="boolean", name="is_honorary", options={"default" : false})
-	 * @Oro\Versioned
 	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true},
 	 *          "importexport"={
 	 *              "order"=50
@@ -271,7 +254,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 * @var boolean
 	 *
 	 * @ORM\Column(type="boolean", name="is_free_of_charge", options={"default" : false})
-	 * @Oro\Versioned
 	 * @ConfigField(defaultValues={"dataaudit"={"auditable"=true},
 	 *          "importexport"={
 	 *              "order"=60
@@ -285,8 +267,6 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 * @var string
 	 *
 	 * @ORM\Column(name="status", type="string", length=20, nullable=true, options={"default" : "active"})
-	 * @Soap\ComplexType("string", nillable=true)
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
@@ -300,31 +280,11 @@ class Member extends ExtendMember implements ChannelAwareInterface, CustomerIden
 	 */
 	protected $status;
 
-// 	/**
-// 	 * @var string
-// 	 *
-// 	 * @ORM\Column(name="payment_option", type="string", length=20, nullable=true, options={"default" : "none"})
-// 	 * @Soap\ComplexType("string", nillable=true)
-// 	 * @Oro\Versioned
-// 	 * @ConfigField(
-// 	 *      defaultValues={
-// 	 *          "dataaudit"={
-// 	 *              "auditable"=true
-// 	 *          },
-// 	 *          "importexport"={
-// 	 *              "order"=80
-// 	 *          }
-// 	 *      }
-// 	 * )
-// 	 */
-// 	protected $paymentOption;
-
 	/**
 	 * @var Account
 	 *
 	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\PaymentBundle\Entity\BankAccount", cascade="PERSIST")
 	 * @ORM\JoinColumn(name="bank_account", referencedColumnName="id", onDelete="SET NULL")
-	 * @Oro\Versioned
 	 * @ConfigField(
 	 *      defaultValues={
 	 *          "dataaudit"={
