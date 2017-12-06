@@ -26,10 +26,6 @@ parameters:
 
     dmkclub_member.memberfee.pdf.simplegenerator.class:    DMKClub\Bundle\MemberBundle\Accounting\PDF\SimpleMemberFeePdf
 
-    dmkclub_member.job.reader.feeaccounting.class:         DMKClub\Bundle\MemberBundle\Job\Accounting\ItemReader
-    dmkclub_member.job.processor.feeaccounting.class:      DMKClub\Bundle\MemberBundle\Job\Accounting\FeeProcessor
-    dmkclub_member.job.writer.feeaccounting.class:         DMKClub\Bundle\MemberBundle\Job\Accounting\FeeWriter
-
     dmkclub_member.memberfee.form.entity_field.handler.class: DMKClub\Bundle\MemberBundle\Form\EntityField\Handler\MemberFeeHandler
 
 services:
@@ -41,7 +37,7 @@ services:
             - "@dmkclub_member.memberbilling.processorprovider"
             - "@oro_segment.query.dynamic_segment.query_builder"
             - "@oro_segment.query.static_segment.query_builder"
-            - "@dmkclub_basics.job_executor"
+            - "@oro_message_queue.message_producer"
     dmkclub_member.member.manager:
         class:     "%dmkclub_member.member.manager.class%"
         arguments:
@@ -129,20 +125,29 @@ services:
             - { name: oro_entity.form.entity_field.handler }
 
 ### Job Services
-    dmkclub_member.job.reader.feeaccounting:
-        class: "%dmkclub_member.job.reader.feeaccounting.class%"
+    dmkclub_member.async.accounting.feesprocessor:
+        class: 'DMKClub\Bundle\MemberBundle\Async\Accounting\FeesMessageProcessor'
         arguments:
-            - "@oro_importexport.context_registry"
+            - "@oro_message_queue.message_producer"
+            - '@oro_message_queue.job.runner'
+            - '@oro_message_queue.job.dependent_job_service'
+            - "@logger"
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+    dmkclub_member.async.accounting.feeprocessor:
+        class: 'DMKClub\Bundle\MemberBundle\Async\Accounting\FeeMessageProcessor'
+        arguments:
+            - '@oro_message_queue.job.runner'
             - "@doctrine.orm.entity_manager"
-            - "@dmkclub_member.memberbilling.manager"
-        lazy: true
-    dmkclub_member.job.processor.feeaccounting:
-        class: "%dmkclub_member.job.processor.feeaccounting.class%"
-        arguments:
             - "@dmkclub_member.memberbilling.manager"
             - "@logger"
-    dmkclub_member.job.writer.feeaccounting:
-        class: "%dmkclub_member.job.writer.feeaccounting.class%"
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+    dmkclub_member.async.accounting.summaryprocessor:
+        class: 'DMKClub\Bundle\MemberBundle\Async\Accounting\BillingSummaryMessageProcessor'
         arguments:
-            - "@dmkclub_member.memberbilling.manager"
             - "@doctrine.orm.entity_manager"
+            - "@dmkclub_member.memberbilling.manager"
+            - "@logger"
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }

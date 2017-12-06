@@ -14,7 +14,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Die Originalklasse wird überschrieben, um die Erstellung eine JobInstance von deren Ausführung zu trennen.
- *
+ * @deprecated
  */
 class JobExecutor extends OroJobExecutor {
 

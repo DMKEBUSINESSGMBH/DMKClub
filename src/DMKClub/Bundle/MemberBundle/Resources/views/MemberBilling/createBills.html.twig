@@ -28,6 +28,7 @@
               method="post" class="form-register form-dialog">
             <fieldset class="form-horizontal">
                 {% set id = 'create-bills' %}
+                {{ form_row(form._token) }}
             
                 {% set formFields = [] %}
             

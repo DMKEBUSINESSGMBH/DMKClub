@@ -13,10 +13,12 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
 use Oro\Bundle\SegmentBundle\Query\StaticSegmentQueryBuilder;
 use Oro\Bundle\SegmentBundle\Query\DynamicSegmentQueryBuilder;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
-use DMKClub\Bundle\MemberBundle\Job\Accounting\ItemReader;
+use DMKClub\Bundle\MemberBundle\Async\Accounting\FeesMessageProcessor;
 
 class MemberBillingManager implements ContainerAwareInterface
 {
@@ -41,17 +43,23 @@ class MemberBillingManager implements ContainerAwareInterface
     /** @var StaticSegmentQueryBuilder */
     protected $staticSegmentQueryBuilder;
 
-    /** @var \DMKClub\Bundle\BasicsBundle\Job\JobExecutor */
-    private $jobExecutor;
+    /** @var \Oro\Component\MessageQueue\Client\MessageProducerInterface */
+    protected $messageProducer;
 
-    public function __construct(EntityManager $em, ContainerInterface $container, ProcessorProvider $processorProvider, DynamicSegmentQueryBuilder $dynamicSegmentQueryBuilder, StaticSegmentQueryBuilder $staticSegmentQueryBuilder, JobExecutor $jobExecutor)
+    public function __construct(
+        EntityManager $em,
+        ContainerInterface $container,
+        ProcessorProvider $processorProvider,
+        DynamicSegmentQueryBuilder $dynamicSegmentQueryBuilder,
+        StaticSegmentQueryBuilder $staticSegmentQueryBuilder,
+        MessageProducerInterface $messageProducer)
     {
         $this->em = $em;
         $this->setContainer($container);
         $this->processionProvider = $processorProvider;
         $this->dynamicSegmentQueryBuilder = $dynamicSegmentQueryBuilder;
         $this->staticSegmentQueryBuilder = $staticSegmentQueryBuilder;
-        $this->jobExecutor = $jobExecutor;
+        $this->messageProducer = $messageProducer;
     }
 
     /**
@@ -261,7 +269,6 @@ class MemberBillingManager implements ContainerAwareInterface
         }
 
         $jobData = [
-            'ids' => []
         ];
 
         if (! $async) {
@@ -269,13 +276,13 @@ class MemberBillingManager implements ContainerAwareInterface
             // jetzt die Summe holen und im Billing speichern
             $this->updateSummary($memberBilling);
         } elseif (! empty($ids)) {
-            $jobData[ItemReader::OPTION_MEMBERBILLING] = $memberBilling->getId();
-            $jobData[ItemReader::OPTION_ENTITIES] = implode(',', $ids);
-            $jobData[ItemReader::OPTION_BILLDATE] = $billDate->format('c');
-            $jobType = 'export';
-            $jobName = 'dmkfeeaccounting';
+            // Hier die Nachricht senden
 
-            $this->jobExecutor->createJob($jobType, $jobName, $jobData, true);
+            $jobData[FeesMessageProcessor::OPTION_MEMBERBILLING] = $memberBilling->getId();
+            $jobData[FeesMessageProcessor::OPTION_ENTITIES] = implode(',', $ids);
+            $jobData[FeesMessageProcessor::OPTION_BILLDATE] = $billDate->format('c');
+
+            $this->messageProducer->send(FeesMessageProcessor::TOPIC_FEES_CALCULATION, $jobData);
         }
 
         return [
