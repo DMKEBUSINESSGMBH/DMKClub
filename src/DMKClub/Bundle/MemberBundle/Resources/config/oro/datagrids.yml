@@ -696,7 +696,6 @@ datagrids:
     dmkclub-memberfees-grid-billing:
         extends: dmkclub-memberfees-grid-base
         source:
-            type: orm
             query:
                 select:
                     - m.id as mid
@@ -817,8 +816,9 @@ datagrids:
                     data_name: m.endDate
                 email:
                     data_name: email.email
-            default:
-                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+# Führt zu Fehler bei MassActions
+#            default:
+#                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 name:
@@ -917,7 +917,6 @@ datagrids:
     dmkclub-memberfees-grid-member:
         extends: dmkclub-memberfees-grid-base
         source:
-            type: orm
             query:
                 select:
                     - b.id as bid
@@ -928,7 +927,7 @@ datagrids:
                 join:
                     left:
                         - { join: f.billing, alias: b }
-                groupBy:  f.id, b.id
+#                groupBy:  f.id, bid
                 
             bind_parameters:
                 - member
@@ -958,8 +957,8 @@ datagrids:
             columns:
                 name:
                     data_name: b.name
-            default:
-                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+#            default:
+#                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 name:
