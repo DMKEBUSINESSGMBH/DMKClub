@@ -9,6 +9,7 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Twig\TwigEngine;
+use Oro\Bundle\ContactBundle\Entity\Contact;
 
 /**
  */
@@ -187,6 +188,14 @@ class SimpleMemberFeePdf implements GeneratorInterface
         return $table;
     }
 
+    protected function lookupPrefix(Contact $contact, $address)
+    {
+        $prefix = $contact->getNamePrefix();
+        if (!$prefix && $address) {
+            $prefix = $address->getNamePrefix();
+        }
+        return $prefix;
+    }
     /**
      * Anredezeile bauen
      *
@@ -196,21 +205,18 @@ class SimpleMemberFeePdf implements GeneratorInterface
     protected function buildSalutation(MemberFee $fee)
     {
         $contact = $fee->getMember()->getContact();
-        if (! $contact)
+        if (! $contact) {
             throw new \Exception('No contact for member fee ' . $fee->getId() . ' found');
+        }
+        $address = $fee->getMember()->getPostalAddress();
         $gender = $contact->getGender();
         $gender = $gender ? $gender : 'unknown';
         $salutation = $this->translator->trans('dmkclub.member.memberbilling.pdf.salutation.' . $gender);
         // Titel suchen
-        $prefix = $contact->getNamePrefix();
-        $prefix = $prefix ? $prefix : $fee->getMember()
-            ->getPostalAddress()
-            ->getNamePrefix();
+        $prefix = $this->lookupPrefix($contact, $address);
         $salutation = trim($salutation . ' ' . $prefix);
         // Name
-        $name = $fee->getMember()
-            ->getPostalAddress()
-            ->getLastName();
+        $name = $address ? $address->getLastName() : '';
         $name = $name ? $name : $contact->getLastName();
         $salutation = trim($salutation . ' ' . $name);
         return $salutation;

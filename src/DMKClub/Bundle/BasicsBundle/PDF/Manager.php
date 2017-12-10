@@ -5,6 +5,8 @@ namespace DMKClub\Bundle\BasicsBundle\PDF;
 
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
+use Oro\Bundle\ImportExportBundle\File\FileManager;
+use Monolog\Logger;
 /**
  * Class PDF-Manager
  *
@@ -19,17 +21,20 @@ class Manager {
 
 	/** @var \TCPDF */
 	protected $tcpdf;
-	/** @var FileSystemOperator */
-	protected $fileSystemOperator;
+	/** @var FileManager */
+	protected $fileManager;
+	/** @var Logger */
+	protected $logger;
 	/**
 	 *
 	 * @param \TCPDF $tcpdf
 	 */
-	public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdf, $twig, FileSystemOperator $fso) {
+	public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdf, $twig, FileManager $fm, Logger $logger) {
 		$this->tcpdf = $tcpdf;
 		$this->twig = clone $twig;
 		$this->twig->setLoader(new \Twig_Loader_String());
-		$this->fileSystemOperator = $fso;
+		$this->fileManager = $fm;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -44,11 +49,14 @@ class Manager {
 			throw new PdfException('No template instance found');
 
 		$outputFormat = 'pdf';
-		$fileName   = $this->fileSystemOperator->generateTemporaryFileName($entity->getFilenamePrefix(), $outputFormat);
+		$fileName   = $this->fileManager->generateFileName($entity->getFilenamePrefix(), $outputFormat);
+		$localFile = $this->fileManager->generateTmpFilePath($fileName);
 		try {
-			$this->createPdf($twigTemplate, $fileName, ['entity' => $entity]);
+		    $this->createPdf($twigTemplate, $localFile, ['entity' => $entity]);
+		    $this->fileManager->writeFileToStorage($localFile, $fileName);
 		}
-		catch(Exception $e) {
+		catch(\Exception $e) {
+		    $this->logger->error('Error generating pdf file', ['e' => $e, 'local file' => $localFile]);
 			throw new PdfException('Error generating pdf file', 0, $e);
 		}
 		return $fileName;
@@ -73,7 +81,7 @@ class Manager {
 
 	    });
         $outputFormat = 'pdf';
-	    $fileName   = $this->fileSystemOperator->generateTemporaryFileName('pdfFile', $outputFormat);
+	    $fileName   = $this->fileManager->generateFileName('pdfFile', $outputFormat);
 	    $pdfGenerator->combinedFinalize($fileName);
 
 	    return $fileName;

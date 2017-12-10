@@ -28,7 +28,8 @@ services:
         arguments:
             - "@white_october.tcpdf"
             - "@twig"
-            - "@oro_importexport.file.file_system_operator"
+            - "@oro_importexport.file.file_manager"
+            - "@logger"
     dmkclub_basics.job_executor:
         class: "%dmkclub_basics.job_executor.class%"
         arguments:
