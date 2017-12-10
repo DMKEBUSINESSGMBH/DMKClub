@@ -943,6 +943,11 @@ datagrids:
             corrected:
                 label:         dmkclub.member.memberfee.corrected.label
                 frontend_type: number
+            startDate:
+                renderable:    false
+            endDate:
+                renderable:    false
+
         properties:
             id: ~
             delete_link:
@@ -975,7 +980,7 @@ datagrids:
                 type: dmkgetpdf
                 acl_resource: dmkclub_memberfee_view
                 label: PDF
-                icon: file-alt
+                icon: file-pdf-o
                 link: pdf_link
         mass_actions:
             markfeecorrection:

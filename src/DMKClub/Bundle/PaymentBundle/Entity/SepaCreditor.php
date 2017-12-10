@@ -1,12 +1,9 @@
 <?php
-
 namespace DMKClub\Bundle\PaymentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-
 use DMKClub\Bundle\PaymentBundle\Model\ExtendSepaCreditor;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -45,297 +42,318 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      }
  * )
  */
-class SepaCreditor extends ExtendSepaCreditor {
+class SepaCreditor extends ExtendSepaCreditor
+{
 
-	/**
-	 * @var int
-	 *
-	 * @ORM\Id
-	 * @ORM\Column(type="integer", name="id")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "importexport"={
-	 *              "excluded"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $id;
+    /**
+     *
+     * @var int
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="id")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ConfigField(
+     *    defaultValues={
+     *      "importexport"={
+     *        "excluded"=true
+     *      }
+     *    }
+     * )
+     */
+    protected $id;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="name", type="string", length=255, nullable=true)
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "importexport"={
-	 *              "order"=10
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $name;
+    /**
+     *
+     * @var string
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ConfigField(
+     *    defaultValues={
+     *      "importexport"={
+     *        "order"=10
+     *      }
+     *    }
+     * )
+     */
+    protected $name;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="iban", type="string", length=255, nullable=true)
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "importexport"={
-	 *              "order"=20
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $iban;
+    /**
+     *
+     * @var string @ORM\Column(name="iban", type="string", length=255, nullable=true)
+     *      @ConfigField(
+     *      defaultValues={
+     *      "importexport"={
+     *      "order"=20
+     *      }
+     *      }
+     *      )
+     */
+    protected $iban;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="bic", type="string", length=255, nullable=true)
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "importexport"={
-	 *              "order"=30
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $bic;
+    /**
+     *
+     * @var string
+     * @ORM\Column(name="bic", type="string", length=255, nullable=true)
+     * @ConfigField(
+     *    defaultValues={
+     *      "importexport"={
+     *        "order"=30
+     *      }
+     *    }
+     * )
+     */
+    protected $bic;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="creditor_id", type="string", length=255, nullable=true)
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "importexport"={
-	 *              "order"=40
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $creditorId;
+    /**
+     *
+     * @var string
+     * @ORM\Column(name="creditor_id", type="string", length=255, nullable=true)
+     * @ConfigField(
+     *    defaultValues={
+     *      "importexport"={
+     *        "order"=40
+     *      }
+     *    }
+     * )
+     */
+    protected $creditorId;
 
-	/**
-	 * @var \DateTime $created
-	 *
-	 * @ORM\Column(type="datetime")
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "entity"={
-	 *              "label"="oro.ui.created_at"
-	 *          },
-	 *          "importexport"={
-	 *              "excluded"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $created;
+    /**
+     *
+     * @var \DateTime $created
+     * @ORM\Column(type="datetime")
+     * @ConfigField(
+     *    defaultValues={
+     *      "entity"={
+     *        "label"="oro.ui.created_at"
+     *      },
+     *      "importexport"={
+     *        "excluded"=true
+     *      }
+     *    }
+     * )
+     */
+    protected $created;
 
-	/**
-	 * @var User
-	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-	 * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-	 */
-	protected $owner;
-	/**
-	 * @var Organization
-	 *
-	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-	 * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "importexport"={
-	 *              "full"=false,
-	 *              "order"=460
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $organization;
+    /**
+     *
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $owner;
 
-	/**
-	 * @var \DateTime $updated
-	 *
-	 * @ORM\Column(type="datetime")
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "entity"={
-	 *              "label"="oro.ui.updated_at"
-	 *          },
-	 *          "importexport"={
-	 *              "excluded"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $updated;
+    /**
+     *
+     * @var Organization
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *    defaultValues={
+     *      "importexport"={
+     *        "full"=false,
+     *        "order"=460
+     *      }
+     *    }
+     * )
+     */
+    protected $organization;
 
-	/**
-	 * Get id
-	 *
-	 * @return integer
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     *
+     * @var \DateTime $updated
+     * @ORM\Column(type="datetime")
+     * @ConfigField(
+     *    defaultValues={
+     *      "entity"={
+     *        "label"="oro.ui.updated_at"
+     *      },
+     *      "importexport"={
+     *        "excluded"=true
+     *      }
+     *    }
+     * )
+     */
+    protected $updated;
 
-	/**
-	 * Set id
-	 *
-	 * @param int $id
-	 * @return AbstractAddress
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-		return $this;
-	}
+    /**
+     * Set id
+     *
+     * @param int $id
+     * @return AbstractAddress
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
-	public function getName() {
-		return $this->name;
-	}
+        return $this;
+    }
 
-	public function setName($value) {
-		$this->name = $value;
-		return $this;
-	}
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	public function getCreditorId() {
-		return $this->creditorId;
-	}
+    public function setName($value)
+    {
+        $this->name = $value;
+        return $this;
+    }
 
-	public function setCreditorId($value) {
-		$this->creditorId = $value;
-		return $this;
-	}
-	public function getBic() {
-		return $this->bic;
-	}
+    public function getCreditorId()
+    {
+        return $this->creditorId;
+    }
 
-	public function setBic($value) {
-		$this->bic = $value;
-		return $this;
-	}
-	public function getIban() {
-		return $this->iban;
-	}
+    public function setCreditorId($value)
+    {
+        $this->creditorId = $value;
+        return $this;
+    }
 
-	public function setIban($value) {
-		$this->iban = $value;
-		return $this;
-	}
+    public function getBic()
+    {
+        return $this->bic;
+    }
 
-	/**
-	 * @return User
-	 */
-	public function getOwner() {
-		return $this->owner;
-	}
+    public function setBic($value)
+    {
+        $this->bic = $value;
+        return $this;
+    }
 
-	/**
-	 * @param User $user
-	 */
-	public function setOwner(User $user) {
-		$this->owner = $user;
-		return $this;
-	}
+    public function getIban()
+    {
+        return $this->iban;
+    }
 
-	/**
-	 * Set organization
-	 *
-	 * @param Organization $organization
-	 * @return Member
-	 */
-	public function setOrganization(Organization $organization = null) {
-		$this->organization = $organization;
-		return $this;
-	}
+    public function setIban($value)
+    {
+        $this->iban = $value;
+        return $this;
+    }
 
-	/**
-	 * Get organization
-	 *
-	 * @return Organization
-	 */
-	public function getOrganization() {
-		return $this->organization;
-	}
+    /**
+     *
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
 
-	/**
-	 * Get address created date/time
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreated()
-	{
-		return $this->created;
-	}
+    /**
+     *
+     * @param User $user
+     */
+    public function setOwner(User $user)
+    {
+        $this->owner = $user;
+        return $this;
+    }
 
-	/**
-	 * Set address created date/time
-	 *
-	 * @param \DateTime $created
-	 * @return AbstractAddress
-	 */
-	public function setCreated($created)
-	{
-		$this->created = $created;
+    /**
+     * Set organization
+     *
+     * @param Organization $organization
+     * @return Member
+     */
+    public function setOrganization(Organization $organization = null)
+    {
+        $this->organization = $organization;
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Get organization
+     *
+     * @return Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
 
-	/**
-	 * Get address last update date/time
-	 *
-	 * @return \DateTime
-	 */
-	public function getUpdated()
-	{
-		return $this->updated;
-	}
+    /**
+     * Get address created date/time
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
 
-	/**
-	 * Set address updated date/time
-	 *
-	 * @param \DateTime $updated
-	 * @return AbstractAddress
-	 */
-	public function setUpdated($updated)
-	{
-		$this->updated = $updated;
+    /**
+     * Set address created date/time
+     *
+     * @param \DateTime $created
+     * @return AbstractAddress
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Pre persist event listener
-	 *
-	 * @ORM\PrePersist
-	 */
-	public function beforeSave()
-	{
-		$this->created = new \DateTime('now', new \DateTimeZone('UTC'));
-		$this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
-	}
+    /**
+     * Get address last update date/time
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
 
+    /**
+     * Set address updated date/time
+     *
+     * @param \DateTime $updated
+     * @return AbstractAddress
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
 
-	/**
-	 * @return string
-	 */
-	public function __toString() {
-		$data = array(
-			$this->getName(),
-			',',
-			$this->getCreditorId(),
-			$this->getIban(),
-			$this->getBic(),
-		);
-		$str = implode(' ', $data);
-		$check = trim(str_replace(',', '', $str));
-		return empty($check) ? '' : $str;
-	}
+        return $this;
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $data = array(
+            $this->getName(),
+            ',',
+            $this->getCreditorId(),
+            $this->getIban(),
+            $this->getBic()
+        );
+        $str = implode(' ', $data);
+        $check = trim(str_replace(',', '', $str));
+        return empty($check) ? '' : $str;
+    }
 }

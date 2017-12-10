@@ -1,73 +1,72 @@
 <?php
-
 namespace DMKClub\Bundle\PaymentBundle\Form\Handler;
-
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
 use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
 
-class SepaCreditorHandler {
-	/** @var FormInterface */
-	protected $form;
+class SepaCreditorHandler
+{
 
-	/** @var Request */
-	protected $request;
+    /** @var FormInterface */
+    protected $form;
 
-	/** @var ObjectManager */
-	protected $manager;
+    /** @var Request */
+    protected $request;
 
-	/**
-	 * @param FormInterface          $form
-	 * @param Request                $request
-	 * @param ObjectManager          $manager
-	 */
-	public function __construct(
-			FormInterface $form,
-			Request $request,
-			ObjectManager $manager
-	) {
-		$this->form                   = $form;
-		$this->request                = $request;
-		$this->manager                = $manager;
-	}
+    /** @var ObjectManager */
+    protected $manager;
 
-	/**
-	 * Process form
-	 *
-	 * @param  Category $entity
-	 *
-	 * @return bool True on successful processing, false otherwise
-	 */
-	public function process(SepaCreditor $entity)
-	{
+    /**
+     *
+     * @param FormInterface $form
+     * @param Request $request
+     * @param ObjectManager $manager
+     */
+    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    {
+        $this->form = $form;
+        $this->request = $request;
+        $this->manager = $manager;
+    }
 
-		$this->form->setData($entity);
+    /**
+     * Process form
+     *
+     * @param Category $entity
+     *
+     * @return bool True on successful processing, false otherwise
+     */
+    public function process(SepaCreditor $entity)
+    {
+        $this->form->setData($entity);
 
-		if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-			$this->form->submit($this->request);
+        if (in_array($this->request->getMethod(), array(
+            'POST',
+            'PUT'
+        ))) {
+            $this->form->submit($this->request);
 
-			if ($this->form->isValid()) {
-				$this->onSuccess($entity);
+            if ($this->form->isValid()) {
+                $this->onSuccess($entity);
 
-				return true;
-			}
-		}
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * "Success" form handler
-	 *
-	 * @param Category $entity
-	 */
-	protected function onSuccess(SepaCreditor $entity)
-	{
-		$this->manager->persist($entity);
-		$this->manager->flush();
-	}
+    /**
+     * "Success" form handler
+     *
+     * @param Category $entity
+     */
+    protected function onSuccess(SepaCreditor $entity)
+    {
+        $this->manager->persist($entity);
+        $this->manager->flush();
+    }
 }

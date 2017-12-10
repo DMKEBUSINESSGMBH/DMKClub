@@ -30,6 +30,7 @@ use DMKClub\Bundle\PaymentBundle\Model\ExtendBankAccount;
  *      }
  * )
  */
-class BankAccount extends ExtendBankAccount {
+class BankAccount extends ExtendBankAccount
+{
 
 }

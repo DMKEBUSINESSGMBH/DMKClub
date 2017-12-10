@@ -1,65 +1,76 @@
 <?php
-
 namespace DMKClub\Bundle\PaymentBundle\Sepa;
-
 
 use Digitick\Sepa\TransferFile\Factory\TransferFileFacadeFactory;
 use Digitick\Sepa\TransferFile\Facade\CustomerDirectDebitFacade;
 
-class DirectDebitBuilder {
+class DirectDebitBuilder
+{
 
-	/**
-	 * @var CustomerDirectDebitFacade
-	 */
-	private $directDebit = NULL;
-	private $paymentNames = [];
+    /**
+     *
+     * @var CustomerDirectDebitFacade
+     */
+    private $directDebit = NULL;
 
-	public function init($uniqueMessageIdentification, $initiatingPartyName, $painFormat = 'pain.008.002.02') {
-		$this->directDebit = TransferFileFacadeFactory::createDirectDebit($uniqueMessageIdentification, $initiatingPartyName);
+    private $paymentNames = [];
 
-	}
-	/**
-	 *
-	 * @param $paymentName
-	 * @throws \Digitick\Sepa\Exception\InvalidArgumentException
-	 */
-	public function addPaymentInfo(Payment $payment) {
-		$this->assertInited();
-		$this->directDebit->addPaymentInfo($payment->getId(), array(
-				'id'                    => $payment->getId(),
-				'creditorName'          => $payment->getCreditorName(),
-				'creditorAccountIBAN'   => $payment->getCreditorAccountIBAN(),
-				'creditorAgentBIC'      => $payment->getCreditorAgentBIC(),
-				'seqType'               => $payment->getSeqType(),
-				'creditorId'            => $payment->getCreditorId(),
-		));
+    public function init($uniqueMessageIdentification, $initiatingPartyName, $painFormat = 'pain.008.002.02')
+    {
+        $this->directDebit = TransferFileFacadeFactory::createDirectDebit($uniqueMessageIdentification, $initiatingPartyName);
+    }
 
-	}
-	public function addPaymentTransaction(Transaction $transaction) {
-		$this->directDebit->addTransfer($transaction->getPayment()->getId(), array(
-				'amount'                => $transaction->getAmount(),
-				'debtorIban'            => $transaction->getDebtorIban(),
-				'debtorBic'             => $transaction->getDebtorBic(),
-				'debtorName'						=> $transaction->getDebtorName(),
-				'debtorMandate'         => $transaction->getDebtorMandate(),
-				// TODO: check date!
-				'debtorMandateSignDate' => $transaction->getDebtorMandateSignDate(),
-				'remittanceInformation' => $transaction->getRemittanceInformation(),
-		));
-	}
+    /**
+     *
+     * @param
+     *            $paymentName
+     * @throws \Digitick\Sepa\Exception\InvalidArgumentException
+     */
+    public function addPaymentInfo(Payment $payment)
+    {
+        $this->assertInited();
+        $this->directDebit->addPaymentInfo($payment->getId(), array(
+            'id' => $payment->getId(),
+            'creditorName' => $payment->getCreditorName(),
+            'creditorAccountIBAN' => $payment->getCreditorAccountIBAN(),
+            'creditorAgentBIC' => $payment->getCreditorAgentBIC(),
+            'seqType' => $payment->getSeqType(),
+            'creditorId' => $payment->getCreditorId()
+        ));
+    }
 
-	public function buildXml() {
-		return $this->directDebit->asXML();
-	}
-	/**
-	 * @return whether or not init() was called
-	 */
-	public function isInited() {
-		return $this->directDebit !== NULL;
-	}
-	private function assertInited() {
-		if(!$this->isInited())
-			throw new \Exception('Call init() before any other method!');
-	}
+    public function addPaymentTransaction(Transaction $transaction)
+    {
+        $this->directDebit->addTransfer($transaction->getPayment()
+            ->getId(), array(
+            'amount' => $transaction->getAmount(),
+            'debtorIban' => $transaction->getDebtorIban(),
+            'debtorBic' => $transaction->getDebtorBic(),
+            'debtorName' => $transaction->getDebtorName(),
+            'debtorMandate' => $transaction->getDebtorMandate(),
+            // TODO: check date!
+            'debtorMandateSignDate' => $transaction->getDebtorMandateSignDate(),
+            'remittanceInformation' => $transaction->getRemittanceInformation()
+        ));
+    }
 
+    public function buildXml()
+    {
+        return $this->directDebit->asXML();
+    }
+
+    /**
+     *
+     * @return whether or not init() was called
+     */
+    public function isInited()
+    {
+        return $this->directDebit !== NULL;
+    }
+
+    private function assertInited()
+    {
+        if (! $this->isInited())
+            throw new \Exception('Call init() before any other method!');
+    }
 }
