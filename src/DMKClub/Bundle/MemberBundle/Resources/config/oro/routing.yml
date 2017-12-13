@@ -2,6 +2,8 @@ dmkclub_member_bundle:
     resource:     "@DMKClubMemberBundle/Controller"
     type:         annotation
     prefix:       /dmkclub
+    options:
+        expose: true
 
 #oro_crm_magento_dashboard:
 #    resource:     "@DMKClubMemberBundle/Controller/Dashboard"

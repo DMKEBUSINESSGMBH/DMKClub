@@ -18,7 +18,9 @@ class PaymentExtension extends \Twig_Extension
     protected $paymentIntervalProvider;
 
     /**
-     * @param MemberStatusProvider $paymentOptionProvider
+     *
+     * @param PaymentOptionsProvider $paymentOptionProvider
+     * @param PaymentIntervalsProvider $paymentIntervalProvider
      */
     public function __construct(PaymentOptionsProvider $paymentOptionProvider, PaymentIntervalsProvider $paymentIntervalProvider)
     {

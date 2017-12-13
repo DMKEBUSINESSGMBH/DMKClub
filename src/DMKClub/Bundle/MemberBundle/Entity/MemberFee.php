@@ -618,10 +618,17 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      */
     public function getDebtorName()
     {
-        $name = $this->getMember()
-            ->getBankAccount()
-            ->getAccountOwner();
+
+        $name = $this->getBankAccount() ? $this->getBankAccount()->getAccountOwner() : null;
         return $name ? $name : $this->getMember()->getName();
+    }
+    /**
+     *
+     * @return \DMKClub\Bundle\PaymentBundle\Entity\BankAccount
+     */
+    protected function getBankAccount()
+    {
+        return $this->getMember()->getBankAccount();
     }
 
     /*
@@ -630,9 +637,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      */
     public function getDebtorBic()
     {
-        return $this->getMember()
-            ->getBankAccount()
-            ->getBic();
+        return $this->getBankAccount() ? $this->getBankAccount()->getBic() : null;
     }
 
     /*
@@ -641,9 +646,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      */
     public function getDebtorIban()
     {
-        return $this->getMember()
-            ->getBankAccount()
-            ->getIban();
+        return $this->getBankAccount() ? $this->getBankAccount()->getIban() : null;
     }
 
     /*

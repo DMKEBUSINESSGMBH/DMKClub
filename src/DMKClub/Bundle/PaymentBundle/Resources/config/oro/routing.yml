@@ -2,6 +2,8 @@ dmkclub_payment_bundle:
     resource:     "@DMKClubPaymentBundle/Controller"
     type:         annotation
     prefix:       /dmkclub
+    options:
+        expose: true
 
 
 dmkclub_payment_bundle_api:

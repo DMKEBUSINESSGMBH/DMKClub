@@ -44,9 +44,9 @@ datagrids:
             memberCodeInt:
                 label:         dmkclub.member.member_code_int.label
             firstName:
-                label:         orocrm.contact.first_name.label
+                label:         oro.contact.first_name.label
             lastName:
-                label:         orocrm.contact.last_name.label
+                label:         oro.contact.last_name.label
             isHonorary:
                 label:         dmkclub.member.is_honorary.label
                 frontend_type: boolean
@@ -67,11 +67,11 @@ datagrids:
             city:
                 label:         oro.address.city.label
             birthday:
-                label:         orocrm.contact.birthday.label
+                label:         oro.contact.birthday.label
                 frontend_type: date
             email:
                 renderable:    false
-                label:         orocrm.contact.email.label
+                label:         oro.contact.email.label
             iban:
                 label:         dmkclub.payment.bankaccount.iban.label
                 renderable:    false
@@ -745,10 +745,10 @@ datagrids:
                 label:         dmkclub.member.name.label
                 frontend_type: html
             firstName:
-                label:         orocrm.contact.first_name.label
+                label:         oro.contact.first_name.label
                 renderable:    false
             lastName:
-                label:         orocrm.contact.last_name.label
+                label:         oro.contact.last_name.label
                 renderable:    false
             correctionStatus:
                 label:         dmkclub.member.memberfee.correction_status.label
@@ -773,7 +773,7 @@ datagrids:
                 type:          translatable
             email:
                 renderable:    false
-                label:         orocrm.contact.email.label
+                label:         oro.contact.email.label
         properties:
             id: ~
             delete_link:
