@@ -16,5 +16,5 @@ services:
             - "@logger"
             - "@router"
             - "@dmkclub.payment.sepa.direct_debit_builder"
-            - "@oro_importexport.file.file_system_operator"
+            - "@oro_importexport.file.file_manager"
             - "@oro_attachment.manager"

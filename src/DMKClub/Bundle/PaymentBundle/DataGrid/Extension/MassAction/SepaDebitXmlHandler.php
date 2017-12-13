@@ -5,19 +5,21 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Symfony\Component\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
+
+use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
-use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\ImportExportBundle\File\FileManager;
+
 use DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder;
 use DMKClub\Bundle\PaymentBundle\Sepa\Payment;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaException;
 use DMKClub\Bundle\PaymentBundle\Sepa\Transaction;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 
 class SepaDebitXmlHandler implements MassActionHandlerInterface
 {
@@ -44,8 +46,8 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
 
     protected $payment;
 
-    /** @var FileSystemOperator */
-    protected $fileSystemOperator;
+    /** @var FileManager */
+    protected $fileManager;
 
     protected $router;
 
@@ -58,14 +60,20 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
      * @param ServiceLink $securityFacadeLink
      * @param DirectDebitBuilder $sepaBuilder
      */
-    public function __construct(EntityManager $entityManager, TranslatorInterface $translator, LoggerInterface $logger, $router, DirectDebitBuilder $sepaBuilder, FileSystemOperator $fso, AttachmentManager $attachmentManager)
+    public function __construct(
+        EntityManager $entityManager,
+        TranslatorInterface $translator,
+        LoggerInterface $logger, $router,
+        DirectDebitBuilder $sepaBuilder,
+        FileManager $fm,
+        AttachmentManager $attachmentManager)
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->logger = $logger;
         $this->router = $router;
         $this->sepaBuilder = $sepaBuilder;
-        $this->fileSystemOperator = $fso;
+        $this->fileManager = $fm;
         $this->attachmentManager = $attachmentManager;
     }
 
@@ -129,13 +137,16 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
         if ($iteration > 0) {
             $xml = $this->sepaBuilder->buildXML();
             $outputFormat = 'xml';
-            $fileName = $this->fileSystemOperator->generateTemporaryFileName('sepadirectdebit', $outputFormat);
-            $file = new \SplFileObject($fileName, 'w');
+            $fileName = $this->fileManager->generateFileName('sepadirectdebit', $outputFormat);
+            $localFile = $this->fileManager->generateTmpFilePath($fileName);
+
+            $file = new \SplFileObject($localFile, 'w');
             $ret[] = $fileName;
             $bytes = $file->fwrite($xml);
             $ret[] = $bytes;
-            $this->logger->info('SEPA xml file created', [
-                'file' => $fileName,
+            $this->fileManager->writeFileToStorage($localFile, $fileName);
+            $this->logger->alert('SEPA xml file created', [
+                'file' => $localFile,
                 'bytes' => $bytes,
                 'items' => $iteration
             ]);
