@@ -1,8 +1,0 @@
-placeholders:
-    # Anzeige des Sponsors im Account, wird per Konvention gefunden
-    orocrm_account_channel_info_sponsor:
-        items:
-            dmkclub_sponsor_channel_info: ~
-items:
-    dmkclub_sponsor_channel_info:
-        action: DMKClubSponsorBundle:Sponsor:accountSponsorInfo
