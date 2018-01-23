@@ -14,4 +14,4 @@ placeholders:
             action: DMKClubMemberBundle:Member:accountMemberInfo
         dmkclub_member_linkcontact2member_button:
             template: DMKClubMemberBundle:actions:linkContact2MemberButton.html.twig
-            applicable: "@oro_ui.placeholder.filter->isInstanceOf($entity$, %orocrm_contact.entity.class%)"
+            applicable: "@oro_ui.placeholder.filter->isInstanceOf($entity$, %oro_contact.entity.class%)"

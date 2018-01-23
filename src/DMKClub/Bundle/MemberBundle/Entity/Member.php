@@ -9,15 +9,14 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-
 use Oro\Bundle\ContactBundle\Entity\Contact;
-
-use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
-use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
+
+use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
+use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
 
 /**
  * Class Member
@@ -31,7 +30,7 @@ use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
  *      routeView="dmkclub_member_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-user-md"
+ *              "icon"="fa-user-circle"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

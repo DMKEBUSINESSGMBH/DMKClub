@@ -1,0 +1,12 @@
+oro_entity:
+    virtual_fields:
+        DMKClub\Bundle\MemberBundle\Entity\Member:
+            contactInformation:
+                query:
+                    select:
+                        expr:         c.email
+                        return_type:  string
+                    join:
+                        left:
+                            - { join: entity.contact, alias: c }
+        
