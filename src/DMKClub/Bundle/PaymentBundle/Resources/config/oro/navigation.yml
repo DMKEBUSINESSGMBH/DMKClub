@@ -6,5 +6,5 @@ navigation:
                 uri: '#'
                 display: false
                 extras:
-                    icon: icon-money
+                    icon: fa-money
                     position: 11

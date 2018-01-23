@@ -18,7 +18,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @Config(
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-suitcase"
+ *              "icon"="fa-suitcase"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

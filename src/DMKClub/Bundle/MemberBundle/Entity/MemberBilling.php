@@ -10,9 +10,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberBilling;
-use Oro\Bundle\SegmentBundle\Entity\Segment;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
 use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
 
@@ -28,7 +28,7 @@ use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
  *      routeView="dmkclub_memberbilling_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-briefcase-md"
+ *              "icon"="fa-briefcase"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

@@ -24,7 +24,7 @@ use DMKClub\Bundle\SponsorBundle\Model\ExtendCategory;
  *      routeView="dmkclub_sponsorcategory_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-user-md"
+ *              "icon"="fa-gear"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

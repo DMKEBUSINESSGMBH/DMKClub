@@ -24,7 +24,7 @@ use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRCategory;
  *      routeView="dmkclub_prcategory_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-user-md"
+ *              "icon"="fa-gear"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

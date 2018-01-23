@@ -14,7 +14,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposalAddress;
  * @Config(
  *       defaultValues={
  *          "entity"={
- *              "icon"="icon-map-marker"
+ *              "icon"="fa-map-marker"
  *          },
  *          "note"={
  *              "immutable"=true

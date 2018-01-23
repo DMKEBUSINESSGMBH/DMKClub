@@ -10,7 +10,7 @@
     {% if not entity.member %}
         {{ UI.clientButton({
             'dataUrl' : path('dmkclub_member_proposal_createmember', { id: entity.id }),
-            'iCss' : 'icon-forward', 'title' : 'dmkclub.member.memberproposal.action.createmember'|trans ,
+            'iCss' : 'fa-forward', 'title' : 'dmkclub.member.memberproposal.action.createmember'|trans ,
             'aCss' : 'btn-primary',
             'label' : 'dmkclub.member.memberproposal.action.createmember'|trans,
             'widget' : {
@@ -55,15 +55,15 @@
     <div class="pull-left">
         {% if entity.status is not null %}
             {% if entity.status.id == 'joined' %}
-                <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ entity.status.name }}</div>
+                <div class="badge badge-enabled status-enabled"><i class="fa-status-enabled fa-circle"></i>{{ entity.status.name }}</div>
             {% elseif entity.status.id == 'refused' %}
-                <div class="badge badge-danger status-danger"><i class="icon-status-danger icon-circle"></i>{{ entity.status.name }}</div>
+                <div class="badge badge-danger status-danger"><i class="fa-status-danger fa-circle"></i>{{ entity.status.name }}</div>
             {% elseif entity.status.id == 'initial' %}
-                <div class="badge badge-info status-info"><i class="icon-status-info icon-circle"></i>{{ entity.status.name }}</div>
+                <div class="badge badge-info status-info"><i class="fa-status-info fa-circle"></i>{{ entity.status.name }}</div>
             {% elseif entity.status.id == 'in_progress' %}
-                <div class="badge badge-tentatively status-tentatively"><i class="icon-status-tentatively icon-circle"></i>{{ entity.status.name }}</div>
+                <div class="badge badge-tentatively status-tentatively"><i class="fa-status-tentatively fa-circle"></i>{{ entity.status.name }}</div>
             {% else %}
-                <div class="badge badge-disabled status-unknown"><i class="icon-status-disabled icon-circle"></i>{{ entity.status.name }}</div>
+                <div class="badge badge-disabled status-unknown"><i class="fa-status-disabled fa-circle"></i>{{ entity.status.name }}</div>
             {% endif %}
         {% endif %}
     </div>

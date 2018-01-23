@@ -27,7 +27,7 @@ use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
  *      routeView="dmkclub_sponsor_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-user-md"
+ *              "icon"="fa-registered"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

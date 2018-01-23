@@ -8,14 +8,13 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-
-
-use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
-use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposal;
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
+
+use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
+use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposal;
 
 /**
  * Class MemberProposal
@@ -28,7 +27,7 @@ use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
  *      routeView="dmkclub_member_proposal_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-envelope"
+ *              "icon"="fa-envelope"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

@@ -4,6 +4,7 @@ namespace DMKClub\Bundle\MemberBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFeePosition;
 
 /**
@@ -15,7 +16,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberFeePosition;
  * @Config(
  *   defaultValues={
  *     "entity"={
- *       "icon"="icon-list-alt"
+ *       "icon"="fa-list"
  *     }
  *   }
  * )

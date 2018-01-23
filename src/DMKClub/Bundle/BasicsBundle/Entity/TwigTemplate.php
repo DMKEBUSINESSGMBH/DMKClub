@@ -22,7 +22,7 @@ use Symfony\Component\Yaml\Yaml;
  *      routeView="dmkclub_basics_twigtemplate_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-file-md"
+ *              "icon"="fa-file"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

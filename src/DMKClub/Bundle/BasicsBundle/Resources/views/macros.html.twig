@@ -13,9 +13,9 @@
 {% macro attributeRowBoolean(title, value, additionalData) %}
   {% macro value_bool(value) %}
 		{% if value %}
-			<i class="icon-ok">{{ 'dmkclub.basics.label.yes'|trans }}</i>
+			<i class="fa-ok">{{ 'dmkclub.basics.label.yes'|trans }}</i>
 		{% else %}
-			<i class="icon-ban-circle">{{ 'dmkclub.basics.label.no'|trans }}</i>
+			<i class="fa-ban">{{ 'dmkclub.basics.label.no'|trans }}</i>
 		{% endif %}
   {% endmacro %}
 
@@ -29,9 +29,9 @@
 {% macro renderPropertyBoolean(title, value) %}
   {% macro value_bool(value) %}
 		{% if value %}
-			<i class="icon-ok"> {{ 'dmkclub.basics.label.yes'|trans }}</i>
+			<i class="fa-ok"> {{ 'dmkclub.basics.label.yes'|trans }}</i>
 		{% else %}
-			<i class="icon-ban-circle"> {{ 'dmkclub.basics.label.no'|trans }}</i>
+			<i class="fa-ban"> {{ 'dmkclub.basics.label.no'|trans }}</i>
 		{% endif %}
   {% endmacro %}
 

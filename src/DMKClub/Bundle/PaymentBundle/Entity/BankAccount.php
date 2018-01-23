@@ -16,7 +16,7 @@ use DMKClub\Bundle\PaymentBundle\Model\ExtendBankAccount;
  * @Config(
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-briefcase"
+ *              "icon"="fa-briefcase"
  *          },
  *          "note"={
  *              "immutable"=true

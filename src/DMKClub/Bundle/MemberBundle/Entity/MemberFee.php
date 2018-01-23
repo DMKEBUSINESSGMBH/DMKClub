@@ -26,7 +26,7 @@ use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
  *   routeView="dmkclub_memberfee_view",
  *   defaultValues={
  *     "entity"={
- *       "icon"="icon-money"
+ *       "icon"="fa-money"
  *     },
  *     "ownership"={
  *       "owner_type"="USER",

@@ -27,7 +27,7 @@ use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
  *      routeView="dmkclub_prcontact_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-user-md"
+ *              "icon"="fa-newspaper-o"
  *          },
  *          "ownership"={
  *              "owner_type"="USER",

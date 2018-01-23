@@ -27,12 +27,13 @@ dmkclub:
         organization.label:  Organisation
         start_date.label:    Eintrittsdatum
         end_date.label:      Austrittsdatum
-        channel_type.member.label: Vereinsverwaltung
-        data_channel.label: Kanal
-        status.label: Status
-        status.proposal: Antragsteller
-        status.active: Laufende Mitgliedschaft
-        status.terminated: Beendete Mitgliedschaft
+        channel_type.member.label:  Vereinsverwaltung
+        data_channel.label:         Kanal
+        status.label:               Status
+        status.proposal:            Antragsteller
+        status.active:              Laufende Mitgliedschaft
+        status.terminated:          Beendete Mitgliedschaft
+        contact_information.label:  Kontaktinformation
 
         links:
             contact2member.title: "Mitglieds-Nr: %memberid%"

@@ -58,9 +58,9 @@
     {{ parent() }}
     <div class="pull-left">
         {% if entity.status == 'active' %}
-            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ entity.status|trans }} ({{ entity.memberCode }})</div>
+            <div class="badge badge-enabled status-enabled"><i class="fa-status-enabled fa-circle"></i>{{ entity.status|trans }} ({{ entity.memberCode }})</div>
         {% else %}
-            <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ entity.status|trans }}</div>
+            <div class="badge badge-disabled status-disabled"><i class="fa-status-disabled fa-circle"></i>{{ entity.status|trans }}</div>
         {% endif %}
     </div>
 {% endblock breadcrumbs %}
