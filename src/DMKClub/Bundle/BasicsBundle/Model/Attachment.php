@@ -15,7 +15,7 @@ class Attachment
 
     /**
      *
-     * @param stdClass $jsonData
+     * @param string $pathToFile
      * @throws MailingException
      */
     public function __construct($pathToFile, $filename = '')

@@ -1,7 +1,6 @@
 <?php
 namespace DMKClub\Bundle\BasicsBundle\Utility;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 

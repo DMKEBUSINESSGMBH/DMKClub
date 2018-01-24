@@ -7,70 +7,70 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 trait CreatedUpdatedTrait {
 
-	/**
-	 * @var \DateTime $createdAt
-	 *
-	 * @ORM\Column(type="datetime", name="created_at")
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "entity"={
-	 *              "label"="oro.ui.created_at"
-	 *          },
-	 *          "importexport"={
-	 *              "excluded"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $createdAt;
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @ORM\Column(type="datetime", name="created_at")
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $createdAt;
 
-	/**
-	 * @var \DateTime $updatedAt
-	 *
-	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @ConfigField(
-	 *      defaultValues={
-	 *          "entity"={
-	 *              "label"="oro.ui.updated_at"
-	 *          },
-	 *          "importexport"={
-	 *              "excluded"=true
-	 *          }
-	 *      }
-	 * )
-	 */
-	protected $updatedAt;
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(type="datetime", name="updated_at")
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $updatedAt;
 
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getCreatedAt()
-	{
-	    return $this->createdAt;
-	}
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
 
-	/**
-	 * @param \DateTime $createdAt
-	 */
-	public function setCreatedAt(\DateTime $createdAt)
-	{
-	    $this->createdAt = $createdAt;
-	}
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getUpdatedAt()
-	{
-	    return $this->updatedAt;
-	}
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
 
-	/**
-	 * @param \DateTime $updatedAt
-	 */
-	public function setUpdatedAt(\DateTime $updatedAt)
-	{
-	    $this->updatedAt = $updatedAt;
-	}
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
 }

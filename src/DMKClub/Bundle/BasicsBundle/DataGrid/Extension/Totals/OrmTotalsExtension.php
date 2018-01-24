@@ -5,7 +5,8 @@ use Oro\Bundle\DataGridBundle\Extension\Totals\OrmTotalsExtension As OroOrmTotal
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
-class OrmTotalsExtension extends OroOrmTotalsExtension{
+class OrmTotalsExtension extends OroOrmTotalsExtension
+{
 
     /**
      * {@inheritdoc}
@@ -107,5 +108,4 @@ class OrmTotalsExtension extends OroOrmTotalsExtension{
 
         return $val;
     }
-
 }

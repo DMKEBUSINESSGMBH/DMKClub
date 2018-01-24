@@ -1,26 +1,27 @@
 <?php
-
 namespace DMKClub\Bundle\BasicsBundle\PDF;
-
 
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 
-interface PdfAwareInterface {
+interface PdfAwareInterface
+{
 
-	/**
-	 * @return TwigTemplate
-	 */
-	public function getTemplate();
+    /**
+     *
+     * @return TwigTemplate
+     */
+    public function getTemplate();
 
-	/**
-	 * customer prefix vor filename
-	 * @return string
-	 */
-	public function getFilenamePrefix();
+    /**
+     * customer prefix vor filename
+     *
+     * @return string
+     */
+    public function getFilenamePrefix();
 
-	/**
-	 * @return string
-	 */
-	public function getExportFilesystem();
-
+    /**
+     *
+     * @return string
+     */
+    public function getExportFilesystem();
 }
