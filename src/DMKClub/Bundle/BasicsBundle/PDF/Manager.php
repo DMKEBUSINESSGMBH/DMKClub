@@ -12,7 +12,6 @@ use Monolog\Logger;
  */
 class Manager
 {
-
     /**
      *
      * @var array
@@ -79,8 +78,9 @@ class Manager
         $nextEntity(function (PdfAwareInterface $entity) use ($twigTemplate, &$pdfGenerator) {
             if ($twigTemplate === null) {
                 $twigTemplate = $entity->getTemplate();
-                if (! $twigTemplate)
+                if (! $twigTemplate) {
                     throw new PdfException('No template instance found');
+                }
                 if ($pdfGenerator === null) {
                     // Call generator
                     $pdfGenerator = $this->getGeneratorByName($twigTemplate->getGenerator());
@@ -93,7 +93,9 @@ class Manager
         });
         $outputFormat = 'pdf';
         $fileName = $this->fileManager->generateFileName('pdfFile', $outputFormat);
-        $pdfGenerator->combinedFinalize($fileName);
+        $localFile = $this->fileManager->generateTmpFilePath($fileName);
+        $pdfGenerator->combinedFinalize($localFile);
+        $this->fileManager->writeFileToStorage($localFile, $fileName);
 
         return $fileName;
     }
