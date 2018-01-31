@@ -14,6 +14,7 @@ dmkclub:
         member_code_int_short.label:   Mgl-Nr. (Zahl)
         member_fees.label:   Beiträge
         member_fee_discounts.label:  Ermäßigungen
+        member_proposals.label: Mitgliedsanträge
         payment_option.label:   Zahlungsart
         payment_interval.label: Zahlungsintervall
         is_active.label:     Aktives Mitglied

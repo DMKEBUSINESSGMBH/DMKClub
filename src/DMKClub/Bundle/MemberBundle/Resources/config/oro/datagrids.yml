@@ -38,6 +38,9 @@ datagrids:
                         - { join: m.payment_option, alias: po }
                         - { join: m.payment_interval, alias: pi }
         columns:
+            id:
+                label:         dmkclub.member.id.label
+                renderable:    false
             memberCode:
                 label:         dmkclub.member.member_code.label
                 renderable:    false
@@ -105,6 +108,8 @@ datagrids:
                 params:     [ id ]
         sorters:
             columns:
+                id:
+                    data_name: m.id
                 memberCode:
                     data_name: m.memberCode
                 memberCodeInt:

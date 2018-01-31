@@ -15,6 +15,7 @@ dmkclub:
         member_code_int_short.label:   Club ID (Number)
         member_fees.label:   Fees
         member_fee_discounts.label:   Fee discounts
+        member_proposals.label: Membership proposals
         payment_option.label: Payment option
         payment_interval.label: Payment interval
         is_active.label:     Active member
