@@ -2,22 +2,20 @@
 namespace DMKClub\Bundle\MemberBundle\Entity\Manager;
 
 use DateTime;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Oro\Bundle\SegmentBundle\Entity\Manager\SegmentManager;
+
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Model\Processor;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use DMKClub\Bundle\MemberBundle\Accounting\AccountingException;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
-use Oro\Bundle\SegmentBundle\Entity\SegmentType;
-use Oro\Bundle\SegmentBundle\Query\StaticSegmentQueryBuilder;
-use Oro\Bundle\SegmentBundle\Query\DynamicSegmentQueryBuilder;
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
-use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
 use DMKClub\Bundle\MemberBundle\Async\Accounting\FeesMessageProcessor;
 
 class MemberBillingManager implements ContainerAwareInterface
@@ -37,11 +35,8 @@ class MemberBillingManager implements ContainerAwareInterface
 
     protected $processionProvider;
 
-    /** @var DynamicSegmentQueryBuilder */
-    protected $dynamicSegmentQueryBuilder;
-
-    /** @var StaticSegmentQueryBuilder */
-    protected $staticSegmentQueryBuilder;
+    /** @var SegmentManager */
+    protected $segmentManager;
 
     /** @var \Oro\Component\MessageQueue\Client\MessageProducerInterface */
     protected $messageProducer;
@@ -50,15 +45,13 @@ class MemberBillingManager implements ContainerAwareInterface
         EntityManager $em,
         ContainerInterface $container,
         ProcessorProvider $processorProvider,
-        DynamicSegmentQueryBuilder $dynamicSegmentQueryBuilder,
-        StaticSegmentQueryBuilder $staticSegmentQueryBuilder,
+        SegmentManager $segmentManager,
         MessageProducerInterface $messageProducer)
     {
         $this->em = $em;
         $this->setContainer($container);
         $this->processionProvider = $processorProvider;
-        $this->dynamicSegmentQueryBuilder = $dynamicSegmentQueryBuilder;
-        $this->staticSegmentQueryBuilder = $staticSegmentQueryBuilder;
+        $this->segmentManager = $segmentManager;
         $this->messageProducer = $messageProducer;
     }
 
@@ -197,32 +190,19 @@ class MemberBillingManager implements ContainerAwareInterface
         $processor = $this->getProcessor($memberBilling);
         $processor->init($memberBilling, $this->getProcessorSettings($memberBilling));
 
+        $alias = 'm';
+        $qb = $this->getMemberRepository()->createQueryBuilder($alias);
         $segmentQuery = NULL;
         $segment = $memberBilling->getSegment();
         if ($segment) {
-            // Hier relevante Filter auf die Mitglieder setzen
-            if ($segment->getType()->getName() === SegmentType::TYPE_DYNAMIC) {
-                $segmentQuery = $this->dynamicSegmentQueryBuilder->build($segment);
-            } else {
-                $segmentQuery = $this->staticSegmentQueryBuilder->build($segment);
-            }
-        }
-
-        $alias = 'm';
-        $qb = $this->getMemberRepository()->createQueryBuilder($alias);
-        if ($segmentQuery != NULL) {
-            $identifier = $alias . '.id';
-            $segmentExpr = $qb->expr()->in($identifier, $segmentQuery->getDQL());
+            $segmentDQL = $this->segmentManager->getFilterSubQuery($segment, $qb);
+            $segmentExpr = $qb->expr()->in($alias . '.id', $segmentDQL);
             $qb->where($segmentExpr);
-            $params = $segmentQuery->getParameters();
-            /** @var Parameter $param */
-            foreach ($params as $param) {
-                $qb->setParameter($param->getName(), $param->getValue(), $param->getType());
-            }
         }
 
-        if ($async) // Bei async nur die IDs sammeln
+        if ($async) { // Bei async nur die IDs sammeln
             $qb->select($alias . '.id');
+        }
         $q = $qb->getQuery();
 
         $result = $q->iterate();

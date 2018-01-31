@@ -35,8 +35,7 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@service_container"
             - "@dmkclub_member.memberbilling.processorprovider"
-            - "@oro_segment.query.dynamic_segment.query_builder"
-            - "@oro_segment.query.static_segment.query_builder"
+            - "@oro_segment.segment_manager"
             - "@oro_message_queue.message_producer"
     dmkclub_member.member.manager:
         class:     "%dmkclub_member.member.manager.class%"
