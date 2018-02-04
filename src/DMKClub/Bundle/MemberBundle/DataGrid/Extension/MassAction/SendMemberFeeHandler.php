@@ -6,6 +6,7 @@ use Doctrine\ORM\Query;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Oro\Bundle\CronBundle\Async\CommandRunner;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
@@ -16,19 +17,11 @@ use Psr\Log\LoggerInterface;
 
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
-use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
-use JMS\JobQueueBundle\Entity\Job;
 use DMKClub\Bundle\MemberBundle\Command\SendFeeMailsCommand;
 
 class SendMemberFeeHandler implements MassActionHandlerInterface
 {
     const FLUSH_BATCH_SIZE = 100;
-
-    /**
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
      *
@@ -45,29 +38,31 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
     /** @var Processor */
     protected $mailer;
 
+    /** @var CommandRunner */
+    protected $commandRunner;
+
     /** @var LoggerInterface */
     protected $logger;
 
     /**
      *
-     * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
      * @param ServiceLink $securityFacadeLink
      */
     public function __construct(
-        EntityManager $entityManager,
         TranslatorInterface $translator,
         ServiceLink $securityFacadeLink,
         MemberFeeManager $feeManager,
         Processor $mailer,
+        CommandRunner $commandRunner,
         LoggerInterface $logger
     )
     {
-        $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->securityFacade = $securityFacadeLink->getService();
         $this->feeManager = $feeManager;
         $this->mailer = $mailer;
+        $this->commandRunner = $commandRunner;
         $this->logger = $logger;
     }
 
@@ -83,13 +78,10 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
 
-        $this->entityManager->beginTransaction();
         try {
             set_time_limit(0);
             $result = $this->handleSendMemberFee($options, $data, $args->getResults());
-            $this->entityManager->commit();
         } catch (\Exception $e) {
-            $this->entityManager->rollback();
             return $this->getErrorResponse($args, $e);
         }
 
@@ -123,15 +115,11 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
                 if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
                     $this->scheduleSendCommand($idBag);
                     $idBag = [];
-                    $this->entityManager->flush();
-                    $this->entityManager->clear();
                 }
             }
             if (!empty($idBag)) {
                 $this->scheduleSendCommand($idBag);
             }
-
-            $this->entityManager->flush();
         }
 
         return $iteration;
@@ -140,9 +128,7 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
     protected function scheduleSendCommand($ids)
     {
         $idArg = implode(',', $ids);
-        $job = new Job(SendFeeMailsCommand::NAME, ['ids' => $idArg]);
-        $this->entityManager->persist($job);
-        $this->entityManager->flush();
+        $this->commandRunner->run(SendFeeMailsCommand::NAME, ['ids' => $idArg]);
     }
     /**
      *

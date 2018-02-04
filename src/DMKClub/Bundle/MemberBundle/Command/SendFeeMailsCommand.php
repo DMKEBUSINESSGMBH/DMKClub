@@ -1,13 +1,15 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Command;
 
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Doctrine\ORM\EntityManager;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
+
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
@@ -62,7 +64,7 @@ class SendFeeMailsCommand extends ContainerAwareCommand
         try {
             $result = $this->processEmails(explode(',', $ids));
             $output->writeln(sprintf('<info>Job finished</info> with %d processed fees and %d errors', $result['cnt'], $result['errors']));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Job failed</error>'));
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }

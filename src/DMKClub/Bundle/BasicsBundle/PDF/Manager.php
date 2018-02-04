@@ -67,7 +67,7 @@ class Manager
             ]);
             throw new PdfException('Error generating pdf file', 0, $e);
         }
-        return $fileName;
+        return $localFile;
     }
 
     public function buildPdfCombined($nextEntity)

@@ -36,9 +36,9 @@ services:
     dmkclub_member.datagrid.mass_action.send_memberfee_handler:
         class: "%dmkclub_member.mass_action.send_memberfee_handler.class%"
         arguments:
-            - "@doctrine.orm.entity_manager"
             - "@translator"
             - "@oro_security.security_facade.link"
             - "@dmkclub_member.memberfee.manager"
             - "@dmkclub_member.mailer.processor"
+            - "@oro_cron.async.command_runner"
             - "@logger"

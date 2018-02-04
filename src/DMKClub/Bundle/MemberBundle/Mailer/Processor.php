@@ -2,8 +2,6 @@
 
 namespace DMKClub\Bundle\MemberBundle\Mailer;
 
-
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 use DMKClub\Bundle\BasicsBundle\Model\Attachment;
@@ -20,9 +18,9 @@ class Processor extends BaseProcessor
         $this->pdfManager = $pdfManager;
     }
     /**
-     * @param UserInterface $user
+     * @param MemberFee $fee
      *
-     * @return int
+     * @return int number of emails sent
      */
     public function sendBillToMemberEmail(MemberFee $fee)
     {

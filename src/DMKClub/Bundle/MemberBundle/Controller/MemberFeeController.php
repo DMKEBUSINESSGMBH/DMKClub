@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
@@ -70,7 +69,7 @@ class MemberFeeController extends Controller {
 			);
 			$responseData['url'] = $url;
 		}
-		catch(Exception $e) {
+		catch(\Exception $e) {
 			$responseData['message'] = $e->getMessage();
 		}
 
