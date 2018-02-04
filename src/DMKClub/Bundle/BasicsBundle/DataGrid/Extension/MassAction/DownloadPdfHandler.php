@@ -13,6 +13,9 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
+/**
+ * Generic handler to download a combined PDF. The source of PDF is created by callback.
+ */
 class DownloadPdfHandler implements MassActionHandlerInterface
 {
 

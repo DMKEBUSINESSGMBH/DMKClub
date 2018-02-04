@@ -191,7 +191,7 @@ dmkclub:
                 unmark_feecorrection: Korrektur entfernen
                 send_memberfee:
                     label:            Rechnung versenden
-                    success_message:  "{0} Es wurden keine Rechnungen markiert.|{1} Eine Rechnung versendet. Fehler: %errors% |]1,Inf[ %count% Rechnungen wurden versendet. Fehler: %errors%"
+                    success_message:  "{0} Es wurden keine Rechnungen markiert.|{1} Eine Rechnung zum Versand angemeldet. |]1,Inf[ %count% Rechnungen wurden zum Versand angemeldet."
                 download_bill:   Rechnung herunterladen
                 export_bill:     Rechnung exportieren
         memberfeeposition:

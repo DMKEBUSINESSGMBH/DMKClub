@@ -2,10 +2,6 @@ parameters:
     dmkclub_basics.twigtemplate.entity.class:    DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate
 #    dmkclub_basics.twigtemplate.manager.class:   DMKClub\Bundle\BasicsBundle\Entity\Manager\TwigTemplateManager
     dmkclub_basics.pdf.manager.class:            DMKClub\Bundle\BasicsBundle\PDF\Manager
-    dmkclub_basics.job_executor.class:           DMKClub\Bundle\BasicsBundle\Job\JobExecutor
-    dmkclub_basics.job.reader.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\ItemReader
-    dmkclub_basics.job.processor.pdf.class:      DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfProcessor
-    dmkclub_basics.job.writer.pdf.class:         DMKClub\Bundle\BasicsBundle\Job\Pdf\PdfWriter
     dmkclub_basics.provider.privilege_category_provider.class: DMKClub\Bundle\BasicsBundle\Provider\PrivilegeCategoryProvider
     dmkclub_basics.utility.datagrids.class:      DMKClub\Bundle\BasicsBundle\Utility\Datagrids
 
@@ -30,30 +26,6 @@ services:
             - "@twig"
             - "@oro_importexport.file.file_manager"
             - "@logger"
-    dmkclub_basics.job_executor:
-        class: "%dmkclub_basics.job_executor.class%"
-        arguments:
-            - "@akeneo_batch.connectors"
-            - "@akeneo_batch.job_repository"
-            - "@oro_importexport.context_registry"
-            - "@doctrine"
-        lazy: true
-
-    dmkclub_basics.job.reader.pdf:
-        class: "%dmkclub_basics.job.reader.pdf.class%"
-        arguments:
-            - "@oro_importexport.context_registry"
-            - "@doctrine.orm.entity_manager"
-        lazy: true
-    dmkclub_basics.job.processor.pdf:
-        class: "%dmkclub_basics.job.processor.pdf.class%"
-        arguments:
-            - "@dmkclub_basics.pdf.manager"
-            - "@logger"
-    dmkclub_basics.job.writer.pdf:
-        class: "%dmkclub_basics.job.writer.pdf.class%"
-        arguments:
-            - "@knp_gaufrette.filesystem_map"
 
     dmkclub_basics.provider.privilege_category_provider:
         class: "%dmkclub_basics.provider.privilege_category_provider.class%"
@@ -62,3 +34,23 @@ services:
 
     dmkclub_basics.utility.datagrids:
         class: "%dmkclub_basics.utility.datagrids.class%"
+### Job Services
+    dmkclub_basics.async.pdf.exportpdfsprocessor:
+        class: 'DMKClub\Bundle\BasicsBundle\Async\Pdf\ExportPdfsMessageProcessor'
+        arguments:
+            - "@oro_message_queue.message_producer"
+            - '@oro_message_queue.job.runner'
+            - "@logger"
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    dmkclub_basics.async.pdf.exportpdfprocessor:
+        class: 'DMKClub\Bundle\BasicsBundle\Async\Pdf\ExportPdfProcessor'
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - "@doctrine.orm.entity_manager"
+            - "@dmkclub_basics.pdf.manager"
+            - "@knp_gaufrette.filesystem_map"
+            - "@logger"
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }

@@ -76,7 +76,6 @@ class FeesMessageProcessor implements MessageProcessorInterface, TopicSubscriber
      *
      * @param MemberFee $item
      * @return MemberFee
-     * @throws RuntimeException
      */
     public function process(MessageInterface $message, SessionInterface $session)
     {
@@ -92,10 +91,10 @@ class FeesMessageProcessor implements MessageProcessorInterface, TopicSubscriber
         $jobName = sprintf('%s:%s:%s:%s', self::TOPIC_FEES_CALCULATION, $data[self::OPTION_MEMBERBILLING], $data[self::OPTION_BILLDATE], md5(implode(',', $ids)));
 
         $result = $this->jobRunner->runUnique( // a root job is creating here
-$message->getMessageId(), $jobName, function (JobRunner $jobRunner, Job $job) use ($ids, $data) {
+            $message->getMessageId(), $jobName, function (JobRunner $jobRunner, Job $job) use ($ids, $data) {
             foreach ($ids as $id) {
                 $jobRunner->createDelayed( // child jobs are creating here and get new status
-sprintf('%s:bill-%s:%s:mbr-%s', FeeMessageProcessor::TOPIC_FEE_CALCULATION, $data[self::OPTION_MEMBERBILLING], $data[self::OPTION_BILLDATE], $id), function (JobRunner $jobRunner, Job $child) use ($id, $data) {
+                    sprintf('%s:bill-%s:%s:mbr-%s', FeeMessageProcessor::TOPIC_FEE_CALCULATION, $data[self::OPTION_MEMBERBILLING], $data[self::OPTION_BILLDATE], $id), function (JobRunner $jobRunner, Job $child) use ($id, $data) {
                     $this->producer->send(FeeMessageProcessor::TOPIC_FEE_CALCULATION, [ // messages for child jobs are sent here
                         FeeMessageProcessor::OPTION_MEMBERID => $id,
                         FeeMessageProcessor::OPTION_MEMBERBILLING => $data[self::OPTION_MEMBERBILLING],

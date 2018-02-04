@@ -13,17 +13,16 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use DMKClub\Bundle\BasicsBundle\Async\Topics;
 
+/**
+ * Generic handler to export a combined PDF to a defined filesystem. The source of PDF is created by callback.
+ */
 class ExportPdfHandler implements MassActionHandlerInterface
 {
 
     const FLUSH_BATCH_SIZE = 100;
-
-    /**
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
      *
@@ -37,22 +36,20 @@ class ExportPdfHandler implements MassActionHandlerInterface
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
 
-    /** @var \DMKClub\Bundle\BasicsBundle\Job\JobExecutor */
-    private $jobExecutor;
+    /** @var MessageProducerInterface */
+    private $messageProducer;
 
     /**
      *
-     * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
      * @param ServiceLink $securityFacadeLink
      */
-    public function __construct(EntityManager $entityManager, TranslatorInterface $translator, LoggerInterface $logger, JobExecutor $jobExecutor, MemberFeeManager $feeManager)
+    public function __construct(TranslatorInterface $translator, LoggerInterface $logger, MessageProducerInterface $messageProducer, MemberFeeManager $feeManager)
     {
-        $this->entityManager = $entityManager;
-        $this->translator = $translator;
-        $this->logger = $logger;
-        $this->jobExecutor = $jobExecutor;
-        $this->feeManager = $feeManager;
+        $this->translator       = $translator;
+        $this->logger           = $logger;
+        $this->messageProducer  = $messageProducer;
+        $this->feeManager       = $feeManager;
     }
 
     /**
@@ -65,13 +62,10 @@ class ExportPdfHandler implements MassActionHandlerInterface
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
 
-        $this->entityManager->beginTransaction();
         try {
             set_time_limit(0);
             $iteration = $this->handleExport($options, $data, $args->getResults());
-            $this->entityManager->commit();
         } catch (\Exception $e) {
-            $this->entityManager->rollback();
             throw $e;
         }
 
@@ -91,7 +85,6 @@ class ExportPdfHandler implements MassActionHandlerInterface
         $iteration = 0;
 
         $jobData = [
-            'data_identifier' => $options['data_identifier'],
             'entity_name' => $options['entity_name']
         ];
 
@@ -110,8 +103,7 @@ class ExportPdfHandler implements MassActionHandlerInterface
         if (array_key_exists('entity_ids', $jobData)) {
             $jobType = 'export';
             $jobName = 'dmkexportpdf';
-
-            $this->jobExecutor->createJob($jobType, $jobName, $jobData, true);
+            $this->messageProducer->send(Topics::EXPORT_PDF, $jobData); //($jobType, $jobName, $jobData, true);
         }
 
         return $iteration;
