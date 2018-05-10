@@ -6,5 +6,3 @@ DMKClub\Bundle\SponsorBundle\Entity\Sponsor:
                 max: 255
         contact:
             - NotBlank: ~
-        account:
-            - NotBlank: ~

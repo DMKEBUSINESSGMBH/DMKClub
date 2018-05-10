@@ -19,9 +19,9 @@ navigation:
     
     titles:
         dmkclub_sponsor_index: ~
-        dmkclub_sponsor_view:  '%%sponsor.name%%'
+        dmkclub_sponsor_view:  '%sponsor.name%'
         dmkclub_sponsor_create: 'Create Sponsor'
-        dmkclub_sponsor_update: '%%sponsor.name%% - Edit'
+        dmkclub_sponsor_update: '%sponsor.name% - Edit'
         dmkclub_sponsorcategory_create: 'Create Category'
-        dmkclub_sponsorcategory_update: '%%sponsorcategory.name%% - Edit'
+        dmkclub_sponsorcategory_update: '%sponsorcategory.name% - Edit'
     
