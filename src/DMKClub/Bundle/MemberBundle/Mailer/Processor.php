@@ -27,6 +27,7 @@ class Processor extends BaseProcessor
         $member = $fee->getMember();
         // Create PDF
         $fileName = $this->buildFeePdf($fee);
+        // TODO: raise event to allow modify pdf file
         $attachment = new Attachment($fileName);
 
         return $this->getEmailTemplateAndSendEmail(

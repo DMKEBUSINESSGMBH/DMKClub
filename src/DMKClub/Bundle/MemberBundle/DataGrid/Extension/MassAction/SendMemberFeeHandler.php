@@ -1,7 +1,6 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
 use Symfony\Component\Translation\TranslatorInterface;
@@ -12,6 +11,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Psr\Log\LoggerInterface;
 
@@ -21,7 +21,7 @@ use DMKClub\Bundle\MemberBundle\Command\SendFeeMailsCommand;
 
 class SendMemberFeeHandler implements MassActionHandlerInterface
 {
-    const FLUSH_BATCH_SIZE = 100;
+    const FLUSH_BATCH_SIZE = 80;
 
     /**
      *
@@ -82,6 +82,11 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
             set_time_limit(0);
             $result = $this->handleSendMemberFee($options, $data, $args->getResults());
         } catch (\Exception $e) {
+            $this->logger->error('Send member fee failed.', [
+                'exception' => $e,
+                'options' => $options,
+                'stack' => $e->getTraceAsString(),
+            ]);
             return $this->getErrorResponse($args, $e);
         }
 
@@ -100,12 +105,12 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
     {
         $isAllSelected = $this->isAllSelected($data);
         $iteration = 0;
-
-        $feeIds = [];
-        if (array_key_exists('values', $data)) {
-            $feeIds = explode(',', $data['values']);
+        if (array_key_exists('values', $data) && !empty($data['values'])) {
+            $idBag = explode(',', $data['values']);
+            $iteration = count($idBag);
+            $this->scheduleSendCommand($idBag);
         }
-        if ($feeIds || $isAllSelected) {
+        elseif ($isAllSelected) {
             $idBag = [];
             foreach ($results as $result) {
                 $iteration ++;
@@ -127,8 +132,29 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
 
     protected function scheduleSendCommand($ids)
     {
-        $idArg = implode(',', $ids);
-        $this->commandRunner->run(SendFeeMailsCommand::NAME, ['ids' => $idArg]);
+        $batchSet = [80, 40, 20, 10, 5];
+        foreach ($batchSet as $batchSize) {
+            $chunks = array_chunk($ids, $batchSize);
+            $this->logger->debug('BATCHES', ['size' => $batchSize, 'c'=>count($chunks),'chunks' => $chunks]);
+            // Wenn der erste passt, dann passen alle
+            if ($this->hasValidCommand($chunks[0])) {
+                foreach ($chunks as $chunk) {
+                    $this->logger->info('SEND CHUNK! '. $batchSize, ['c' => $chunk]);
+                    $this->commandRunner->run(SendFeeMailsCommand::NAME, ['ids' => implode(',', $chunk)]);
+                }
+                break;
+            }
+        }
+    }
+    /**
+     * Check if maximum command length is lower then 255 chars. This is limit of column "name" in table "oro_message_queue_job_unique"
+     * @param array $ids
+     */
+    protected function hasValidCommand($ids)
+    {
+        // "oro:cron:run_command:dmkclub:send:fee-ids=32560,3244 => max 255 Zeichen
+        $cmd = sprintf('oro:cron:run_command:%s-%s', SendFeeMailsCommand::NAME, 'ids='.implode(',', $ids));
+        return strlen($cmd) < 255;
     }
     /**
      *

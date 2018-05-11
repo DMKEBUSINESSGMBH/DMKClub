@@ -72,8 +72,12 @@ class DownloadPdfHandler implements MassActionHandlerInterface
             $data = $this->handleExport($options, $data, $args->getResults());
             $this->entityManager->commit();
         } catch (\Exception $e) {
+            $this->logger->error('Downloading pdf failed.', [
+                'exception' => $e,
+                'options' => $options,
+            ]);
             $this->entityManager->rollback();
-            throw $e;
+            return new MassActionResponse(false, $e->getMessage(), []);
         }
 
         return $this->getResponse($args, $data);

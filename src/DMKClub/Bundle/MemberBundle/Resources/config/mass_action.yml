@@ -26,6 +26,7 @@ services:
             - "@translator"
             - "@oro_security.security_facade.link"
             - "@dmkclub_member.memberfee.manager"
+            - "@logger"
 
     dmkclub_member.datagrid.mass_action.send_memberfee:
         class: "%dmkclub_member.mass_action.send_memberfee.class%"

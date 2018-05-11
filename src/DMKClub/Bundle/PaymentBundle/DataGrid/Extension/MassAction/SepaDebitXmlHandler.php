@@ -93,6 +93,9 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
             $result = $this->handleExport($options, $data, $args->getResults());
             $this->entityManager->commit();
         } catch (\Exception $e) {
+            $this->logger->error('Building SEPA file failed.', [
+                'exception' => $e,
+            ]);
             $this->entityManager->rollback();
 
             return new MassActionResponse(false, $this->translator->trans($e->getMessage()), []);
@@ -168,7 +171,9 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
 
             $identifier = $this->getUniqueMessageIdentification($paymentAware);
             $this->sepaBuilder->init($identifier, $paymentAware->getInitiatingPartyName());
-            $this->logger->error('Init called');
+            $this->logger->notice('SEPA builder initiated for {sepa_party}', [
+                'sepa_party' => $paymentAware->getInitiatingPartyName(),
+            ]);
 
             $this->payment = new Payment();
             $this->payment->setId($paymentAware->getPaymentId())

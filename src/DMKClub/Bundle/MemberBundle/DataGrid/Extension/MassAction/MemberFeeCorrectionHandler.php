@@ -10,6 +10,8 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use Doctrine\ORM\Query;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 
 class MemberFeeCorrectionHandler implements MassActionHandlerInterface
 {
@@ -38,18 +40,28 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
     /** @var MemberFeeManager */
     protected $feeManager;
 
+    /** @var LoggerInterface */
+    protected $logger;
+
     /**
      *
      * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
      * @param ServiceLink $securityFacadeLink
      */
-    public function __construct(EntityManager $entityManager, TranslatorInterface $translator, ServiceLink $securityFacadeLink, MemberFeeManager $feeManager)
+    public function __construct(
+        EntityManager $entityManager,
+        TranslatorInterface $translator,
+        ServiceLink $securityFacadeLink,
+        MemberFeeManager $feeManager,
+        LoggerInterface $logger
+    )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->securityFacade = $securityFacadeLink->getService();
         $this->feeManager = $feeManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -70,8 +82,13 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
             $iteration = $this->handleFeeCorrection($options, $data, $args->getResults());
             $this->entityManager->commit();
         } catch (\Exception $e) {
+            $this->logger->error('Mark/unmark fee for correction failed.', [
+                'exception' => $e,
+                'options' => $options,
+                'stack' => $e->getTraceAsString(),
+            ]);
             $this->entityManager->rollback();
-            throw $e;
+            return new MassActionResponse(false, $e->getMessage(), []);
         }
 
         return $this->getResponse($args, $iteration);
@@ -90,27 +107,23 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
         $markType = $options['mark_type'];
         $isAllSelected = $this->isAllSelected($data);
         $iteration = 0;
-
-        // $datagridName = $options['datagrid'];
-        // $billingParam = 'billing'; // TODO: make configurable
-        // $billingId = $data[$datagridName][$billingParam];
-
-        $feeIds = [];
-        if (array_key_exists('values', $data)) {
+        if (array_key_exists('values', $data) && !empty($data['values'])) {
             $feeIds = explode(',', $data['values']);
+            foreach ($feeIds as $feeId) {
+                $this->updateFee($feeId, $markType);
+                if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
+                    $this->entityManager->flush();
+                    $this->entityManager->clear();
+                }
+                $iteration ++;
+            }
         }
         // FIXME: wir benötigen noch den aktuellen memberBilling
-        if ($feeIds || $isAllSelected) {
+        elseif ($isAllSelected) {
             foreach ($results as $result) {
                 /** @var MemberFee $entity */
                 $entityId = $result->getValue('id');
-                $entity = $this->feeManager->getMemberFeeRepository()->find($entityId);
-
-                if ($this->securityFacade->isGranted('EDIT', $entity)) {
-                    $this->feeManager->setFeeCorrectionStatus($entity, $markType === self::MARK);
-                }
-
-                $this->entityManager->persist($entity);
+                $this->updateFee($entityId, $markType);
 
                 if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
                     $this->entityManager->flush();
@@ -118,11 +131,25 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
                 }
                 $iteration ++;
             }
-
-            $this->entityManager->flush();
         }
+        $this->entityManager->flush();
 
         return $iteration;
+    }
+    /**
+     *
+     * @param int $entityId
+     * @param string $markType
+     */
+    protected function updateFee($entityId, $markType)
+    {
+        $entity = $this->feeManager->getMemberFeeRepository()->find($entityId);
+
+        if ($this->securityFacade->isGranted('EDIT', $entity)) {
+            $this->feeManager->setFeeCorrectionStatus($entity, $markType === self::MARK);
+        }
+
+        $this->entityManager->persist($entity);
     }
 
     /**

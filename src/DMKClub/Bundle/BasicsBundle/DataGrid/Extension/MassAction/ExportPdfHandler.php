@@ -1,7 +1,6 @@
 <?php
 namespace DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction;
 
-use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -10,10 +9,9 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
-
-use DMKClub\Bundle\BasicsBundle\Job\JobExecutor;
-use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+
+use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\BasicsBundle\Async\Topics;
 
 /**
