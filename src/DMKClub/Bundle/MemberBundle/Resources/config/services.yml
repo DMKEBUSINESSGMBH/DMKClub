@@ -150,3 +150,12 @@ services:
             - "@logger"
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
+
+    dmkclub_member.eventlistener.add_member_email_context:
+        class: 'DMKClub\Bundle\MemberBundle\EventListener\AddMember2EmailContextListener'
+        arguments:
+            - '@oro_email.email.activity.manager'
+            - '@dmkclub_member.member.manager'
+            - '@logger'
+        tags:
+            - { name: kernel.event_listener, event: oro_activity.add_activity, method: addMember2EmailContext }

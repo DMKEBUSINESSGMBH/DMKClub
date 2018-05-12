@@ -55,7 +55,7 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
      */
     public function getMigrationVersion()
     {
-        return 'v1_5';
+        return 'v1_6';
     }
 
     /**
@@ -1086,6 +1086,7 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
      */
     public static function addActivityAssociations(Schema $schema, ActivityExtension $activityExtension)
     {
+        $activityExtension->addActivityAssociation($schema, 'oro_email', 'dmkclub_member');
         $activityExtension->addActivityAssociation($schema, 'oro_call', 'dmkclub_member');
         $activityExtension->addActivityAssociation($schema, 'oro_task', 'dmkclub_member');
         $activityExtension->addActivityAssociation($schema, 'oro_calendar_event', 'dmkclub_member');
@@ -1093,6 +1094,7 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
 
     public static function addActivityAssociations4Proposal(Schema $schema, ActivityExtension $activityExtension)
     {
+        $activityExtension->addActivityAssociation($schema, 'oro_email', 'dmkclub_member_proposal');
         $activityExtension->addActivityAssociation($schema, 'oro_call', 'dmkclub_member_proposal');
         $activityExtension->addActivityAssociation($schema, 'oro_task', 'dmkclub_member_proposal');
     }
