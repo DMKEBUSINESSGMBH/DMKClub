@@ -1,5 +1,4 @@
 <?php
-
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,187 +11,198 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
-class MemberBillingType extends AbstractType {
-	/**
-	 * @var EventSubscriberInterface[]
-	 */
-	protected $subscribers = [];
+class MemberBillingType extends AbstractType
+{
 
-	/** @var TranslatorInterface */
-	protected $translator;
-	/**
-	 * @var ProcessorProvider
-	 */
-	protected $processorProvider;
+    /**
+     *
+     * @var EventSubscriberInterface[]
+     */
+    protected $subscribers = [];
 
-	/**
-	 * @var array
-	 */
-	protected $fileSystemMap = NULL;
+    /** @var TranslatorInterface */
+    protected $translator;
 
-	/**
-	 * @param ConfigManager       $configManager
-	 * @param TranslatorInterface $translator
-	 */
-	public function __construct(TranslatorInterface $translator, ProcessorProvider $processorProvider, FilesystemMap $fileSystemMap)
-	{
-		$this->translator = $translator;
-		$this->processorProvider = $processorProvider;
-		$this->fileSystemMap = (array) $fileSystemMap;
-	}
-	/**
-	 * @param EventSubscriberInterface $subscriber
-	 */
-	public function addSubscriber(EventSubscriberInterface $subscriber)
-	{
-		$this->subscribers[] = $subscriber;
-	}
+    /**
+     *
+     * @var ProcessorProvider
+     */
+    protected $processorProvider;
 
-	/**
-	 * @param FormBuilderInterface $builder
-	 * @param array                $options
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		foreach ($this->subscribers as $subscriber) {
-			$builder->addEventSubscriber($subscriber);
-		}
+    /**
+     *
+     * @var array
+     */
+    protected $fileSystemMap = NULL;
 
-		$this->buildPlainFields($builder, $options);
-		$this->buildRelationFields($builder, $options);
-	}
-	/**
-	 * @param FormBuilderInterface $builder
-	 * @param array $options
-	 */
-	protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
-		$builder
-			->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.memberbilling.name.label'))
-			->add('startDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.start_date.label'))
-			->add('endDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberbilling.end_date.label'))
-			->add('positionLabels', 'textarea', [
-			    'required' => true,
-			    'label' => 'dmkclub.member.memberbilling.position_labels.label',
-			    'tooltip' => 'dmkclub.member.memberbilling.position_labels.tooltip'
-			])
+    /**
+     *
+     * @param TranslatorInterface $translator
+     * @param ProcessorProvider $processorProvider
+     * @param FilesystemMap $fileSystemMap
+     */
+    public function __construct(TranslatorInterface $translator, ProcessorProvider $processorProvider, FilesystemMap $fileSystemMap)
+    {
+        $this->translator = $translator;
+        $this->processorProvider = $processorProvider;
+        $this->fileSystemMap = (array) $fileSystemMap;
+    }
 
-			->add('exportFilesystem', 'choice', array(
-					'required' => false,
-					'label' => 'dmkclub.member.memberbilling.export_filesystem.label',
-					'choices' => $this->getFilesystems(),
-					'empty_value' => 'dmkclub.form.choose',
-				)
-			)
-		;
-	}
-	protected function getFilesystems() {
-		$options = [];
-		$fsm = reset($this->fileSystemMap);
-		foreach ($fsm As $fsName => $filesystem) {
-			/* @var $filesystem \Gaufrette\Filesystem */
-			if($fsName == 'attachments')
-				continue; // skip oro attachment fs
+    /**
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
+    }
 
-			$clazz = explode('\\', get_class($filesystem->getAdapter()));
-			$fsType = array_pop($clazz);
-			$adapterData = (array)$filesystem->getAdapter();
-			$info = '';
-			foreach($adapterData As $key => $value) {
-				if(strstr($key, 'directory') !== false) {
-					$info = ' ('.$value.')';
-					break;
-				}
-			}
-			$options[$fsName] = $fsType . $info;
-		}
-		return $options;
-	}
-	/**
-	 * @param FormBuilderInterface $builder
-	 * @param array $options
-	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-	 */
-	public function buildRelationFields(FormBuilderInterface $builder, array $options){
-		// tags removed in 1.9
-		// $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
+    /**
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
 
-		// Add Member-List Segment
-		$builder->add(
-				'segment',
-				'dmkclub_member_segment_select_type',
-				[
-						'label' => 'dmkclub.member.memberbilling.segment.label',
-						'required' => false,
-						'entities' => [
-								'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
-						],
-				]
-		);
+        $this->buildPlainFields($builder, $options);
+        $this->buildRelationFields($builder, $options);
+    }
 
-		$builder->add(
-				'sepaCreditor',
-				'dmkclub_sepacreditor_select',
-				[
-						'label' => 'dmkclub.member.memberbilling.sepa_creditor.label',
-						'required' => false,
-				]
-		);
+    /**
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    protected function buildPlainFields(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name', 'text', [
+                'required' => true,
+                'label' => 'dmkclub.member.memberbilling.name.label'
+            ])
+            ->add('startDate', 'oro_date', [
+                'required' => true,
+                'label' => 'dmkclub.member.memberbilling.start_date.label'
+            ])
+            ->add('endDate', 'oro_date', [
+                'required' => true,
+                'label' => 'dmkclub.member.memberbilling.end_date.label'
+            ])
+            ->add('positionLabels', 'textarea', [
+                'required' => true,
+                'label' => 'dmkclub.member.memberbilling.position_labels.label',
+                'tooltip' => 'dmkclub.member.memberbilling.position_labels.tooltip'
+            ])
+            ->add('exportFilesystem', 'choice', [
+                'required' => false,
+                'label' => 'dmkclub.member.memberbilling.export_filesystem.label',
+                'choices' => $this->getFilesystems(),
+                'empty_value' => 'dmkclub.form.choose',
+                'tooltip' => 'dmkclub.member.memberbilling.export_filesystem.tooltip'
+            ]);
+    }
 
-		$builder->add(
-				'template',
-				'dmkclub_basics_twigtemplate_select',
-				[
-				    'label' => 'dmkclub.member.memberbilling.template.label',
-					'required' => false,
-				    'tooltip' => 'dmkclub.member.memberbilling.template.tooltip'
-				]
-		);
+    protected function getFilesystems()
+    {
+        $options = [];
+        $fsm = reset($this->fileSystemMap);
+        foreach ($fsm as $fsName => $filesystem) {
+            /* @var $filesystem \Gaufrette\Filesystem */
+            if ($fsName == 'attachments')
+                continue; // skip oro attachment fs
 
-		// Einstellungsformular für dem Processor
-		$builder->addEventListener(
-				FormEvents::PRE_SET_DATA,
-				function (FormEvent $event) {
-					$options = [
-							'label' => 'dmkclub.member.memberbilling.processor.label',
-							'required' => true,
-							'mapped' => false
-					];
+            $clazz = explode('\\', get_class($filesystem->getAdapter()));
+            $fsType = array_pop($clazz);
+            $adapterData = (array) $filesystem->getAdapter();
+            $info = '';
+            foreach ($adapterData as $key => $value) {
+                if (strstr($key, 'directory') !== false) {
+                    $info = ' (' . $value . ')';
+                    break;
+                }
+            }
+            $options[$fsName] = $fsType . $info;
+        }
+        return $options;
+    }
 
-					/** @var MemberBilling $data */
-					$data = $event->getData();
-					if ($data) {
-						$choices = $this->processorProvider->getVisibleProcessorChoices();
-						$currentProcessorName = $data->getProcessor();
-						if ($currentProcessorName && !array_key_exists($currentProcessorName, $choices)) {
-							$currentProcessor = $this->processorProvider->getProcessorByName($currentProcessorName);
-							$choices[$currentProcessor->getName()] = $currentProcessor->getLabel();
-							$options['choices'] = $choices;
-						}
-					}
+    /**
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function buildRelationFields(FormBuilderInterface $builder, array $options)
+    {
+        // tags removed in 1.9
+        // $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
 
-					$form = $event->getForm();
-					$form->add('processor', 'dmkclub_member_accounting_processor_select', $options);
-				}
-		);
-	}
-	/**
-	 * @param OptionsResolverInterface $resolver
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-	    $resolver->setDefaults(
-	        array(
-	            'data_class' => 'DMKClub\Bundle\MemberBundle\Entity\MemberBilling',
-	            'cascade_validation' => true,
-	        )
-	    );
-	}
+        // Add Member-List Segment
+        $builder->add('segment', 'dmkclub_member_segment_select_type', [
+            'label' => 'dmkclub.member.memberbilling.segment.label',
+            'required' => false,
+            'entities' => [
+                'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
+            ]
+        ]);
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-	    return 'dmkclub_member_memberbilling';
-	}
+        $builder->add('sepaCreditor', 'dmkclub_sepacreditor_select', [
+            'label' => 'dmkclub.member.memberbilling.sepa_creditor.label',
+            'required' => false
+        ]);
+
+        $builder->add('template', 'dmkclub_basics_twigtemplate_select', [
+            'label' => 'dmkclub.member.memberbilling.template.label',
+            'required' => false,
+            'tooltip' => 'dmkclub.member.memberbilling.template.tooltip'
+        ]);
+
+        // Einstellungsformular für dem Processor
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $options = [
+                'label' => 'dmkclub.member.memberbilling.processor.label',
+                'required' => true,
+                'mapped' => false
+            ];
+
+            /** @var MemberBilling $data */
+            $data = $event->getData();
+            if ($data) {
+                $choices = $this->processorProvider->getVisibleProcessorChoices();
+                $currentProcessorName = $data->getProcessor();
+                if ($currentProcessorName && ! array_key_exists($currentProcessorName, $choices)) {
+                    $currentProcessor = $this->processorProvider->getProcessorByName($currentProcessorName);
+                    $choices[$currentProcessor->getName()] = $currentProcessor->getLabel();
+                    $options['choices'] = $choices;
+                }
+            }
+
+            $form = $event->getForm();
+            $form->add('processor', 'dmkclub_member_accounting_processor_select', $options);
+        });
+    }
+
+    /**
+     *
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'DMKClub\Bundle\MemberBundle\Entity\MemberBilling',
+            'cascade_validation' => true
+        ));
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'dmkclub_member_memberbilling';
+    }
 }

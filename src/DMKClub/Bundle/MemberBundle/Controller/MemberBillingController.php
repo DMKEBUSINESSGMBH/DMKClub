@@ -6,7 +6,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
@@ -42,7 +41,9 @@ class MemberBillingController extends Controller
      */
     public function createAction()
     {
-        return $this->update(new MemberBilling());
+        $billing = new MemberBilling();
+        $billing->setPositionLabels($this->get('translator')->trans('dmkclub.member.memberbilling.position_labels.default'));
+        return $this->update($billing);
     }
 
     /**

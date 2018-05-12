@@ -134,14 +134,19 @@ dmkclub:
             processor.label:     Prozessor
             processor_config.label: Prozessor Einstellung
             position_labels.label: Texte für Positionen
+            position_labels.default: >
+                FEE Beitrag vom [STARTDATE] bis [ENDDATE]
+                ADMISSION  Aufnahmegebühr
+                FEECORRECTION Beitragskorrektur
             position_labels.tooltip: >
-              Placeholder for positions:
-              <pre>
-              FEE Beitrag vom [STARTDATE] bis [ENDDATE]<br/>
-              ADMISSION  Aufnahmegebühr<br/>
-              FEECORRECTION Beitragskorrektur<br/>
-              </pre>
+                Placeholder for positions:
+                <pre>
+                FEE Beitrag vom [STARTDATE] bis [ENDDATE]<br/>
+                ADMISSION  Aufnahmegebühr<br/>
+                FEECORRECTION Beitragskorrektur<br/>
+                </pre>
             export_filesystem.label: Ziel für PDF-Export
+            export_filesystem.tooltip: An diesen Ort werden PDF Dateien beim Export der Rechnungen über eine Massenoperation abgelegt. 
             fee.label:            Mitgliedsbeitrag
             fee_discount.label:   Mitgliedsbeitrag reduziert
             fee_admission.label:  Aufnahmegebühr für neue Mitglieder

@@ -142,14 +142,19 @@ dmkclub:
             processor.label:     Processor
             processor_config.label:  Processor config
             position_labels.label:   Position labels
+            position_labels.default: >
+                FEE Fee from [STARTDATE] to [ENDDATE]
+                ADMISSION  admission fee
+                FEECORRECTION fee correction
             position_labels.tooltip: >
-              Placeholder for positions:
-              <pre>
-              FEE Fee from [STARTDATE] to [ENDDATE]<br/>
-              ADMISSION  admission fee<br/>
-              FEECORRECTION fee correction<br/>
-              </pre>
-            export_filesystem.label: Target for pdf exports
+                Placeholder for positions:
+                <pre>
+                FEE Fee from [STARTDATE] to [ENDDATE]<br/>
+                ADMISSION  admission fee<br/>
+                FEECORRECTION fee correction<br/>
+                </pre>
+            export_filesystem.label: Target for PDF exports
+            export_filesystem.tooltip: Target for PDF files on mass export of bills
             fee.label:            Membership Fee
             fee_discount.label:   Discount Fee
             fee_admission.label:  Fee admission for new Members
