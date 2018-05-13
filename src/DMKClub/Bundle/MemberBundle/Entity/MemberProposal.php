@@ -161,6 +161,11 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="email_address", type="string", length=100, nullable=true)
+	 * @ConfigField(
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true}
+	 *  }
+	 * )
 	 */
 	protected $emailAddress;
 
@@ -168,6 +173,12 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @var string
 	 *
 	 * @ORM\Column(name="phone", type="string", length=100, nullable=true)
+	 * @ConfigField(
+	 *  defaultValues={
+	 *      "dataaudit"={"auditable"=true}
+	 *  }
+	 * )
+
 	 */
 	protected $phone;
 
@@ -253,6 +264,9 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @ORM\JoinColumn(name="postal_address", referencedColumnName="id", onDelete="SET NULL")
 	 * @ConfigField(
 	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
 	 *          "importexport"={
 	 *              "full"=true,
 	 *              "order"=150
@@ -263,7 +277,7 @@ class MemberProposal extends ExtendMemberProposal implements
 	protected $postalAddress;
 
 	/**
-	 * @var \Date
+	 * @var \DateTime
 	 *
 	 * @ORM\Column(name="discount_start_date", type="date", nullable=true)
 	 * @ConfigField(
@@ -276,7 +290,7 @@ class MemberProposal extends ExtendMemberProposal implements
 	 */
 	protected $discountStartDate;
 	/**
-	 * @var \Date
+	 * @var \DateTime
 	 *
 	 * @ORM\Column(name="discount_end_date", type="date", nullable=true)
 	 * @ConfigField(

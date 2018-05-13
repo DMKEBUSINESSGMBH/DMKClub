@@ -40,14 +40,14 @@ class MemberFeeDiscount extends ExtendMemberFeeDiscount
 
     /**
      *
-     * @var \Date
+     * @var \DateTime
      * @ORM\Column(name="start_date", type="date", nullable=true)
      */
     protected $startDate;
 
     /**
      *
-     * @var \Date
+     * @var \DateTime
      * @ORM\Column(name="end_date", type="date", nullable=true)
      */
     protected $endDate;

@@ -17,6 +17,7 @@ use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
+use DMKClub\Bundle\PaymentBundle\Entity\BankAccount;
 
 /**
  * Class Member
@@ -226,11 +227,12 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
 	 *
 	 * @ORM\Column(type="boolean", name="is_active", options={"default" : false})
 	 * @ConfigField(
-	 * 	defaultValues={"dataaudit"={"auditable"=true},
-	 *          "importexport"={
-	 *              "order"=40
-	 *          }
-	 *  }
+	 * 	   defaultValues={
+	 *         "dataaudit"={"auditable"=true},
+	 *         "importexport"={
+	 *             "order"=40
+	 *         }
+	 *     }
 	 * )
 	 */
 	protected $isActive = false;
@@ -280,7 +282,7 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
 	protected $status;
 
 	/**
-	 * @var Account
+	 * @var \DMKClub\Bundle\PaymentBundle\Entity\BankAccount
 	 *
 	 * @ORM\ManyToOne(targetEntity="DMKClub\Bundle\PaymentBundle\Entity\BankAccount", cascade="PERSIST")
 	 * @ORM\JoinColumn(name="bank_account", referencedColumnName="id", onDelete="SET NULL")
@@ -305,6 +307,9 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
 	 * @ORM\JoinColumn(name="postal_address", referencedColumnName="id", onDelete="SET NULL")
 	 * @ConfigField(
 	 *      defaultValues={
+	 *          "dataaudit"={
+	 *              "auditable"=true
+	 *          },
 	 *          "importexport"={
 	 *              "full"=true,
 	 *              "order"=150
@@ -322,7 +327,7 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
 	protected $owner;
 
 	/**
-	 * @var Account
+	 * @var \Oro\Bundle\AccountBundle\Entity\Account
 	 *
 	 * @ORM\ManyToOne(targetEntity="Oro\Bundle\AccountBundle\Entity\Account", cascade="PERSIST")
 	 * @ORM\JoinColumn(name="account_id", referencedColumnName="id", onDelete="SET NULL")
