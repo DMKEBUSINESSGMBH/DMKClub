@@ -15,6 +15,7 @@ use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposal;
+use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 
 /**
  * Class MemberProposal
@@ -54,6 +55,7 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposal;
  * )
  */
 class MemberProposal extends ExtendMemberProposal implements
+    ChannelAwareInterface,
     FullNameInterface,
     EmailHolderInterface
     {

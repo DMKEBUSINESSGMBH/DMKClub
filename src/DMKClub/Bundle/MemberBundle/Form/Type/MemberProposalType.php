@@ -16,7 +16,6 @@ class MemberProposalType extends AbstractType
     protected $translator;
 
     /**
-     * @param ConfigManager       $configManager
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -120,6 +119,7 @@ class MemberProposalType extends AbstractType
 
         ])
         ->add('comment', 'textarea', [
+            'required' => false,
             'label' => self::LABEL_PREFIX.'comment.label'
         ]);
     }
@@ -144,7 +144,7 @@ class MemberProposalType extends AbstractType
             'required' => true,
             'label' => 'orocrm.sales.b2bcustomer.data_channel.label',
             'entities' => [
-                'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
+                'DMKClub\\Bundle\\MemberBundle\\Entity\\MemberProposal'
             ]
         ]);
     }

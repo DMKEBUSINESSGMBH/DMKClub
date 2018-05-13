@@ -569,7 +569,7 @@ datagrids:
                 type: navigate
                 acl_resource: dmkclub_memberbilling_view
                 label: oro.grid.action.view
-                icon: eye-open
+                icon: eye
                 link: view_link
                 rowAction: true
             update:
@@ -715,6 +715,7 @@ datagrids:
                     - m.startDate As mbrStart
                     - m.endDate As mbrEnd
                     - email.email
+                    - ('DMKClub_Bundle_MemberBundle_Entity_MemberFee') as entity
                 where:
                     and:
                         - f.billing = :billing
@@ -781,10 +782,16 @@ datagrids:
                 label:         oro.contact.email.label
         properties:
             id: ~
+            entity: ~
             delete_link:
                 type: url
                 route: dmkclub_api_delete_memberfee
                 params: [ id ]
+            history_link:
+                type:       url
+                route:      oro_dataaudit_history
+                params:     [ entity , id ]
+
 #            correction_link:
 #                type: url
 #                route: dmkclub_api_delete_memberfee
@@ -870,6 +877,22 @@ datagrids:
                 label:        oro.grid.action.delete
                 icon:         trash
                 link:         delete_link
+            history:
+                type: dialog
+                label: oro.grid.action.view
+                icon: history
+                link: history_link
+                rowAction: false
+                widgetOptions:
+                    options:
+                        dialogOptions:
+                            title:  "@translator->trans(dmkclub.member.memberfee.entity_label)"
+                            modal:  true
+                            allowMaximize: true
+                            allowMinimize': true
+                            dblclick': 'maximize'
+                            maximizedHeightDecreaseBy': 'minimize-bar'
+                            width:  900
             pdf:
                 type: dmkgetpdf
                 acl_resource: dmkclub_memberfee_view
