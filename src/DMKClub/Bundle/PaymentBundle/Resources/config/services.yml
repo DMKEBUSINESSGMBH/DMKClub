@@ -3,7 +3,6 @@ parameters:
     dmkclub.payment.intervals_provider.class:         DMKClub\Bundle\PaymentBundle\Provider\PaymentIntervalsProvider
     dmkclub.payment.twig.class:                       DMKClub\Bundle\PaymentBundle\Twig\PaymentExtension
     dmkclub.payment.sepa.direct_debit_builder.class:  DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder
-    dmkclub.payment.sepa.iban.openiban.class:         DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN
     dmkclub.payment.sepacreditor.entity.class:        DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor
     dmkclub.payment.bankaccount.entity.class:         DMKClub\Bundle\PaymentBundle\Entity\BankAccount
     dmkclub.payment.sepacreditor.manager.api.class:   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
@@ -29,7 +28,10 @@ services:
         class: "%dmkclub.payment.sepa.direct_debit_builder.class%"
 
     dmkclub.payment.sepa.iban.openiban:
-        class: "%dmkclub.payment.sepa.iban.openiban.class%"
+        class: 'DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN'
+        arguments:
+            - '@oro_config.user'
+
 
     dmkclub.payment.form.autocomplete.sepacreditor.search_handler:
         parent: oro_form.autocomplete.search_handler

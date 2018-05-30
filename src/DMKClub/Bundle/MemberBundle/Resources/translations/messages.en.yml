@@ -237,7 +237,9 @@ dmkclub:
     memberbilling_information: Billing Information
     general_information: General Information
     entity_number: "%entityName% %entityNumber%"
-
+dmkclub_basics:
+    system_configuration:
+        group.dmkclub.label: DMK Club
 active: Active
 proposal: Proposal
 terminated: Terminated

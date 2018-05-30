@@ -1,0 +1,40 @@
+system_configuration:
+    groups:
+        dmkclub_payment:
+            title: dmkclub_payment.system_configuration.group.payment.label
+            icon:  fa-retweet
+        dmkclub_payment_settings:
+            title: dmkclub_payment.system_configuration.group.payment_settings.label
+            icon: fa-wrench
+        dmkclub_openiban:
+            title: dmkclub_payment.system_configuration.group.openiban.label
+    fields:
+        dmk_club_payment.openiban_enable:
+            ui_only: true
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: dmkclub_payment.system_configuration.fields.openiban_enable.label
+                required: false
+            priority: 70
+        dmk_club_payment.openiban_baseuri:
+            ui_only: true
+            data_type: string
+            type: text
+            options:
+                label: dmkclub_payment.system_configuration.fields.openiban_baseuri.label
+                required: false
+                tooltip: dmkclub_payment.system_configuration.fields.openiban_baseuri.tooltip
+            priority: 60
+    tree:
+        system_configuration:
+            dmkclub:
+                children:
+                    dmkclub_payment:
+                        children:
+                            dmkclub_payment_settings:
+                                children:
+                                    dmkclub_openiban:
+                                        children:
+                                            - dmk_club_payment.openiban_enable
+                                            - dmk_club_payment.openiban_baseuri

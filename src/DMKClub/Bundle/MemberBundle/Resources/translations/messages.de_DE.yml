@@ -234,6 +234,9 @@ dmkclub:
     memberbilling_information: Daten zur Abrechnung
     general_information: Allgemeine Informationen
     entity_number: "%entityName% %entityNumber%"
+dmkclub_basics:
+    system_configuration:
+        group.dmkclub.label: DMK Club
 active: Laufende Mitgliedschaft
 proposal: Antragsteller
 terminated: Beendete Mitgliedschaft

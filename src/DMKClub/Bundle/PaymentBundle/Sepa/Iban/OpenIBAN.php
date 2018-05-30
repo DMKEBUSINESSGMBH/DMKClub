@@ -1,14 +1,21 @@
 <?php
-
 namespace DMKClub\Bundle\PaymentBundle\Sepa\Iban;
 
-
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBANException;
 
 /**
  * IBAN validation with service from https://openiban.com/
  */
-class OpenIBAN {
+class OpenIBAN
+{
+    /** @var ConfigManager */
+    private $config;
+
+    public function __construct(ConfigManager $config)
+    {
+        $this->config = $config;
+    }
 
     /**
      *
@@ -17,21 +24,27 @@ class OpenIBAN {
      * @throws OpenIBANException if IBAN ist not valid
      * @throws \RuntimeException if openiban.com not available
      */
-    public function lookupBic($iban) {
-        $result = file_get_contents('https://openiban.com/validate/'.$iban.'?getBIC=true&validateBankCode=true');
+    public function lookupBic($iban)
+    {
+        if (!$this->config->get('dmk_club_payment.openiban_enable', false)) {
+            return null;
+        }
 
-        if(!$result) {
-            throw new \RuntimeException('No result from openiban.com');
+        $baseUri = $this->config->get('dmk_club_payment.openiban_baseuri');
+        $uri = sprintf('%s/validate/%s?getBIC=true&validateBankCode=true', $baseUri, $iban);
+        $result = file_get_contents($uri);
+
+        if (! $result) {
+            throw new \RuntimeException('No result from configured openiban server');
         }
 
         $result = json_decode($result);
 
-        if(!$result->valid) {
-            throw new OpenIBANException('IBAN not valid ' . $iban . ' '.implode(',', $result->messages));
+        if (! $result->valid) {
+            throw new OpenIBANException('IBAN not valid ' . $iban . ' ' . implode(',', $result->messages));
         }
 
-        if($result->bankData->bankCode) {
-
+        if ($result->bankData->bankCode) {
             $bankData = $result->bankData;
 
             $bankMap = new \stdClass();

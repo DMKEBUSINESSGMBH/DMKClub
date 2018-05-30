@@ -37,6 +37,17 @@ dmkclub:
         monthly:        monatlich
         form.choose:    Wählen Sie ein Zahlungsinterval
 
+dmkclub_payment:
+    system_configuration:
+        group:
+            payment.label: Zahlungen
+            payment_settings.label: Einstellungen
+            openiban.label: OpenIBAN
+        fields:
+            openiban_enable.label: Aktiviert
+            openiban_baseuri.label: Basis URI
+            openiban_baseuri.tooltip: Basis URI in der Form http://localhost:8080/
+
 "Financial and address": Finanzen und Adresse
 
 sepa_direct_debit: Sepa Bankeinzug

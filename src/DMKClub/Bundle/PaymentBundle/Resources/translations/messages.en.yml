@@ -39,6 +39,16 @@ dmkclub:
         quarterly:      quarterly
         monthly:        monthly
         form.choose:    Choose payment interval
+dmkclub_payment:
+    system_configuration:
+        group:
+            payment.label: Payment
+            payment_settings.label: Settings
+            openiban.label: OpenIBAN
+        fields:
+            openiban_enable.label: Enabled
+            openiban_baseuri.label: Base URI
+            openiban_baseuri.tooltip: Base URI like http://localhost:8080/
 
 oro.entityextend.enums:
     dmkclub_paymentoption:

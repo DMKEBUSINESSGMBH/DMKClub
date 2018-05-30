@@ -1,0 +1,4 @@
+system_configuration:
+    groups:
+        dmkclub:
+            title: dmkclub_basics.system_configuration.group.dmkclub.label
