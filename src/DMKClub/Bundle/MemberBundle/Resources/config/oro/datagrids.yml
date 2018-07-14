@@ -614,11 +614,13 @@ datagrids:
                 renderable:    false
             priceTotal:
                 label:         dmkclub.member.memberfee.price_total.label
-                type:          callback
-                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
+                frontend_type: currency
+                divisor:       100
                 data_name:     priceTotal
             payedTotal:
                 label:         dmkclub.member.memberfee.payed_total.label
+#                frontend_type: currency
+#                divisor:       100
                 type:          callback
                 callable:      "@dmkclub_basics.utility.datagrids->cent2float"
                 data_name:     payedTotal
@@ -653,6 +655,14 @@ datagrids:
                     type:      number
                     data_name: f.id
                     enabled: false
+                priceTotal:
+                    type:      number
+                    data_name: f.priceTotal
+                    divisor:   100
+                payedTotal:
+                    type:      number
+                    data_name: f.payedTotal
+                    divisor:   100
                 createdAt:
                     type:      datetime
                     data_name: f.createdAt
