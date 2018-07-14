@@ -156,6 +156,11 @@ services:
         public: false
         tags:
             - { name: oro_entity.name_provider, priority: 100 }
+    dmkclub_member.provider.member_fee_entity_name_provider:
+        class: DMKClub\Bundle\MemberBundle\Provider\MemberFeeEntityNameProvider
+        public: false
+        tags:
+            - { name: oro_entity.name_provider, priority: 100 }
 
     dmkclub_member.eventlistener.add_member_email_context:
         class: 'DMKClub\Bundle\MemberBundle\EventListener\AddMember2EmailContextListener'
