@@ -1,12 +1,20 @@
 oro_entity:
     virtual_fields:
         DMKClub\Bundle\MemberBundle\Entity\Member:
-            contactInformation:
+            # used for marketing list. There must be a method getPrimaryEmail in Entity as well used by EmailCampaign!
+            primaryEmail:
                 query:
                     select:
-                        expr:         c.email
+                        expr:         e.email
                         return_type:  string
                     join:
                         left:
-                            - { join: entity.contact, alias: c }
-        
+                            - { join: 'OroContactBundle:ContactEmail', alias: e, conditionType: 'WITH', condition: 'e.owner = entity.contact and e.primary = true' }
+            contactInformation:
+                query:
+                    select:
+                        expr:         e.email
+                        return_type:  string
+                    join:
+                        left:
+                            - { join: 'OroContactBundle:ContactEmail', alias: e, conditionType: 'WITH', condition: 'e.owner = entity.contact and e.primary = true' }

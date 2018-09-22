@@ -14,6 +14,7 @@ use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
+use Oro\Bundle\ContactBundle\Entity\ContactEmail;
 
 /**
  * Class Member
@@ -27,7 +28,12 @@ use DMKClub\Bundle\MemberBundle\Model\ExtendMember;
  *      routeView="dmkclub_member_view",
  *      defaultValues={
  *          "entity"={
- *              "icon"="fa-user-circle"
+ *              "icon"="fa-user-circle",
+ *              "contact_information"={
+ *                  "email"={
+ *                      {"fieldName"="primaryEmail"}
+ *                  }
+ *              }
  *          },
  *          "ownership"={
  *              "owner_type"="USER",
@@ -829,6 +835,27 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
     public function ensureMemberCodeInt()
     {
         $this->memberCodeInt = (int) $this->memberCode;
+    }
+
+    /**
+     * Gets primary email if it's available.
+     *
+     * @return ContactEmail|null
+     */
+    public function getPrimaryEmail()
+    {
+        $result = null;
+
+        if ($this->getContact()) {
+            foreach ($this->getContact()->getEmails() as $email) {
+                if ($email->isPrimary()) {
+                    $result = $email;
+                    break;
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**

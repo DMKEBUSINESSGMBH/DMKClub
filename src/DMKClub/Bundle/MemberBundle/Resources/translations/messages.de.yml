@@ -35,6 +35,7 @@ dmkclub:
         status.active:              Laufende Mitgliedschaft
         status.terminated:          Beendete Mitgliedschaft
         contact_information.label:  Kontaktinformation
+        primary_email.label:        Primäre E-Mail
 
         links:
             contact2member.title: "Mitglieds-Nr: %memberid%"

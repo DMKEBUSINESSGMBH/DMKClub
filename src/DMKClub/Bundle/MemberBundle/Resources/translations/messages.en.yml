@@ -36,6 +36,7 @@ dmkclub:
         status.active: Active
         status.terminated: Terminated
         contact_information.label:  Contact Information
+        primary_email.label:  Primary E-Mail
         
         form.choose_status: Choose a member status
 
