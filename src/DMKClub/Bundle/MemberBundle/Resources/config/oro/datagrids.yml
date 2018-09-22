@@ -239,6 +239,9 @@ datagrids:
                 label: oro.grid.action.update
                 icon: edit
                 link: update_link
+        inline_editing:
+            enable:       true
+            behaviour:    enable_selected
         options:
 #            entityHint: member
             export: true
