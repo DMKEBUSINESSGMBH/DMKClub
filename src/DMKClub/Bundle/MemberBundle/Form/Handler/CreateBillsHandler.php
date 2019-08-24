@@ -48,10 +48,10 @@ class CreateBillsHandler
     {
         $this->form->setData([]);
 
-        if (in_array($this->request->getMethod(), array(
+        if (in_array($this->request->getMethod(), [
             'POST',
             'PUT'
-        ))) {
+        ])) {
             $this->form->submit($this->request);
             if ($this->form->isValid()) {
                 return $this->onSuccess($entity);

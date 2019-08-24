@@ -160,7 +160,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @var integer
      * @ORM\Column(name="price_total", type="integer", nullable=true)
      */
-    private $priceTotal;
+    private $priceTotal = 0;
 
     /**
      *
@@ -168,7 +168,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @ORM\Column(name="payed_total", type="integer", nullable=true)
      * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
-    private $payedTotal;
+    private $payedTotal = 0;
 
     /**
      *

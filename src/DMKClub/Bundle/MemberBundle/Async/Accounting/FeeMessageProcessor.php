@@ -72,7 +72,7 @@ class FeeMessageProcessor implements MessageProcessorInterface, TopicSubscriberI
      *
      * @param MemberFee $item
      * @return MemberFee
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public function process(MessageInterface $message, SessionInterface $session)
     {
