@@ -1,0 +1,52 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
+
+{#
+Wird in der Detailansicht des Mitglieds verwendet
+ #}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderProperty('dmkclub.member.memberprivacy.sign_date.label'|trans, entity.signDate is not empty ? entity.signDate|oro_format_date : null) }}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.memberprivacy.email_allowed.label'|trans, entity.emailAllowed) }}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.memberprivacy.phone_allowed.label'|trans, entity.phoneAllowed) }}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.memberprivacy.postal_allowed.label'|trans, entity.postalAllowed) }}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.memberprivacy.merchandising_allowed.label'|trans, entity.merchandisingAllowed) }}
+            {{ CLUBUI.renderPropertyBoolean('dmkclub.member.memberprivacy.sharing_allowed.label'|trans, entity.sharingAllowed) }}
+        </div>
+        <div class="responsive-block">
+            {{ entityConfig.renderDynamicFields(entity) }}
+
+
+        {% set dialogTitle = 'dmkclub.member.memberprivacy.action.update.title'|trans %}
+    	{{ UI.clientButton({
+            	'dataUrl': path('dmkclub_member_memberprivacy_update', { 'memberId': entity.member.id, 'id': entity.id }),
+            	'aCss': 'no-hash',
+            	'iCss': 'fa-plus-circle',
+            	'dataId': entity.id,
+            	'title' : dialogTitle,
+            	'label' : dialogTitle,
+            	'widget' : {
+                	'type' : 'dialog',
+                	'multiple' : false,
+                	'reload-widget-alias' : 'dmkclub-member-privacy-view',
+                	'options' : {
+                    	'stateEnabled': false,
+                    	'dialogOptions' : {
+                        	'title' : dialogTitle,
+                        	'allowMaximize': true,
+                        	'allowMinimize': true,
+                        	'dblclick': 'maximize',
+                        	'maximizedHeightDecreaseBy': 'minimize-bar',
+                        	'width': 600
+                    	}
+                	}
+            	}
+        	})
+    	}}
+
+        </div>
+    </div>
+</div>

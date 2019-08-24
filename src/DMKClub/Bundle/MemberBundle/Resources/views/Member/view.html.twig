@@ -98,6 +98,14 @@
         }) }}
     {% endset %}
 
+    {% set memberPrivacy %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url':         path('dmkclub_member_memberprivacy_widget_infoblock', {id: entity.id}),
+            'alias': 'dmkclub-member-privacy-view'
+    }) }}
+    {% endset %}
+
 
     {% set dataBlocks = [
         {
@@ -128,7 +136,16 @@
                     ]
                 }
             ]
-        }
+        },
+                {
+            'title': 'dmkclub.member_privacy'|trans,
+            'subblocks': [
+                {
+                	'data' : [memberPrivacy],
+                }
+            ]
+        },
+        
 ] %}
 
     {% set id = 'dmkclubMemberView' %}

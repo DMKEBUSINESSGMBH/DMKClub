@@ -15,6 +15,7 @@ dmkclub:
         member_fees.label:   Beiträge
         member_fee_discounts.label:  Ermäßigungen
         member_proposals.label: Mitgliedsanträge
+        privacy.label:          Datenschutz
         payment_option.label:   Zahlungsart
         payment_interval.label: Zahlungsintervall
         is_active.label:     Aktives Mitglied
@@ -223,6 +224,26 @@ dmkclub:
             member.label:        Mitglied
             action.create.title: Neue Ermäßigung anlegen
             action.update.title: Beitragsermäßigung aktualisieren
+        memberprivacy:
+            entity_label:        Datenschutz
+            entity_plural_label: Datenschutzangaben
+            entity_description:  Represent member privacy data
+            id.label:            Id
+            sign_date.label:     Gültig seit
+            member.label:        Mitglied
+            phone_allowed.label: Telefon
+            phone_allowed.help: Ist die Kontaktaufnahme per Telefon erlaubt?
+            email_allowed.label: Email
+            email_allowed.help: Ist die Kontaktaufnahme per Email erlaubt?
+            postal_allowed.label: Post
+            postal_allowed.help: Ist die Kontaktaufnahme per Post erlaubt?
+            merchandising_allowed.label: Werbung
+            merchandising_allowed.help: Ist die Kontaktaufnahme zu Werbezwecken erlaubt?
+            sharing_allowed.label: Weitergabe
+            sharing_allowed.help: Ist die Weitergabe von Daten an Partner erlaubt?
+            action:
+                update.title:     Edit data
+
 
         form.choose_status: Wählen Sie einen Mitgliedsstatus
 
@@ -232,6 +253,7 @@ dmkclub:
         accounting.processor.default: Standard Berechnung
         accounting.processor.simple: Einfache Abrechnung
     member_information: Angaben zum Mitglied
+    member_privacy: Datenschutz
     memberbilling_information: Daten zur Abrechnung
     general_information: Allgemeine Informationen
     entity_number: "%entityName% %entityNumber%"

@@ -341,6 +341,12 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
     protected $postalAddress;
 
     /**
+     * @ORM\OneToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy", mappedBy="member")
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+     */
+    protected $privacy;
+
+    /**
      *
      * @var User
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
@@ -761,6 +767,26 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
     public function setMemberProposals($memberProposals)
     {
         $this->memberProposals = $memberProposals;
+        return $this;
+    }
+
+    /**
+     *
+     * @return \DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy
+     */
+    public function getPrivacy()
+    {
+        return $this->privacy;
+    }
+
+    /**
+     *
+     * @param MemberPrivacy $private
+     * @return \DMKClub\Bundle\MemberBundle\Entity\Member
+     */
+    public function setPrivacy(MemberPrivacy $private)
+    {
+        $this->privacy = $private;
         return $this;
     }
 

@@ -16,6 +16,7 @@ dmkclub:
         member_fees.label:   Fees
         member_fee_discounts.label:   Fee discounts
         member_proposals.label: Membership proposals
+        privacy.label:          Privacy
         payment_option.label: Payment option
         payment_interval.label: Payment interval
         is_active.label:     Active member
@@ -231,10 +232,25 @@ dmkclub:
             member.label:        Member
             action.create.title: Create new fee discount
             action.update.title: Update fee discount
+        memberprivacy:
+            entity_label:        Member privacy
+            entity_plural_label: Member privacies
+            entity_description:  Represent member privacy data
+            id.label:            Id
+            sign_date.label:     Sign date
+            member.label:        Member
+            phone_allowed.label: Phone allowed
+            email_allowed.label: Email allowed
+            postal_allowed.label: Postal allowed
+            merchandising_allowed.label: Merchandising allowed
+            sharing_allowed.label: Sharing allowed
+            action:
+                update.title:     Daten bearbeiten
 
         accounting.processor.default: Default accounting
         accounting.processor.simple: Simple accounting
     member_information: Member Information
+    member_privacy: Privacy
     memberbilling_information: Billing Information
     general_information: General Information
     entity_number: "%entityName% %entityNumber%"

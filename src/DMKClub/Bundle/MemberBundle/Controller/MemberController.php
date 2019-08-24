@@ -104,7 +104,7 @@ class MemberController extends Controller
         return ['entity' => $member];
     }
     /**
-     * @Route("/widget/additionalinfo/{id}", name="dmkclub_member_widget_additionalinfo", requirements={"id"="\d+"}))
+     * @Route("/widget/additionalinfo/{id}", name="dmkclub_member_widget_additionalinfo", options={"expose"=true}, requirements={"id"="\d+"}))
      * @AclAncestor("dmkclub_member_view")
      * @Template
      */
