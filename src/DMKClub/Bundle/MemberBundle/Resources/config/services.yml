@@ -170,3 +170,9 @@ services:
             - '@logger'
         tags:
             - { name: kernel.event_listener, event: oro_activity.add_activity, method: addMember2EmailContext }
+
+    dmkclub_member.eventlistener.membercreate:
+        class:  'DMKClub\Bundle\MemberBundle\EventListener\MemberChangeListener'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+

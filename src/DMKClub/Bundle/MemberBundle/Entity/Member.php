@@ -341,7 +341,7 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
     protected $postalAddress;
 
     /**
-     * @ORM\OneToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy", mappedBy="member")
+     * @ORM\OneToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy", cascade={"all"}, mappedBy="member")
      * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
     protected $privacy;
