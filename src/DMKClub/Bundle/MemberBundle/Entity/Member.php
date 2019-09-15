@@ -238,6 +238,26 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
 
     /**
      *
+     * @var Contact
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\ContactBundle\Entity\Contact", cascade="PERSIST")
+     * @ORM\JoinColumn(name="legal_contact_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=501,
+     *              "full"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $legalContact;
+
+    /**
+     *
      * @var boolean
      *
      * @ORM\Column(type="boolean", name="is_active", options={"default" : false})
@@ -465,6 +485,28 @@ class Member extends ExtendMember implements ChannelAwareInterface, EmailHolderI
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     *
+     * @param Contact $contact
+     *
+     * @return Member
+     */
+    public function setLegalContact($contact)
+    {
+        $this->legalContact = $contact;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return Contact
+     */
+    public function getLegalContact()
+    {
+        return $this->legalContact;
     }
 
     /**

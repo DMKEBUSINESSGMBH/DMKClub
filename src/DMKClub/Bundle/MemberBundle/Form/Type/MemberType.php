@@ -91,6 +91,14 @@ class MemberType extends AbstractType
 					]
 				);
 			$builder->add(
+			    'legalContact',
+			    'oro_contact_select',
+			    [
+			        'label'    => 'dmkclub.member.legal_contact.label',
+			        'required' => false,
+			    ]
+			);
+			$builder->add(
 				'postalAddress',
 				'oro_address',
 				[

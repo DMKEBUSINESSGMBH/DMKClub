@@ -11,6 +11,7 @@ datagrids:
                     - m.memberCodeInt
                     - c.firstName
                     - c.lastName
+                    - CONCAT_WS(' ', lc.firstName, lc.lastName) as legalContactName
                     - m.isHonorary
                     - m.isActive
                     - m.status
@@ -32,6 +33,7 @@ datagrids:
                 join:
                     left:
                         - { join: m.contact, alias: c }
+                        - { join: m.legalContact, alias: lc }
                         - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
                         - { join: m.postalAddress, alias: a }
                         - { join: m.bankAccount, alias: b }
@@ -50,6 +52,9 @@ datagrids:
                 label:         oro.contact.first_name.label
             lastName:
                 label:         oro.contact.last_name.label
+            legalContactName:
+                label:         dmkclub.member.legal_contact.label
+                renderable:    false
             isHonorary:
                 label:         dmkclub.member.is_honorary.label
                 frontend_type: boolean
@@ -118,6 +123,8 @@ datagrids:
                     data_name: c.lastName
                 firstName:
                     data_name: c.firstName
+                legalContactName:
+                    data_name: legalContactName
                 isHonorary:
                     data_name: m.isHonorary
                 isActive:
@@ -164,6 +171,10 @@ datagrids:
                 lastName:
                     type: string
                     data_name: c.lastName
+                legalContactName:
+                    type:      string
+                    data_name: legalContactName
+                    enabled: false
                 isHonorary:
                     type: boolean
                     enabled: false
@@ -230,7 +241,7 @@ datagrids:
                 type: navigate
                 acl_resource: dmkclub_member_view
                 label: oro.grid.action.view
-                icon: eye-open
+                icon: eye
                 link: view_link
                 rowAction: true
             update:
@@ -457,7 +468,7 @@ datagrids:
                 type: navigate
                 acl_resource: dmkclub_member_proposal_view
                 label: oro.grid.action.view
-                icon: eye-open
+                icon: eye
                 link: view_link
                 rowAction: true
             update:

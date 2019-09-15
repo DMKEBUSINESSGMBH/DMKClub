@@ -23,6 +23,7 @@ dmkclub:
         is_honorary.label:   Ehrenmitglied
         is_free_of_charge.label:   Beitragsfrei
         contact.label:       Kontakt
+        legal_contact.label: Gesetzlicher Vertreter
         payment_option.label:  Zahlungsweise
         bank_account.label:   Bankverbindung
         postal_address.label:  Postadresse
@@ -242,12 +243,12 @@ dmkclub:
             sharing_allowed.label: Weitergabe
             sharing_allowed.help: Ist die Weitergabe von Daten an Partner erlaubt?
             action:
-                update.title:     Edit data
+                update.title:     Bearbeiten
 
 
         form.choose_status: Wählen Sie einen Mitgliedsstatus
 
-        message.saved: Member saved
+        message.saved: Mitglieder gespeichert
         fees.label: Mitgliedsbeiträge
 
         accounting.processor.default: Standard Berechnung

@@ -24,6 +24,7 @@ dmkclub:
         is_honorary.label:   Honorary member
         is_free_of_charge.label:   Free of charge
         contact.label:       Contact
+        legal_contact.label: Legal representative
         postal_address.label:  Postal Address
         payment_option.label:  Payment option
         bank_account.label:   Bank account

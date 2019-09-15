@@ -23,6 +23,7 @@ dmkclub:
         is_honorary.label:   Ehrenmitglied
         is_free_of_charge.label:   Beitragsfrei
         contact.label:       Kontakt
+        legal_contact.label: Gesetzlicher Vertreter
         payment_option.label:  Zahlungsweise
         bank_account.label:   Bankverbindung
         postal_address.label:  Postadresse

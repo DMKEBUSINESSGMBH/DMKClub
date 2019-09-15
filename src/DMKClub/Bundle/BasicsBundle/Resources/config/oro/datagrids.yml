@@ -63,7 +63,7 @@ datagrids:
                 type: navigate
                 acl_resource: dmkclub_basics_twigtemplate_view
                 label: oro.grid.action.view
-                icon: eye-open
+                icon: eye
                 link: view_link
                 rowAction: true
             update:

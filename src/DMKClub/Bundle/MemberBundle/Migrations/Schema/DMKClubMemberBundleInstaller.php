@@ -55,7 +55,7 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
      */
     public function getMigrationVersion()
     {
-        return 'v1_7';
+        return 'v1_8';
     }
 
     /**
@@ -137,6 +137,9 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
             'notnull' => false
         ]);
         $table->addColumn('contact_id', 'integer', [
+            'notnull' => false
+        ]);
+        $table->addColumn('legal_contact_id', 'integer', [
             'notnull' => false
         ]);
         $table->addColumn('member_code', 'string', [
@@ -715,6 +718,14 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
         ]);
         $table->addForeignKeyConstraint($schema->getTable('orocrm_contact'), [
             'contact_id'
+        ], [
+            'id'
+        ], [
+            'onDelete' => 'SET NULL',
+            'onUpdate' => null
+        ]);
+        $table->addForeignKeyConstraint($schema->getTable('orocrm_contact'), [
+            'legal_contact_id'
         ], [
             'id'
         ], [
