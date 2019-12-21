@@ -1138,15 +1138,15 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
     public static function addActivityAssociations(Schema $schema, ActivityExtension $activityExtension)
     {
         $activityExtension->addActivityAssociation($schema, 'oro_email', 'dmkclub_member');
-        $activityExtension->addActivityAssociation($schema, 'oro_call', 'dmkclub_member');
-        $activityExtension->addActivityAssociation($schema, 'oro_task', 'dmkclub_member');
+        $activityExtension->addActivityAssociation($schema, 'orocrm_call', 'dmkclub_member');
+        $activityExtension->addActivityAssociation($schema, 'orocrm_task', 'dmkclub_member');
         $activityExtension->addActivityAssociation($schema, 'oro_calendar_event', 'dmkclub_member');
     }
 
     public static function addActivityAssociations4Proposal(Schema $schema, ActivityExtension $activityExtension)
     {
         $activityExtension->addActivityAssociation($schema, 'oro_email', 'dmkclub_member_proposal');
-        $activityExtension->addActivityAssociation($schema, 'oro_call', 'dmkclub_member_proposal');
-        $activityExtension->addActivityAssociation($schema, 'oro_task', 'dmkclub_member_proposal');
+        $activityExtension->addActivityAssociation($schema, 'orocrm_call', 'dmkclub_member_proposal');
+        $activityExtension->addActivityAssociation($schema, 'orocrm_task', 'dmkclub_member_proposal');
     }
 }
