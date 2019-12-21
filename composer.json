@@ -19,16 +19,11 @@
 		}
 	],
 	"require" : {
-		"php" : ">=7.0.0",
+		"php" : ">=7.2.0",
 		"whiteoctober/tcpdf-bundle" : "*",
 		"digitick/sepa-xml" : "1.1.*",
-		"oro/crm" : "2.x"
+		"oro/crm" : "~3.1.0"
 	},
 	"minimum-stability" : "dev",
-	"prefer-stable" : true,
-	"extra" : {
-		"branch-alias" : {
-			"dev-master" : "1.x-dev"
-		}
-	}
+	"prefer-stable" : true
 }
