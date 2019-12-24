@@ -7,13 +7,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CategoryHandler
 {
 	/** @var FormInterface */
 	protected $form;
 
-	/** @var Request */
+	/** @var RequestStack */
 	protected $request;
 
 	/** @var ObjectManager */
@@ -21,7 +22,7 @@ class CategoryHandler
 
 	/**
 	 * @param FormInterface          $form
-	 * @param Request                $request
+	 * @param RequestStack           $request
 	 * @param ObjectManager          $manager
 	 */
 	public function __construct(
@@ -46,8 +47,9 @@ class CategoryHandler
 
 		$this->form->setData($entity);
 
-		if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-			$this->form->submit($this->request);
+		$request = $this->request->getCurrentRequest();
+		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+			$this->form->submit($request);
 
 			if ($this->form->isValid()) {
 				$this->onSuccess($entity);

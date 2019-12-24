@@ -72,7 +72,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_payment.bank_account.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
 
@@ -82,7 +82,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_payment.sepa_creditor.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
 # ####

@@ -12,6 +12,8 @@ use Doctrine\ORM\Query;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
+use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MemberFeeCorrectionHandler implements MassActionHandlerInterface
 {
@@ -34,7 +36,7 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
      */
     protected $translator;
 
-    /** @var SecurityFacade */
+    /** @var AuthorizationCheckerInterface */
     protected $securityFacade;
 
     /** @var MemberFeeManager */
@@ -47,19 +49,19 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
      *
      * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
-     * @param ServiceLink $securityFacadeLink
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         EntityManager $entityManager,
         TranslatorInterface $translator,
-        ServiceLink $securityFacadeLink,
+        AuthorizationCheckerInterface $authorizationChecker,
         MemberFeeManager $feeManager,
         LoggerInterface $logger
     )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
-        $this->securityFacade = $securityFacadeLink->getService();
+        $this->securityFacade = $authorizationChecker;
         $this->feeManager = $feeManager;
         $this->logger = $logger;
     }

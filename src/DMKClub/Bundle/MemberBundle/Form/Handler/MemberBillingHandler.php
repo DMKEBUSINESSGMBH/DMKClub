@@ -11,13 +11,14 @@ use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MemberBillingHandler
 {
 	/** @var FormInterface */
 	protected $form;
 
-	/** @var Request */
+	/** @var RequestStack */
 	protected $request;
 
 	/** @var ObjectManager */
@@ -27,11 +28,11 @@ class MemberBillingHandler
 	protected $memberBillingManager;
 	/**
 	 * @param FormInterface          $form
-	 * @param Request                $request
+	 * @param RequestStack           $request
 	 * @param ObjectManager          $manager
 	 * @param RequestChannelProvider $requestChannelProvider
 	 */
-	public function __construct(FormInterface $form, Request $request, ObjectManager $manager,
+	public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager,
 			MemberBillingManager $memberBillingManager) {
 	    $this->form              = $form;
 	    $this->request           = $request;
@@ -52,8 +53,9 @@ class MemberBillingHandler
 
 		$this->form->setData($entity);
 
-		if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-		    $this->form->submit($this->request);
+		$request = $this->request->getCurrentRequest();
+		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+		    $this->form->submit($request);
 
 		    if ($this->form->isValid()) {
 		        $this->onSuccess($entity);

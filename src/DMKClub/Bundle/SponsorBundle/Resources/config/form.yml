@@ -7,7 +7,7 @@ parameters:
 
 services:
     dmkclub.sponsor.form.type:
-        class: %dmkclub.sponsor.form.type.class%
+        class: '%dmkclub.sponsor.form.type.class%'
         tags:
             - { name: form.type, alias: dmkclub_sponsor_sponsor }
 
@@ -23,14 +23,14 @@ services:
         class: %dmkclub.sponsor.form.handler.class%
         scope: request
         arguments:
-            - @dmkclub.sponsor.form
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@dmkclub.sponsor.form'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_tag.tag_manager }
 
     dmkclub.sponsorcategory.form.type:
-        class: %dmkclub.sponsorcategory.form.type.class%
+        class: '%dmkclub.sponsorcategory.form.type.class%'
         tags:
             - { name: form.type, alias: dmkclub_sponsor_category }
 
@@ -45,12 +45,12 @@ services:
         class: %dmkclub.sponsorcategory.form.handler.class%
         scope: request
         arguments:
-            - @dmkclub.sponsorcategory.form
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@dmkclub.sponsorcategory.form'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
 
     # Form SELECT type
     dmkclub_sponsor.form.type.category_select:
-        class: %dmkclub_sponsor.form.type.category_select.class%
+        class: '%dmkclub_sponsor.form.type.category_select.class%'
         tags:
             - { name: form.type, alias: dmkclub_sponsorcategory_select }

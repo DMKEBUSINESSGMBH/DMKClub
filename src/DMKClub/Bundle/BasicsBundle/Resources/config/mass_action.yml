@@ -1,13 +1,12 @@
 parameters:
-    dmkclub_basics.mass_action.dmkexportpdf.class:                   DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfAction
     dmkclub_basics.mass_action.dmkexportpdf_handler.class:           DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfHandler
-    dmkclub_basics.mass_action.dmkdownloadpdf.class:                 DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfAction
     dmkclub_basics.mass_action.dmkdownloadpdf_handler.class:         DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfHandler
 
 services:
     dmkclub_basics.datagrid.mass_action.dmkexportpdf:
-        class: "%dmkclub_basics.mass_action.dmkexportpdf.class%"
-        scope: prototype
+        class: DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfAction
+#        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmkexportpdf }
     dmkclub_basics.datagrid.mass_action.dmkexportpdf_handler:
@@ -19,8 +18,9 @@ services:
             - "@dmkclub_member.memberfee.manager"
 
     dmkclub_basics.datagrid.mass_action.dmkdownloadpdf:
-        class: "%dmkclub_basics.mass_action.dmkdownloadpdf.class%"
-        scope: prototype
+        class: DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfAction
+        shared: false
+#        scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmkdownloadpdf }
     dmkclub_basics.datagrid.mass_action.dmkdownloadpdf_handler:

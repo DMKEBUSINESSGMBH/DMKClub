@@ -18,6 +18,8 @@ use Psr\Log\LoggerInterface;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\MemberBundle\Command\SendFeeMailsCommand;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Oro\Bundle\SecurityBundle\Authorization\AuthorizationChecker;
 
 class SendMemberFeeHandler implements MassActionHandlerInterface
 {
@@ -29,7 +31,7 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
      */
     protected $translator;
 
-    /** @var SecurityFacade */
+    /** @var AuthorizationCheckerInterface */
     protected $securityFacade;
 
     /** @var MemberFeeManager */
@@ -47,11 +49,11 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
     /**
      *
      * @param TranslatorInterface $translator
-     * @param ServiceLink $securityFacadeLink
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         TranslatorInterface $translator,
-        ServiceLink $securityFacadeLink,
+        AuthorizationCheckerInterface $authorizationChecker,
         MemberFeeManager $feeManager,
         Processor $mailer,
         CommandRunner $commandRunner,

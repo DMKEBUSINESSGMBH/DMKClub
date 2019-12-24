@@ -12,6 +12,7 @@ use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CreateMemberByProposalHandler
 {
@@ -19,7 +20,7 @@ class CreateMemberByProposalHandler
     /** @var FormInterface */
     protected $form;
 
-    /** @var Request */
+    /** @var RequestStack */
     protected $request;
 
     /** @var ObjectManager */
@@ -33,13 +34,13 @@ class CreateMemberByProposalHandler
     /**
      *
      * @param FormInterface $form
-     * @param Request $request
+     * @param RequestStack $request
      * @param ObjectManager $manager
      * @param RequestChannelProvider $requestChannelProvider
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack $request,
         ObjectManager $manager,
         MemberManager $memberManager
     )
@@ -62,11 +63,12 @@ class CreateMemberByProposalHandler
         $this->form->setData([
             'memberCode' => $this->memberManager->nextMemberCode(),
         ]);
-        if (in_array($this->request->getMethod(), array(
+        $request = $this->request->getCurrentRequest();
+        if (in_array($request->getMethod(), [
             'POST',
             'PUT'
-        ))) {
-            $this->form->submit($this->request);
+        ])) {
+            $this->form->submit($request);
             if ($this->form->isValid()) {
                 return $this->onSuccess($entity);
             }

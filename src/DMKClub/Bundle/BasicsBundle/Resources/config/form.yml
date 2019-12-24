@@ -31,7 +31,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_basics.twigtemplate.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
 # ####

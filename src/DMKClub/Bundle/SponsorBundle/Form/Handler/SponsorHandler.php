@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
 use Oro\Bundle\TagBundle\Entity\TagManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SponsorHandler
 {
 	/** @var FormInterface */
 	protected $form;
 
-	/** @var Request */
+	/** @var RequestStack */
 	protected $request;
 
 	/** @var ObjectManager */
@@ -22,12 +23,12 @@ class SponsorHandler
 
 	/**
 	 * @param FormInterface          $form
-	 * @param Request                $request
+	 * @param RequestStack           $request
 	 * @param ObjectManager          $manager
 	 */
 	public function __construct(
 			FormInterface $form,
-			Request $request,
+			RequestStack $request,
 			ObjectManager $manager
 	) {
 		$this->form                   = $form;
@@ -47,8 +48,9 @@ class SponsorHandler
 
 		$this->form->setData($entity);
 
-		if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-			$this->form->submit($this->request);
+		$request = $this->request->getCurrentRequest();
+		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+			$this->form->submit($request);
 
 			if ($this->form->isValid()) {
 				$this->onSuccess($entity);

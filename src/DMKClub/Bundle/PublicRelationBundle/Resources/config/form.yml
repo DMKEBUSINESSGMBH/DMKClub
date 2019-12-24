@@ -37,7 +37,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub.prcontact.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
 #    dmkclub.prcontact.form.handler.api:

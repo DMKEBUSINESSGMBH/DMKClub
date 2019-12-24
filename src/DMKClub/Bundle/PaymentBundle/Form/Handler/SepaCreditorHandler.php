@@ -2,10 +2,10 @@
 namespace DMKClub\Bundle\PaymentBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
 use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SepaCreditorHandler
 {
@@ -13,7 +13,7 @@ class SepaCreditorHandler
     /** @var FormInterface */
     protected $form;
 
-    /** @var Request */
+    /** @var RequestStack */
     protected $request;
 
     /** @var ObjectManager */
@@ -22,10 +22,10 @@ class SepaCreditorHandler
     /**
      *
      * @param FormInterface $form
-     * @param Request $request
+     * @param RequestStack $request
      * @param ObjectManager $manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager)
     {
         $this->form = $form;
         $this->request = $request;
@@ -43,11 +43,12 @@ class SepaCreditorHandler
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array(
+        $request = $this->request->getCurrentRequest();
+        if (in_array($request->getMethod(), [
             'POST',
             'PUT'
-        ))) {
-            $this->form->submit($this->request);
+        ])) {
+            $this->form->submit($request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);

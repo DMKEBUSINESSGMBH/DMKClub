@@ -4,6 +4,7 @@ namespace DMKClub\Bundle\BasicsBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
@@ -13,7 +14,7 @@ class TwigTemplateHandler {
 	/** @var FormInterface */
 	protected $form;
 
-	/** @var Request */
+	/** @var RequestStack */
 	protected $request;
 
 	/** @var ObjectManager */
@@ -21,10 +22,10 @@ class TwigTemplateHandler {
 
 	/**
 	 * @param FormInterface          $form
-	 * @param Request                $request
+	 * @param RequestStack           $request
 	 * @param ObjectManager          $manager
 	 */
-	public function __construct(FormInterface $form, Request $request, ObjectManager $manager) {
+	public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager) {
 	    $this->form              = $form;
 	    $this->request           = $request;
 	    $this->manager           = $manager;
@@ -41,8 +42,9 @@ class TwigTemplateHandler {
 	{
 		$this->form->setData($entity);
 
-		if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-		    $this->form->submit($this->request);
+		$request = $this->request->getCurrentRequest();
+		if (in_array($request->getMethod(), array('POST', 'PUT'))) {
+		    $this->form->submit($request);
 
 		    if ($this->form->isValid()) {
 		        $this->onSuccess($entity);

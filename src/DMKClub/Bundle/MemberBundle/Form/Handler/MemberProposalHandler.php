@@ -10,13 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
 use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
 use Monolog\Logger;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MemberProposalHandler
 {
     /** @var FormInterface */
     protected $form;
 
-    /** @var Request */
+    /** @var RequestStack */
     protected $request;
 
     /** @var EntityManager */
@@ -27,10 +28,10 @@ class MemberProposalHandler
 
     /**
      * @param FormInterface $form
-     * @param Request       $request
+     * @param RequestStack       $request
      * @param EntityManager $em
      */
-    public function __construct(FormInterface $form, Request $request, EntityManager $em, OpenIBAN $openIban, Logger $logger)
+    public function __construct(FormInterface $form, RequestStack $request, EntityManager $em, OpenIBAN $openIban, Logger $logger)
     {
         $this->form     = $form;
         $this->request  = $request;
@@ -50,8 +51,9 @@ class MemberProposalHandler
     {
         $this->getForm()->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $this->getForm()->submit($this->request);
+        $request = $this->request->getCurrentRequest();
+        if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+            $this->getForm()->submit($request);
 
             if ($this->getForm()->isValid()) {
 

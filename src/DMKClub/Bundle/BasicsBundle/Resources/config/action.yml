@@ -1,10 +1,8 @@
-parameters:
-    dmkclub_basics.action.dmkgetpdf.class:   DMKClub\Bundle\BasicsBundle\DataGrid\Extension\Action\GetPdfAction
-
 services:
     dmkclub_basics.datagrid.action.dmkgetpdf:
-        class: "%dmkclub_basics.action.dmkgetpdf.class%"
-        scope: prototype
+        class: DMKClub\Bundle\BasicsBundle\DataGrid\Extension\Action\GetPdfAction
+#        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: dmkgetpdf }
 

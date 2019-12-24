@@ -12,13 +12,14 @@ use Oro\Bundle\TagBundle\Entity\TagManager;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
 use Monolog\Logger;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MemberHandler
 {
     /** @var FormInterface */
     protected $form;
 
-    /** @var Request */
+    /** @var RequestStack */
     protected $request;
 
     /** @var ObjectManager */
@@ -34,7 +35,7 @@ class MemberHandler
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack $request,
         ObjectManager $manager,
         OpenIBAN $openIban,
         Logger $logger
@@ -49,7 +50,7 @@ class MemberHandler
     /**
      * Process form
      *
-     * @param  Lead $entity
+     * @param  Member $entity
      *
      * @return bool True on successful processing, false otherwise
      */
@@ -58,8 +59,9 @@ class MemberHandler
 
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $this->form->submit($this->request);
+        $request = $this->request->getCurrentRequest();
+        if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+            $this->form->submit($request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);

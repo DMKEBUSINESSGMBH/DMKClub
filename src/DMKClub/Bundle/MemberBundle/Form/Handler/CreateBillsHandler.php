@@ -10,6 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CreateBillsHandler
 {
@@ -17,7 +18,7 @@ class CreateBillsHandler
     /** @var FormInterface */
     protected $form;
 
-    /** @var Request */
+    /** @var RequestStack */
     protected $request;
 
     /* @var \DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager */
@@ -26,11 +27,11 @@ class CreateBillsHandler
     /**
      *
      * @param FormInterface $form
-     * @param Request $request
+     * @param RequestStack $request
      * @param ObjectManager $manager
      * @param RequestChannelProvider $requestChannelProvider
      */
-    public function __construct(FormInterface $form, Request $request, MemberBillingManager $memberBillingManager)
+    public function __construct(FormInterface $form, RequestStack $request, MemberBillingManager $memberBillingManager)
     {
         $this->form = $form;
         $this->request = $request;
@@ -48,11 +49,12 @@ class CreateBillsHandler
     {
         $this->form->setData([]);
 
-        if (in_array($this->request->getMethod(), [
+        $request = $this->request->getCurrentRequest();
+        if (in_array($request->getMethod(), [
             'POST',
             'PUT'
         ])) {
-            $this->form->submit($this->request);
+            $this->form->submit($request);
             if ($this->form->isValid()) {
                 return $this->onSuccess($entity);
             }

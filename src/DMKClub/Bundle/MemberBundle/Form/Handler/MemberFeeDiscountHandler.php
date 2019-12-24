@@ -7,13 +7,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MemberFeeDiscountHandler
 {
 	/** @var FormInterface */
 	protected $form;
 
-	/** @var Request */
+	/** @var RequestStack */
 	protected $request;
 
 	/** @var ObjectManager */
@@ -21,10 +22,10 @@ class MemberFeeDiscountHandler
 
 	/**
 	 * @param FormInterface          $form
-	 * @param Request                $request
+	 * @param RequestStack           $request
 	 * @param ObjectManager          $manager
 	 */
-	public function __construct(FormInterface $form, Request $request, ObjectManager $manager) {
+	public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager) {
 	    $this->form              = $form;
 	    $this->request           = $request;
 	    $this->manager           = $manager;
@@ -41,8 +42,9 @@ class MemberFeeDiscountHandler
 	{
 		$this->form->setData($entity);
 
-		if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-		    $this->form->submit($this->request);
+		$request = $this->request->getCurrentRequest();
+		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+		    $this->form->handleRequest($request);
 
 		    if ($this->form->isValid()) {
 		        $this->onSuccess($entity);

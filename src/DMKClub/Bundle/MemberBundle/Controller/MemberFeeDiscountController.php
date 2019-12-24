@@ -84,8 +84,8 @@ class MemberFeeDiscountController extends Controller
 			$responseData['saved'] = true;
 		}
 		/* @var $form \Symfony\Component\Form\Form */
-		$form = $this->get('dmkclub_member.member_fee_discount.form');
-		$form->setData($discount);
+		$form = $this->get('dmkclub_member.memberfeediscount.form');
+//		$form->setData($discount);
 		$responseData['form'] = $form->createView();
 		return $responseData;
 	}

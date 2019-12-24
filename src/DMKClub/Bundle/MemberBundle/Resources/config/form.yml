@@ -168,11 +168,11 @@ services:
 
     dmkclub_member.memberfeediscount.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_member_memberfeediscount_form"
             - "dmkclub_member_memberfeediscount"
+            - DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeDiscountType
+            - null
 
     dmkclub_member.memberprivacy.form:
         class: Symfony\Component\Form\Form
@@ -207,7 +207,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.member.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
             - "@dmkclub.payment.sepa.iban.openiban"
             - "@logger"
@@ -219,7 +219,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.member.form.api"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
     dmkclub_member.memberproposal.form.handler:
@@ -227,7 +227,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.memberproposal.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
             - "@dmkclub.payment.sepa.iban.openiban"
             - "@logger"
@@ -237,7 +237,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.memberproposal.createmember.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
             - "@dmkclub_member.member.manager"
 
@@ -246,7 +246,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.memberbilling.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
             - "@dmkclub_member.memberbilling.manager"
         tags:
@@ -257,7 +257,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.memberfeediscount.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
     dmkclub_member.memberprivacy.form.handler:
@@ -265,7 +265,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.memberprivacy.form"
-            - "@request"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
     dmkclub_member.createbills.form.handler:
@@ -273,7 +273,7 @@ services:
         scope: request
         arguments:
             - "@dmkclub_member.createbills.form"
-            - "@request"
+            - "@request_stack"
             - "@dmkclub_member.memberbilling.manager"
 
 # ####

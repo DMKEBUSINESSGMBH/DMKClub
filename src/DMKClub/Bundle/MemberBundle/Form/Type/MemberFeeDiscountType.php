@@ -8,6 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MemberFeeDiscountType extends AbstractType {
 
@@ -38,9 +41,9 @@ class MemberFeeDiscountType extends AbstractType {
 	 */
 	protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('reason', 'text', array('required' => true, 'label' => 'dmkclub.member.memberfeediscount.reason.label'))
-			->add('startDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberfeediscount.start_date.label'))
-			->add('endDate', 'oro_date', array('required' => false, 'label' => 'dmkclub.member.memberfeediscount.end_date.label'))
+			->add('reason', TextType::class, array('required' => true, 'label' => 'dmkclub.member.memberfeediscount.reason.label'))
+			->add('startDate', OroDateType::class, array('required' => true, 'label' => 'dmkclub.member.memberfeediscount.start_date.label'))
+			->add('endDate', OroDateType::class, array('required' => false, 'label' => 'dmkclub.member.memberfeediscount.end_date.label'))
 		;
 
 		}
@@ -52,9 +55,9 @@ class MemberFeeDiscountType extends AbstractType {
     public function buildRelationFields(FormBuilderInterface $builder, array $options){
     }
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(
@@ -64,11 +67,4 @@ class MemberFeeDiscountType extends AbstractType {
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'dmkclub_member_memberfeediscount';
-    }
 }
