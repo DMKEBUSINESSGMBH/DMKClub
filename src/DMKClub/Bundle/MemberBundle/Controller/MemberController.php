@@ -1,26 +1,25 @@
 <?php
-
 namespace DMKClub\Bundle\MemberBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use Oro\Bundle\AccountBundle\Entity\Account;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
 
 /**
+ *
  * @Route("/member")
  */
 class MemberController extends Controller
 {
+
     /**
+     *
      * @Route("/", name="dmkclub_member_index")
      * @AclAncestor("dmkclub_member_view")
      * @Template
@@ -31,8 +30,10 @@ class MemberController extends Controller
             'entity_class' => $this->container->getParameter('dmkclub_member.member.entity.class')
         ];
     }
+
     /**
      * Create member form
+     *
      * @Route("/create", name="dmkclub_member_create")
      * @Template("DMKClubMemberBundle:Member:update.html.twig")
      * @Acl(
@@ -44,10 +45,12 @@ class MemberController extends Controller
      */
     public function createAction()
     {
-    	return $this->update(new Member());
+        return $this->update(new Member());
     }
+
     /**
      * Update member form
+     *
      * @Route("/update/{id}", name="dmkclub_member_update", requirements={"id"="\d+"}, defaults={"id"=0})
      *
      * @Template
@@ -60,26 +63,31 @@ class MemberController extends Controller
      */
     public function updateAction(Member $entity)
     {
-    	return $this->update($entity);
+        return $this->update($entity);
     }
+
     /**
+     *
      * @param Member $entity
      *
      * @return array
      */
     protected function update(Member $entity)
     {
-    	/* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandler */
-    	$handler = $this->get('oro_form.model.update_handler');
-    	$data = $handler->update($entity,
-    			$this->get('dmkclub_member.member.form'),
-    			$this->get('translator')->trans('dmkclub.member.message.saved'),
-    			$this->get('dmkclub_member.member.form.handler')
-    		);
-    	return $data;
+        /* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandlerFacade */
+        $handler = $this->get('oro_form.update_handler');
+        $data = $handler->update(
+            $entity, 
+            $this->get('dmkclub_member.member.form'),
+            $this->get('translator')->trans('dmkclub.member.message.saved'),
+            null,
+            $this->get('dmkclub_member.member.form.handler')
+        );
+        return $data;
     }
 
     /**
+     *
      * @Route("/view/{id}", name="dmkclub_member_view", requirements={"id"="\d+"}))
      * @Acl(
      *      id="dmkclub_member_view",
@@ -91,31 +99,41 @@ class MemberController extends Controller
      */
     public function viewAction(Member $member)
     {
-        return ['entity' => $member];
+        return [
+            'entity' => $member
+        ];
     }
 
     /**
+     *
      * @Route("/widget/info/{id}", name="dmkclub_member_widget_info", requirements={"id"="\d+"}))
      * @AclAncestor("dmkclub_member_view")
      * @Template
      */
     public function infoAction(Member $member)
     {
-        return ['entity' => $member];
+        return [
+            'entity' => $member
+        ];
     }
+
     /**
+     *
      * @Route("/widget/additionalinfo/{id}", name="dmkclub_member_widget_additionalinfo", options={"expose"=true}, requirements={"id"="\d+"}))
      * @AclAncestor("dmkclub_member_view")
      * @Template
      */
     public function additionalInfoAction(Member $member)
     {
-        return ['entity' => $member];
+        return [
+            'entity' => $member
+        ];
     }
 
     /**
      * Wird aufgerufen, um im Account einen Abschnitt für die Mitgliedschaft
-     * einzublenden. Die Einbindung erfolgt über die placeholder.yml
+     * einzublenden.
+     * Die Einbindung erfolgt über die placeholder.yml
      * Die Methode stellt die Member-Datensätze des aktuellen Accounts
      * im entsprechenden Channel bereit.
      * Die eigentlichen Datensätze werden dann in der Route
@@ -135,11 +153,20 @@ class MemberController extends Controller
     {
         $entities = $this->getDoctrine()
             ->getRepository('DMKClubMemberBundle:Member')
-            ->findBy(['account' => $account, 'dataChannel' => $channel]);
+            ->findBy([
+            'account' => $account,
+            'dataChannel' => $channel
+        ]);
 
-        return ['account' => $account, 'members' => $entities, 'channel' => $channel];
+        return [
+            'account' => $account,
+            'members' => $entities,
+            'channel' => $channel
+        ];
     }
+
     /**
+     *
      * @Route(
      *        "/widget/member-info/{id}/channel/{channelId}",
      *        name="dmkclub_member_widget_member_info",
@@ -152,8 +179,8 @@ class MemberController extends Controller
     public function memberInfoAction(Member $entity, Channel $channel)
     {
         return [
-            'member'             => $entity,
-            'channel'              => $channel,
+            'member' => $entity,
+            'channel' => $channel
         ];
     }
 }

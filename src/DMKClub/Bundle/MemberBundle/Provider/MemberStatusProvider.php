@@ -42,7 +42,7 @@ class MemberStatusProvider
 		if (null === $this->translatedChoices) {
 			$this->translatedChoices = array();
 			foreach ($this->choices as $name => $label) {
-				$this->translatedChoices[$name] = $this->translator->trans($label);
+			    $this->translatedChoices[$this->translator->trans($label)] = $name;
 			}
 		}
 
@@ -56,7 +56,7 @@ class MemberStatusProvider
 	 */
 	public function getLabelByName($name)
 	{
-		$choices = $this->getChoices();
+		$choices = array_flip($this->getChoices());
 		if (!isset($choices[$name])) {
 			throw new \LogicException(sprintf('Unknown member status with name "%s"', $name));
 		}

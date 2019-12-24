@@ -2,18 +2,17 @@
 
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\UserBundle\Provider\GenderProvider;
 use DMKClub\Bundle\MemberBundle\Provider\MemberStatusProvider;
 
 class MemberStatusType extends AbstractType
 {
-    const NAME = 'dmkclub_memberstatus';
-
     /**
-     * @var GenderProvider
+     * @var MemberStatusProvider
      */
     protected $memberStatusProvider;
 
@@ -28,23 +27,15 @@ class MemberStatusType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * @return string
-     */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(

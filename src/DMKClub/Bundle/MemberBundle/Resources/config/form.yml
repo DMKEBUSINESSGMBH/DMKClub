@@ -113,11 +113,11 @@ services:
 
     dmkclub_member.member.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_member_form"
             - "dmkclub_member_member"
+            - DMKClub\Bundle\MemberBundle\Form\Type\MemberType
+            - null
 
     dmkclub_member.memberproposal.form:
         class: Symfony\Component\Form\Form
@@ -206,8 +206,6 @@ services:
         class: "%dmkclub_member.member.form.handler.class%"
         scope: request
         arguments:
-            - "@dmkclub_member.member.form"
-            - "@request_stack"
             - "@doctrine.orm.entity_manager"
             - "@dmkclub.payment.sepa.iban.openiban"
             - "@logger"

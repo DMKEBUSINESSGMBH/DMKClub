@@ -13,15 +13,10 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 
-class MemberHandler
+class MemberHandler implements FormHandlerInterface
 {
-    /** @var FormInterface */
-    protected $form;
-
-    /** @var RequestStack */
-    protected $request;
-
     /** @var ObjectManager */
     protected $manager;
 
@@ -29,19 +24,13 @@ class MemberHandler
     protected $logger;
 
     /**
-     * @param FormInterface          $form
-     * @param Request                $request
      * @param ObjectManager          $manager
      */
     public function __construct(
-        FormInterface $form,
-        RequestStack $request,
         ObjectManager $manager,
         OpenIBAN $openIban,
         Logger $logger
     ) {
-        $this->form      = $form;
-        $this->request   = $request;
         $this->manager   = $manager;
         $this->openIban  = $openIban;
         $this->logger    = $logger;
@@ -54,16 +43,14 @@ class MemberHandler
      *
      * @return bool True on successful processing, false otherwise
      */
-    public function process(Member $entity)
+    public function process($entity, FormInterface $form, Request $request)
     {
+        $form->setData($entity);
 
-        $this->form->setData($entity);
-
-        $request = $this->request->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($request);
+            $form->handleRequest($request);
 
-            if ($this->form->isValid()) {
+            if ($form->isValid()) {
                 $this->onSuccess($entity);
 
                 return true;
