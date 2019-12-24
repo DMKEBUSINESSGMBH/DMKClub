@@ -10,18 +10,11 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 
-class CreateMemberByProposalHandler
+class CreateMemberByProposalHandler implements FormHandlerInterface
 {
-
-    /** @var FormInterface */
-    protected $form;
-
-    /** @var RequestStack */
-    protected $request;
 
     /** @var ObjectManager */
     protected $manager;
@@ -33,20 +26,14 @@ class CreateMemberByProposalHandler
 
     /**
      *
-     * @param FormInterface $form
-     * @param RequestStack $request
      * @param ObjectManager $manager
      * @param RequestChannelProvider $requestChannelProvider
      */
     public function __construct(
-        FormInterface $form,
-        RequestStack $request,
         ObjectManager $manager,
         MemberManager $memberManager
     )
     {
-        $this->form = $form;
-        $this->request = $request;
         $this->manager = $manager;
         $this->memberManager = $memberManager;
     }
@@ -58,19 +45,18 @@ class CreateMemberByProposalHandler
      *
      * @return mixed Array on successful processing, false otherwise
      */
-    public function process(MemberProposal $entity)
+    public function process($entity, FormInterface $form, Request $request)
     {
-        $this->form->setData([
+        $form->setData([
             'memberCode' => $this->memberManager->nextMemberCode(),
         ]);
-        $request = $this->request->getCurrentRequest();
         if (in_array($request->getMethod(), [
             'POST',
             'PUT'
         ])) {
-            $this->form->submit($request);
-            if ($this->form->isValid()) {
-                return $this->onSuccess($entity);
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                return $this->onSuccess($entity, $form);
             }
         }
 
@@ -80,11 +66,11 @@ class CreateMemberByProposalHandler
     /**
      * "Success" form handler
      *
-     * @param MemberBilling $entity
+     * @param MemberProposal $entity
      */
-    protected function onSuccess(MemberProposal $entity)
+    protected function onSuccess(MemberProposal $entity, FormInterface $form)
     {
-        $formData = $this->form->getData();
+        $formData = $form->getData();
         $member = $this->memberManager->buildMemberByProposal($entity);
         $entity->setMember($member);
         $member->setStartDate($formData['startDate']);
@@ -105,5 +91,4 @@ class CreateMemberByProposalHandler
         $enumRepo = $this->manager->getRepository($className);
         return $enumRepo->findOneById($valueId);
     }
-
 }

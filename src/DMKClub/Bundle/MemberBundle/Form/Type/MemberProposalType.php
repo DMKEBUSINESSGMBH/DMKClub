@@ -3,11 +3,20 @@ namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
+
+use Oro\Bundle\ChannelBundle\Form\Type\ChannelSelectType;
+use Oro\Bundle\EntityExtendBundle\Form\Type\EnumSelectType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+
 use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
+use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class MemberProposalType extends AbstractType
 {
@@ -32,7 +41,7 @@ class MemberProposalType extends AbstractType
     {
         $this->buildPlainFields($builder, $options);
         $this->buildRelationFields($builder, $options);
-        $builder->add('submit', 'submit');
+//        $builder->add('submit', SubmitType::class);
     }
 
     /**
@@ -42,29 +51,29 @@ class MemberProposalType extends AbstractType
      */
     protected function buildPlainFields(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('namePrefix', 'text', [
+        $builder->add('namePrefix', TextType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'name_prefix.label'
         ])
-        ->add('firstName', 'text', [
+        ->add('firstName', TextType::class, [
             'required' => true,
             'label' => self::LABEL_PREFIX.'first_name.label'
         ])
-        ->add('middleName', 'text', [
+        ->add('middleName', TextType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'middle_name.label'
         ])
-        ->add('lastName', 'text', [
+        ->add('lastName', TextType::class, [
             'required' => true,
             'label' => self::LABEL_PREFIX.'last_name.label'
         ])
-        ->add('nameSuffix', 'text', [
+        ->add('nameSuffix', TextType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'name_suffix.label'
         ])
         ->add(
             'status',
-            'oro_enum_select',
+            EnumSelectType::class,
             [
                 'label' => self::LABEL_PREFIX.'status.label',
                 'enum_code' => 'memberproposal_status',
@@ -72,53 +81,53 @@ class MemberProposalType extends AbstractType
                 'constraints' => [new Assert\NotNull()]
             ]
             )
-        ->add('birthday', 'oro_date', [
+        ->add('birthday', OroDateType::class, [
             'required' => false,
             'years' => ['1800', date('Y')],
             'label' => self::LABEL_PREFIX.'birthday.label'
         ])
-        ->add('paymentOption', 'oro_enum_select', [
+        ->add('paymentOption', EnumSelectType::class, [
             'required' => true,
             'enum_code' => PaymentOption::INTERNAL_ENUM_CODE,
             'label' => 'dmkclub.member.payment_option.label'
         ])
-        ->add('paymentInterval', 'oro_enum_select', [
+        ->add('paymentInterval', EnumSelectType::class, [
             'required' => true,
             'enum_code' => PaymentInterval::INTERNAL_ENUM_CODE,
             'label' => self::LABEL_PREFIX.'payment_interval.label'
         ])
-        ->add('emailAddress', 'text', [
+        ->add('emailAddress', TextType::class, [
             'required' => true,
             'label' => self::LABEL_PREFIX.'email_address.label'
         ])
-        ->add('phone', 'text', [
+        ->add('phone', TextType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'phone.label'
         ])
-        ->add('isActive', 'checkbox', [
+        ->add('isActive', CheckboxType::class, [
             'tooltip' => $this->translator->trans('dmkclub.member.isActive.help'),
             'label' => 'dmkclub.member.is_active.label',
             'required' => false
         ])
-        ->add('jobTitle', 'text', [
+        ->add('jobTitle', TextType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'job_title.label'
         ])
-        ->add('discountReason', 'text', [
+        ->add('discountReason', TextType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'discount_reason.label'
         ])
-        ->add('discountStartDate', 'oro_date', [
+        ->add('discountStartDate', OroDateType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'discount_start_date.label'
 
         ])
-        ->add('discountEndDate', 'oro_date', [
+        ->add('discountEndDate', OroDateType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'discount_end_date.label'
 
         ])
-        ->add('comment', 'textarea', [
+        ->add('comment', TextareaType::class, [
             'required' => false,
             'label' => self::LABEL_PREFIX.'comment.label'
         ]);
@@ -132,52 +141,34 @@ class MemberProposalType extends AbstractType
      */
     public function buildRelationFields(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('postalAddress', 'dmkclub_member_proposal_address', [
-            'cascade_validation' => true,
-            'required' => false
+        $builder->add('postalAddress',
+            ProposalAddressType::class, [
+                'required' => false
         ]);
-        $builder->add('bankAccount', 'dmkclub_member_proposal_bankaccount', [
-            'label' => 'dmkclub.member.bank_account.label',
-            'required' => false
+        $builder->add('bankAccount', 
+            ProposalBankAccountType::class, [
+                'label' => 'dmkclub.member.bank_account.label',
+                'required' => false
         ]);
-        $builder->add('dataChannel', 'oro_channel_select_type', [
-            'required' => true,
-            'label' => 'orocrm.sales.b2bcustomer.data_channel.label',
-            'entities' => [
-                'DMKClub\\Bundle\\MemberBundle\\Entity\\MemberProposal'
-            ]
+        $builder->add('dataChannel', 
+            ChannelSelectType::class, [
+                'required' => true,
+                'label' => 'orocrm.sales.b2bcustomer.data_channel.label',
+                'entities' => [
+                    'DMKClub\\Bundle\\MemberBundle\\Entity\\MemberProposal'
+                ]
         ]);
     }
 
     /**
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'DMKClub\Bundle\MemberBundle\Entity\MemberProposal',
             'dataChannelField' => false
-        ));
-    }
-
-    /**
-     *
-     * {@inheritdoc}
-     *
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     *
-     * {@inheritdoc}
-     *
-     */
-    public function getBlockPrefix()
-    {
-        return 'dmkclub_member_memberproposal';
+        ]);
     }
 }

@@ -3,10 +3,9 @@ namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Oro\Bundle\AddressBundle\Form\EventListener\FixAddressesPrimarySubscriber;
+use DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType;
 
 class ProposalBankAccountType extends AbstractType
 {
@@ -33,22 +32,6 @@ class ProposalBankAccountType extends AbstractType
      */
     public function getParent()
     {
-        return 'dmkclub_bankaccount';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'dmkclub_member_proposal_bankaccount';
+        return BankAccountType::class;
     }
 }

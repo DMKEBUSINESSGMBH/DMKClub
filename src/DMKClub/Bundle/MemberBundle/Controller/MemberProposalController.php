@@ -79,13 +79,15 @@ class MemberProposalController extends Controller
      */
     protected function update(MemberProposal $entity)
     {
-    	/* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandler */
-    	$handler = $this->get('oro_form.model.update_handler');
-    	$data = $handler->update($entity,
-    			$this->get('dmkclub_member.member_proposal.form'),
-    			$this->get('translator')->trans('dmkclub.member.memberproposal.message.saved'),
-    			$this->get('dmkclub_member.memberproposal.form.handler')
-    		);
+    	/* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandlerFacade */
+    	$handler = $this->get('oro_form.update_handler');
+    	$data = $handler->update(
+    	    $entity,
+			$this->get('dmkclub_member.memberproposal.form'),
+			$this->get('translator')->trans('dmkclub.member.memberproposal.message.saved'),
+    	    null,
+			$this->get('dmkclub_member.memberproposal.form.handler')
+		);
     	return $data;
     }
 
@@ -147,8 +149,9 @@ class MemberProposalController extends Controller
             'saved' => false,
         ];
 
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         // Form auswerten
-        if ($this->get('dmkclub_member.memberproposal.createmember.form.handler')->process($entity)) {
+        if ($this->get('dmkclub_member.memberproposal.createmember.form.handler')->process($entity, $form, $request)) {
             $response['message'] = 'finished';
             $response['saved'] = true;
         }

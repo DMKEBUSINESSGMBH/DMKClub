@@ -3,10 +3,9 @@ namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Oro\Bundle\AddressBundle\Form\EventListener\FixAddressesPrimarySubscriber;
+use Oro\Bundle\AddressBundle\Form\Type\AddressType;
 
 class ProposalAddressType extends AbstractType
 {
@@ -33,22 +32,6 @@ class ProposalAddressType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_address';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'dmkclub_member_proposal_address';
+        return AddressType::class;
     }
 }

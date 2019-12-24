@@ -3,10 +3,13 @@
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+use Oro\Bundle\UserBundle\Form\Type\GenderType;
 
 class CreateMemberByProposalType extends AbstractType {
 
@@ -14,7 +17,6 @@ class CreateMemberByProposalType extends AbstractType {
 	protected $translator;
 
 	/**
-	 * @param ConfigManager       $configManager
 	 * @param TranslatorInterface $translator
 	 */
 	public function __construct(TranslatorInterface $translator)
@@ -29,7 +31,7 @@ class CreateMemberByProposalType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 	    $builder
-    	    ->add('memberCode', 'text', [
+    	    ->add('memberCode', TextType::class, [
     	        'required' => true,
     	        'label' => 'dmkclub.member.member_code.label',
     	        'constraints' => [
@@ -38,7 +40,7 @@ class CreateMemberByProposalType extends AbstractType {
     	            ]),
     	        ],
     	    ])
-    	    ->add('startDate', 'oro_date', [
+    	    ->add('startDate', OroDateType::class, [
     	        'required' => true,
     	        'label' => 'dmkclub.member.start_date.label',
     	        'constraints' => [
@@ -47,7 +49,7 @@ class CreateMemberByProposalType extends AbstractType {
     	            ])
     	        ],
     	    ])
-    	    ->add('gender', 'oro_gender', [
+    	    ->add('gender', GenderType::class, [
     	        'required' => false,
     	        'label' => 'oro.contact.gender.label',
     	        'constraints' => [
@@ -60,22 +62,14 @@ class CreateMemberByProposalType extends AbstractType {
 	}
 
 	/**
-	 * @param OptionsResolverInterface $resolver
+	 * @param OptionsResolver $resolver
 	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	public function configureOptions(OptionsResolver $resolver)
 	{
 	    $resolver->setDefaults(
 	        array(
 	            'cascade_validation' => true,
 	        )
 	    );
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-	    return 'dmkclub_member_creatememberbyproposal';
 	}
 }

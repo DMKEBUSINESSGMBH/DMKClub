@@ -121,14 +121,11 @@ services:
 
     dmkclub_member.memberproposal.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
             - "dmkclub_member_memberproposal"
-            - "dmkclub_member_memberproposal"
+            - DMKClub\Bundle\MemberBundle\Form\Type\MemberProposalType
             - null
-            - { dataChannelField : true }
-            # das letzte Arg wird nicht genutzt...
 
     dmkclub_member.memberproposal_address.form:
         class: Symfony\Component\Form\Form
@@ -152,11 +149,11 @@ services:
 
     dmkclub_member.memberproposal.createmember.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_member_creatememberbyproposal_form"
             - "dmkclub_member_creatememberbyproposal"
+            - DMKClub\Bundle\MemberBundle\Form\Type\CreateMemberByProposalType
+            - null
 
     dmkclub_member.memberbilling.form:
         class: Symfony\Component\Form\Form
@@ -224,8 +221,6 @@ services:
         class: "%dmkclub_member.memberproposal.form.handler.class%"
         scope: request
         arguments:
-            - "@dmkclub_member.memberproposal.form"
-            - "@request_stack"
             - "@doctrine.orm.entity_manager"
             - "@dmkclub.payment.sepa.iban.openiban"
             - "@logger"
@@ -234,8 +229,6 @@ services:
         class: "%dmkclub_member.memberproposal.createmember.form.handler.class%"
         scope: request
         arguments:
-            - "@dmkclub_member.memberproposal.createmember.form"
-            - "@request_stack"
             - "@doctrine.orm.entity_manager"
             - "@dmkclub_member.member.manager"
 

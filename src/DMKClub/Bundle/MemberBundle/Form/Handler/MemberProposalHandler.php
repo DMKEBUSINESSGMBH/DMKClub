@@ -11,15 +11,10 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
 use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 
-class MemberProposalHandler
+class MemberProposalHandler implements FormHandlerInterface
 {
-    /** @var FormInterface */
-    protected $form;
-
-    /** @var RequestStack */
-    protected $request;
-
     /** @var EntityManager */
     protected $em;
 
@@ -31,10 +26,8 @@ class MemberProposalHandler
      * @param RequestStack       $request
      * @param EntityManager $em
      */
-    public function __construct(FormInterface $form, RequestStack $request, EntityManager $em, OpenIBAN $openIban, Logger $logger)
+    public function __construct(EntityManager $em, OpenIBAN $openIban, Logger $logger)
     {
-        $this->form     = $form;
-        $this->request  = $request;
         $this->em       = $em;
         $this->openIban = $openIban;
         $this->logger   = $logger;
@@ -47,18 +40,15 @@ class MemberProposalHandler
      *
      * @return bool  True on successful processing, false otherwise
      */
-    public function process(MemberProposal $entity)
+    public function process($entity, FormInterface $form, Request $request)
     {
-        $this->getForm()->setData($entity);
+        $form->setData($entity);
 
-        $request = $this->request->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $this->getForm()->submit($request);
+            $form->handleRequest($request);
 
-            if ($this->getForm()->isValid()) {
-
+            if ($form->isValid()) {
                 $this->onSuccess($entity);
-
                 return true;
             }
         }
@@ -84,13 +74,5 @@ class MemberProposalHandler
         }
         $this->em->persist($entity);
         $this->em->flush();
-    }
-
-    /**
-     * @return FormInterface
-     */
-    public function getForm()
-    {
-        return $this->form;
     }
 }
