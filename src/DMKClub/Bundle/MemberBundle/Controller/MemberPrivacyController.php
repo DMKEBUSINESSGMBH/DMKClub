@@ -62,8 +62,7 @@ class MemberPrivacyController extends Controller
 			$responseData['saved'] = true;
 		}
 		/* @var $form \Symfony\Component\Form\Form */
-		$form = $this->get('dmkclub_member.member_privacy.form');
-		$form->setData($privacy);
+		$form = $this->get('dmkclub_member.memberprivacy.form');
 		$responseData['form'] = $form->createView();
 		return $responseData;
 	}

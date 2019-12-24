@@ -44,7 +44,7 @@ class MemberPrivacyHandler
 
 		$request = $this->request->getCurrentRequest();
 		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-		    $this->form->submit($request);
+		    $this->form->handleRequest($request);
 
 		    if ($this->form->isValid()) {
 		        $this->onSuccess($entity);

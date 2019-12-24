@@ -8,6 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class MemberPrivacyType extends AbstractType {
 
@@ -37,31 +40,30 @@ class MemberPrivacyType extends AbstractType {
 	 */
 	protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('signDate', 'oro_date', ['required' => true, 'label' => 'dmkclub.member.memberprivacy.sign_date.label'])
-			->add('emailAllowed', 'checkbox', [
+			->add('signDate', OroDateType::class, ['required' => true, 'label' => 'dmkclub.member.memberprivacy.sign_date.label'])
+			->add('emailAllowed', CheckboxType::class, [
 			    'tooltip' => $this->translator->trans('dmkclub.member.memberprivacy.email_allowed.help'),
 			    'label' => 'dmkclub.member.memberprivacy.email_allowed.label',
 			    'required' => false])
-    	    ->add('phoneAllowed', 'checkbox', [
+			->add('phoneAllowed', CheckboxType::class, [
     	        'tooltip' => $this->translator->trans('dmkclub.member.memberprivacy.phone_allowed.help'),
     	        'label' => 'dmkclub.member.memberprivacy.phone_allowed.label',
     	        'required' => false])
-	        ->add('postalAllowed', 'checkbox', [
+ 	        ->add('postalAllowed', CheckboxType::class, [
 	            'tooltip' => $this->translator->trans('dmkclub.member.memberprivacy.postal_allowed.help'),
 	            'label' => 'dmkclub.member.memberprivacy.postal_allowed.label',
 	            'required' => false])
-            ->add('sharingAllowed', 'checkbox', [
+            ->add('sharingAllowed', CheckboxType::class, [
                 'tooltip' => $this->translator->trans('dmkclub.member.memberprivacy.sharing_allowed.help'),
                 'label' => 'dmkclub.member.memberprivacy.sharing_allowed.label',
                 'required' => false])
-            ->add('merchandisingAllowed', 'checkbox', [
+            ->add('merchandisingAllowed', CheckboxType::class, [
                 'tooltip' => $this->translator->trans('dmkclub.member.memberprivacy.merchandising_allowed.help'),
                 'label' => 'dmkclub.member.memberprivacy.merchandising_allowed.label',
                 'required' => false])
-
 		;
 
-		}
+	}
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -70,9 +72,9 @@ class MemberPrivacyType extends AbstractType {
     public function buildRelationFields(FormBuilderInterface $builder, array $options){
     }
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -80,13 +82,5 @@ class MemberPrivacyType extends AbstractType {
                 'cascade_validation' => true,
             ]
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'dmkclub_member_memberprivacy';
     }
 }
