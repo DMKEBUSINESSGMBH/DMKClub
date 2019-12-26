@@ -47,6 +47,7 @@ class Processor extends BaseProcessor
         $file = $event->getPdfFile();
 
         $attachment = new Attachment($file);
+        $file->delete();
 
         return $this->getEmailTemplateAndSendEmail(
             $member,
