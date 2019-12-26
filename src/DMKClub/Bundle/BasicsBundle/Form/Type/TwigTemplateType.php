@@ -68,7 +68,7 @@ class TwigTemplateType extends AbstractType
                 'required' => false,
                 'label' => 'dmkclub.basics.twigtemplate.generator.label',
                 'choices' => $this->pdfManager->getVisibleGeneratorChoices(),
-                'empty_value' => 'dmkclub.form.choose'
+                'placeholder' => 'dmkclub.form.choose'
             ])
             ->add('orientation', ChoiceType::class, [
                 'label' => 'dmkclub.basics.twigtemplate.orientation.label',

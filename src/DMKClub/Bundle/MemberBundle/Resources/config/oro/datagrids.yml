@@ -735,6 +735,8 @@ datagrids:
                     - c.lastName
                     - po.id as paymentOption
                     - po.name as paymentOptionLabel
+                    - pi.id as paymentInterval
+                    - pi.name as paymentIntervalLabel
                     - m.isActive
                     - m.startDate As mbrStart
                     - m.endDate As mbrEnd
@@ -747,6 +749,7 @@ datagrids:
                     left:
                         - { join: f.member, alias: m }
                         - { join: m.payment_option, alias: po }
+                        - { join: m.payment_interval, alias: pi }
                         - { join: m.contact, alias: c }
                         - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
             bind_parameters:
@@ -801,6 +804,10 @@ datagrids:
                 label:         dmkclub.member.payment_option.label
                 choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
                 type:          translatable
+            paymentIntervalLabel:
+                label:         dmkclub.member.payment_interval.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentintval')"
+                type:          translatable
             email:
                 renderable:    false
                 label:         oro.contact.email.label
@@ -846,6 +853,10 @@ datagrids:
                     data_name: m.startDate
                 correctionStatus:
                     data_name: f.correctionStatus
+                paymentOptionLabel:
+                    data_name: paymentOptionLabel
+                paymentIntervalLabel:
+                    data_name: paymentIntervalLabel
                 corrected:
                     data_name: corrected
                 mbrEnd:
@@ -886,6 +897,10 @@ datagrids:
                     type:      enum
                     data_name: m.payment_option
                     enum_code: dmkclb_paymentoption
+                paymentIntervalLabel:
+                    type:      enum
+                    data_name: m.payment_interval
+                    enum_code: dmkclb_paymentintval
                 mbrStart:
                     type: date
                     data_name: m.startDate
