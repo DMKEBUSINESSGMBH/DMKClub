@@ -54,7 +54,7 @@ class CreateBillsHandler
             'POST',
             'PUT'
         ])) {
-            $this->form->submit($request);
+            $this->form->handleRequest($request);
             if ($this->form->isValid()) {
                 return $this->onSuccess($entity);
             }

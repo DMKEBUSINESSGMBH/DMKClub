@@ -71,22 +71,34 @@ class MemberBillingController extends Controller
      */
     protected function update(MemberBilling $entity)
     {
-        return $this->get('oro_form.model.update_handler')->handleUpdate($entity, $this->get('dmkclub_member.memberbilling.form'), function (MemberBilling $entity) {
-            return array(
-                'route' => 'dmkclub_memberbilling_update',
-                'parameters' => array(
-                    'id' => $entity->getId()
-                )
-            );
-        }, function (MemberBilling $entity) {
-            return array(
-                'route' => 'dmkclub_memberbilling_view',
-                'parameters' => array(
-                    'id' => $entity->getId()
-                )
-            );
-        }, $this->get('translator')
-            ->trans('dmkclub.member.memberbilling.message.saved'), $this->get('dmkclub_member.memberbilling.form.handler'));
+        
+        /* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandler */
+        $handler = $this->get('oro_form.model.update_handler');
+
+        return $handler->handleUpdate(
+            $entity, 
+            $this->get('dmkclub_member.memberbilling.form'), 
+            // SaveAndStayRoute
+            function (MemberBilling $entity) {
+                return [
+                    'route' => 'dmkclub_memberbilling_update',
+                    'parameters' => [
+                        'id' => $entity->getId()
+                    ]
+                ];
+            },
+            // SaveAndCloseRoute
+            function (MemberBilling $entity) {
+                return [
+                    'route' => 'dmkclub_memberbilling_view',
+                    'parameters' => array(
+                        'id' => $entity->getId()
+                    )
+                ];
+            },
+            $this->get('translator')->trans('dmkclub.member.memberbilling.message.saved'), 
+            $this->get('dmkclub_member.memberbilling.form.handler')
+        );
     }
 
     /**

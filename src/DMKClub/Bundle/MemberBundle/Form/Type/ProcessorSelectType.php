@@ -3,9 +3,10 @@
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProcessorSelectType extends AbstractType
 {
@@ -25,11 +26,11 @@ class ProcessorSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'choices' => $this->processorProvider->getVisibleProcessorChoices()
+                'choices' => array_flip($this->processorProvider->getVisibleProcessorChoices())
             ]
         );
     }
@@ -39,14 +40,6 @@ class ProcessorSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'dmkclub_member_accounting_processor_select';
+        return ChoiceType::class;
     }
 }

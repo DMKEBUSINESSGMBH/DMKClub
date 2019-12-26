@@ -33,7 +33,7 @@ class SimpleProcessor extends AbstractProcessor {
 	 */
 	public function getSettingsFormType()
 	{
-		return SimpleProcessorSettingsType::NAME;
+		return SimpleProcessorSettingsType::class;
 	}
 	/* (non-PHPdoc)
 	 * @see \DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface::execute()

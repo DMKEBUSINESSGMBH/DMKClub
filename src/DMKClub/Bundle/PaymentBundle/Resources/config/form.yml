@@ -46,21 +46,19 @@ services:
     # Bankaccount form
     dmkclub_payment.bank_account.form:
         class:           Symfony\Component\Form\Form
-        factory_method:  createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_bankaccount_form"
             - "dmkclub_bankaccount"
-            - ~
+            - DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType
+            - null
     # SepaCreditor form
-    dmkclub_payment.sepa_creditor.form:
+    dmkclub_payment.sepacreditor.form:
         class:           Symfony\Component\Form\Form
-        factory_method:  createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_sepacreditor_form"
             - "dmkclub_sepacreditor"
-            - ~
+            - DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorType
+            - null
 
 # ####
 # FormHandler
@@ -77,11 +75,11 @@ services:
 
 
     # SepaCreditor form handler
-    dmkclub_payment.sepa_creditor.form.handler:
+    dmkclub_payment.sepacreditor.form.handler:
         class: "%dmkclub_payment.form.handler.sepa_creditor.class%"
         scope: request
         arguments:
-            - "@dmkclub_payment.sepa_creditor.form"
+            - "@dmkclub_payment.sepacreditor.form"
             - "@request_stack"
             - "@doctrine.orm.entity_manager"
 

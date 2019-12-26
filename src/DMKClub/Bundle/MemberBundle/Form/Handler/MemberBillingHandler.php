@@ -55,7 +55,7 @@ class MemberBillingHandler
 
 		$request = $this->request->getCurrentRequest();
 		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-		    $this->form->submit($request);
+		    $this->form->handleRequest($request);
 
 		    if ($this->form->isValid()) {
 		        $this->onSuccess($entity);
@@ -79,6 +79,7 @@ class MemberBillingHandler
 		$this->manager->flush();
 		$this->tagManager->saveTagging($entity);
 	}
+
 	protected function saveProcessorConfig(MemberBilling $entity) {
 		// Die alte, serialisierte Config für alle Prozessoren holen
 		$configData = $entity->getProcessorConfig();
@@ -101,6 +102,7 @@ class MemberBillingHandler
 		// Beim Wechsel des processortypes muss man aber aufpassen, damit die Config noch passt!
 		$entity->setProcessorSettings($this->memberBillingManager->getProcessorSettings($entity));
 	}
+
 	/**
 	 * Setter for tag manager
 	 *

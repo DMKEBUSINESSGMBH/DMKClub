@@ -5,12 +5,10 @@ namespace DMKClub\Bundle\MemberBundle\Form\Type;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
-use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 
 class CreateBillsType extends AbstractType {
 
@@ -18,7 +16,6 @@ class CreateBillsType extends AbstractType {
 	protected $translator;
 
 	/**
-	 * @param ConfigManager       $configManager
 	 * @param TranslatorInterface $translator
 	 */
 	public function __construct(TranslatorInterface $translator)
@@ -33,27 +30,21 @@ class CreateBillsType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 	    $builder
-    	    ->add('billDate', 'oro_date', array('required' => true, 'label' => 'dmkclub.member.memberfee.bill_date.label'))
-    	    ;
+    	    ->add('billDate', OroDateType::class, [
+    	        'required' => true,
+    	        'label' => 'dmkclub.member.memberfee.bill_date.label']
+    	    );
 	}
 
 	/**
-	 * @param OptionsResolverInterface $resolver
+	 * @param OptionsResolver $resolver
 	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	public function configureOptions(OptionsResolver $resolver)
 	{
 	    $resolver->setDefaults(
-	        array(
+	        [
 	            'cascade_validation' => true,
-	        )
+	        ]
 	    );
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-	    return 'dmkclub_member_createbills';
 	}
 }

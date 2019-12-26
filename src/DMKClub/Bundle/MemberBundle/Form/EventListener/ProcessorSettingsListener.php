@@ -11,6 +11,7 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 class ProcessorSettingsListener implements EventSubscriberInterface
 {

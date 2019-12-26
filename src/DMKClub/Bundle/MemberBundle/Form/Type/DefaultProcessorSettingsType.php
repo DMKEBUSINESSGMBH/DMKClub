@@ -3,12 +3,14 @@
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
 {
-    const NAME = 'dmkclub_member_default_processor_settings';
+//    const NAME = 'dmkclub_member_default_processor_settings';
 
     /**
      * @param FormBuilderInterface $builder
@@ -17,27 +19,27 @@ class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(DefaultProcessor::OPTION_FEE, 'money', [
+            ->add(DefaultProcessor::OPTION_FEE, MoneyType::class, [
             		'required' => true,
             		'divisor' => 100,
             		'label' => 'dmkclub.member.memberbilling.fee.label'
             ])
-            ->add(DefaultProcessor::OPTION_FEE_ADMISSION, 'money', [
+            ->add(DefaultProcessor::OPTION_FEE_ADMISSION, MoneyType::class, [
             		'required' => true,
             		'divisor' => 100,
             		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_ADMISSION.'.label'
             ])
-            ->add(DefaultProcessor::OPTION_FEE_DISCOUNT, 'money', [
+            ->add(DefaultProcessor::OPTION_FEE_DISCOUNT, MoneyType::class, [
             		'required' => false,
             		'divisor' => 100,
             		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_DISCOUNT.'.label'
             ])
-            ->add(DefaultProcessor::OPTION_FEE_CHILD, 'money', [
+            ->add(DefaultProcessor::OPTION_FEE_CHILD, MoneyType::class, [
             		'required' => false,
             		'divisor' => 100,
             		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_FEE_CHILD.'.label'
             ])
-            ->add(DefaultProcessor::OPTION_AGE_CHILD, 'integer', [
+            ->add(DefaultProcessor::OPTION_AGE_CHILD, IntegerType::class, [
             		'required' => true,
             		'label' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_AGE_CHILD.'.label',
             		'tooltip' => 'dmkclub.member.memberbilling.'.DefaultProcessor::OPTION_AGE_CHILD.'.tooltip'
@@ -50,7 +52,7 @@ class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -63,6 +65,6 @@ class DefaultProcessorSettingsType extends AbstractProcessorSettingsType
      */
     public function getName()
     {
-        return self::NAME;
+        return DefaultProcessorSettingsType::class;
     }
 }

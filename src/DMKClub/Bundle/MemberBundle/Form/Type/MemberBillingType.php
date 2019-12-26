@@ -1,15 +1,26 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
+use Knp\Bundle\GaufretteBundle\FilesystemMap;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
+
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+
+use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
+use DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorSelectType;
+use DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateSelectType;
+use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
+use Symfony\Component\VarDumper\VarDumper;
 
 class MemberBillingType extends AbstractType
 {
@@ -79,28 +90,28 @@ class MemberBillingType extends AbstractType
      */
     protected function buildPlainFields(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', [
+        $builder->add('name', TextType::class, [
                 'required' => true,
                 'label' => 'dmkclub.member.memberbilling.name.label'
             ])
-            ->add('startDate', 'oro_date', [
+            ->add('startDate', OroDateType::class, [
                 'required' => true,
                 'label' => 'dmkclub.member.memberbilling.start_date.label'
             ])
-            ->add('endDate', 'oro_date', [
+            ->add('endDate', OroDateType::class, [
                 'required' => true,
                 'label' => 'dmkclub.member.memberbilling.end_date.label'
             ])
-            ->add('positionLabels', 'textarea', [
+            ->add('positionLabels', TextareaType::class, [
                 'required' => true,
                 'label' => 'dmkclub.member.memberbilling.position_labels.label',
                 'tooltip' => 'dmkclub.member.memberbilling.position_labels.tooltip'
             ])
-            ->add('exportFilesystem', 'choice', [
+            ->add('exportFilesystem', ChoiceType::class, [
                 'required' => false,
                 'label' => 'dmkclub.member.memberbilling.export_filesystem.label',
                 'choices' => $this->getFilesystems(),
-                'empty_value' => 'dmkclub.form.choose',
+                'placeholder' => 'dmkclub.form.choose',
                 'tooltip' => 'dmkclub.member.memberbilling.export_filesystem.tooltip'
             ]);
     }
@@ -111,20 +122,20 @@ class MemberBillingType extends AbstractType
         $fsm = reset($this->fileSystemMap);
         foreach ($fsm as $fsName => $filesystem) {
             /* @var $filesystem \Gaufrette\Filesystem */
-            if ($fsName == 'attachments')
+            if ($fsName == 'attachments') {
                 continue; // skip oro attachment fs
-
+            }
             $clazz = explode('\\', get_class($filesystem->getAdapter()));
             $fsType = array_pop($clazz);
             $adapterData = (array) $filesystem->getAdapter();
-            $info = '';
+            $dirName = '';
             foreach ($adapterData as $key => $value) {
                 if (strstr($key, 'directory') !== false) {
-                    $info = ' (' . $value . ')';
+                    $dirName = $value;
                     break;
                 }
             }
-            $options[$fsName] = $fsType . $info;
+            $options[sprintf('%s - %s (%s)', $fsType, $fsName, $dirName)] = $fsName;
         }
         return $options;
     }
@@ -141,24 +152,31 @@ class MemberBillingType extends AbstractType
         // $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
 
         // Add Member-List Segment
-        $builder->add('segment', 'dmkclub_member_segment_select_type', [
-            'label' => 'dmkclub.member.memberbilling.segment.label',
-            'required' => false,
-            'entities' => [
-                'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
+        $builder->add('segment',
+            MemberSegmentSelectType::class,
+            [
+                'label' => 'dmkclub.member.memberbilling.segment.label',
+                'required' => false,
+                'entities' => [
+                    'DMKClub\\Bundle\\MemberBundle\\Entity\\Member'
+                ]
+        ]);
+
+        $builder->add('sepaCreditor',
+            SepaCreditorSelectType::class,
+            [
+                'label' => 'dmkclub.member.memberbilling.sepa_creditor.label',
+                'required' => false
+        ]);
+
+        $builder->add('template',
+            TwigTemplateSelectType::class,
+            [
+                'label' => 'dmkclub.member.memberbilling.template.label',
+                'required' => false,
+                'tooltip' => 'dmkclub.member.memberbilling.template.tooltip'
             ]
-        ]);
-
-        $builder->add('sepaCreditor', 'dmkclub_sepacreditor_select', [
-            'label' => 'dmkclub.member.memberbilling.sepa_creditor.label',
-            'required' => false
-        ]);
-
-        $builder->add('template', 'dmkclub_basics_twigtemplate_select', [
-            'label' => 'dmkclub.member.memberbilling.template.label',
-            'required' => false,
-            'tooltip' => 'dmkclub.member.memberbilling.template.tooltip'
-        ]);
+        );
 
         // Einstellungsformular für dem Processor
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -176,33 +194,24 @@ class MemberBillingType extends AbstractType
                 if ($currentProcessorName && ! array_key_exists($currentProcessorName, $choices)) {
                     $currentProcessor = $this->processorProvider->getProcessorByName($currentProcessorName);
                     $choices[$currentProcessor->getName()] = $currentProcessor->getLabel();
-                    $options['choices'] = $choices;
                 }
+                $options['choices'] = array_flip($choices);
             }
 
             $form = $event->getForm();
-            $form->add('processor', 'dmkclub_member_accounting_processor_select', $options);
+            $form->add('processor', ProcessorSelectType::class, $options);
         });
     }
 
     /**
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'DMKClub\Bundle\MemberBundle\Entity\MemberBilling',
             'cascade_validation' => true
-        ));
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'dmkclub_member_memberbilling';
+        ]);
     }
 }

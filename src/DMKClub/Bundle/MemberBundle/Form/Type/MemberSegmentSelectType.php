@@ -6,8 +6,11 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
+use Oro\Bundle\FormBundle\Form\Type\Select2EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\VarDumper\VarDumper;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class MemberSegmentSelectType
@@ -29,32 +32,23 @@ class MemberSegmentSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'genemu_jqueryselect2_entity';
+        return Select2EntityType::class;
+//        return 'genemu_jqueryselect2_entity';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $queryBuilderNormalizer = function (Options $options, $qb) {
-            /** @var EntityManager $em */
-            $em = $options['em'];
-
-            /** @var EntityRepository $repository */
-            $repository = $em->getRepository('OroSegmentBundle:Segment');
-            $entities   = $options->get('entities');
-
-            return $qb($repository, $entities);
-        };
 
         $resolver->setDefaults(
             [
                 'label'         => 'oro.segment.entity_label',
                 'class'         => 'OroSegmentBundle:Segment',
-                'property'      => 'name',
+                'choice_label'  => 'name',
                 'random_id'     => true,
-                'query_builder' => $this->getQueryBuilder(),
+                'choices'       => [],
                 'configs'       => [
                     'allowClear'  => true,
                     'placeholder' => 'oro.segment.condition_builder.choose_entity_segment'
@@ -64,24 +58,33 @@ class MemberSegmentSelectType extends AbstractType
             ]
         );
 
-        $resolver->setNormalizers(['query_builder' => $queryBuilderNormalizer]);
+        $resolver->setNormalizer(
+            'choices', 
+            function (Options $options, $value) {
+                /** @var EntityManager $em */
+                $em = $options['em'];
+                
+                /** @var EntityRepository $repository */
+                $repository = $em->getRepository('OroSegmentBundle:Segment');
+                $entities   = $options['entities'];
+                $qb = $this->getQueryBuilder($repository, $entities);
+                return $qb->getQuery()->getResult();
+        });
     }
 
     /**
-     * @return callable
+     * @return QueryBuilder
      */
-    private function getQueryBuilder()
+    private function getQueryBuilder(EntityRepository $er, $entities = null)
     {
-        return function (EntityRepository $er, $entities = null) {
-            $query = $er->createQueryBuilder('c');
-            // Auf Segmente mit MemberEntity einschränken
-            if (!empty($entities)) {
-                $query->andWhere($query->expr()->in('c.entity', $entities));
-                $query->groupBy('c.name', 'c.id');
-            }
-            $query->orderBy('c.name', 'ASC');
+        $qb = $er->createQueryBuilder('c');
+        // Auf Segmente mit MemberEntity einschränken
+        if (!empty($entities)) {
+            $qb->andWhere($qb->expr()->in('c.entity', $entities));
+            $qb->groupBy('c.name', 'c.id');
+        }
+        $qb->orderBy('c.name', 'ASC');
 
-            return $query;
-        };
+        return $qb;
     }
 }

@@ -48,7 +48,7 @@ class SepaCreditorHandler
             'POST',
             'PUT'
         ])) {
-            $this->form->submit($request);
+            $this->form->handleRequest($request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);

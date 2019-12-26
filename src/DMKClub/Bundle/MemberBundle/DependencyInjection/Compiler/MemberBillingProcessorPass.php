@@ -36,7 +36,7 @@ class MemberBillingProcessorPass implements CompilerPassInterface
 		foreach (array_keys($taggedServices) as $id) {
 			$definition->addMethodCall(
 					'addProcessor',
-					array(new Reference($id))
+					[new Reference($id)]
 			);
 		}
 

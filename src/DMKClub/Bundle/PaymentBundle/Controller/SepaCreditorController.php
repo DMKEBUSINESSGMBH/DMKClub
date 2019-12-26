@@ -67,22 +67,27 @@ class SepaCreditorController extends Controller
      */
     protected function update(SepaCreditor $entity)
     {
-        return $this->get('oro_form.model.update_handler')->handleUpdate($entity, $this->get('dmkclub_payment.sepacreditor.form'), function (SepaCreditor $entity) {
-            return array(
-                'route' => 'dmkclub_sepacreditor_update',
-                'parameters' => array(
-                    'id' => $entity->getId()
-                )
-            );
-        }, function (SepaCreditor $entity) {
-            return array(
-                'route' => 'dmkclub_sepacreditor_view',
-                'parameters' => array(
-                    'id' => $entity->getId()
-                )
-            );
-        }, $this->get('translator')
-            ->trans('dmkclub.payment.sepacreditor.saved.message'), $this->get('dmkclub_payment.sepacreditor.form.handler'));
+        return $this->get('oro_form.model.update_handler')->handleUpdate(
+            $entity,
+            $this->get('dmkclub_payment.sepacreditor.form'),
+            function (SepaCreditor $entity) {
+                return [
+                    'route' => 'dmkclub_sepacreditor_update',
+                    'parameters' => [
+                        'id' => $entity->getId()
+                    ]
+                ];
+            }, function (SepaCreditor $entity) {
+                return [
+                    'route' => 'dmkclub_sepacreditor_view',
+                    'parameters' => [
+                        'id' => $entity->getId()
+                    ]
+                ];
+            },
+            $this->get('translator')->trans('dmkclub.payment.sepacreditor.saved.message'),
+            $this->get('dmkclub_payment.sepacreditor.form.handler')
+        );
     }
 
     /**

@@ -157,11 +157,11 @@ services:
 
     dmkclub_member.memberbilling.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_member_memberbilling_form"
             - "dmkclub_member_memberbilling"
+            - DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
+            - null
 
     dmkclub_member.memberfeediscount.form:
         class: Symfony\Component\Form\Form
@@ -189,11 +189,11 @@ services:
 
     dmkclub_member.createbills.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_member_createbills_form"
             - "dmkclub_member_createbills"
+            - DMKClub\Bundle\MemberBundle\Form\Type\CreateBillsType
+            - null
 
 # ####
 # FormHandler
@@ -302,6 +302,7 @@ services:
             - "@doctrine"
         tags:
             - { name: form.type, alias: "dmkclub_member_simple_processor_settings" }
+
     # listener to switch settings form for selected processor
     # is injected to dmkclub_member.memberbilling.form.type
     dmkclub_member.form.subscriber.processor_settings:

@@ -2,15 +2,16 @@
 namespace DMKClub\Bundle\PaymentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Oro\Bundle\FormBundle\Form\Type\OroEntityCreateOrSelectChoiceType;
+use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 
 class SepaCreditorSelectType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -28,14 +29,6 @@ class SepaCreditorSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_entity_create_or_select_inline';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'dmkclub_sepacreditor_select';
+        return OroEntitySelectOrCreateInlineType::class;
     }
 }

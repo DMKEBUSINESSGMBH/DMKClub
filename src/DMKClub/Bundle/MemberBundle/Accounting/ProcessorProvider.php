@@ -2,6 +2,9 @@
 
 namespace DMKClub\Bundle\MemberBundle\Accounting;
 
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\VarDumper\VarDumper;
+
 class ProcessorProvider
 {
 	/**
@@ -59,5 +62,4 @@ class ProcessorProvider
 		}
 		return $choices;
 	}
-
 }

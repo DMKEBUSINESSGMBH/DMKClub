@@ -1,16 +1,17 @@
 <?php
 namespace DMKClub\Bundle\BasicsBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Oro\Bundle\FormBundle\Form\Type\Select2EntityType;
 
 class TwigTemplateSelectType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -20,9 +21,9 @@ class TwigTemplateSelectType extends AbstractType
                     return $er->createQueryBuilder('t')
                         ->orderBy('t.name', 'ASC');
                 },
-            		'configs'            => [
+        		'configs'            => [
                     'allowClear' => true,
-                		'placeholder' => 'dmkclub.form.choose'
+            		'placeholder' => 'dmkclub.form.choose'
                 ],
                 'empty_value' => '',
                 'empty_data'  => null
@@ -35,14 +36,6 @@ class TwigTemplateSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'genemu_jqueryselect2_translatable_entity';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'dmkclub_basics_twigtemplate_select';
+        return Select2EntityType::class;
     }
 }

@@ -12,7 +12,7 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
 use DMKClub\Bundle\MemberBundle\Accounting\Time\TimeCalculator;
 use Psr\Log\LoggerInterface;
-use BeSimple\SoapCommon\Type\KeyValue\DateTime;
+
 /**
  */
 class DefaultProcessor extends AbstractProcessor {
@@ -63,7 +63,7 @@ class DefaultProcessor extends AbstractProcessor {
 	 */
 	public function getSettingsFormType()
 	{
-		return DefaultProcessorSettingsType::NAME;
+		return DefaultProcessorSettingsType::class;
 	}
 	protected function assertMember(Member $member) {
 		// Alle Pflichtdaten prüfen

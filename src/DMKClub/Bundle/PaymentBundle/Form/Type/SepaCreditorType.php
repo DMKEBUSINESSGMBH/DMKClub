@@ -4,23 +4,14 @@ namespace DMKClub\Bundle\PaymentBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SepaCreditorType extends AbstractType
 {
-
-    const NAME = 'dmkclub_sepacreditor';
-
     public function __construct()
     {}
-
-    /**
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return self::NAME;
-    }
 
     /**
      *
@@ -28,37 +19,38 @@ class SepaCreditorType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden')
-            ->add('name', 'text', array(
-            'required' => false,
-            'label' => 'dmkclub.payment.sepacreditor.name.label'
-        ))
-            ->add('iban', 'text', array(
-            'required' => false,
-            'label' => 'dmkclub.payment.sepacreditor.iban.label'
-        ))
-            ->add('bic', 'text', array(
-            'required' => false,
-            'label' => 'dmkclub.payment.sepacreditor.bic.label'
-        ))
-            ->add('creditorId', 'text', array(
-            'required' => false,
-            'label' => 'dmkclub.payment.sepacreditor.creditor_id.label'
-        ));
+        $builder->add('id', HiddenType::class)
+            ->add('name',
+                TextType::class, [
+                'required' => false,
+                'label' => 'dmkclub.payment.sepacreditor.name.label'
+            ])
+                ->add('iban', TextType::class, [
+                'required' => false,
+                'label' => 'dmkclub.payment.sepacreditor.iban.label'
+            ])
+            ->add('bic', TextType::class, [
+                'required' => false,
+                'label' => 'dmkclub.payment.sepacreditor.bic.label'
+            ])
+            ->add('creditorId', TextType::class, [
+                'required' => false,
+                'label' => 'dmkclub.payment.sepacreditor.creditor_id.label'
+            ]);
     }
 
     /**
      *
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor',
             'intention' => 'sepacreditor',
             'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
             'single_form' => true
-        ));
+        ]);
     }
 }
 
