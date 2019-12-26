@@ -9,7 +9,6 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
@@ -45,7 +44,6 @@ class DownloadPdfHandler implements MassActionHandlerInterface
      *
      * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
-     * @param ServiceLink $securityFacadeLink
      */
     public function __construct(EntityManager $entityManager, TranslatorInterface $translator, LoggerInterface $logger, Manager $pdfManager, $router)
     {
@@ -117,7 +115,7 @@ class DownloadPdfHandler implements MassActionHandlerInterface
 
             $ids = explode(',', $jobData['entity_ids']);
 
-            $filename = $this->pdfManager->buildPdfCombined(function ($pdfCallBack) use ($ids) {
+            $file = $this->pdfManager->buildPdfCombined(function ($pdfCallBack) use ($ids) {
                 foreach ($ids as $id) {
                     $memberFee = $this->getMemberFeeRepository()
                         ->findOneBy([
@@ -130,7 +128,7 @@ class DownloadPdfHandler implements MassActionHandlerInterface
 
         return [
             'items' => $iteration,
-            'filename' => $filename
+            'filename' => $file->getKey()
         ];
     }
 

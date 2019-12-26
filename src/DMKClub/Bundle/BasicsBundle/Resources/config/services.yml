@@ -7,6 +7,12 @@ parameters:
 
 services:
 
+    dmkclub_basics.pdf.file_manager:
+        class: 'DMKClub\Bundle\BasicsBundle\PDF\FileManager'
+        arguments:
+          - '@knp_gaufrette.filesystem_map'
+          - 'dmkclub_pdfexport'
+
     dmkclub_basics.pdf.manager:
         class: "%dmkclub_basics.pdf.manager.class%"
         arguments:

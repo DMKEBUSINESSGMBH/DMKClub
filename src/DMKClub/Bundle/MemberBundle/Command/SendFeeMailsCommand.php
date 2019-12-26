@@ -13,6 +13,8 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
+use Symfony\Component\VarDumper\VarDumper;
+use Psr\Log\LoggerInterface;
 
 /**
  * Send membership fees to member by email.
@@ -83,12 +85,16 @@ class SendFeeMailsCommand extends ContainerAwareCommand
                 // SEND EMAIL
                 $this->getMailer()->sendBillToMemberEmail($entity);
             } catch (TemplateNotFoundException $tnfe) {
+                $this->output->writeln($tnfe->getMessage());
+                $this->log($tnfe->getMessage());
                 // Ohne Template wird keine Mail verschickt werden.
                 throw $tnfe;
             } catch (\Exception $e) {
-                $this->output->writeln(sprintf('Fee mailing failed for member %s (%s), fee-id: %d, Error: %s', $entity->getMember()
+                $msg = sprintf('Fee mailing failed for member %s (%s), fee-id: %d, Error: %s', $entity->getMember()
                     ->getName(), $entity->getMember()
-                    ->getId(), $entity->getId(), $e->getMessage()));
+                    ->getId(), $entity->getId(), $e->getMessage());
+                $this->log($msg);
+                $this->output->writeln($msg);
                 // Diese Exception wird nicht weitergegeben, damit der Rest versendet wird
                 $errorCnt += 1;
             }
@@ -102,6 +108,13 @@ class SendFeeMailsCommand extends ContainerAwareCommand
             'cnt' => $iteration,
             'errors' => $errorCnt
         ];
+    }
+
+    protected function log($msg)
+    {
+        /* @var $logger LoggerInterface */
+        $logger = $this->getContainer()->get('logger');
+        $logger->critical($msg);
     }
 
     protected function initLanguage()

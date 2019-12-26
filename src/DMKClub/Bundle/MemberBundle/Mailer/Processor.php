@@ -2,9 +2,17 @@
 
 namespace DMKClub\Bundle\MemberBundle\Mailer;
 
-use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
-use DMKClub\Bundle\BasicsBundle\PDF\Manager;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Gaufrette\File;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
+use Oro\Bundle\EmailBundle\Tools\EmailHolderHelper;
+
 use DMKClub\Bundle\BasicsBundle\Model\Attachment;
+use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
+use DMKClub\Bundle\MemberBundle\Event\CreatePdf4EmailEvent;
+use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
 class Processor extends BaseProcessor
 {
@@ -12,9 +20,16 @@ class Processor extends BaseProcessor
     /** @var Manager */
     protected $pdfManager;
 
-    public function __construct($managerRegistry, $configManager, $renderer, $emailHolderHelper, $mailer, Manager $pdfManager)
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ManagerRegistry $managerRegistry,
+        ConfigManager $configManager,
+        EmailRenderer $renderer,
+        EmailHolderHelper $emailHolderHelper,
+        \Oro\Bundle\EmailBundle\Mailer\Processor $mailer,
+        Manager $pdfManager)
     {
-        parent::__construct($managerRegistry, $configManager, $renderer, $emailHolderHelper, $mailer);
+        parent::__construct($eventDispatcher, $managerRegistry, $configManager, $renderer, $emailHolderHelper, $mailer);
         $this->pdfManager = $pdfManager;
     }
     /**
@@ -26,9 +41,12 @@ class Processor extends BaseProcessor
     {
         $member = $fee->getMember();
         // Create PDF
-        $fileName = $this->buildFeePdf($fee);
-        // TODO: raise event to allow modify pdf file
-        $attachment = new Attachment($fileName);
+        $file = $this->buildFeePdf($fee);
+        $event = new CreatePdf4EmailEvent($file);
+        $this->eventDispatcher->dispatch(CreatePdf4EmailEvent::EVENT_NAME, $event);
+        $file = $event->getPdfFile();
+
+        $attachment = new Attachment($file);
 
         return $this->getEmailTemplateAndSendEmail(
             $member,
@@ -41,9 +59,9 @@ class Processor extends BaseProcessor
     /**
      *
      * @param MemberFee $fee
-     * @return string path to pdf file
+     * @return File
      */
-    protected function buildFeePdf(MemberFee $fee)
+    protected function buildFeePdf(MemberFee $fee):File
     {
         return $this->pdfManager->buildPdf($fee);
     }

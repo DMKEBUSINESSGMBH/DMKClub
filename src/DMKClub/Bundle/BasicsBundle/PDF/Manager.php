@@ -1,9 +1,11 @@
 <?php
 namespace DMKClub\Bundle\BasicsBundle\PDF;
 
-use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
-use Oro\Bundle\ImportExportBundle\File\FileManager;
 use Monolog\Logger;
+use Gaufrette\File;
+use Oro\Bundle\ImportExportBundle\File\FileManager;
+
+use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 
 /**
  * Class PDF-Manager
@@ -44,13 +46,14 @@ class Manager
      *
      * @param PdfAwareInterface $entity
      * @throws PdfException
-     * @return string server path to file
+     * @return File
      */
-    public function buildPdf(PdfAwareInterface $entity)
+    public function buildPdf(PdfAwareInterface $entity): File
     {
         $twigTemplate = $entity->getTemplate();
-        if (! $twigTemplate)
+        if (! $twigTemplate) {
             throw new PdfException('No template instance found');
+        }
 
         $outputFormat = 'pdf';
         $fileName = $this->fileManager->generateFileName($entity->getFilenamePrefix(), $outputFormat);
@@ -59,7 +62,7 @@ class Manager
             $this->createPdf($twigTemplate, $localFile, [
                 'entity' => $entity
             ]);
-            $this->fileManager->writeFileToStorage($localFile, $fileName);
+            $this->fileManager->writeFileToStorage($localFile, $fileName, true);
         } catch (\Exception $e) {
             $this->logger->error('Error generating pdf file', [
                 'e' => $e,
@@ -67,10 +70,15 @@ class Manager
             ]);
             throw new PdfException('Error generating pdf file', 0, $e);
         }
-        return $localFile;
+        finally {
+            if (file_exists($localFile)) {
+                unlink($localFile);
+            }
+        }
+        return $this->fileManager->getFileSystem()->get($fileName);
     }
 
-    public function buildPdfCombined($nextEntity)
+    public function buildPdfCombined($nextEntity):File
     {
         $twigTemplate = null;
         $pdfGenerator = null;
@@ -97,7 +105,11 @@ class Manager
         $pdfGenerator->combinedFinalize($localFile);
         $this->fileManager->writeFileToStorage($localFile, $fileName);
 
-        return $fileName;
+        if (file_exists($localFile)) {
+            unlink($localFile);
+        }
+
+        return $this->fileManager->getFileSystem()->get($fileName);
     }
 
     /**

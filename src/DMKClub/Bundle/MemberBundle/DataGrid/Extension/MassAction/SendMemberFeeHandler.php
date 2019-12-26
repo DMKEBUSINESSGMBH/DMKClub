@@ -10,8 +10,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Psr\Log\LoggerInterface;
 
@@ -19,7 +17,6 @@ use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\MemberBundle\Command\SendFeeMailsCommand;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Oro\Bundle\SecurityBundle\Authorization\AuthorizationChecker;
 
 class SendMemberFeeHandler implements MassActionHandlerInterface
 {
@@ -61,7 +58,7 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
     )
     {
         $this->translator = $translator;
-        $this->securityFacade = $securityFacadeLink->getService();
+        $this->securityFacade = $authorizationChecker;
         $this->feeManager = $feeManager;
         $this->mailer = $mailer;
         $this->commandRunner = $commandRunner;

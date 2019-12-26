@@ -2,6 +2,8 @@
 
 namespace DMKClub\Bundle\BasicsBundle\Model;
 
+use Gaufrette\File;
+
 /**
  * Represents an email-attachment.
  */
@@ -16,12 +18,12 @@ class Attachment
     /**
      *
      * @param string $pathToFile
-     * @throws MailingException
+     * @throws \Exception
      */
-    public function __construct($pathToFile, $filename = '')
+    public function __construct(File $file, $filename = '')
     {
-        $this->filename = $filename ? : basename($pathToFile);
-        $this->content = file_get_contents($pathToFile);
+        $this->filename = $filename ? : $file->getKey();
+        $this->content = $file->getContent();
 
         $this->assert();
     }

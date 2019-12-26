@@ -69,6 +69,7 @@ services:
     dmkclub_member.mailer.processor:
         class: "%dmkclub_member.mailer.processor.class%"
         arguments:
+            - '@event_dispatcher'
             - '@doctrine'
             - '@oro_config.global'
             - '@oro_email.email_renderer'

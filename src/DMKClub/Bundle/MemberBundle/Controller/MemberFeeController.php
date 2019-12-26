@@ -62,10 +62,10 @@ class MemberFeeController extends Controller {
 		$pdfManager = $this->container->get('dmkclub_basics.pdf.manager');
 
 		try {
-			$fileName = $pdfManager->buildPdf($entity);
+			$file = $pdfManager->buildPdf($entity);
 			$url = $this->get('router')->generate(
 					'oro_importexport_export_download',
-					['fileName' => basename($fileName)]
+					['fileName' => $file->getKey()]
 			);
 			$responseData['url'] = $url;
 		}

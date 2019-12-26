@@ -14,10 +14,11 @@ use Oro\Bundle\EmailBundle\Form\Model\Email As EmailModel;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent;
 use Oro\Bundle\EmailBundle\Form\Model\EmailAttachment As EmailFormAttachment;
-
 use Oro\Bundle\UserBundle\Entity\UserInterface;
-use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
 
 /**
  * Ggf. ins BasicsBundle verschieben
@@ -39,20 +40,26 @@ class BaseProcessor
     /** @var Processor */
     protected $mailer;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
-     * @param ManagerRegistry   $managerRegistry
-     * @param ConfigManager     $configManager
-     * @param EmailRenderer     $renderer
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ManagerRegistry $managerRegistry
+     * @param ConfigManager $configManager
+     * @param EmailRenderer $renderer
      * @param EmailHolderHelper $emailHolderHelper
-     * @param \Swift_Mailer     $mailer
+     * @param \Swift_Mailer $mailer
      */
     public function __construct(
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
         ConfigManager $configManager,
         EmailRenderer $renderer,
         EmailHolderHelper $emailHolderHelper,
         Processor $mailer
     ) {
+        $this->eventDispatcher   = $eventDispatcher;
         $this->managerRegistry   = $managerRegistry;
         $this->configManager     = $configManager;
         $this->renderer          = $renderer;

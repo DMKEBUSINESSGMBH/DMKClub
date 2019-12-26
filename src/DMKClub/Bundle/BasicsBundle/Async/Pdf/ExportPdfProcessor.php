@@ -96,11 +96,10 @@ class ExportPdfProcessor implements MessageProcessorInterface, TopicSubscriberIn
                 $entity = $this->resolveEntity($data[self::OPTION_ENTITYID], $data[ExportPdfsMessageProcessor::OPTION_ENTITYNAME]);
                 if ($entity instanceof PdfAwareInterface) {
                     /* @var $entity PdfAwareInterface */
-                    $filePath = $this->pdfManager->buildPdf($entity);
+                    $file = $this->pdfManager->buildPdf($entity);
                     $fs = $this->fileSystemMap->get($entity->getExportFilesystem());
-                    $fileName = basename($filePath);
-                    $fs->write($fileName, file_get_contents($filePath));
-                    unlink($filePath); // Quelldatei löschen
+                    $fileName = $file->getKey();
+                    $fs->write($fileName, $file->getContent());
                 }
             } catch (\Exception $e) {
                 $this->logger->critical('PDF creation failed', [
