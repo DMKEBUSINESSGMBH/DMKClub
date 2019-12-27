@@ -22,15 +22,15 @@
 <p>
     {% if entity.status is not null %}
         {% if entity.status.id == 'joined' %}
-            <div class="badge badge-enabled status-enabled"><i class="fa-status-enabled fa-circle"></i>{{ entity.status.name }}</div>
+            <div class="badge badge-enabled status-enabled"><i class="fa-status-enabled fa-circle"></i> {{ entity.status.name }}</div>
         {% elseif entity.status.id == 'refused' %}
-            <div class="badge badge-danger status-danger"><i class="fa-status-danger fa-circle"></i>{{ entity.status.name }}</div>
+            <div class="badge badge-danger status-danger"><i class="fa-status-danger fa-circle"></i> {{ entity.status.name }}</div>
         {% elseif entity.status.id == 'initial' %}
-            <div class="badge badge-info status-info"><i class="fa-status-info fa-circle"></i>{{ entity.status.name }}</div>
+            <div class="badge badge-info status-info"><i class="fa-status-info fa-circle"></i> {{ entity.status.name }}</div>
         {% elseif entity.status.id == 'in_progress' %}
-            <div class="badge badge-tentatively status-tentatively"><i class="fa-status-tentatively fa-circle"></i>{{ entity.status.name }}</div>
+            <div class="badge badge-tentatively status-tentatively"><i class="fa-status-tentatively fa-circle"></i> {{ entity.status.name }}</div>
         {% else %}
-            <div class="badge badge-disabled status-unknown"><i class="fa-status-disabled fa-circle"></i>{{ entity.status.name }}</div>
+            <div class="badge badge-disabled status-unknown"><i class="fa-status-disabled fa-circle"></i> {{ entity.status.name }}</div>
         {% endif %}
     {% endif %}
 </p>

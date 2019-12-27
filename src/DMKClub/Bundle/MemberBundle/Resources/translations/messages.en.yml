@@ -219,7 +219,12 @@ dmkclub:
             entity_description:  Represent a position for membership fee
             id.label:            Id
             owner.label:         Owner
+            description.label:   Description
             quantity.label:      Quantity
+            flag.label:          Kind of position
+            sort_order.label:    Sort order
+            tax_amount.label:    Amount of tax
+            unit.label:          Unit
             price_total.label:   Price total
             price_single.label:  Price single
         memberfeediscount:

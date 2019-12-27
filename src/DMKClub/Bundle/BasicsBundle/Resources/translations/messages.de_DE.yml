@@ -21,6 +21,10 @@ dmkclub.basics.label.no: Nein
 "Addresses": Anschriften
 "Yes": Ja
 "No": Nein
+"Ja": Ja
+"Nein": Nein
+Club: Verein
+Bearbeiten: Bearbeiten
 dmkclub.form.choose: Bitte wählen
 dmkclub.dashboard.title.main: Verein
 dmkclub.active: Aktiv

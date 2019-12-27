@@ -205,12 +205,14 @@ dmkclub:
         memberfeeposition:
             entity_label:        Position für Mitgliedsbeitrag
             entity_plural_label: Position für Mitgliedsbeiträge
-            entity_description:  Represent a position for membership fee
+            entity_description:  Position für einen Mitgliedsbeitrag
             id.label:            Id
             owner.label:         Owner
-            member.label:        Mitglied
-            billing.label:       Abrechnung
-            positions.label:     Positionen
+            description.label:   Beschreibung
+            flag.label:          Positionsart
+            sort_order.label:    Sortierung
+            tax_amount.label:    Steueranteil
+            unit.label:          Einheit
             quantity.label:      Anzahl
             price_total.label:   Gesamtpreis
             price_single.label:  Einzelpreis
@@ -266,3 +268,4 @@ proposal: Antragsteller
 terminated: Beendete Mitgliedschaft
 "Membership fee total": Beitragsumme gesamt
 "Paid total": Bezahlt
+"SEPA direct debit": "SEPA Lastschrift"
