@@ -1,3 +1,4 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {#
     Available variables:
     * entity       - user entity DMKClub\Bundle\MemberBundle\Entity\Member or null
@@ -14,4 +15,25 @@
 {% set entityInfo = [
     {'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'},
     {'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'},
+    {'title': 'dmkclub.member.start_date.label'|trans, 'value': entity.startDate ? entity.startDate|oro_format_date : 'N/A'},
 ] %}
+{%- if entity.endDate -%}
+	{% set entityInfo = entityInfo|merge([ 
+	    {'title': 'dmkclub.member.end_date.label'|trans, 
+	    'value': entity.endDate ? entity.endDate|oro_format_date : 'N/A'} ])
+	%}
+{% endif %}
+
+
+{% block additional_info %}
+<p>
+        {% if entity.status == 'active' %}
+            <div class="badge badge-enabled status-enabled"><i class="fa-status-enabled fa-circle"></i> {{ entity.status|trans }} /
+        {{ 'dmkclub.member.member_code.label'|trans }}: {{  entity.memberCode }}
+            </div>
+        {% else %}
+            <div class="badge badge-disabled status-disabled"><i class="fa-status-disabled fa-circle"></i>{{ entity.status|trans }}</div>
+        {% endif %}
+
+</p>
+{% endblock %}

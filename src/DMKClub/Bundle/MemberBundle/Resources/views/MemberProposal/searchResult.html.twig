@@ -1,0 +1,37 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{#
+    Available variables:
+    * entity       - user entity DMKClub\Bundle\MemberBundle\Entity\Member or null
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set recordUrl = indexer_item.recordUrl %}
+{% set title = indexer_item.recordTitle ?: 'N/A'|trans %}
+
+{% set entityType = 'dmkclub.member.memberproposal.entity_label'|trans %}
+{% set showImage = false %}
+{% set image = null %}
+{% set entityInfo = [
+    {'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'},
+    {'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'},
+] %}
+
+
+{% block additional_info %}
+<p>
+    {% if entity.status is not null %}
+        {% if entity.status.id == 'joined' %}
+            <div class="badge badge-enabled status-enabled"><i class="fa-status-enabled fa-circle"></i>{{ entity.status.name }}</div>
+        {% elseif entity.status.id == 'refused' %}
+            <div class="badge badge-danger status-danger"><i class="fa-status-danger fa-circle"></i>{{ entity.status.name }}</div>
+        {% elseif entity.status.id == 'initial' %}
+            <div class="badge badge-info status-info"><i class="fa-status-info fa-circle"></i>{{ entity.status.name }}</div>
+        {% elseif entity.status.id == 'in_progress' %}
+            <div class="badge badge-tentatively status-tentatively"><i class="fa-status-tentatively fa-circle"></i>{{ entity.status.name }}</div>
+        {% else %}
+            <div class="badge badge-disabled status-unknown"><i class="fa-status-disabled fa-circle"></i>{{ entity.status.name }}</div>
+        {% endif %}
+    {% endif %}
+</p>
+{% endblock %}

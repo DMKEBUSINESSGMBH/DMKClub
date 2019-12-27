@@ -16,7 +16,7 @@ search:
             -
                 name:                   member_code
                 target_type:            text
-                target_fields:          [nameCode]
+                target_fields:          [memberCode]
             -
                 name:                  dataChannel
                 relation_type:         many-to-one
@@ -25,3 +25,34 @@ search:
                         name:          id
                         target_type:   integer
                         target_fields: [dataChannelId]
+
+    DMKClub\Bundle\MemberBundle\Entity\MemberProposal:
+        alias:                          dmkclub_member_proposal
+        label:                          dmkclub.member_proposal.entity_plural_label
+        title_fields:                   [firstName, lastName]
+        route:
+            name:                       dmkclub_member_proposal_view
+            parameters:
+                id:                     id
+        search_template:                DMKClubMemberBundle:MemberProposal:searchResult.html.twig
+        fields:
+            -
+                name:                   lastName
+                target_type:            text
+                target_fields:          [lastName]
+            -
+                name:                   firstName
+                target_type:            text
+                target_fields:          [firstName]
+            -
+                name:                   emailAddress
+                target_type:            text
+                target_fields:          [emailAddress]
+            -
+                name:                   phone
+                target_type:            text
+                target_fields:          [phone]
+            -
+                name:                   comment
+                target_type:            text
+                target_fields:          [comment]
