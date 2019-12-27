@@ -1,15 +1,16 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Accounting\PDF;
 
-use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Bridge\Twig\TwigEngine;
+
+use Oro\Bundle\ContactBundle\Entity\Contact;
+use Oro\Bundle\AddressBundle\Entity\Address;
+
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\BasicsBundle\PDF\GeneratorInterface;
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
-use Oro\Bundle\AddressBundle\Entity\Address;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bridge\Twig\TwigEngine;
-use Oro\Bundle\ContactBundle\Entity\Contact;
 
 /**
  */
@@ -146,12 +147,12 @@ class SimpleMemberFeePdf implements GeneratorInterface
      * Main content
      *
      * @param \TCPDF $pdf
-     * @param unknown $pdfContext
+     * @param \stdClass $pdfContext
      * @param MemberFee $fee
      */
     protected function writeContent(\TCPDF $pdf, $pdfContext, MemberFee $fee, $twigTemplate)
     {
-        $y = 110;
+        $y = 100;
         // $border = 0;
         // $lineDistance = $pdfContext->cellHeight + 0;
 

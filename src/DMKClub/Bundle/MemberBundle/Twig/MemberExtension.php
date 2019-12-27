@@ -30,13 +30,13 @@ class MemberExtension extends \Twig_Extension
     /**
      * Returns a list of functions to add to the existing list.
      *
-     * @return array An array of functions
+     * @return array an array of functions
      */
     public function getFunctions()
     {
         return [
-            'dmkclub_memberstatus' => new \Twig_Function_Method($this, 'getMemberStatusLabel'),
-            'dmkclub_memberByContact' => new \Twig_Function_Method($this, 'getMemberByContact'),
+            new \Twig\TwigFunction('dmkclub_memberstatus', [$this, 'getMemberStatusLabel']),
+            new \Twig\TwigFunction('dmkclub_memberByContact', [$this, 'getMemberByContact']),
         ];
     }
 

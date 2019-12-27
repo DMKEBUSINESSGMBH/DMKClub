@@ -29,6 +29,16 @@ parameters:
     dmkclub_member.memberfee.form.entity_field.handler.class: DMKClub\Bundle\MemberBundle\Form\EntityField\Handler\MemberFeeHandler
 
 services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false 
+
+    DMKClub\Bundle\MemberBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Migrations,DependencyInjection,Resources,Tests,DMKClubMemberBundle.php}'
+
+
     dmkclub_member.memberbilling.manager:
         class:     "%dmkclub_member.memberbilling.manager.class%"
         arguments:

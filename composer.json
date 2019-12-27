@@ -9,8 +9,8 @@
 		}
 	],
 	"autoload" : {
-		"psr-0" : {
-			"DMKClub\\Bundle" : "src/"
+		"psr-4" : {
+			"DMKClub\\Bundle\\" : "src/DMKClub/Bundle/"
 		}
 	},
 	"repositories" : [{
