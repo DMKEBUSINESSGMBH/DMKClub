@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false 
+
+    DMKClub\Bundle\MemberBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Migrations,DependencyInjection,Resources,Tests,DMKClubMemberBundle.php}'
+
+        
+    DMKClub\Bundle\MemberBundle\Twig\MemberExtension:
+        tags:
+            - { name: twig.extension }
+    
+    

@@ -230,7 +230,7 @@ services:
         scope: request
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@dmkclub_member.member.manager"
+            - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager'
 
     dmkclub_member.memberbilling.form.handler:
         class: "%dmkclub_member.memberbilling.form.handler.class%"
