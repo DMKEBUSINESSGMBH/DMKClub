@@ -178,7 +178,7 @@ class MemberBillingType extends AbstractType
             ]
         );
 
-        // Einstellungsformular für dem Processor
+        // Einstellungsformular für den Processor
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $options = [
                 'label' => 'dmkclub.member.memberbilling.processor.label',

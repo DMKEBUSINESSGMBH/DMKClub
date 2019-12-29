@@ -62,9 +62,7 @@ class MemberBillingManager implements ContainerAwareInterface
      */
     public function getProcessor(MemberBilling $memberBilling)
     {
-        /* @var $provider \DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider */
-        $provider = $this->container->get('dmkclub_member.memberbilling.processorprovider');
-        $processor = $provider->getProcessorByName($memberBilling->getProcessor());
+        $processor = $this->processionProvider->getProcessorByName($memberBilling->getProcessor());
         return $processor;
     }
 

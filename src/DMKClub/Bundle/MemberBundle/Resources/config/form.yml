@@ -2,7 +2,6 @@ parameters:
     dmkclub_member.member.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberType
     dmkclub_member.member.form.type.api.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberApiType
     dmkclub_member.member.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler
-    dmkclub_member.memberbilling.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
     dmkclub_member.memberbilling.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberBillingHandler
     dmkclub_member.memberfeediscount.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeDiscountType
     dmkclub_member.memberfeediscount.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeDiscountHandler
@@ -69,13 +68,13 @@ services:
         tags:
             - { name: form.type, alias: dmkclub_member_creatememberbyproposal }
 
-    dmkclub_member.memberbilling.form.type:
-        class: "%dmkclub_member.memberbilling.form.type.class%"
+    DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType:
+        class: 'DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType'
         calls:
             - [addSubscriber, ["@dmkclub_member.form.subscriber.processor_settings"]]
         arguments:
             - "@translator"
-            - "@dmkclub_member.memberbilling.processorprovider"
+            - '@DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider'
             - "@knp_gaufrette.filesystem_map"
         tags:
             - { name: form.type, alias: dmkclub_member_memberbilling }
@@ -285,7 +284,7 @@ services:
     dmkclub_member.form.type.accounting_processor_select:
         class: "%dmkclub_member.form.type.accounting_processor_select.class%"
         arguments:
-            - "@dmkclub_member.memberbilling.processorprovider"
+            - '@DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider'
         tags:
             - { name: form.type, alias: "dmkclub_member_accounting_processor_select" }
 
@@ -304,9 +303,9 @@ services:
             - { name: form.type, alias: "dmkclub_member_simple_processor_settings" }
 
     # listener to switch settings form for selected processor
-    # is injected to dmkclub_member.memberbilling.form.type
+    # is injected to DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
     dmkclub_member.form.subscriber.processor_settings:
         class: "%dmkclub_member.form.subscriber.processor_settings.class%"
         arguments:
-            - "@dmkclub_member.memberbilling.processorprovider"
+            - '@DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider'
             - "@oro_entity.doctrine_helper"

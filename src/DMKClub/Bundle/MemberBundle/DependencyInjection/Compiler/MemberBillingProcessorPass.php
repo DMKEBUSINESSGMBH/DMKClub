@@ -14,6 +14,7 @@ namespace DMKClub\Bundle\MemberBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 
 /**
  * Adds tagged twig.extension services to twig service.
@@ -23,7 +24,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class MemberBillingProcessorPass implements CompilerPassInterface
 {
 	const TAG = 'dmkclub_member.billingprocessor';
-	const MANAGER = 'dmkclub_member.memberbilling.processorprovider';
+	const MANAGER = ProcessorProvider::class;
 
 	public function process(ContainerBuilder $container)
 	{

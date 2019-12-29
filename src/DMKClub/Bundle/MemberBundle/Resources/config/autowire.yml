@@ -13,4 +13,9 @@ services:
         tags:
             - { name: twig.extension }
     
-    
+    DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor:
+        tags:
+            - { name: dmkclub_member.billingprocessor }
+    DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor:
+        tags:
+            - { name: dmkclub_member.billingprocessor }

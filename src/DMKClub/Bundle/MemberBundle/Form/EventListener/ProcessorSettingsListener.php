@@ -13,6 +13,9 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
+/**
+ * Switch between subforms of selected BillingProcessors
+ */
 class ProcessorSettingsListener implements EventSubscriberInterface
 {
     /**
@@ -59,7 +62,6 @@ class ProcessorSettingsListener implements EventSubscriberInterface
         if ($data === null) {
             return;
         }
-
         $selectedProcessor = $this->getSelectedProcessor($data->getProcessor());
         if ($selectedProcessor) {
             $this->addProcessorSettingsForm($selectedProcessor, $event->getForm());

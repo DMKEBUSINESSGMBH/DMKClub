@@ -18,10 +18,6 @@ parameters:
     dmkclub_member.memberfee.entity.class:                 DMKClub\Bundle\MemberBundle\Entity\MemberFee
     dmkclub_member.memberfeediscount.entity.class:         DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount
 
-    dmkclub_member.memberbilling.processorprovider.class:  DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider
-    dmkclub_member.memberbilling.processor_default.class:  DMKClub\Bundle\MemberBundle\Accounting\DefaultProcessor
-    dmkclub_member.memberbilling.processor_simple.class:   DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor
-
     dmkclub_member.memberfee.pdf.simplegenerator.class:    DMKClub\Bundle\MemberBundle\Accounting\PDF\SimpleMemberFeePdf
 
     dmkclub_member.memberfee.form.entity_field.handler.class: DMKClub\Bundle\MemberBundle\Form\EntityField\Handler\MemberFeeHandler
@@ -33,7 +29,7 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@service_container"
-            - "@dmkclub_member.memberbilling.processorprovider"
+            - '@DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider'
             - "@oro_segment.segment_manager"
             - "@oro_message_queue.message_producer"
     DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager:
@@ -60,10 +56,6 @@ services:
             - "%dmkclub_member.memberfee.entity.class%"
             - "@doctrine.orm.entity_manager"
 
-
-    dmkclub_member.memberbilling.processorprovider:
-        class: "%dmkclub_member.memberbilling.processorprovider.class%"
-
     dmkclub_member.mailer.processor:
         class: "%dmkclub_member.mailer.processor.class%"
         arguments:
@@ -84,19 +76,6 @@ services:
         class: "%dmkclub_member.member.status_provider.class%"
         arguments:
             - "@translator"
-
-    dmkclub_member.memberbilling.processor.default:
-        class: "%dmkclub_member.memberbilling.processor_default.class%"
-        arguments:
-            - "@logger"
-            - "@doctrine.orm.entity_manager"
-        tags:
-            - { name: dmkclub_member.billingprocessor }
-    dmkclub_member.memberbilling.processor.simple:
-        class: "%dmkclub_member.memberbilling.processor_simple.class%"
-        tags:
-            - { name: dmkclub_member.billingprocessor }
-
 
     dmkclub_member.memberfee.pdf.simplegenerator:
         class: "%dmkclub_member.memberfee.pdf.simplegenerator.class%"
