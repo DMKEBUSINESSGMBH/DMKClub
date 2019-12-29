@@ -64,14 +64,14 @@ datagrids:
             status:
                 label:         dmkclub.member.status.label
                 type:          translatable
-            paymentOptionLabel:
+            paymentOption:
                 label:         dmkclub.member.payment_option.label
                 choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
-                type:          translatable
-            paymentIntervalLabel:
+                frontend_type: select
+            paymentInterval:
                 label:         dmkclub.member.payment_interval.label
                 choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentintval')"
-                type:          translatable
+                frontend_type: select
             city:
                 label:         oro.address.city.label
             birthday:
@@ -131,9 +131,9 @@ datagrids:
                     data_name: m.isActive
                 status:
                     data_name: m.status
-                paymentOptionLabel:
+                paymentOption:
                     data_name: paymentOptionLabel
-                paymentIntervalLabel:
+                paymentInterval:
                     data_name: paymentIntervalLabel
                 city:
                     data_name: a.city
@@ -191,12 +191,12 @@ datagrids:
                             multiple:             true
                             choices:              '@dmkclub_member.member.status_provider->getChoices'
                             translatable_options: false
-                paymentOptionLabel:
+                paymentOption:
                     type:      enum
                     data_name: m.payment_option
                     enum_code: dmkclb_paymentoption
 
-                paymentIntervalLabel:
+                paymentInterval:
                     type:      enum
                     data_name: m.payment_interval
                     enum_code: dmkclb_paymentintval
