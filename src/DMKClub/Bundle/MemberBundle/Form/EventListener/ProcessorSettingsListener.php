@@ -7,11 +7,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
-use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Accounting\ProcessorInterface;
-use Symfony\Component\VarDumper\VarDumper;
+use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 
 /**
  * Switch between subforms of selected BillingProcessors
@@ -24,18 +22,11 @@ class ProcessorSettingsListener implements EventSubscriberInterface
     protected $processorProvider;
 
     /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    /**
      * @param ProcessorProvider $processorProvider
-     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(ProcessorProvider $processorProvider, DoctrineHelper $doctrineHelper)
+    public function __construct(ProcessorProvider $processorProvider)
     {
         $this->processorProvider = $processorProvider;
-        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
