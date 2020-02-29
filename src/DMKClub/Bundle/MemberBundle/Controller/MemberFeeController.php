@@ -79,12 +79,6 @@ class MemberFeeController extends Controller {
 	}
 
 	/**
-	 * @return FileSystemOperator
-	 */
-	protected function getFilesystemOperator() {
-		return $this->get('oro_importexport.file.file_system_operator');
-	}
-	/**
 	 * Update memberfee form
 	 * @Route("/update/{id}", name="dmkclub_memberfee_update", requirements={"id"="\d+"}, defaults={"id"=0})
 	 *

@@ -9,6 +9,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * @Route("/memberbilling")
@@ -33,10 +34,10 @@ class MemberBillingController extends Controller
      * @Route("/create", name="dmkclub_memberbilling_create")
      * @Template("DMKClubMemberBundle:MemberBilling:update.html.twig")
      * @Acl(
-     * id="dmkclub_memberbilling_create",
-     * type="entity",
-     * permission="CREATE",
-     * class="DMKClubMemberBundle:MemberBilling"
+     *   id="dmkclub_memberbilling_create",
+     *   type="entity",
+     *   permission="CREATE",
+     *   class="DMKClubMemberBundle:MemberBilling"
      * )
      */
     public function createAction()
@@ -71,13 +72,11 @@ class MemberBillingController extends Controller
      */
     protected function update(MemberBilling $entity)
     {
-        
         /* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandler */
         $handler = $this->get('oro_form.model.update_handler');
-
         return $handler->handleUpdate(
-            $entity, 
-            $this->get('dmkclub_member.memberbilling.form'), 
+            $entity,
+            $this->get('dmkclub_member.memberbilling.form'),
             // SaveAndStayRoute
             function (MemberBilling $entity) {
                 return [
@@ -96,7 +95,7 @@ class MemberBillingController extends Controller
                     )
                 ];
             },
-            $this->get('translator')->trans('dmkclub.member.memberbilling.message.saved'), 
+            $this->get('translator')->trans('dmkclub.member.memberbilling.message.saved'),
             $this->get('dmkclub_member.memberbilling.form.handler')
         );
     }

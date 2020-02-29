@@ -136,7 +136,6 @@ class MemberBillingManager implements ContainerAwareInterface
 
     /**
      * Starts account process for given billing.
-     * Das muss später bestimmt mal asynchon gemacht werden. Jetzt aber zunächst die direkte Umsetzung.
      *
      * @param MemberBilling $entity
      * @param array $options
@@ -151,6 +150,7 @@ class MemberBillingManager implements ContainerAwareInterface
             $memberFee = $processor->execute($member);
             return $memberFee;
         };
+
         return $this->doAccounting($memberBilling, $callback, $options);
     }
 
@@ -190,7 +190,6 @@ class MemberBillingManager implements ContainerAwareInterface
 
         $alias = 'm';
         $qb = $this->getMemberRepository()->createQueryBuilder($alias);
-        $segmentQuery = NULL;
         $segment = $memberBilling->getSegment();
         if ($segment) {
             $segmentDQL = $this->segmentManager->getFilterSubQuery($segment, $qb);
@@ -222,7 +221,7 @@ class MemberBillingManager implements ContainerAwareInterface
                     continue;
                 }
                 $ids[] = $dummyMember->getId();
-                $hits ++;
+                $hits++;
             } else {
                 /* @var $member \DMKClub\Bundle\MemberBundle\Entity\Member */
                 $member = $row[0];
@@ -240,7 +239,7 @@ class MemberBillingManager implements ContainerAwareInterface
                 } catch (AccountingException $exception) {
                     $errors[] = 'Member ' . $member->getId() . ' - ' . $exception->getMessage();
                 }
-                $hits ++;
+                $hits++;
                 if ($hits > $limit)
                     break;
             }
