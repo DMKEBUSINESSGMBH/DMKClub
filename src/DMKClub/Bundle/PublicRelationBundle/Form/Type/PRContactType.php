@@ -3,9 +3,13 @@ namespace DMKClub\Bundle\PublicRelationBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Oro\Bundle\AccountBundle\Form\Type\AccountSelectType;
+use Oro\Bundle\ChannelBundle\Form\Type\ChannelSelectType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class PRContactType extends AbstractType {
+class PRContactType extends AbstractType
+{
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -22,10 +26,10 @@ class PRContactType extends AbstractType {
     protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
     	$builder
 
-        ->add('name', 'text', array('required' => true, 'label' => 'dmkclub.prcontact.name.label'))
-
-    	->add('owner')
-    	->add('organization')
+        ->add('name', TextType::class, [
+            'required' => true,
+            'label' => 'dmkclub.publicrelation.prcontact.name.label'
+        ])
     	;
 //         $builder->add(
 //             'contact',
@@ -37,8 +41,7 @@ class PRContactType extends AbstractType {
 //         );
         $builder->add(
             'account',
-            'orocrm_account_select',
-            [
+            AccountSelectType::class, [
                 'label'    => 'orocrm.sales.b2bcustomer.account.label',
                 'required' => true,
             ]
@@ -55,7 +58,7 @@ class PRContactType extends AbstractType {
 
         $builder->add(
         		'dataChannel',
-        		'orocrm_channel_select_type',
+        		ChannelSelectType::class,
         		[
         		'required' => true,
         		'label'    => 'orocrm.sales.b2bcustomer.data_channel.label',
@@ -77,15 +80,14 @@ class PRContactType extends AbstractType {
 
     }
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array(
+        $resolver->setDefaults([
                 'data_class' => 'DMKClub\Bundle\PublicRelationBundle\Entity\PRContact',
                 'cascade_validation' => true,
-            )
+            ]
         );
     }
 

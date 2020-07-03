@@ -1,0 +1,29 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% import 'OroChannelBundle::macros.html.twig' as channel %}
+{% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
+
+{#
+Wird in der Detailansicht verwendet
+ #}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderProperty('dmkclub.publicrelation.prcontact.name.label'|trans, entity.name) }}
+
+            {{ channel.renderChannelProperty(entity, 'oro.sales.b2bcustomer.data_channel.label') }}
+
+            {%- if resource_granted('oro_account_view') and entity.account -%}
+                {% set accountView = '<a href="' ~ path('oro_account_view', {'id': entity.account.id}) ~ '">' ~ entity.account|escape ~ '</a>' %}
+            {%- else -%}
+                {% set accountView = entity.account ? entity.account|escape : '' %}
+            {%- endif -%}
+            {{ UI.renderHtmlProperty('dmkclub.publicrelation.prcontact.account.label'|trans, accountView) }}
+
+        </div>
+        <div class="responsive-block">
+            {{ entityConfig.renderDynamicFields(entity) }}
+        </div>
+    </div>
+</div>

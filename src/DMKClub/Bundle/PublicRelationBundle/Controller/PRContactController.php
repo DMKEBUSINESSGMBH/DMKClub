@@ -40,6 +40,20 @@ class PRContactController extends Controller {
 				'entity' => $entity
 		];
 	}
+
+	/**
+	 *
+	 * @Route("/widget/info/{id}", name="dmkclub_prcontact_widget_info", requirements={"id"="\d+"}))
+	 * @AclAncestor("dmkclub_prcontact_view")
+	 * @Template
+	 */
+	public function infoAction(PRContact $entity)
+	{
+	    return [
+	        'entity' => $entity
+	    ];
+	}
+
 	/**
 	 * Create form
 	 * @Route("/create", name="dmkclub_prcontact_create")
@@ -77,24 +91,14 @@ class PRContactController extends Controller {
      *
      * @return array
      */
-    protected function update(PRContact $entity) {
-    	return $this->get('oro_form.model.update_handler')->handleUpdate(
-    			$entity,
-    			$this->get('dmkclub.prcontact.form'),
-    			function (PRContact $entity) {
-    				return array(
-    						'route' => 'dmkclub_prcontact_update',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
-    			function (PRContact $entity) {
-    				return array(
-    						'route' => 'dmkclub_prcontact_view',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
-    			$this->get('translator')->trans('dmkclub.publicrelation.prcontact.saved.message'),
-    			$this->get('dmkclub.prcontact.form.handler')
+    protected function update(PRContact $entity)
+    {
+    	return $this->get('oro_form.update_handler')->update(
+            $entity,
+            $this->get('dmkclub.prcontact.form'),
+            $this->get('translator')->trans('dmkclub.publicrelation.prcontact.saved.message'),
+            null,
+            $this->get('dmkclub.prcontact.form.handler')
     	);
     }
 }

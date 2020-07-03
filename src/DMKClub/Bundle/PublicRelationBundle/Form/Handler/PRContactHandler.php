@@ -8,15 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\PublicRelationBundle\Entity\PRContact;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 
-class PRContactHandler
+class PRContactHandler implements FormHandlerInterface
 {
-    /** @var FormInterface */
-    protected $form;
-
-    /** @var RequestStack */
-    protected $request;
-
     /** @var ObjectManager */
     protected $manager;
 
@@ -26,12 +21,8 @@ class PRContactHandler
      * @param ObjectManager          $manager
      */
     public function __construct(
-        FormInterface $form,
-        RequestStack $request,
         ObjectManager $manager
     ) {
-        $this->form                   = $form;
-        $this->request                = $request;
         $this->manager                = $manager;
     }
 
@@ -42,16 +33,15 @@ class PRContactHandler
      *
      * @return bool True on successful processing, false otherwise
      */
-    public function process(PRContact $entity)
+    public function process($entity, FormInterface $form, Request $request)
     {
 
-        $this->form->setData($entity);
+        $form->setData($entity);
 
-        $request = $this->request->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($request);
+            $form->handleRequest($request);
 
-            if ($this->form->isValid()) {
+            if ($form->isValid()) {
                 $this->onSuccess($entity);
 
                 return true;

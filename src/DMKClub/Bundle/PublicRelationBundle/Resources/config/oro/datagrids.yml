@@ -18,9 +18,9 @@ datagrids:
                         - { join: prc.category, alias: cat }
         columns:
             name:
-                label:         dmkclub.prcontact.name.label
+                label:         dmkclub.publicrelation.prcontact.name.label
             category:
-                label:         dmkclub.prcategory.entity_label
+                label:         dmkclub.publicrelation.prcategory.entity_label
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime

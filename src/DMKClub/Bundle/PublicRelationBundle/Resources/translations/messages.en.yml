@@ -1,5 +1,6 @@
 dmkclub:
     publicrelation:
+        prcontact_information:     About P/R Contact
         channel_type.publicrelation.label: Public Relations
         prcontact:
             entity_label:        P/R Contact
@@ -9,6 +10,7 @@ dmkclub:
             owner.label:         Owner
             name.label:          Name
             category.label:      Category
+            account.label:       Account
             contact.label:       Contact
             postal_address.label:  Postal Address
             organization.label:  Organization

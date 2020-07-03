@@ -1,0 +1,56 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
+
+{% set fullname = entity|default('N/A') %}
+{% oro_title_set({params : {"%prcontact.name%": fullname} }) %}
+
+{% block navButtons %}
+
+    {{ UI.cancelButton(path('dmkclub_prcontact_index')) }}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('dmkclub_prcontact_update', { 'id': entity.id }),
+            'entity_label': 'dmkclub.publicrelation.prcontact.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('dmkclub_prcontact_index'),
+        'indexLabel': 'dmkclub.publicrelation.prcontact.entity_plural_label'|trans,
+        'entityTitle': fullname
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+
+{% block content_data %}
+    {% set entityInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url':         path('dmkclub_prcontact_widget_info', {id: entity.id})
+        }) }}
+    {% endset %}
+
+
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                	'data' : [entityInformationWidget],
+                }
+            ]
+        }
+] %}
+
+    {% set id = 'dmkclubPRContactView' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}

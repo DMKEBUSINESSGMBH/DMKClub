@@ -1,13 +1,10 @@
 parameters:
-    dmkclub.prcontact.form.type.class: DMKClub\Bundle\PublicRelationBundle\Form\Type\PRContactType
 #    dmkclub.prcontact.form.type.api.class: DMKClub\Bundle\PublicRelationBundle\Form\Type\PRContactApiType
-    dmkclub.prcontact.form.handler.class: DMKClub\Bundle\PublicRelationBundle\Form\Handler\PRContactHandler
-
 #    dmkclub.form.type.prcontact_select.class:        DMKClub\Bundle\PublicRelationBundle\Form\Type\PRContactSelectType
 
 services:
     dmkclub.prcontact.form.type:
-        class: "%dmkclub.prcontact.form.type.class%"
+        class: DMKClub\Bundle\PublicRelationBundle\Form\Type\PRContactType
         tags:
             - { name: form.type, alias: dmkclub_prcontact }
 
@@ -18,11 +15,11 @@ services:
 
     dmkclub.prcontact.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_prcontact_form"
             - "dmkclub_prcontact"
+            - DMKClub\Bundle\PublicRelationBundle\Form\Type\PRContactType
+            - null
 
 #    dmkclub.prcontact.form.api:
 #        class: Symfony\Component\Form\Form
@@ -33,11 +30,9 @@ services:
 #            - "dmkclub_prcontact_api"
 
     dmkclub.prcontact.form.handler:
-        class: "%dmkclub.prcontact.form.handler.class%"
+        class: DMKClub\Bundle\PublicRelationBundle\Form\Handler\PRContactHandler
         scope: request
         arguments:
-            - "@dmkclub.prcontact.form"
-            - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
 #    dmkclub.prcontact.form.handler.api:
