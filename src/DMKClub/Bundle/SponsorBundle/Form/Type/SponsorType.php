@@ -3,11 +3,30 @@ namespace DMKClub\Bundle\SponsorBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Translation\TranslatorInterface;
+use Oro\Bundle\ContactBundle\Form\Type\ContactSelectType;
+use Oro\Bundle\AccountBundle\Form\Type\AccountSelectType;
+use Oro\Bundle\ChannelBundle\Form\Type\ChannelSelectType;
+use Oro\Bundle\AddressBundle\Form\Type\AddressType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SponsorType extends AbstractType
 {
     const LABEL_PREFIX = 'dmkclub.sponsor.';
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /**
+     *
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
 
     /**
      *
@@ -27,18 +46,20 @@ class SponsorType extends AbstractType
      */
     protected function buildPlainFields(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', array(
+        $builder->add('name', TextType::class, [
                 'required' => true,
                 'label' => self::LABEL_PREFIX . 'name.label'
-            ))
-            ->add('isActive')
-            ->add('owner')
-            ->add('organization');
-        $builder->add('contact', 'oro_contact_select', [
+            ])
+            ->add('isActive', CheckboxType::class, [
+                'tooltip' => $this->translator->trans('dmkclub.sponsor.is_active.help'),
+                'label' => 'dmkclub.sponsor.is_active.label',
+                'required' => false
+            ]);
+        $builder->add('contact', ContactSelectType::class, [
             'label' => self::LABEL_PREFIX . 'contact.label',
             'required' => true
         ]);
-        $builder->add('account', 'oro_account_select', [
+        $builder->add('account', AccountSelectType::class, [
             'label' => self::LABEL_PREFIX . 'account.label',
             'required' => false
         ]);
@@ -54,7 +75,7 @@ class SponsorType extends AbstractType
     {
         // tags removed in 1.9
         // $builder->add('tags', 'oro_tag_select', array('label' => 'oro.tag.entity_plural_label'));
-        $builder->add('dataChannel', 'oro_channel_select_type', [
+        $builder->add('dataChannel', ChannelSelectType::class, [
             'required' => true,
             'label' => self::LABEL_PREFIX . 'data_channel.label',
             'entities' => [
@@ -63,38 +84,27 @@ class SponsorType extends AbstractType
         ]);
 
         // sponsor categories
-        $builder->add('category', 'dmkclub_sponsorcategory_select', array(
+        $builder->add('category', CategorySelectType::class, [
             'label' => self::LABEL_PREFIX . 'category.entity_label',
             'required' => false
-        ));
-        $builder->add('billingAddress', 'oro_address', [
-            'cascade_validation' => true,
+        ]);
+        $builder->add('billingAddress', AddressType::class, [
             'required' => false
         ]);
-        $builder->add('postalAddress', 'oro_address', [
-            'cascade_validation' => true,
+        $builder->add('postalAddress', AddressType::class, [
             'required' => false
         ]);
     }
 
     /**
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'DMKClub\Bundle\SponsorBundle\Entity\Sponsor',
             'cascade_validation' => true
-        ));
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'dmkclub_sponsor_sponsor';
+        ]);
     }
 }

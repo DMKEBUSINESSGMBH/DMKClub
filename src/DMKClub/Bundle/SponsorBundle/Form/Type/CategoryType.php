@@ -2,8 +2,9 @@
 namespace DMKClub\Bundle\SponsorBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends AbstractType
 {
@@ -21,30 +22,21 @@ class CategoryType extends AbstractType
 	 */
 	protected function buildPlainFields(FormBuilderInterface $builder, array $options) {
 		$builder
-		->add('name', 'text', array('required' => true, 'label' => 'dmkclub.member.name.label'))
-		->add('owner')
-		->add('organization')
-		;
+		->add('name', TextType::class, [
+		    'required' => true,
+		    'label' => 'dmkclub.member.name.label'
+		]);
 	}
 
 	/**
-	 * @param OptionsResolverInterface $resolver
+	 * @param OptionsResolver $resolver
 	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(
-				array(
-						'data_class' => 'DMKClub\Bundle\SponsorBundle\Entity\Category',
-						'cascade_validation' => true,
-				)
+		$resolver->setDefaults([
+					'data_class' => 'DMKClub\Bundle\SponsorBundle\Entity\Category',
+					'cascade_validation' => true,
+			]
 		);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return 'dmkclub_sponsor_category';
 	}
 }

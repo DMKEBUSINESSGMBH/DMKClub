@@ -7,13 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBAN;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 
 class MemberHandler implements FormHandlerInterface
 {

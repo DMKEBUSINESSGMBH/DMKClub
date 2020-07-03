@@ -1,3 +1,0 @@
-dmk_club_sponsor_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: DMKClubSponsorBundle:Default:index }

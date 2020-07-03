@@ -31,10 +31,10 @@ class SepaCreditorController extends Controller
      * @Route("/create", name="dmkclub_sepacreditor_create")
      * @Template("DMKClubPaymentBundle:SepaCreditor:update.html.twig")
      * @Acl(
-     * id="dmkclub_sepacreditor_create",
-     * type="entity",
-     * permission="CREATE",
-     * class="DMKClubPaymentBundle:SepaCreditor"
+     *   id="dmkclub_sepacreditor_create",
+     *   type="entity",
+     *   permission="CREATE",
+     *   class="DMKClubPaymentBundle:SepaCreditor"
      * )
      */
     public function createAction()

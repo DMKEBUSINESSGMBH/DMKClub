@@ -11,6 +11,7 @@ dmkclub:
         owner.label:         Owner
         name.label:          Name
         is_active.label:     Is active
+        is_active.help:      Sponsor has on going contract
         postal_address.label: Postal address
         billing_address.label: Billing address
         category.label:       Category

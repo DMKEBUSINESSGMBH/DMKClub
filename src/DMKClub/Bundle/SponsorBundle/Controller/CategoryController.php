@@ -64,24 +64,13 @@ class CategoryController extends Controller {
      */
     protected function update(Category $entity)
     {
-    	return $this->get('oro_form.model.update_handler')->handleUpdate(
-    			$entity,
-    			$this->get('dmkclub.sponsorcategory.form'),
-    			function (Category $entity) {
-    				return array(
-    						'route' => 'dmkclub_sponsorcategory_update',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
-    			function (Category $entity) {
-    				return array(
-    						'route' => 'dmkclub_sponsorcategory_view',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
-    			$this->get('translator')->trans('dmkclub.controller.sponsorcategory.saved.message'),
-    			$this->get('dmkclub.sponsorcategory.form.handler')
-    	);
+        return $this->get('oro_form.update_handler')->update(
+            $entity,
+            $this->get('dmkclub.sponsorcategory.form'),
+            $this->get('translator')->trans('dmkclub.controller.sponsorcategory.saved.message'),
+            null,
+            $this->get('dmkclub.sponsorcategory.form.handler')
+        );
     }
     /**
      * @Route("/view/{id}", name="dmkclub_sponsorcategory_view", requirements={"id"="\d+"}))

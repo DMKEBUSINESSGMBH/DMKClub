@@ -2,18 +2,19 @@
 namespace DMKClub\Bundle\SponsorBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 
 class CategorySelectType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'autocomplete_alias' => 'sponsorcategories', // Der Alias wird vom search_handler verwendet
+                'autocomplete_alias' => 'dmkclub_sponsorcategories', // Der Alias wird vom search_handler verwendet
                 'create_form_route'  => 'dmkclub_sponsorcategory_create',
                 'configs'            => [
         							# Das ist nur ein Label
@@ -28,14 +29,6 @@ class CategorySelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_entity_create_or_select_inline';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'dmkclub_sponsorcategory_select';
+        return OroEntitySelectOrCreateInlineType::class;
     }
 }

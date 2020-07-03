@@ -67,24 +67,13 @@ class SponsorController extends Controller {
      */
     protected function update(Sponsor $entity)
     {
-    	return $this->get('oro_form.model.update_handler')->handleUpdate(
-    			$entity,
-    			$this->get('dmkclub.sponsor.form'),
-    			function (Sponsor $entity) {
-    				return array(
-    						'route' => 'dmkclub_sponsor_update',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
-    			function (Sponsor $entity) {
-    				return array(
-    						'route' => 'dmkclub_sponsor_view',
-    						'parameters' => array('id' => $entity->getId())
-    				);
-    			},
-    			$this->get('translator')->trans('dmkclub.controller.sponsor.saved.message'),
-    			$this->get('dmkclub.sponsor.form.handler')
-    	);
+        return $this->get('oro_form.update_handler')->update(
+            $entity,
+            $this->get('dmkclub.sponsor.form'),
+            $this->get('translator')->trans('dmkclub.controller.sponsor.saved.message'),
+    	    null,
+            $this->get('dmkclub.sponsor.form.handler')
+        );
     }
     /**
      * @Route("/view/{id}", name="dmkclub_sponsor_view", requirements={"id"="\d+"}))

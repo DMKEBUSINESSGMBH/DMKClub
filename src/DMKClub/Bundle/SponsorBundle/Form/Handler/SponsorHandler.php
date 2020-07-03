@@ -3,21 +3,16 @@
 namespace DMKClub\Bundle\SponsorBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class SponsorHandler
+class SponsorHandler implements FormHandlerInterface
 {
-	/** @var FormInterface */
-	protected $form;
-
-	/** @var RequestStack */
-	protected $request;
-
 	/** @var ObjectManager */
 	protected $manager;
 
@@ -27,32 +22,27 @@ class SponsorHandler
 	 * @param ObjectManager          $manager
 	 */
 	public function __construct(
-			FormInterface $form,
-			RequestStack $request,
 			ObjectManager $manager
 	) {
-		$this->form                   = $form;
-		$this->request                = $request;
 		$this->manager                = $manager;
 	}
 
 	/**
 	 * Process form
 	 *
-	 * @param  Lead $entity
+	 * @param  Sponsor $entity
 	 *
 	 * @return bool True on successful processing, false otherwise
 	 */
-	public function process(Sponsor $entity)
+	public function process($entity, FormInterface $form, Request $request)
 	{
 
-		$this->form->setData($entity);
+		$form->setData($entity);
 
-		$request = $this->request->getCurrentRequest();
 		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-			$this->form->submit($request);
+			$form->handleRequest($request);
 
-			if ($this->form->isValid()) {
+			if ($form->isValid()) {
 				$this->onSuccess($entity);
 
 				return true;
@@ -65,7 +55,7 @@ class SponsorHandler
 	/**
 	 * "Success" form handler
 	 *
-	 * @param Lead $entity
+	 * @param Sponsor $entity
 	 */
 	protected function onSuccess(Sponsor $entity)
 	{

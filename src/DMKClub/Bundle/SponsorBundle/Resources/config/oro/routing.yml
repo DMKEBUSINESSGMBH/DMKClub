@@ -2,6 +2,8 @@ dmkclub_sponsor_bundle:
     resource:     "@DMKClubSponsorBundle/Controller"
     type:         annotation
     prefix:       /dmkclub
+    options:
+        expose: true
 
 
 dmkclub_sponsor_bundle_api:

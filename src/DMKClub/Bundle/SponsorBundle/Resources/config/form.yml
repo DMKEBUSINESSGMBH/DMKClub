@@ -1,56 +1,54 @@
 parameters:
-    dmkclub.sponsor.form.type.class: DMKClub\Bundle\SponsorBundle\Form\Type\SponsorType
-    dmkclub.sponsor.form.handler.class: DMKClub\Bundle\SponsorBundle\Form\Handler\SponsorHandler
-    dmkclub.sponsorcategory.form.type.class: DMKClub\Bundle\SponsorBundle\Form\Type\CategoryType
-    dmkclub.sponsorcategory.form.handler.class: DMKClub\Bundle\SponsorBundle\Form\Handler\CategoryHandler
-    dmkclub_sponsor.form.type.category_select.class:  DMKClub\Bundle\SponsorBundle\Form\Type\CategorySelectType
 
 services:
     dmkclub.sponsor.form.type:
-        class: '%dmkclub.sponsor.form.type.class%'
+        class: DMKClub\Bundle\SponsorBundle\Form\Type\SponsorType
+        arguments:
+            - "@translator"
         tags:
             - { name: form.type, alias: dmkclub_sponsor_sponsor }
 
     dmkclub.sponsor.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_sponsor_form"
             - "dmkclub_sponsor_sponsor"
-
+            - DMKClub\Bundle\SponsorBundle\Form\Type\SponsorType
+            - null
+            
     dmkclub.sponsor.form.handler:
-        class: %dmkclub.sponsor.form.handler.class%
+        class: DMKClub\Bundle\SponsorBundle\Form\Handler\SponsorHandler
         scope: request
         arguments:
-            - '@dmkclub.sponsor.form'
-            - '@request_stack'
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_tag.tag_manager }
 
     dmkclub.sponsorcategory.form.type:
-        class: '%dmkclub.sponsorcategory.form.type.class%'
+        class: DMKClub\Bundle\SponsorBundle\Form\Type\CategoryType
         tags:
             - { name: form.type, alias: dmkclub_sponsor_category }
 
     dmkclub.sponsorcategory.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - "dmkclub_sponsorcategory_form"
             - "dmkclub_sponsor_category"
+            - DMKClub\Bundle\SponsorBundle\Form\Type\CategoryType
+            - null
+
     dmkclub.sponsorcategory.form.handler:
-        class: %dmkclub.sponsorcategory.form.handler.class%
+        class: DMKClub\Bundle\SponsorBundle\Form\Handler\CategoryHandler
         scope: request
         arguments:
-            - '@dmkclub.sponsorcategory.form'
-            - '@request_stack'
             - '@doctrine.orm.entity_manager'
+
+# ####
+# FormWidgets
+# ####
 
     # Form SELECT type
     dmkclub_sponsor.form.type.category_select:
-        class: '%dmkclub_sponsor.form.type.category_select.class%'
+        class: DMKClub\Bundle\SponsorBundle\Form\Type\CategorySelectType
         tags:
             - { name: form.type, alias: dmkclub_sponsorcategory_select }

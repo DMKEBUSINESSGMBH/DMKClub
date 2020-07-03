@@ -64,7 +64,9 @@ datagrids:
                     options:
                         field_options:
                             class: DMKClubSponsorBundle:Category
-                            property: name
+                            choice_label: name
+                            multiple: true
+                            translatable_options: false
                 createdAt:
                     type:      datetime
                     data_name: prc.createdAt

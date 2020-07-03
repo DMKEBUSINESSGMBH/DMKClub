@@ -26,7 +26,7 @@ services:
             - '%dmkclub.sponsorcategory.entity.class%'
             - ["name"]
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: sponsorcategories, acl_resource: dmkclub_sponsorcategory_view }
+            - { name: oro_form.autocomplete.search_handler, alias: dmkclub_sponsorcategories, acl_resource: dmkclub_sponsorcategory_view }
 
 #    dmk_club_sponsor.example:
 #        class: %dmk_club_sponsor.example.class%
