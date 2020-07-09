@@ -22,7 +22,7 @@
 		"php" : ">=7.1.0",
 		"whiteoctober/tcpdf-bundle" : "*",
 		"digitick/sepa-xml" : "1.1.*",
-		"oro/crm" : "~3.1.0"
+		"oro/crm" : "~3.1.0 | ~4.1.0"
 	},
 	"minimum-stability" : "dev",
 	"prefer-stable" : true
