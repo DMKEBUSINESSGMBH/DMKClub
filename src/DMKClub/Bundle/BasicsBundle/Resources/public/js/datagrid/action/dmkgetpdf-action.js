@@ -1,12 +1,10 @@
 /*global define*/
 define([
-    './model-action',
+    'oro/datagrid/action/model-action',
     'orotranslation/js/translator',
     'oroui/js/mediator'
 ], function (ModelAction, __, mediator) {
     'use strict';
-
-    var GetpdfAction;
 
     /**
      * dmkgetpdf action, triggers REST AJAX request
@@ -16,7 +14,7 @@ define([
      * @extends oro.datagrid.action.ModelAction
      */
     
-    GetpdfAction = ModelAction.extend({
+    const GetpdfAction = ModelAction.extend({
 
         entityName: null,
         

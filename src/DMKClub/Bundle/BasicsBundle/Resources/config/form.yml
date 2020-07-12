@@ -28,7 +28,6 @@ services:
 # ####
     dmkclub_basics.twigtemplate.form.handler:
         class: "%dmkclub_basics.form.twigtemplate.handler.class%"
-        scope: request
         arguments:
             - "@dmkclub_basics.twigtemplate.form"
             - "@request_stack"

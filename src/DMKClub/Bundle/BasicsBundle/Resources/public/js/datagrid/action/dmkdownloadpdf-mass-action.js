@@ -1,13 +1,10 @@
 define([
     'underscore',
-    'oroui/js/messenger',
     'orotranslation/js/translator',
     'oroui/js/mediator',
     'oro/datagrid/action/mass-action'
-], function(_, messenger, __, mediator, MassAction) {
+], function(_, __, mediator, MassAction) {
     'use strict';
-
-    var DownloadPdfAction;
 
     /**
      * Download one combined pdf file
@@ -17,7 +14,7 @@ define([
      * @class   oro.datagrid.action.DownloadPdfAction
      * @extends oro.datagrid.action.MassAction
      */
-    DownloadPdfAction = MassAction.extend({
+    const DownloadPdfAction = MassAction.extend({
     	_showAjaxSuccessMessage: function(data) {
             var type = data.url ? 'success' : 'error';
             var message = data.message || __(this.messages.error);

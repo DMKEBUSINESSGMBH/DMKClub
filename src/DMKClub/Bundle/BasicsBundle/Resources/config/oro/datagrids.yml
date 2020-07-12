@@ -57,7 +57,7 @@ datagrids:
                     data_name: t.updatedAt
                     enabled: false
             default:
-                status: { value: 'active', type: "%oro_filter.form.type.filter.text.class%::TYPE_EQUAL" }
+                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\Filter::TYPE_EQUAL }
         actions:
             view:
                 type: navigate

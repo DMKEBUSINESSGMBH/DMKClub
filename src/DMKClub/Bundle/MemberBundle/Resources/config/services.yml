@@ -74,6 +74,7 @@ services:
 
     dmkclub_member.member.status_provider:
         class: "%dmkclub_member.member.status_provider.class%"
+        public: true
         arguments:
             - "@translator"
 

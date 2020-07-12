@@ -15,7 +15,7 @@
         dataGridName: gridName
     } %}
 
-    {% if resource_granted('dmkclub_member_create') %}
+    {% if is_granted('dmkclub_member_create') %}
         <div class="btn-group">
             {{ UI.addButton({
                 'path' : path('dmkclub_member_create'),

@@ -17,21 +17,21 @@ Wird in der Detailansicht des Mitglieds verwendet
 
             {{ channel.renderChannelProperty(entity, 'oro.sales.b2bcustomer.data_channel.label') }}
 
-            {%- if resource_granted('oro_account_view') and entity.account -%}
+            {%- if is_granted('oro_account_view') and entity.account -%}
                 {% set accountView = '<a href="' ~ path('oro_account_view', {'id': entity.account.id}) ~ '">' ~ entity.account|escape ~ '</a>' %}
             {%- else -%}
                 {% set accountView = entity.account ? entity.account|escape : '' %}
             {%- endif -%}
             {{ UI.renderHtmlProperty('dmkclub.member.account.label'|trans, accountView) }}
 
-            {%- if resource_granted('oro_contact_view') and entity.contact -%}
+            {%- if is_granted('oro_contact_view') and entity.contact -%}
                 {% set contactView = '<a href="' ~ path('oro_contact_view', {'id': entity.contact.id}) ~ '">' ~ entity.contact|oro_format_name|escape ~ '</a>' %}
             {%- else -%}
                 {% set contactView = entity.contact ? entity.contact : '' %}
             {%- endif -%}
             {{ UI.renderHtmlProperty('dmkclub.member.contact.label'|trans, contactView) }}
 
-            {%- if resource_granted('oro_contact_view') and entity.legalContact -%}
+            {%- if is_granted('oro_contact_view') and entity.legalContact -%}
                 {% set contactView = '<a href="' ~ path('oro_contact_view', {'id': entity.legalContact.id}) ~ '">' ~ entity.legalContact|oro_format_name|escape ~ '</a>' %}
             {%- else -%}
                 {% set contactView = entity.legalContact ? entity.legalContact : '' %}
@@ -41,8 +41,8 @@ Wird in der Detailansicht des Mitglieds verwendet
             {% if entity.postalAddress is not empty %}
                 {{ UI.renderHtmlProperty('oro.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
-            {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
-            {{ UI.renderProperty('dmkclub.member.payment_interval.label'|trans, dmkclub_paymentinterval(entity.paymentInterval)) }}
+            {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, entity.paymentOption.name) }}
+            {{ UI.renderProperty('dmkclub.member.payment_interval.label'|trans, entity.paymentInterval.name) }}
 
         </div>
         <div class="responsive-block">

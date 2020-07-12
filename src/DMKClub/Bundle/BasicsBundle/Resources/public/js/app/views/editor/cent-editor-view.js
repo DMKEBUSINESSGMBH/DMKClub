@@ -2,6 +2,10 @@
 define(function(require) {
     'use strict';
 
+    var NumberEditorView = require('oroform/js/app/views/editor/number-editor-view');
+//    var _ = require('underscore');
+//    var NumberFormatter = require('orofilter/js/formatter/number-formatter');
+
     /**
      * cCell content editor for currency data with cent values in database.
      *
@@ -47,12 +51,7 @@ define(function(require) {
      * @augments [TextEditorView](./text-editor-view.md)
      * @exports CentEditorView
      */
-    var CentEditorView;
-    var NumberEditorView = require('oroform/js/app/views/editor/number-editor-view');
-//    var _ = require('underscore');
-//    var NumberFormatter = require('orofilter/js/formatter/number-formatter');
-
-    CentEditorView = NumberEditorView.extend(/** @exports CentEditorView.prototype */{
+    const CentEditorView = NumberEditorView.extend(/** @exports CentEditorView.prototype */{
         className: 'dmkcent-editor',
 
         getServerUpdateData: function() {

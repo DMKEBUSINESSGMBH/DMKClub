@@ -7,7 +7,7 @@
 
 {% block navButtons %}
 
-    {% if resource_granted('dmkclub_member_proposal_create') %}
+    {% if is_granted('dmkclub_member_proposal_create') %}
         <div class="btn-group">
             {{ UI.addButton({
                 'path' : path('dmkclub_member_proposal_create'),

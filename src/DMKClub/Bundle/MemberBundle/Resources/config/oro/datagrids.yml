@@ -154,7 +154,7 @@ datagrids:
                 updatedAt:
                     data_name: m.updatedAt
             default:
-                lastName:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                lastName:  ASC
         filters:
             columns:
                 memberCode:
@@ -235,7 +235,7 @@ datagrids:
                     data_name: m.updatedAt
                     enabled: false
             default:
-                status: { value: 'active', type: "%oro_filter.form.type.filter.text.class%::TYPE_EQUAL" }
+                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\Filter::TYPE_EQUAL }
         actions:
             view:
                 type: navigate
@@ -554,7 +554,7 @@ datagrids:
                 updatedAt:
                     data_name: mb.updatedAt
             default:
-                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name:  ASC
         filters:
             columns:
                 name:
@@ -577,7 +577,7 @@ datagrids:
                     data_name: mb.updatedAt
                     enabled: false
             default:
-                status: { value: 'active', type: "%oro_filter.form.type.filter.text.class%::TYPE_EQUAL" }
+                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\Filter::TYPE_EQUAL }
         actions:
             view:
                 type: navigate
@@ -1116,7 +1116,7 @@ datagrids:
                 reason:
                     data_name: f.reason
             default:
-                startDate:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                startDate:  ASC
         filters:
             columns:
                 reason:

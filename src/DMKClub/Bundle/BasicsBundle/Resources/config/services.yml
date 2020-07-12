@@ -28,6 +28,7 @@ services:
 
     dmkclub_basics.utility.datagrids:
         class: "%dmkclub_basics.utility.datagrids.class%"
+        public: true
 ### Job Services
     dmkclub_basics.async.pdf.exportpdfsprocessor:
         class: 'DMKClub\Bundle\BasicsBundle\Async\Pdf\ExportPdfsMessageProcessor'

@@ -1,12 +1,7 @@
-define([
-    'underscore',
-    'oroui/js/messenger',
-    'orotranslation/js/translator',
-    'oro/datagrid/action/mass-action'
-], function(_, messenger, __, MassAction) {
+define(function(require) {
     'use strict';
 
-    var FeeCorrection;
+    const MassAction = require('oro/datagrid/action/mass-action');
 
     /**
      * Mark feecorrection as mark/unmark
@@ -16,7 +11,7 @@ define([
      * @class   oro.datagrid.action.FeeCorrectionAction
      * @extends oro.datagrid.action.MassAction
      */
-    FeeCorrection = MassAction.extend({
+    const FeeCorrection = MassAction.extend({
 
     });
 

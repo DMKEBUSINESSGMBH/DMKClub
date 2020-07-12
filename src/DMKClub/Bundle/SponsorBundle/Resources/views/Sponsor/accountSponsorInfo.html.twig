@@ -1,4 +1,4 @@
-{% if resource_granted('dmkclub_sponsor_view') and sponsors|length > 0 %}
+{% if is_granted('dmkclub_sponsor_view') and sponsors|length > 0 %}
     <div class="widget-content">
         <div class="pull-right label label-info orocrm-channel-lifetime-value-label">
             <b>{{ 'orocrm.sales.b2bcustomer.lifetime.label'|trans}}: {{ oro_channel_account_lifetime(account, channel)|oro_format_currency }}</b>

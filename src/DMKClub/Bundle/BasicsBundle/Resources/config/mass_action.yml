@@ -5,7 +5,6 @@ parameters:
 services:
     dmkclub_basics.datagrid.mass_action.dmkexportpdf:
         class: DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfAction
-#        scope: prototype
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmkexportpdf }
@@ -20,7 +19,6 @@ services:
     dmkclub_basics.datagrid.mass_action.dmkdownloadpdf:
         class: DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfAction
         shared: false
-#        scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmkdownloadpdf }
     dmkclub_basics.datagrid.mass_action.dmkdownloadpdf_handler:

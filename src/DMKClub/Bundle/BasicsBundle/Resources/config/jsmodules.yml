@@ -1,0 +1,21 @@
+aliases:
+   oro/datagrid/action/dmkgetpdf-action$: dmkclubbasics/js/datagrid/action/dmkgetpdf-action
+   oro/datagrid/action/dmkexportpdf-mass-action$: dmkclubbasics/js/datagrid/action/dmkexportpdf-mass-action
+   oro/datagrid/action/dmkdownloadpdf-mass-action$: dmkclubbasics/js/datagrid/action/dmkdownloadpdf-mass-action
+
+
+dynamic-imports:
+   dmkclubbasics:
+      - oro/datagrid/action/dmkgetpdf-action
+      - oro/datagrid/action/dmkexportpdf-mass-action
+      - oro/datagrid/action/dmkdownloadpdf-mass-action
+      - dmkclubbasics/js/app/views/editor/cent-editor-view
+
+
+#config:
+#    paths:
+#        # Der Key wird in der URI verwendet und auf die Datei in Value gerouted
+#        'oro/datagrid/action/dmkgetpdf-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkgetpdf-action.js'
+#        'oro/datagrid/action/dmkexportpdf-mass-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkexportpdf-mass-action.js'
+#        'oro/datagrid/action/dmkdownloadpdf-mass-action': 'bundles/dmkclubbasics/js/datagrid/action/dmkdownloadpdf-mass-action.js'
+#        'dmkclubbasics/js/app/views/editor/cent-editor-view': 'bundles/dmkclubbasics/js/app/views/editor/cent-editor-view.js'

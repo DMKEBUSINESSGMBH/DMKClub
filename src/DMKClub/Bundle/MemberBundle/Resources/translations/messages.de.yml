@@ -5,8 +5,18 @@ dmkclub:
         entity_plural_label: Vereinsmitglieder
         entity_description:  Mitgliedschaft im Verein
         id.label:            Id
-        owner.label:         Owner
         account.label:       Account
+        bank_account.label:     Bankverbindung
+        channel_type.member.label:  Vereinsverwaltung
+        contact.label:          Kontakt
+        contact_information.label:  Kontaktinformation
+        data_channel.label:         Kanal
+        end_date.label:         Austrittsdatum
+        is_active.label:        Aktives Mitglied
+        isActive.help:          Das Flag kennzeichnet aktive Spieler, Trainer und Offizielle des Vereins
+        is_honorary.label:      Ehrenmitglied
+        is_free_of_charge.label: Beitragsfrei
+        legal_contact.label:    Gesetzlicher Vertreter
         name.label:          Name
         member_code.label:   Mitgliedsnummer
         member_code_short.label:  Mgl-Nr.
@@ -15,29 +25,18 @@ dmkclub:
         member_fees.label:   Beiträge
         member_fee_discounts.label:  Ermäßigungen
         member_proposals.label: Mitgliedsanträge
-        privacy.label:          Datenschutz
+        organization.label:     Organisation
+        owner.label:         Owner
         payment_option.label:   Zahlungsart
         payment_interval.label: Zahlungsintervall
-        is_active.label:     Aktives Mitglied
-        isActive.help:       Das Flag kennzeichnet aktive Spieler, Trainer und Offizielle des Vereins
-        is_honorary.label:   Ehrenmitglied
-        is_free_of_charge.label:   Beitragsfrei
-        contact.label:       Kontakt
-        legal_contact.label: Gesetzlicher Vertreter
-        payment_option.label:  Zahlungsweise
-        bank_account.label:   Bankverbindung
-        postal_address.label:  Postadresse
-        organization.label:  Organisation
-        start_date.label:    Eintrittsdatum
-        end_date.label:      Austrittsdatum
-        channel_type.member.label:  Vereinsverwaltung
-        data_channel.label:         Kanal
+        postal_address.label:   Postadresse
+        primary_email.label:        Primäre E-Mail
+        privacy.label:          Datenschutz
+        start_date.label:       Eintrittsdatum
         status.label:               Status
         status.proposal:            Antragsteller
         status.active:              Laufende Mitgliedschaft
         status.terminated:          Beendete Mitgliedschaft
-        contact_information.label:  Kontaktinformation
-        primary_email.label:        Primäre E-Mail
 
         links:
             contact2member.title: "Mitglieds-Nr: %memberid%"
@@ -64,29 +63,29 @@ dmkclub:
             entity_plural_label: Mitgliedsanträge
             entity_description:  Represent a proposal of membership
             id.label:            Id
-            owner.label:         Eigentümer
-            name_prefix.label:   Namensprefix
-            first_name.label:    Vorname
-            middle_name.label:   Zweiter Vorname
-            last_name.label:     Nachname
-            name_suffix.label:   Namenssuffix
-            email_address.label: Email
-            phone.label:         Telefon
+            bank_account.label:  Bankverbindung
             birthday.label:      Geburtstag
             comment.label:       Kommentar
-            is_active.label:     Aktives Mitglied
-            job_title.label:     Beruf
-            payment_option.label:   Zahlungsart
-            payment_interval.label: Zahlungsintervall
-            postal_address.label: Postanschrift
-            status.label:        Status
+            data_channel.label:  Datenkanal
             discount_reason.label:        Grund
             discount_start_date.label:    Startdatum
             discount_end_date.label:      Enddatum
-            data_channel.label:  Datenkanal
-            bank_account.label:  Bankverbindung
+            email_address.label: Email
+            first_name.label:    Vorname
+            is_active.label:     Aktives Mitglied
+            job_title.label:     Beruf
+            last_name.label:     Nachname
             member.label:        Mitglied
+            middle_name.label:   Zweiter Vorname
+            name_prefix.label:   Namensprefix
+            name_suffix.label:   Namenssuffix
             organization.label:  Organisation
+            owner.label:         Eigentümer
+            payment_option.label:   Zahlungsart
+            payment_interval.label: Zahlungsintervall
+            phone.label:         Telefon
+            postal_address.label: Postanschrift
+            status.label:        Status
             action:
                 createmember:       Mitglied aufnehmen
                 createmember.data:  Zusätzliche Informationen zur Mitgliedschaft
@@ -99,20 +98,20 @@ dmkclub:
             entity_plural_label: Adressen für Mitgliedsantrag
             entity_description:  Represent an address for proposal of membership
             id.label:            Id
-            label.label:         Label
-            name_prefix.label:   Namensprefix
-            first_name.label:    Vorname
-            middle_name.label:   Zweiter Vorname
-            last_name.label:     Nachname
-            name_suffix.label:   Namenssuffix
             city.label:          Stadt
+            country.label:       Land
+            first_name.label:    Vorname
+            label.label:         Label
+            last_name.label:     Nachname
+            middle_name.label:   Zweiter Vorname
+            name_prefix.label:   Namensprefix
+            name_suffix.label:   Namenssuffix
+            organization.label:  Organisation
             postal_code.label:   Postleitzahl
             region.label:        Region
             region_text.label:   Name der Region
             street.label:        Straße
             street2.label:       Straße 2
-            country.label:       Land
-            organization.label:  Organisation
 
         memberproposalbankaccount:
             entity_label:        Bankkonto für Mitgliedsantrag
@@ -128,12 +127,23 @@ dmkclub:
             entity_plural_label: Abrechnung Mitgliedsbeiträge
             entity_description:  Represent membership billing definition
             id.label:            Id
-            owner.label:         Owner
-            name.label:          Name
+            age_child.label:      Altersgrenze für Kinderbeitrag
+            age_child.tooltip:    Das Alter, ab dem das Mitglied den vollen Beitrag bezahlen muss.
+            block.processor_settings: Einstellungen
+            data_channel.label:   Kanal
             fee_total.label:     Gesamtsumme
             start_date.label:    Startdatum
             end_date.label:      Enddatum
-            sepa_creditor.label: SEPA Mandat
+            export_filesystem.label: Ziel für PDF-Export
+            export_filesystem.tooltip: An diesen Ort werden PDF Dateien beim Export der Rechnungen über eine Massenoperation abgelegt. 
+            fee.label:            Mitgliedsbeitrag
+            fee_discount.label:   Mitgliedsbeitrag reduziert
+            fee_admission.label:  Aufnahmegebühr für neue Mitglieder
+            fee_child.label:      Beitrag für Kinder
+            member_fees.label:    Mitgliedsbeiträge
+            name.label:          Name
+            organization.label:   Organisation
+            owner.label:         Owner
             processor.label:     Prozessor
             processor_config.label: Prozessor Einstellung
             position_labels.label: Texte für Positionen
@@ -148,21 +158,10 @@ dmkclub:
                 ADMISSION  Aufnahmegebühr<br/>
                 FEECORRECTION Beitragskorrektur<br/>
                 </pre>
-            export_filesystem.label: Ziel für PDF-Export
-            export_filesystem.tooltip: An diesen Ort werden PDF Dateien beim Export der Rechnungen über eine Massenoperation abgelegt. 
-            fee.label:            Mitgliedsbeitrag
-            fee_discount.label:   Mitgliedsbeitrag reduziert
-            fee_admission.label:  Aufnahmegebühr für neue Mitglieder
-            fee_child.label:      Beitrag für Kinder
-            age_child.label:      Altersgrenze für Kinderbeitrag
-            age_child.tooltip:    Das Alter, ab dem das Mitglied den vollen Beitrag bezahlen muss.
-            member_fees.label:    Mitgliedsbeiträge
             segment.label:        Mitgliedersegment
+            sepa_creditor.label:  SEPA Mandat
             template.label:       PDF Template
             template.tooltip:     PDF Template für die Generierung des Rechnungsdokuments
-            organization.label:   Organisation
-            data_channel.label:   Kanal
-            block.processor_settings: Einstellungen
             message.saved:        Einstellungen gespeichert
             message.accounting.started: "Abrechnung ausgeführt. Betroffene Mitglieder: %d, übersprungen: %d, Fehler: %d"
             message.correction.started: "Korrektur ausgeführt. Korrigierte Beiträge: %d, übersprungen: %d, Fehler: %d"
@@ -182,17 +181,17 @@ dmkclub:
             entity_plural_label: Mitgliedsbeiträge
             entity_description:  Represent a fee for membership
             id.label:            Id
-            owner.label:         Owner
-            name.label:          Name
-            price_total.label:   Beitrag
-            payed_total.label:   Bezahlt
-            correction_status.label:  Korrektur
-            start_date.label:    Startdatum
-            end_date.label:      Enddatum
             bill_date.label:     Rechnungsdatum
+            corrected.label:     korrigiert
+            correction_status.label:  Korrektur
+            data_channel.label:  Kanal
+            end_date.label:      Enddatum
+            name.label:          Name
             organization.label:  Organisation
-            data_channel.label: Kanal
-            corrected.label:  korrigiert
+            owner.label:         Owner
+            payed_total.label:   Bezahlt
+            price_total.label:   Beitrag
+            start_date.label:    Startdatum
             action:
                 mark_feecorrection: Korrektur markieren
                 unmark_feecorrection: Korrektur entfernen
@@ -206,24 +205,24 @@ dmkclub:
             entity_plural_label: Position für Mitgliedsbeiträge
             entity_description:  Position für einen Mitgliedsbeitrag
             id.label:            Id
-            owner.label:         Owner
             description.label:   Beschreibung
             flag.label:          Positionsart
+            owner.label:         Owner
+            price_total.label:   Gesamtpreis
+            price_single.label:  Einzelpreis
+            quantity.label:      Anzahl
             sort_order.label:    Sortierung
             tax_amount.label:    Steueranteil
             unit.label:          Einheit
-            quantity.label:      Anzahl
-            price_total.label:   Gesamtpreis
-            price_single.label:  Einzelpreis
         memberfeediscount:
             entity_label:        Beitragsermäßigung Mitgliedsbeitrag
             entity_plural_label: Beitragsermäßigungen Mitgliedsbeitrag
             entity_description:  Represent a discount of membership fee
             id.label:            Id
-            reason.label:        Grund
-            start_date.label:    Startdatum
             end_date.label:      Enddatum
             member.label:        Mitglied
+            reason.label:        Grund
+            start_date.label:    Startdatum
             action.create.title: Neue Ermäßigung anlegen
             action.update.title: Beitragsermäßigung aktualisieren
         memberprivacy:
@@ -231,16 +230,16 @@ dmkclub:
             entity_plural_label: Datenschutzangaben
             entity_description:  Represent member privacy data
             id.label:            Id
-            sign_date.label:     Gültig seit
-            member.label:        Mitglied
-            phone_allowed.label: Telefon
-            phone_allowed.help: Ist die Kontaktaufnahme per Telefon erlaubt?
             email_allowed.label: Email
             email_allowed.help: Ist die Kontaktaufnahme per Email erlaubt?
-            postal_allowed.label: Post
-            postal_allowed.help: Ist die Kontaktaufnahme per Post erlaubt?
+            member.label:        Mitglied
             merchandising_allowed.label: Werbung
             merchandising_allowed.help: Ist die Kontaktaufnahme zu Werbezwecken erlaubt?
+            phone_allowed.label: Telefon
+            phone_allowed.help: Ist die Kontaktaufnahme per Telefon erlaubt?
+            postal_allowed.label: Post
+            postal_allowed.help: Ist die Kontaktaufnahme per Post erlaubt?
+            sign_date.label:     Gültig seit
             sharing_allowed.label: Weitergabe
             sharing_allowed.help: Ist die Weitergabe von Daten an Partner erlaubt?
             action:

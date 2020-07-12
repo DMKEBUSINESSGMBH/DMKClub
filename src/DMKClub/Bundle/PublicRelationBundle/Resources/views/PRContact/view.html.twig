@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'DMKClubBasicsBundle::macros.html.twig' as CLUBUI %}
 
@@ -9,7 +10,7 @@
 {% block navButtons %}
 
     {{ UI.cancelButton(path('dmkclub_prcontact_index')) }}
-    {% if resource_granted('EDIT', entity) %}
+    {% if is_granted('EDIT', entity) %}
         {{ UI.editButton({
             'path' : path('dmkclub_prcontact_update', { 'id': entity.id }),
             'entity_label': 'dmkclub.publicrelation.prcontact.entity_label'|trans

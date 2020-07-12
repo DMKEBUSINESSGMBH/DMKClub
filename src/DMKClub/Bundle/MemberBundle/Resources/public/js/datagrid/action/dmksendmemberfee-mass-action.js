@@ -1,12 +1,7 @@
-define([
-    'underscore',
-    'oroui/js/messenger',
-    'orotranslation/js/translator',
-    'oro/datagrid/action/mass-action'
-], function(_, messenger, __, MassAction) {
+define(function(require) {
     'use strict';
 
-    var SendMemberFee;
+    const MassAction = require('oro/datagrid/action/mass-action');
 
     /**
      * Send member fee to member by email
@@ -16,7 +11,7 @@ define([
      * @class   oro.datagrid.action.SendMemberFeeAction
      * @extends oro.datagrid.action.MassAction
      */
-    SendMemberFee = MassAction.extend({
+    const SendMemberFee = MassAction.extend({
 
     });
 

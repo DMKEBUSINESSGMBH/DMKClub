@@ -8,7 +8,17 @@ dmkclub:
         id.label:            Id
         owner.label:         Owner
         account.label:       Account
-        name.label:          Name
+        bank_account.label:   Bank account
+        channel_type.member.label: Club member
+        contact_information.label:  Contact Information
+        contact.label:       Contact
+        data_channel.label: Data channel
+        end_date.label:      Resignation
+        is_active.label:     Active member
+        isActive.help:       Activate this flag for active players, coaches and officials
+        is_honorary.label:   Honorary member
+        is_free_of_charge.label:   Free of charge
+        legal_contact.label: Legal representative
         member_code.label:   Club ID
         member_code_short.label:   Club ID
         member_code_int.label:   Club ID (Number)
@@ -16,32 +26,20 @@ dmkclub:
         member_fees.label:   Fees
         member_fee_discounts.label:   Fee discounts
         member_proposals.label: Membership proposals
-        privacy.label:          Privacy
-        payment_option.label: Payment option
-        payment_interval.label: Payment interval
-        is_active.label:     Active member
-        isActive.help:       Activate this flag for active players, coaches and officials
-        is_honorary.label:   Honorary member
-        is_free_of_charge.label:   Free of charge
-        contact.label:       Contact
-        legal_contact.label: Legal representative
-        postal_address.label:  Postal Address
-        payment_option.label:  Payment option
-        bank_account.label:   Bank account
+        name.label:          Name
         organization.label:  Organization
+        payment_option.label:  Payment option
+        payment_interval.label: Payment interval
+        postal_address.label:  Postal Address
+        primary_email.label:  Primary E-Mail
+        privacy.label:          Privacy
         start_date.label:    Joining
-        end_date.label:      Resignation
-        channel_type.member.label: Club member
-        data_channel.label: Data channel
         status.label: Status
         status.proposal: Proposal
         status.active: Active
         status.terminated: Terminated
-        contact_information.label:  Contact Information
-        primary_email.label:  Primary E-Mail
         
         form.choose_status: Choose a member status
-
         message.saved: Member saved
         fees.label: Membership fee
         links:
@@ -69,29 +67,30 @@ dmkclub:
             entity_plural_label: Membership Proposal
             entity_description:  Represent a proposal of membership
             id.label:            Id
-            owner.label:         Owner
-            name_prefix.label:   Name prefix
-            first_name.label:    Firstname
-            middle_name.label:   Middlename
-            last_name.label:     Lastname
-            name_suffix.label:   Name suffix
-            email_address.label: Email
-            phone.label:         Phone
+            bank_account.label:  Bank account
             birthday.label:      Birthday
             comment.label:       Comment
+            data_channel.label:  Data channel
+            discount_reason.label:        Reason
+            discount_start_date.label:    Start date
+            discount_end_date.label:      End date
+            email_address.label: Email
+            first_name.label:    Firstname
             is_active.label:     Is active
             job_title.label:     Job title
+            last_name.label:     Lastname
+            member.label:        Member
+            middle_name.label:   Middlename
+            name_prefix.label:   Name prefix
+            name_suffix.label:   Name suffix
+            organization.label:  Organization
+            owner.label:         Owner
+            phone.label:         Phone
             payment_option.label: Payment option
             payment_interval.label: Payment interval
             postal_address.label: Postal address
             status.label:        Status
-            discount_reason.label:        Reason
-            discount_start_date.label:    Start date
-            discount_end_date.label:      End date
-            data_channel.label:  Data channel
-            bank_account.label:  Bank account
-            member.label:        Member
-            organization.label:  Organization
+
             action:
                 createmember:       Create member
                 createmember.data:  Additional information for membership
@@ -105,20 +104,20 @@ dmkclub:
             entity_plural_label: Proposal addresses
             entity_description:  Represent an address for proposal of membership
             id.label:            Id
-            name_prefix.label:   Name prefix
-            label.label:         Label
-            first_name.label:    Firstname
-            middle_name.label:   Middlename
-            last_name.label:     Lastname
-            name_suffix.label:   Name suffix
             city.label:          City
+            country.label:       Country
+            first_name.label:    Firstname
+            label.label:         Label
+            last_name.label:     Lastname
+            middle_name.label:   Middlename
+            name_prefix.label:   Name prefix
+            name_suffix.label:   Name suffix
+            organization.label:  Organization
             postal_code.label:   Postal code
             region.label:        Region
             region_text.label:   Region text
             street.label:        Street
             street2.label:       Street2
-            country.label:       Country
-            organization.label:  Organization
 
         memberproposalbankaccount:
             entity_label:        Proposal bank account
@@ -126,25 +125,34 @@ dmkclub:
             entity_description:  Represent a bank account for proposal of membership
             id.label:            Id
             account_owner.label: Account owner
-            iban.label: IBAN
-            bic.label: BIC
             bank_name.label: Bank
+            bic.label: BIC
             direct_debit_valid_from.label: DirectDebit valid from
+            iban.label: IBAN
         
         memberbilling:
-            entity_label:        Membership Billing
-            entity_plural_label: Membership Billings
-            entity_description:  Represent membership billing definition
-            id.label:            Id
-            owner.label:         Owner
-            name.label:          Name
-            fee_total.label:     Fee total
-            start_date.label:    Start date
-            end_date.label:      End date
-            sepa_creditor.label: SEPA account
-            processor.label:     Processor
-            processor_config.label:  Processor config
-            position_labels.label:   Position labels
+            entity_label:              Membership Billing
+            entity_plural_label:       Membership Billings
+            entity_description:        Represent membership billing definition
+            id.label:                  Id
+            age_child.label:           Max Age for child fee
+            age_child.tooltip:         This is the age when a member has to pay the full fee
+            block.processor_settings:  Settings
+            data_channel.label:        Data channel
+            end_date.label:            End date
+            export_filesystem.label:   Target for PDF exports
+            export_filesystem.tooltip: Target for PDF files on mass export of bills
+            fee.label:                 Membership Fee
+            fee_admission.label:       Fee admission for new Members
+            fee_child.label:           Fee reduced for childs
+            fee_discount.label:        Discount Fee
+            fee_total.label:           Fee total
+            member_fees.label:         Member fees
+            name.label:                Name
+            owner.label:               Owner
+            processor.label:           Processor
+            processor_config.label:    Processor config
+            position_labels.label:     Position labels
             position_labels.default: >
                 FEE Fee from [STARTDATE] to [ENDDATE]
                 ADMISSION  admission fee
@@ -156,22 +164,13 @@ dmkclub:
                 ADMISSION  admission fee<br/>
                 FEECORRECTION fee correction<br/>
                 </pre>
-            export_filesystem.label: Target for PDF exports
-            export_filesystem.tooltip: Target for PDF files on mass export of bills
-            fee.label:            Membership Fee
-            fee_discount.label:   Discount Fee
-            fee_admission.label:  Fee admission for new Members
-            fee_child.label:      Fee reduced for childs
-            age_child.label:      max Age for child fee
-            age_child.tooltip:    This is the age when a member has to pay the full fee
-            member_fees.label:    Member fees
-            segment.label:        Member segment
-            template.label:       PDF Template
-            template.tooltip:     PDF Template for bill document
-            organization.label:   Organization
-            data_channel.label:   Data channel
-            block.processor_settings: Settings
-            message.saved: Settings saved
+            sepa_creditor.label:       SEPA account
+            start_date.label:          Start date
+            segment.label:             Member segment
+            template.label:            PDF Template
+            template.tooltip:          PDF Template for bill document
+            organization.label:        Organization
+            message.saved:             Settings saved
             message.accounting.started: "Fee accounting executed. Members evaluated: %d, skipped: %d, errors: %d"
             message.correction.started: "Fee correction executed. Fees corrected: %d, skipped: %d, errors: %d"
             message.correction.nothingfound: "No selected fees for correction found."
@@ -191,20 +190,20 @@ dmkclub:
             entity_plural_label: Membership fees
             entity_description:  Represent a fee for membership
             id.label:            Id
-            owner.label:         Owner
-            name.label:          Name
-            member.label:        Member
+            bill_date.label:      Bill date
             billing.label:       Billing
+            corrected.label:  corrected
+            correction_status.label:  Correction
+            data_channel.label: Data channel
+            end_date.label:      End date
+            member.label:        Member
+            name.label:          Name
+            organization.label:  Organization
+            owner.label:         Owner
+            payed_total.label:   Paid
             positions.label:     Positions
             price_total.label:   Fee
-            payed_total.label:   Paid
-            correction_status.label:  Correction
             start_date.label:    Start date
-            end_date.label:      End date
-            bill_date.label:      Bill date
-            organization.label:  Organization
-            data_channel.label: Data channel
-            corrected.label:  corrected
             action:
                 mark_feecorrection: Mark fee correction
                 unmark_feecorrection: Unmark fee correction

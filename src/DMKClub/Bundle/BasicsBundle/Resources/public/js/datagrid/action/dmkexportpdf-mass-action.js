@@ -1,12 +1,9 @@
 define([
     'underscore',
-    'oroui/js/messenger',
     'orotranslation/js/translator',
     'oro/datagrid/action/mass-action'
-], function(_, messenger, __, MassAction) {
+], function(_, __, MassAction) {
     'use strict';
-
-    var ExportPdfAction;
 
     /**
      * Export pdf files to remote filesystem
@@ -16,7 +13,7 @@ define([
      * @class   oro.datagrid.action.ExportPdfAction
      * @extends oro.datagrid.action.MassAction
      */
-    ExportPdfAction = MassAction.extend({
+    const ExportPdfAction = MassAction.extend({
 
     });
 

@@ -18,7 +18,6 @@ services:
             
     dmkclub.sponsor.form.handler:
         class: DMKClub\Bundle\SponsorBundle\Form\Handler\SponsorHandler
-        scope: request
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
@@ -39,7 +38,6 @@ services:
 
     dmkclub.sponsorcategory.form.handler:
         class: DMKClub\Bundle\SponsorBundle\Form\Handler\CategoryHandler
-        scope: request
         arguments:
             - '@doctrine.orm.entity_manager'
 

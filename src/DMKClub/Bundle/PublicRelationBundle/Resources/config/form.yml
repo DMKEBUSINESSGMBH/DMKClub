@@ -23,21 +23,18 @@ services:
 
 #    dmkclub.prcontact.form.api:
 #        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
+#        factory: ['@form.factory', createNamed]
 #        arguments:
 #            - "prcontact"
 #            - "dmkclub_prcontact_api"
 
     dmkclub.prcontact.form.handler:
         class: DMKClub\Bundle\PublicRelationBundle\Form\Handler\PRContactHandler
-        scope: request
         arguments:
             - "@doctrine.orm.entity_manager"
 
 #    dmkclub.prcontact.form.handler.api:
 #        class: %dmkclub.prcontact.form.handler.class%
-#        scope: request
 #        arguments:
 #            - @dmkclub.prcontact.form.api
 #            - @request

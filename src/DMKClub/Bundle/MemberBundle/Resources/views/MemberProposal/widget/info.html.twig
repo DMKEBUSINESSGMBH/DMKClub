@@ -23,10 +23,10 @@ Wird in der Detailansicht des Antrags verwendet
             {% if entity.postalAddress is not empty %}
                 {{ UI.renderHtmlProperty('dmkclub.member.memberproposal.postal_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
-            {{ UI.renderProperty('dmkclub.member.memberproposal.payment_option.label'|trans, dmkclub_paymentoption(entity.paymentOption)) }}
-            {{ UI.renderProperty('dmkclub.member.memberproposal.payment_interval.label'|trans, dmkclub_paymentinterval(entity.paymentInterval)) }}
+            {{ UI.renderProperty('dmkclub.member.memberproposal.payment_option.label'|trans, entity.paymentOption.name) }}
+            {{ UI.renderProperty('dmkclub.member.memberproposal.payment_interval.label'|trans, entity.paymentInterval.name) }}
 
-            {%- if resource_granted('dmkclub_member_view') and entity.member -%}
+            {%- if is_granted('dmkclub_member_view') and entity.member -%}
                 {% set memberView = '<a href="' ~ path('dmkclub_member_view', {'id': entity.member.id}) ~ '">' ~ entity.member|oro_format_name|escape ~ '</a>' %}
             {%- else -%}
                 {% set memberView = entity.member ? entity.member|oro_format_name|escape : '' %}

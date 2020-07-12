@@ -113,6 +113,7 @@ services:
     dmkclub_member.member.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_member"
             - DMKClub\Bundle\MemberBundle\Form\Type\MemberType
@@ -121,6 +122,7 @@ services:
     dmkclub_member.memberproposal.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_memberproposal"
             - DMKClub\Bundle\MemberBundle\Form\Type\MemberProposalType
@@ -128,8 +130,8 @@ services:
 
     dmkclub_member.memberproposal_address.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_proposal_address_form"
             - "dmkclub_member_proposal_address"
@@ -138,8 +140,8 @@ services:
 
     dmkclub_member.memberproposal_bankaccount.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_proposal_bankaccount_form"
             - "dmkclub_member_proposal_bankaccount"
@@ -149,6 +151,7 @@ services:
     dmkclub_member.memberproposal.createmember.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_creatememberbyproposal"
             - DMKClub\Bundle\MemberBundle\Form\Type\CreateMemberByProposalType
@@ -157,6 +160,7 @@ services:
     dmkclub_member.memberbilling.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_memberbilling"
             - DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
@@ -165,6 +169,7 @@ services:
     dmkclub_member.memberfeediscount.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_memberfeediscount"
             - DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeDiscountType
@@ -173,6 +178,7 @@ services:
     dmkclub_member.memberprivacy.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_memberprivacy"
             - DMKClub\Bundle\MemberBundle\Form\Type\MemberPrivacyType
@@ -180,8 +186,8 @@ services:
 
     dmkclub_member.member.form.api:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "member"
             - "dmkclub_member_member_api"
@@ -189,6 +195,7 @@ services:
     dmkclub_member.createbills.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
+        public: true
         arguments:
             - "dmkclub_member_createbills"
             - DMKClub\Bundle\MemberBundle\Form\Type\CreateBillsType
@@ -200,7 +207,7 @@ services:
 
     dmkclub_member.member.form.handler:
         class: "%dmkclub_member.member.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@dmkclub.payment.sepa.iban.openiban"
@@ -210,7 +217,7 @@ services:
 
     dmkclub_member.member.form.handler.api:
         class: "%dmkclub_member.member.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@dmkclub_member.member.form.api"
             - "@request_stack"
@@ -218,7 +225,7 @@ services:
 
     dmkclub_member.memberproposal.form.handler:
         class: "%dmkclub_member.memberproposal.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@dmkclub.payment.sepa.iban.openiban"
@@ -226,14 +233,14 @@ services:
 
     dmkclub_member.memberproposal.createmember.form.handler:
         class: "%dmkclub_member.memberproposal.createmember.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@doctrine.orm.entity_manager"
             - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager'
 
     dmkclub_member.memberbilling.form.handler:
         class: "%dmkclub_member.memberbilling.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@dmkclub_member.memberbilling.form"
             - "@request_stack"
@@ -244,7 +251,7 @@ services:
 
     dmkclub_member.memberfeediscount.form.handler:
         class: "%dmkclub_member.memberfeediscount.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@dmkclub_member.memberfeediscount.form"
             - "@request_stack"
@@ -252,7 +259,7 @@ services:
 
     dmkclub_member.memberprivacy.form.handler:
         class: "%dmkclub_member.memberprivacy.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@dmkclub_member.memberprivacy.form"
             - "@request_stack"
@@ -260,7 +267,7 @@ services:
 
     dmkclub_member.createbills.form.handler:
         class: "%dmkclub_member.createbills.form.handler.class%"
-        scope: request
+        public: true
         arguments:
             - "@dmkclub_member.createbills.form"
             - "@request_stack"
@@ -272,17 +279,20 @@ services:
 
     dmkclub.form.type.member_select:
         class: "%dmkclub.form.type.member_select.class%"
+        public: true
         tags:
             - { name: form.type, alias: "dmkclub_member_member_select" }
 
     dmkclub.form.type.member_status:
         class: "%dmkclub.form.type.member_status.class%"
+        public: true
         arguments:
             - "@dmkclub_member.member.status_provider"
         tags:
             - { name: form.type, alias: dmkclub_memberstatus }
     dmkclub_member.form.type.accounting_processor_select:
         class: "%dmkclub_member.form.type.accounting_processor_select.class%"
+        public: true
         arguments:
             - '@DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider'
         tags:
@@ -291,12 +301,14 @@ services:
     # Subforms for accounting processor setting
     dmkclub_member.form.type.default_processor_settings:
         class: "%dmkclub_member.form.type.default_processor_settings.class%"
+        public: true
         arguments:
             - "@doctrine"
         tags:
             - { name: form.type, alias: "dmkclub_member_default_processor_settings" }
     dmkclub_member.form.type.simple_processor_settings:
         class: "%dmkclub_member.form.type.simple_processor_settings.class%"
+        public: true
         arguments:
             - "@doctrine"
         tags:
@@ -306,6 +318,7 @@ services:
     # is injected to DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
     dmkclub_member.form.subscriber.processor_settings:
         class: "%dmkclub_member.form.subscriber.processor_settings.class%"
+        public: true
         arguments:
             - '@DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider'
             - "@oro_entity.doctrine_helper"

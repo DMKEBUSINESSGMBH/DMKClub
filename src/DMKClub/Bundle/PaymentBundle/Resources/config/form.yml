@@ -67,7 +67,6 @@ services:
     # BankAccount form handler
     dmkclub_payment.form.handler.bank_account:
         class: "%dmkclub_payment.form.handler.bank_account.class%"
-        scope: request
         arguments:
             - "@dmkclub_payment.bank_account.form"
             - "@request_stack"
@@ -77,7 +76,6 @@ services:
     # SepaCreditor form handler
     dmkclub_payment.sepacreditor.form.handler:
         class: "%dmkclub_payment.form.handler.sepa_creditor.class%"
-        scope: request
         arguments:
             - "@dmkclub_payment.sepacreditor.form"
             - "@request_stack"

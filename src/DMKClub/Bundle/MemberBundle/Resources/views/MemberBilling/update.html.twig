@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
 {% set fullname = entity|oro_format_name|default('N/A') %}
@@ -15,7 +16,7 @@
 {% endblock %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
+    {% if form.vars.value.id and is_granted('DELETE', form.vars.value) %}
         {{ UI.buttonSeparator() }}
     {% endif %}
 
@@ -26,7 +27,7 @@
     {% endif %}
 
     {% set html = UI.saveAndCloseButton() %}
-    {% if form.vars.value.id or resource_granted('dmkclub_memberbilling_update') %}
+    {% if form.vars.value.id or is_granted('dmkclub_memberbilling_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}

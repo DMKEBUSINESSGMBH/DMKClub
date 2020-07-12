@@ -16,7 +16,7 @@ Wird im Account verwendet
         {% endset %}
         {{ UI.renderHtmlProperty('dmkclub.member.name.label'|trans, member_name_link) }}
 
-        {%- if resource_granted('oro_contact_view') and member.contact -%}
+        {%- if is_granted('oro_contact_view') and member.contact -%}
             {% set contactView = '<a href="' ~ path('oro_contact_view', {'id': member.contact.id}) ~ '">' ~ member.contact|oro_format_name|escape ~ '</a>' %}
         {%- else -%}
             {% set contactView = member.contact ? member.contact|oro_format_name : '' %}
