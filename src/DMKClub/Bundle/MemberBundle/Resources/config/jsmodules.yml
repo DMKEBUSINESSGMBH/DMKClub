@@ -6,3 +6,4 @@ dynamic-imports:
       - dmkclubmember/js/app/views/board/proposal-card-view
       - oro/datagrid/action/dmksendmemberfee-mass-action
       - oro/datagrid/action/mark-feecorrection-mass-action
+      - oroui/js/widget-manager
