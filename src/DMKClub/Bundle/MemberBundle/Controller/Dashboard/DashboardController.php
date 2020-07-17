@@ -1,15 +1,31 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Controller\Dashboard;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
-use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController extends Controller
+use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Oro\Bundle\DashboardBundle\Model\WidgetConfigs;
+use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
+
+class DashboardController extends AbstractController
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            WidgetConfigs::class,
+            TranslatorInterface::class,
+            ChartViewBuilder::class
+        ]);
+    }
 
     /**
      *
@@ -25,7 +41,7 @@ class DashboardController extends Controller
     public function membersActivePassiveAction(Request $request, $widget)
     {
         /** @var TranslatorInterface $translator */
-        $translator = $this->get('translator');
+        $translator = $this->get(TranslatorInterface::class);
 
         $data = $this->getMemberRepository()->getMembersActivePassive();
 
@@ -40,8 +56,8 @@ class DashboardController extends Controller
             ]
         ];
 
-        $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr = $this->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($chartData)
             ->setOptions([
             'name' => 'pie_chart',
@@ -73,10 +89,10 @@ class DashboardController extends Controller
     public function membersByGenderAction(Request $request, $widget)
     {
         /** @var TranslatorInterface $translator */
-        $translator = $this->get('translator');
+        $translator = $this->get(TranslatorInterface::class);
 
         $chartData = [];
-        $data = $this->getMemberRepository()->getMembersGender($this->get('oro_dashboard.widget_configs')
+        $data = $this->getMemberRepository()->getMembersGender($this->get(WidgetConfigs::class)
             ->getWidgetOptions($request->query->get('_widgetId', null))
             ->get('memberType'));
         foreach ($data as $key => $value) {
@@ -86,8 +102,8 @@ class DashboardController extends Controller
             ];
         }
 
-        $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr = $this->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($chartData)
             ->setOptions([
             'name' => 'pie_chart',
@@ -118,24 +134,24 @@ class DashboardController extends Controller
      */
     public function membersNewByYearAction(Request $request, $widget)
     {
-        $chartData = $this->getMemberRepository()->getNewMembersByYear($this->get('oro_dashboard.widget_configs')
+        $chartData = $this->getMemberRepository()->getNewMembersByYear($this->get(WidgetConfigs::class)
             ->getWidgetOptions($request->query->get('_widgetId', null))
             ->get('memberType'));
 
-        $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr = $this->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($chartData)
-            ->setOptions(array(
-            'name' => 'bar_chart',
-            'data_schema' => array(
-                'label' => array(
-                    'field_name' => 'label'
-                ),
-                'value' => array(
-                    'field_name' => 'value'
-                )
-            )
-        ))
+            ->setOptions([
+                'name' => 'bar_chart',
+                'data_schema' => [
+                    'label' => [
+                        'field_name' => 'label'
+                    ],
+                    'value' => [
+                        'field_name' => 'value'
+                    ]
+                ]
+            ])
             ->getView();
 
         return $widgetAttr;
@@ -151,12 +167,12 @@ class DashboardController extends Controller
      */
     public function memberByAge(Request $request, $widget)
     {
-        $chartData = $this->getMemberRepository()->getMemberByAge($this->get('oro_dashboard.widget_configs')
+        $chartData = $this->getMemberRepository()->getMemberByAge($this->get(WidgetConfigs::class)
             ->getWidgetOptions($request->query->get('_widgetId', null))
             ->get('memberType'));
 
-        $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr = $this->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($chartData)
             ->setOptions([
             'name' => 'pie_chart',
