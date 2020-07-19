@@ -13,7 +13,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
-use FOS\RestBundle\Util\Codes;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/memberfee")
@@ -73,7 +73,7 @@ class MemberFeeController extends Controller {
 			$responseData['message'] = $e->getMessage();
 		}
 
-		$response = new JsonResponse($responseData, Codes::HTTP_OK);
+		$response = new JsonResponse($responseData, Response::HTTP_OK);
 
 		return $response;
 	}

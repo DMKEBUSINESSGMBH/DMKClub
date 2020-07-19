@@ -18,6 +18,7 @@ services:
 # ####
     dmkclub_basics.twigtemplate.form:
         class: Symfony\Component\Form\Form
+        public: true
         factory: ['@form.factory', createNamed]
         arguments:
             - "dmkclub_basics_twigtemplate"
@@ -28,6 +29,7 @@ services:
 # ####
     dmkclub_basics.twigtemplate.form.handler:
         class: "%dmkclub_basics.form.twigtemplate.handler.class%"
+        public: true
         arguments:
             - "@dmkclub_basics.twigtemplate.form"
             - "@request_stack"

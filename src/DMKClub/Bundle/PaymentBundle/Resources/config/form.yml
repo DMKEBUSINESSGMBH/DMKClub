@@ -46,6 +46,7 @@ services:
     # Bankaccount form
     dmkclub_payment.bank_account.form:
         class:           Symfony\Component\Form\Form
+        public: true
         factory: ['@form.factory', createNamed]
         arguments:
             - "dmkclub_bankaccount"
@@ -54,6 +55,7 @@ services:
     # SepaCreditor form
     dmkclub_payment.sepacreditor.form:
         class:           Symfony\Component\Form\Form
+        public: true
         factory: ['@form.factory', createNamed]
         arguments:
             - "dmkclub_sepacreditor"
@@ -67,6 +69,7 @@ services:
     # BankAccount form handler
     dmkclub_payment.form.handler.bank_account:
         class: "%dmkclub_payment.form.handler.bank_account.class%"
+        public: true
         arguments:
             - "@dmkclub_payment.bank_account.form"
             - "@request_stack"
@@ -76,6 +79,7 @@ services:
     # SepaCreditor form handler
     dmkclub_payment.sepacreditor.form.handler:
         class: "%dmkclub_payment.form.handler.sepa_creditor.class%"
+        public: true
         arguments:
             - "@dmkclub_payment.sepacreditor.form"
             - "@request_stack"

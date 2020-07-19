@@ -235,7 +235,7 @@ datagrids:
                     data_name: m.updatedAt
                     enabled: false
             default:
-                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\Filter::TYPE_EQUAL }
+                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\TextFilterType::TYPE_EQUAL }
         actions:
             view:
                 type: navigate
@@ -577,7 +577,7 @@ datagrids:
                     data_name: mb.updatedAt
                     enabled: false
             default:
-                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\Filter::TYPE_EQUAL }
+                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\TextFilterType::TYPE_EQUAL }
         actions:
             view:
                 type: navigate

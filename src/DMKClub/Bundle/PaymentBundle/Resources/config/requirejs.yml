@@ -1,5 +1,0 @@
-config:
-    paths:
-        # Der Key wird in der URI verwendet und auf die Datei in Value gerouted
-        'oro/datagrid/action/dmksepadebitxml-mass-action': 'bundles/dmkclubpayment/js/datagrid/action/dmksepadebitxml-mass-action.js'
-        

@@ -11,6 +11,7 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\BasicsBundle\PDF\GeneratorInterface;
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
+use Twig\Environment;
 
 /**
  */
@@ -29,18 +30,17 @@ class SimpleMemberFeePdf implements GeneratorInterface
      */
     protected $translator;
 
-    /** @var TwigEngine */
+    /** @var Environment */
     protected $twig;
 
     /** @var \WhiteOctober\TCPDFBundle\Controller\TCPDFController */
     protected $tcpdfController;
 
-    public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdfController, TranslatorInterface $translator, $twig)
+    public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdfController, TranslatorInterface $translator, Environment $twig)
     {
         $this->tcpdfController = $tcpdfController;
         $this->translator = $translator;
         $this->twig = clone $twig;
-        $this->twig->setLoader(new \Twig_Loader_String());
     }
 
     /**
@@ -159,9 +159,13 @@ class SimpleMemberFeePdf implements GeneratorInterface
         $pdf->SetY($y);
 
         // Den Content-String umsetzen
-        $html = $this->twig->render($twigTemplate->getTemplate(), array(
+        $template = $this->twig->createTemplate($twigTemplate->getTemplate());
+        $html = $template->render([
             'entity' => $fee
-        ));
+        ]);
+//         $html = $this->twig->render($twigTemplate->getTemplate(), array(
+//             'entity' => $fee
+//         ));
         $html = str_replace('[SALUTATION]', $this->buildSalutation($fee), $html);
         $html = str_replace('[POSITIONS]', $this->buildPositions($fee), $html);
 

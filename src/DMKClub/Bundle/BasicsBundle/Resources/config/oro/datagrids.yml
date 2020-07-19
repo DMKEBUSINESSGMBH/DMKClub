@@ -43,7 +43,7 @@ datagrids:
                 updatedAt:
                     data_name: t.updatedAt
             default:
-                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name:  ASC
         filters:
             columns:
                 name:
@@ -57,7 +57,7 @@ datagrids:
                     data_name: t.updatedAt
                     enabled: false
             default:
-                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\Filter::TYPE_EQUAL }
+                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\TextFilterType::TYPE_EQUAL } 
         actions:
             view:
                 type: navigate

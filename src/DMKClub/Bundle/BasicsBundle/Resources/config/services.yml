@@ -1,7 +1,6 @@
 parameters:
     dmkclub_basics.twigtemplate.entity.class:    DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate
 #    dmkclub_basics.twigtemplate.manager.class:   DMKClub\Bundle\BasicsBundle\Entity\Manager\TwigTemplateManager
-    dmkclub_basics.pdf.manager.class:            DMKClub\Bundle\BasicsBundle\PDF\Manager
     dmkclub_basics.provider.privilege_category_provider.class: DMKClub\Bundle\BasicsBundle\Provider\PrivilegeCategoryProvider
     dmkclub_basics.utility.datagrids.class:      DMKClub\Bundle\BasicsBundle\Utility\Datagrids
 
@@ -14,7 +13,8 @@ services:
           - 'dmkclub_pdfexport'
 
     dmkclub_basics.pdf.manager:
-        class: "%dmkclub_basics.pdf.manager.class%"
+        class: DMKClub\Bundle\BasicsBundle\PDF\Manager
+        public: true
         arguments:
             - "@white_october.tcpdf"
             - "@twig"

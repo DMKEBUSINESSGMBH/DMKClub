@@ -63,7 +63,7 @@ datagrids:
                 updatedAt:
                     data_name: s.updatedAt
             default:
-                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name:  "ASC"
         filters:
             columns:
                 name:

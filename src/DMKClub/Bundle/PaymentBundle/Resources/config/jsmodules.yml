@@ -1,0 +1,5 @@
+aliases:
+   oro/datagrid/action/dmksepadebitxml-mass-action$: dmkclubpayment/js/datagrid/action/dmksepadebitxml-mass-action
+dynamic-imports:
+   dmkclubpayment:
+      - oro/datagrid/action/dmksepadebitxml-mass-action

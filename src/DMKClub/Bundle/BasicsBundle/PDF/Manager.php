@@ -6,6 +6,7 @@ use Gaufrette\File;
 use Oro\Bundle\ImportExportBundle\File\FileManager;
 
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
+use Twig\Environment;
 
 /**
  * Class PDF-Manager
@@ -29,15 +30,17 @@ class Manager
     /** @var Logger */
     protected $logger;
 
+    /** Environment */
+    protected $twig;
+
     /**
      *
      * @param \TCPDF $tcpdf
      */
-    public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdf, $twig, FileManager $fm, Logger $logger)
+    public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdf, Environment $twig, FileManager $fm, Logger $logger)
     {
         $this->tcpdf = $tcpdf;
         $this->twig = clone $twig;
-        $this->twig->setLoader(new \Twig_Loader_String());
         $this->fileManager = $fm;
         $this->logger = $logger;
     }
@@ -140,7 +143,9 @@ class Manager
     public function generateByTemplate(TwigTemplate $twigTemplate, $filename, array $context = array())
     {
         // Zuerst das HTML erzeugen
-        $html = $this->twig->render($twigTemplate->getTemplate(), $context);
+        $template = $this->twig->createTemplate($twigTemplate->getTemplate());
+        $html = $template->render($context);
+//        $html = $this->twig->render($twigTemplate->getTemplate(), $context);
 
         // mit Daten aus Template initialisieren
         $orientation = $twigTemplate->getOrientation() ? $twigTemplate->getOrientation() : 'P';

@@ -1,9 +1,10 @@
 /*global define*/
 define([
+	'underscore',
     'oro/datagrid/action/model-action',
     'orotranslation/js/translator',
     'oroui/js/mediator'
-], function (ModelAction, __, mediator) {
+], function (_, ModelAction, __, mediator) {
     'use strict';
 
     /**
