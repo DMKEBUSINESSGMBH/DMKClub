@@ -3,7 +3,7 @@ namespace DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction;
 
 use Doctrine\ORM\Query;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Oro\Bundle\CronBundle\Async\CommandRunner;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;

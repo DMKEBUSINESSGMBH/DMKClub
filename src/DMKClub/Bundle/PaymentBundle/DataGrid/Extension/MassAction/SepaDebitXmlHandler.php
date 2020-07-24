@@ -3,7 +3,7 @@ namespace DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
@@ -11,7 +11,6 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\ImportExportBundle\File\FileManager;
 
 use DMKClub\Bundle\PaymentBundle\Sepa\DirectDebitBuilder;
@@ -57,7 +56,6 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
      *
      * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
-     * @param ServiceLink $securityFacadeLink
      * @param DirectDebitBuilder $sepaBuilder
      */
     public function __construct(

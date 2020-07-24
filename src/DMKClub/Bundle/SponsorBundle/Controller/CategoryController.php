@@ -10,6 +10,10 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use DMKClub\Bundle\SponsorBundle\Form\Handler\CategoryHandler;
+use Symfony\Component\Form\Form;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
 
 
 /**
@@ -17,6 +21,19 @@ use DMKClub\Bundle\SponsorBundle\Entity\Category;
  */
 class CategoryController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            CategoryHandler::class,
+            'dmkclub.sponsorcategory.form' => Form::class,
+            UpdateHandler::class,
+        ]);
+    }
+
 	/**
 	 * @Route("/", name="dmkclub_sponsorcategory_index")
 	 * @AclAncestor("dmkclub_sponsorcategory_view")
@@ -25,10 +42,11 @@ class CategoryController extends AbstractController
 	public function indexAction()
 	{
 		return [
-			'entity_class' => $this->container->getParameter('dmkclub.sponsorcategory.entity.class')
+			'entity_class' => Category::class,
 		];
 	}
-    /**
+
+	/**
      * Create sponsorcategory form
      * @Route("/create", name="dmkclub_sponsorcategory_create")
      * @Template("DMKClubSponsorBundle:Category:update.html.twig")
@@ -65,12 +83,12 @@ class CategoryController extends AbstractController
      */
     protected function update(Category $entity)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->get(UpdateHandler::class)->update(
             $entity,
             $this->get('dmkclub.sponsorcategory.form'),
-            $this->get('translator')->trans('dmkclub.controller.sponsorcategory.saved.message'),
+            $this->get(TranslatorInterface::class)->trans('dmkclub.controller.sponsorcategory.saved.message'),
             null,
-            $this->get('dmkclub.sponsorcategory.form.handler')
+            $this->get(CategoryHandler::class)
         );
     }
     /**

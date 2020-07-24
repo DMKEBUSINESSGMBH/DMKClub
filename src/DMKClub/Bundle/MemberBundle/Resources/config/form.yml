@@ -1,21 +1,14 @@
 parameters:
     dmkclub_member.member.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberType
     dmkclub_member.member.form.type.api.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberApiType
-    dmkclub_member.member.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler
-    dmkclub_member.memberbilling.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberBillingHandler
     dmkclub_member.memberfeediscount.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeDiscountType
-    dmkclub_member.memberfeediscount.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeDiscountHandler
     dmkclub_member.createbills.form.type.class:     DMKClub\Bundle\MemberBundle\Form\Type\CreateBillsType
-    dmkclub_member.createbills.form.handler.class:  DMKClub\Bundle\MemberBundle\Form\Handler\CreateBillsHandler
     dmkclub_member.memberprivacy.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\MemberPrivacyType
-    dmkclub_member.memberprivacy.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\MemberPrivacyHandler
 
     dmkclub_member.memberproposal.form.class:            DMKClub\Bundle\MemberBundle\Form\Type\MemberProposalType
-    dmkclub_member.memberproposal.form.handler.class:    DMKClub\Bundle\MemberBundle\Form\Handler\MemberProposalHandler
     dmkclub_member.memberproposal.address.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\ProposalAddressType
     dmkclub_member.memberproposal.bankaccount.form.type.class: DMKClub\Bundle\MemberBundle\Form\Type\ProposalBankAccountType
     dmkclub_member.memberproposal.createmember.form.type.class:    DMKClub\Bundle\MemberBundle\Form\Type\CreateMemberByProposalType
-    dmkclub_member.memberproposal.createmember.form.handler.class: DMKClub\Bundle\MemberBundle\Form\Handler\CreateMemberByProposalHandler
 
 
     dmkclub.form.type.member_select.class:        DMKClub\Bundle\MemberBundle\Form\Type\MemberSelectType
@@ -136,7 +129,7 @@ services:
             - "dmkclub_member_proposal_address_form"
             - "dmkclub_member_proposal_address"
             - ~
-            - { data_class: "%dmkclub_member.memberproposal.entity.class%" }
+            - { data_class: 'DMKClub\Bundle\MemberBundle\Entity\MemberProposal' }
 
     dmkclub_member.memberproposal_bankaccount.form:
         class: Symfony\Component\Form\Form
@@ -146,7 +139,7 @@ services:
             - "dmkclub_member_proposal_bankaccount_form"
             - "dmkclub_member_proposal_bankaccount"
             - ~
-            - { data_class: "%dmkclub_member.memberproposal.entity.class%" }
+            - { data_class: 'DMKClub\Bundle\MemberBundle\Entity\MemberProposal' }
 
     dmkclub_member.memberproposal.createmember.form:
         class: Symfony\Component\Form\Form
@@ -205,8 +198,7 @@ services:
 # FormHandler
 # ####
 
-    dmkclub_member.member.form.handler:
-        class: "%dmkclub_member.member.form.handler.class%"
+    DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler:
         public: true
         arguments:
             - "@doctrine.orm.entity_manager"
@@ -215,63 +207,49 @@ services:
         tags:
             - { name: oro_tag.tag_manager }
 
-    dmkclub_member.member.form.handler.api:
-        class: "%dmkclub_member.member.form.handler.class%"
-        public: true
-        arguments:
-            - "@dmkclub_member.member.form.api"
-            - "@request_stack"
-            - "@doctrine.orm.entity_manager"
-
-    dmkclub_member.memberproposal.form.handler:
-        class: "%dmkclub_member.memberproposal.form.handler.class%"
+    DMKClub\Bundle\MemberBundle\Form\Handler\MemberProposalHandler:
         public: true
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@dmkclub.payment.sepa.iban.openiban"
             - "@logger"
 
-    dmkclub_member.memberproposal.createmember.form.handler:
-        class: "%dmkclub_member.memberproposal.createmember.form.handler.class%"
+    DMKClub\Bundle\MemberBundle\Form\Handler\CreateMemberByProposalHandler:
         public: true
         arguments:
             - "@doctrine.orm.entity_manager"
             - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager'
 
-    dmkclub_member.memberbilling.form.handler:
-        class: "%dmkclub_member.memberbilling.form.handler.class%"
+    DMKClub\Bundle\MemberBundle\Form\Handler\MemberBillingHandler:
         public: true
         arguments:
             - "@dmkclub_member.memberbilling.form"
             - "@request_stack"
             - "@doctrine.orm.entity_manager"
-            - "@dmkclub_member.memberbilling.manager"
+            - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager'
         tags:
             - { name: oro_tag.tag_manager }
 
-    dmkclub_member.memberfeediscount.form.handler:
-        class: "%dmkclub_member.memberfeediscount.form.handler.class%"
+    DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeDiscountHandler:
         public: true
         arguments:
             - "@dmkclub_member.memberfeediscount.form"
             - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
-    dmkclub_member.memberprivacy.form.handler:
-        class: "%dmkclub_member.memberprivacy.form.handler.class%"
+    DMKClub\Bundle\MemberBundle\Form\Handler\MemberPrivacyHandler:
         public: true
         arguments:
             - "@dmkclub_member.memberprivacy.form"
             - "@request_stack"
             - "@doctrine.orm.entity_manager"
 
-    dmkclub_member.createbills.form.handler:
-        class: "%dmkclub_member.createbills.form.handler.class%"
+    DMKClub\Bundle\MemberBundle\Form\Handler\CreateBillsHandler:
         public: true
         arguments:
             - "@dmkclub_member.createbills.form"
             - "@request_stack"
-            - "@dmkclub_member.memberbilling.manager"
+            - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager'
 
 # ####
 # FormWidgets

@@ -13,6 +13,10 @@ use Oro\Bundle\AccountBundle\Entity\Account;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
 
 use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use DMKClub\Bundle\SponsorBundle\Form\Handler\SponsorHandler;
+use Symfony\Component\Form\Form;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
 
 
 /**
@@ -20,6 +24,19 @@ use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
  */
 class SponsorController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            SponsorHandler::class,
+            'dmkclub.sponsor.form' => Form::class,
+            UpdateHandler::class,
+        ]);
+    }
+
 	/**
 	 * @Route("/", name="dmkclub_sponsor_index")
 	 * @AclAncestor("dmkclub_sponsor_view")
@@ -28,7 +45,7 @@ class SponsorController extends AbstractController
 	public function indexAction()
 	{
 		return [
-			'entity_class' => $this->container->getParameter('dmkclub.sponsor.entity.class')
+			'entity_class' => Sponsor::class,
 		];
 	}
     /**
@@ -68,14 +85,15 @@ class SponsorController extends AbstractController
      */
     protected function update(Sponsor $entity)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->get(UpdateHandler::class)->update(
             $entity,
             $this->get('dmkclub.sponsor.form'),
-            $this->get('translator')->trans('dmkclub.controller.sponsor.saved.message'),
+            $this->get(TranslatorInterface::class)->trans('dmkclub.controller.sponsor.saved.message'),
     	    null,
-            $this->get('dmkclub.sponsor.form.handler')
+            $this->get(SponsorHandler::class)
         );
     }
+
     /**
      * @Route("/view/{id}", name="dmkclub_sponsor_view", requirements={"id"="\d+"}))
      * @Acl(
@@ -86,9 +104,11 @@ class SponsorController extends AbstractController
      * )
      * @Template
      */
-    public function viewAction(Sponsor $entity) {
+    public function viewAction(Sponsor $entity)
+    {
         return ['entity' => $entity];
     }
+
     /**
      * @Route("/widget/info/{id}", name="dmkclub_sponsor_widget_info", requirements={"id"="\d+"})
      * @AclAncestor("dmkclub_sponsor_view")
@@ -100,6 +120,7 @@ class SponsorController extends AbstractController
             'entity' => $entity
         ];
     }
+
     /**
      * Wird aufgerufen, um im Account einen Abschnitt für die Sponsoren
      * einzublenden. Die Einbindung erfolgt über die placeholder.yml

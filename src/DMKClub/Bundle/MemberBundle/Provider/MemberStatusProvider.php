@@ -2,7 +2,8 @@
 
 namespace DMKClub\Bundle\MemberBundle\Provider;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use DMKClub\Bundle\MemberBundle\Model\MemberStatus;
 
 class MemberStatusProvider

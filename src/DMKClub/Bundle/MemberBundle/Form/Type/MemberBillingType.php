@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 
@@ -20,7 +20,6 @@ use DMKClub\Bundle\MemberBundle\Accounting\ProcessorProvider;
 use DMKClub\Bundle\PaymentBundle\Form\Type\SepaCreditorSelectType;
 use DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateSelectType;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
-use Symfony\Component\VarDumper\VarDumper;
 
 class MemberBillingType extends AbstractType
 {

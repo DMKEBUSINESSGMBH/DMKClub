@@ -9,12 +9,33 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use DMKClub\Bundle\MemberBundle\Form\Handler\CreateBillsHandler;
+use Symfony\Component\Form\Form;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use DMKClub\Bundle\MemberBundle\Form\Handler\MemberBillingHandler;
 
 /**
  * @Route("/memberbilling")
  */
 class MemberBillingController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            MemberBillingManager::class,
+            MemberBillingHandler::class,
+            CreateBillsHandler::class,
+            'dmkclub_member.createbills.form' => Form::class,
+            'dmkclub_member.memberbilling.form' => Form::class,
+            UpdateHandler::class,
+        ]);
+    }
+
 
     /**
      * @Route("/", name="dmkclub_memberbilling_index")
@@ -24,7 +45,7 @@ class MemberBillingController extends AbstractController
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('dmkclub_member.memberbilling.entity.class')
+            'entity_class' => MemberBilling::class,
         ];
     }
 
@@ -42,7 +63,7 @@ class MemberBillingController extends AbstractController
     public function createAction()
     {
         $billing = new MemberBilling();
-        $billing->setPositionLabels($this->get('translator')->trans('dmkclub.member.memberbilling.position_labels.default'));
+        $billing->setPositionLabels($this->get(TranslatorInterface::class)->trans('dmkclub.member.memberbilling.position_labels.default'));
         return $this->update($billing);
     }
 
@@ -72,7 +93,7 @@ class MemberBillingController extends AbstractController
     protected function update(MemberBilling $entity)
     {
         /* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandler */
-        $handler = $this->get('oro_form.model.update_handler');
+        $handler = $this->get(UpdateHandler::class);
         return $handler->handleUpdate(
             $entity,
             $this->get('dmkclub_member.memberbilling.form'),
@@ -89,13 +110,13 @@ class MemberBillingController extends AbstractController
             function (MemberBilling $entity) {
                 return [
                     'route' => 'dmkclub_memberbilling_view',
-                    'parameters' => array(
+                    'parameters' => [
                         'id' => $entity->getId()
-                    )
+                    ]
                 ];
             },
-            $this->get('translator')->trans('dmkclub.member.memberbilling.message.saved'),
-            $this->get('dmkclub_member.memberbilling.form.handler')
+            $this->get(TranslatorInterface::class)->trans('dmkclub.member.memberbilling.message.saved'),
+            $this->get(MemberBillingHandler::class)
         );
     }
 
@@ -130,7 +151,7 @@ class MemberBillingController extends AbstractController
      */
     protected function getBillingManager()
     {
-        return $this->get('dmkclub_member.memberbilling.manager');
+        return $this->get(MemberBillingManager::class);
     }
 
     /**
@@ -168,7 +189,7 @@ class MemberBillingController extends AbstractController
         ];
 
         // Form auswerten
-        if ($ret = $this->get('dmkclub_member.createbills.form.handler')->process($entity)) {
+        if ($ret = $this->get(CreateBillsHandler::class)->process($entity)) {
             $response['message'] = $this->buildMessage('dmkclub.member.memberbilling.message.accounting' . ($ret['async'] ? '.async' : '') . '.started', $ret);
             $response['saved'] = true;
         }
@@ -199,7 +220,7 @@ class MemberBillingController extends AbstractController
     public function createCorrectionsAction(MemberBilling $entity)
     {
         // Info an den Manager übergeben
-        $ret = $this->get('dmkclub_member.memberbilling.manager')->startCorrections($entity);
+        $ret = $this->get(MemberBillingManager::class)->startCorrections($entity);
 
         $marked = ((int) $ret['success'] + (int) $ret['skipped']) > 0;
         $msgType = $marked ? 'success' : 'warning';
@@ -214,7 +235,7 @@ class MemberBillingController extends AbstractController
 
     private function buildMessage($msg, $info)
     {
-        $msg = $this->get('translator')->trans($msg);
+        $msg = $this->get(TranslatorInterface::class)->trans($msg);
         return sprintf($msg, $info['success'], $info['skipped'], $info['errors']);
     }
 }

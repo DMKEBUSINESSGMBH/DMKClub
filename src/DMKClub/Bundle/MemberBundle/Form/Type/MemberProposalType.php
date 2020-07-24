@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\ChannelBundle\Form\Type\ChannelSelectType;
@@ -16,7 +16,6 @@ use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 
 use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class MemberProposalType extends AbstractType
 {
@@ -145,12 +144,12 @@ class MemberProposalType extends AbstractType
             ProposalAddressType::class, [
                 'required' => false
         ]);
-        $builder->add('bankAccount', 
+        $builder->add('bankAccount',
             ProposalBankAccountType::class, [
                 'label' => 'dmkclub.member.bank_account.label',
                 'required' => false
         ]);
-        $builder->add('dataChannel', 
+        $builder->add('dataChannel',
             ChannelSelectType::class, [
                 'required' => true,
                 'label' => 'orocrm.sales.b2bcustomer.data_channel.label',

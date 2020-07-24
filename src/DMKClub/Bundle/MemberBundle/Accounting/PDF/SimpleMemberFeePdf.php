@@ -1,8 +1,7 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Accounting\PDF;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bridge\Twig\TwigEngine;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\AddressBundle\Entity\Address;

@@ -5,13 +5,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Oro\Bundle\AddressBundle\Form\Type\AddressType;
 use Oro\Bundle\ChannelBundle\Form\Type\ChannelSelectType;
 use Oro\Bundle\ContactBundle\Form\Type\ContactSelectType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumSelectType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+
 use DMKClub\Bundle\PaymentBundle\Form\Type\BankAccountType;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentInterval;
@@ -96,7 +98,7 @@ class MemberType extends AbstractType
             ));
         // ->add('owner')
         // ->add('organization')
-        
+
     }
 
     /**

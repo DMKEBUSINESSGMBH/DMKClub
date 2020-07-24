@@ -4,7 +4,7 @@ namespace DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Psr\Log\LoggerInterface;
 

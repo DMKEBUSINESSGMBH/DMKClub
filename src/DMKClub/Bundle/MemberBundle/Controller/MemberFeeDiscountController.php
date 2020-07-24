@@ -12,9 +12,25 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeDiscountHandler;
+use Symfony\Component\Form\Form;
 
 class MemberFeeDiscountController extends AbstractController
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            MemberFeeDiscountHandler::class,
+            'dmkclub_member.memberfeediscount.form' => Form::class,
+        ]);
+    }
+
 	/**
 	 * @Route("/info-block/{id}", name="dmkclub_member_memberfeediscount_infoblock", requirements={"id"="\d+"})
 	 * @Template
@@ -22,10 +38,10 @@ class MemberFeeDiscountController extends AbstractController
 	 */
 	public function infoBlockAction(Member $contact)
 	{
-		return array(
+		return [
 			'entity' => $contact,
 			'memberfeediscount_edit_acl_resource' => 'dmkclub_member_update'
-		);
+		];
 	}
 
 	/**
@@ -78,7 +94,7 @@ class MemberFeeDiscountController extends AbstractController
 		);
 
 
-		if ($this->get('dmkclub_member.memberfeediscount.form.handler')->process($discount)) {
+		if ($this->get(MemberFeeDiscountHandler::class)->process($discount)) {
 			$this->getDoctrine()->getManager()->flush();
 			$responseData['entity'] = $discount;
 			$responseData['saved'] = true;

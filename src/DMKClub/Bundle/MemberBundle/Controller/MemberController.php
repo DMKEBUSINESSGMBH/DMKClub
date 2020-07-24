@@ -10,6 +10,10 @@ use DMKClub\Bundle\MemberBundle\Entity\Member;
 use Oro\Bundle\AccountBundle\Entity\Account;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use Symfony\Component\Form\Form;
 
 /**
  *
@@ -17,6 +21,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class MemberController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            MemberHandler::class,
+            'dmkclub_member.member.form' => Form::class,
+            UpdateHandler::class,
+        ]);
+    }
+
 
     /**
      *
@@ -27,7 +44,7 @@ class MemberController extends AbstractController
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('dmkclub_member.member.entity.class')
+            'entity_class' => Member::class,
         ];
     }
 
@@ -75,13 +92,13 @@ class MemberController extends AbstractController
     protected function update(Member $entity)
     {
         /* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandlerFacade */
-        $handler = $this->get('oro_form.update_handler');
+        $handler = $this->get(UpdateHandler::class);
         $data = $handler->update(
             $entity,
             $this->get('dmkclub_member.member.form'),
-            $this->get('translator')->trans('dmkclub.member.message.saved'),
+            $this->get(TranslatorInterface::class)->trans('dmkclub.member.message.saved'),
             null,
-            $this->get('dmkclub_member.member.form.handler')
+            $this->get(MemberHandler::class)
         );
         return $data;
     }

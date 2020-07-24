@@ -8,16 +8,35 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
 
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposalAddress;
+use DMKClub\Bundle\MemberBundle\Form\Handler\MemberProposalHandler;
+use DMKClub\Bundle\MemberBundle\Form\Handler\CreateMemberByProposalHandler;
+use Symfony\Component\Form\Form;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/member/proposal")
  */
 class MemberProposalController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            MemberProposalHandler::class,
+            CreateMemberByProposalHandler::class,
+            'dmkclub_member.memberproposal.form' => Form::class,
+            'dmkclub_member.memberproposal.createmember.form' => Form::class,
+            UpdateHandler::class,
+        ]);
+    }
+
     /**
      * @Route("/", name="dmkclub_member_proposal_index")
      * @AclAncestor("dmkclub_member_proposal_view")
@@ -26,7 +45,7 @@ class MemberProposalController extends AbstractController
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('dmkclub_member.memberproposal.entity.class')
+            'entity_class' => MemberProposal::class,
         ];
     }
     /**
@@ -79,13 +98,13 @@ class MemberProposalController extends AbstractController
     protected function update(MemberProposal $entity)
     {
     	/* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandlerFacade */
-    	$handler = $this->get('oro_form.update_handler');
+    	$handler = $this->get(UpdateHandler::class);
     	$data = $handler->update(
     	    $entity,
 			$this->get('dmkclub_member.memberproposal.form'),
-			$this->get('translator')->trans('dmkclub.member.memberproposal.message.saved'),
+			$this->get(TranslatorInterface::class)->trans('dmkclub.member.memberproposal.message.saved'),
     	    null,
-			$this->get('dmkclub_member.memberproposal.form.handler')
+			$this->get(MemberProposalHandler::class)
 		);
     	return $data;
     }
@@ -148,9 +167,9 @@ class MemberProposalController extends AbstractController
             'saved' => false,
         ];
 
-        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $request = $this->get('request_stack')->getCurrentRequest();
         // Form auswerten
-        if ($this->get('dmkclub_member.memberproposal.createmember.form.handler')->process($entity, $form, $request)) {
+        if ($this->get(CreateMemberByProposalHandler::class)->process($entity, $form, $request)) {
             $response['message'] = 'finished';
             $response['saved'] = true;
         }

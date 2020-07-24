@@ -26,7 +26,7 @@ class TwigTemplateController extends AbstractController
 	public function indexAction()
 	{
 		return [
-		    'entity_class' => $this->container->getParameter('dmkclub_basics.twigtemplate.entity.class')
+		    'entity_class' => TwigTemplate::class,
 		];
 	}
 	/**

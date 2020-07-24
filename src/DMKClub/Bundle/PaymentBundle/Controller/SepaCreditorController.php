@@ -9,12 +9,28 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use DMKClub\Bundle\PaymentBundle\Form\Handler\SepaCreditorHandler;
+use Symfony\Component\Form\Form;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/sepacreditor")
  */
 class SepaCreditorController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            SepaCreditorHandler::class,
+            'dmkclub_payment.sepacreditor.form' => Form::class,
+            UpdateHandler::class,
+        ]);
+    }
 
     /**
      * @Route("/", name="dmkclub_sepacreditor_index")
@@ -24,7 +40,7 @@ class SepaCreditorController extends AbstractController
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('dmkclub.payment.sepacreditor.entity.class')
+            'entity_class' => SepaCreditor::class,
         ];
     }
 
@@ -69,7 +85,7 @@ class SepaCreditorController extends AbstractController
      */
     protected function update(SepaCreditor $entity)
     {
-        return $this->get('oro_form.model.update_handler')->handleUpdate(
+        return $this->get(UpdateHandler::class)->handleUpdate(
             $entity,
             $this->get('dmkclub_payment.sepacreditor.form'),
             function (SepaCreditor $entity) {
@@ -87,8 +103,8 @@ class SepaCreditorController extends AbstractController
                     ]
                 ];
             },
-            $this->get('translator')->trans('dmkclub.payment.sepacreditor.saved.message'),
-            $this->get('dmkclub_payment.sepacreditor.form.handler')
+            $this->get(TranslatorInterface::class)->trans('dmkclub.payment.sepacreditor.saved.message'),
+            $this->get(SepaCreditorHandler::class)
         );
     }
 

@@ -27,7 +27,7 @@ class MemberFeeController extends AbstractController
 	public function indexAction()
 	{
 	    return [
-	        'entity_class' => $this->container->getParameter('dmkclub_member.memberfee.entity.class')
+	        'entity_class' => MemberFee::class,
 	    ];
 	}
 	/**

@@ -2,7 +2,7 @@
 
 namespace DMKClub\Bundle\PaymentBundle\Provider;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use DMKClub\Bundle\PaymentBundle\Model\PaymentOption;
 
 /**

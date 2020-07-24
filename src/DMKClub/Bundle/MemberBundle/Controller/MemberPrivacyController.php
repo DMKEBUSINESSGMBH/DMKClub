@@ -3,6 +3,9 @@ namespace DMKClub\Bundle\MemberBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Form\Form;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -10,9 +13,22 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy;
+use DMKClub\Bundle\MemberBundle\Form\Handler\MemberPrivacyHandler;
 
 class MemberPrivacyController extends AbstractController
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            MemberPrivacyHandler::class,
+            'dmkclub_member.memberprivacy.form' => Form::class,
+        ]);
+    }
 
     /**
      *
@@ -58,7 +74,7 @@ class MemberPrivacyController extends AbstractController
             'member' => $member
         ];
 
-        if ($this->get('dmkclub_member.memberprivacy.form.handler')->process($privacy)) {
+        if ($this->get(MemberPrivacyHandler::class)->process($privacy)) {
             $this->getDoctrine()
                 ->getManager()
                 ->flush();

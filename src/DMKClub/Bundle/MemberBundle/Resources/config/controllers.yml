@@ -1,0 +1,47 @@
+services:
+    _defaults:
+        public: true
+
+    DMKClub\Bundle\MemberBundle\Controller\MemberBillingController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'dmkclub_member.createbills.form' }
+            - { name: container.service_subscriber, id: 'dmkclub_member.memberbilling.form' }
+
+    DMKClub\Bundle\MemberBundle\Controller\MemberController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'dmkclub_member.member.form' }
+
+    DMKClub\Bundle\MemberBundle\Controller\MemberPrivacyController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'dmkclub_member.memberprivacy.form' }
+
+    DMKClub\Bundle\MemberBundle\Controller\MemberProposalController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'dmkclub_member.memberproposal.form' }
+            - { name: container.service_subscriber, id: 'dmkclub_member.memberproposal.createmember.form' }
+
+    DMKClub\Bundle\MemberBundle\Controller\MemberFeeController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+#            - { name: container.service_subscriber, id: 'dmkclub_member.memberfee.form' }
+
+    DMKClub\Bundle\MemberBundle\Controller\MemberFeeDiscountController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'dmkclub_member.memberfeediscount.form' }

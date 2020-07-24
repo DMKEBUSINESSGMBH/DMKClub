@@ -16,8 +16,8 @@ services:
             - DMKClub\Bundle\SponsorBundle\Form\Type\SponsorType
             - null
             
-    dmkclub.sponsor.form.handler:
-        class: DMKClub\Bundle\SponsorBundle\Form\Handler\SponsorHandler
+    DMKClub\Bundle\SponsorBundle\Form\Handler\SponsorHandler:
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
@@ -36,8 +36,8 @@ services:
             - DMKClub\Bundle\SponsorBundle\Form\Type\CategoryType
             - null
 
-    dmkclub.sponsorcategory.form.handler:
-        class: DMKClub\Bundle\SponsorBundle\Form\Handler\CategoryHandler
+    DMKClub\Bundle\SponsorBundle\Form\Handler\CategoryHandler:
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
 

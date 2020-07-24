@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        public: true
+
+    DMKClub\Bundle\SponsorBundle\Controller\CategoryController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'dmkclub.sponsorcategory.form' }
+
+    DMKClub\Bundle\SponsorBundle\Controller\SponsorController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'dmkclub.sponsor.form' }
