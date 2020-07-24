@@ -2,7 +2,7 @@
 
 namespace DMKClub\Bundle\SponsorBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -15,7 +15,8 @@ use DMKClub\Bundle\SponsorBundle\Entity\Category;
 /**
  * @Route("/sponsorcategory")
  */
-class CategoryController extends Controller {
+class CategoryController extends AbstractController
+{
 	/**
 	 * @Route("/", name="dmkclub_sponsorcategory_index")
 	 * @AclAncestor("dmkclub_sponsorcategory_view")

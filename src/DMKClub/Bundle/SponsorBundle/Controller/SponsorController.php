@@ -2,23 +2,24 @@
 
 namespace DMKClub\Bundle\SponsorBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
 use Oro\Bundle\AccountBundle\Entity\Account;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
+
+use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
 
 
 /**
  * @Route("/sponsor")
  */
-class SponsorController extends Controller {
+class SponsorController extends AbstractController
+{
 	/**
 	 * @Route("/", name="dmkclub_sponsor_index")
 	 * @AclAncestor("dmkclub_sponsor_view")

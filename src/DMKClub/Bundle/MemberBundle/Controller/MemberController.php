@@ -1,7 +1,6 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -10,12 +9,13 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use Oro\Bundle\AccountBundle\Entity\Account;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  *
  * @Route("/member")
  */
-class MemberController extends Controller
+class MemberController extends AbstractController
 {
 
     /**
@@ -77,7 +77,7 @@ class MemberController extends Controller
         /* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandlerFacade */
         $handler = $this->get('oro_form.update_handler');
         $data = $handler->update(
-            $entity, 
+            $entity,
             $this->get('dmkclub_member.member.form'),
             $this->get('translator')->trans('dmkclub.member.message.saved'),
             null,

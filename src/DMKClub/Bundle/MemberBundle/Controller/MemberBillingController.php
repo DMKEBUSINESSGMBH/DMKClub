@@ -1,7 +1,6 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -9,12 +8,12 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
-use Symfony\Component\VarDumper\VarDumper;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/memberbilling")
  */
-class MemberBillingController extends Controller
+class MemberBillingController extends AbstractController
 {
 
     /**

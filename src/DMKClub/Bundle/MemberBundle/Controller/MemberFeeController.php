@@ -2,23 +2,23 @@
 
 namespace DMKClub\Bundle\MemberBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/memberfee")
  */
-class MemberFeeController extends Controller {
+class MemberFeeController extends AbstractController
+{
 	/**
 	 * @Route("/", name="dmkclub_memberfee_index")
 	 * @AclAncestor("dmkclub_memberfee_view")

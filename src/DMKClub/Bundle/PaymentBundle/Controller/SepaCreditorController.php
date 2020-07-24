@@ -1,17 +1,19 @@
 <?php
 namespace DMKClub\Bundle\PaymentBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
 
 /**
  * @Route("/sepacreditor")
  */
-class SepaCreditorController extends Controller
+class SepaCreditorController extends AbstractController
 {
 
     /**

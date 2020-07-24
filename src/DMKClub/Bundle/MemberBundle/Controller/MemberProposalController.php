@@ -2,8 +2,7 @@
 
 namespace DMKClub\Bundle\MemberBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -17,7 +16,7 @@ use DMKClub\Bundle\MemberBundle\Entity\MemberProposalAddress;
 /**
  * @Route("/member/proposal")
  */
-class MemberProposalController extends Controller
+class MemberProposalController extends AbstractController
 {
     /**
      * @Route("/", name="dmkclub_member_proposal_index")

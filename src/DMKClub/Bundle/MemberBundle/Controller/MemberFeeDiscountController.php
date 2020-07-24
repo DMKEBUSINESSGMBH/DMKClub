@@ -2,7 +2,6 @@
 
 namespace DMKClub\Bundle\MemberBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,8 +11,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class MemberFeeDiscountController extends Controller
+class MemberFeeDiscountController extends AbstractController
 {
 	/**
 	 * @Route("/info-block/{id}", name="dmkclub_member_memberfeediscount_infoblock", requirements={"id"="\d+"})

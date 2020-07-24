@@ -2,7 +2,7 @@
 
 namespace DMKClub\Bundle\BasicsBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,10 +12,11 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 
+
 /**
  * @Route("/twigtemplate")
  */
-class TwigTemplateController extends Controller
+class TwigTemplateController extends AbstractController
 {
 	/**
 	 * @Route("/", name="dmkclub_basics_twigtemplate_index")

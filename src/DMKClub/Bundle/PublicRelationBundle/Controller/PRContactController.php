@@ -2,18 +2,21 @@
 
 namespace DMKClub\Bundle\PublicRelationBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 use DMKClub\Bundle\PublicRelationBundle\Entity\PRContact;
 
 /**
  * @Route("/prcontact")
  */
-class PRContactController extends Controller {
+class PRContactController extends AbstractController
+{
 	/**
 	 * @Route("/", name="dmkclub_prcontact_index")
 	 * @AclAncestor("dmkclub_prcontact_view")
