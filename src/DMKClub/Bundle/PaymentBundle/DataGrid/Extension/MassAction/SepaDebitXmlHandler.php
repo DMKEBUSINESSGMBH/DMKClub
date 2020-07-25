@@ -6,7 +6,6 @@ use Doctrine\ORM\Query;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
 
-use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
@@ -19,11 +18,20 @@ use DMKClub\Bundle\PaymentBundle\Sepa\SepaException;
 use DMKClub\Bundle\PaymentBundle\Sepa\Transaction;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
+use Oro\Bundle\ImportExportBundle\Handler\ExportHandler;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\VarDumper\VarDumper;
+use Oro\Component\PhpUtils\Formatter\BytesFormatter;
 
 class SepaDebitXmlHandler implements MassActionHandlerInterface
 {
 
     const FLUSH_BATCH_SIZE = 100;
+    const RESULT_SELECTED_TOTAL = 'RESULT_SELECTED_TOTAL';
+    const RESULT_PROCESSED = 'RESULT_PROCESSED';
+    const RESULT_FILE_NAME = 'RESULT_FILE_NAME';
+    const RESULT_FILE_BYTES = 'RESULT_FILE_BYTES';
 
     /**
      *
@@ -50,8 +58,6 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
 
     protected $router;
 
-    protected $attachmentManager;
-
     /**
      *
      * @param EntityManager $entityManager
@@ -59,12 +65,12 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
      * @param DirectDebitBuilder $sepaBuilder
      */
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
-        LoggerInterface $logger, $router,
+        LoggerInterface $logger,
+        RouterInterface $router,
         DirectDebitBuilder $sepaBuilder,
-        FileManager $fm,
-        AttachmentManager $attachmentManager)
+        FileManager $fm)
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
@@ -72,7 +78,6 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
         $this->router = $router;
         $this->sepaBuilder = $sepaBuilder;
         $this->fileManager = $fm;
-        $this->attachmentManager = $attachmentManager;
     }
 
     /**
@@ -114,18 +119,22 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
     {
         $isAllSelected = $this->isAllSelected($data);
         $iteration = 0;
+        $totalSelected = 0;
 
         // $data_identifier = $options['data_identifier'];
         $entity_name = $options['entity_name'];
 
         if (array_key_exists('values', $data) && ! empty($data['values'])) {
             $entity_ids = explode(',', $data['values']);
+            $totalSelected = count($entity_ids);
             foreach ($entity_ids as $entityId) {
-                if ($this->handleItem($entityId, $entity_name))
+                if ($this->handleItem($entityId, $entity_name)) {
                     $iteration ++;
+                }
             }
         } elseif ($isAllSelected) {
             foreach ($results as $result) {
+                $totalSelected++;
                 $entityId = $result->getValue('id');
                 if ($this->handleItem($entityId, $entity_name)) {
                     $iteration ++;
@@ -133,8 +142,10 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
             }
         }
         $ret = [
-            $iteration
+            self::RESULT_SELECTED_TOTAL => $totalSelected,
+            self::RESULT_PROCESSED => $iteration,
         ];
+
         if ($iteration > 0) {
             $xml = $this->sepaBuilder->buildXML();
             $outputFormat = 'xml';
@@ -142,27 +153,28 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
             $localFile = $this->fileManager->generateTmpFilePath($fileName);
 
             $file = new \SplFileObject($localFile, 'w');
-            $ret[] = $fileName;
+            $ret[self::RESULT_FILE_NAME] = $fileName;
             $bytes = $file->fwrite($xml);
-            $ret[] = $bytes;
+            $ret[self::RESULT_FILE_BYTES] = $bytes;
             $this->fileManager->writeFileToStorage($localFile, $fileName);
             $this->logger->alert('SEPA xml file created', [
                 'file' => $localFile,
                 'bytes' => $bytes,
-                'items' => $iteration
+                'items' => $iteration,
+                'selected' => $totalSelected,
             ]);
         }
         return $ret;
     }
 
-    private function handleItem($entityId, $entityName)
+    private function handleItem($entityId, $entityName): bool
     {
         $sepaItem = $this->resolveEntity($entityId, $entityName);
-        if (! ($sepaItem instanceof SepaDirectDebitAwareInterface))
+        if (! ($sepaItem instanceof SepaDirectDebitAwareInterface)) {
             throw new SepaException('Entity does not implement SepaDirectDebitAwareInterface');
+        }
 
         if (! $this->sepaBuilder->isInited()) {
-            // TODO: holen
             // Wir benötigen Zugriff auf das MemberBilling
             $paymentAware = $sepaItem->getPaymentAware();
             $this->assertCreditor($paymentAware);
@@ -217,8 +229,9 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
      */
     protected function getUniqueMessageIdentification(SepaPaymentAwareInterface $paymentAware)
     {
-        if ($paymentAware->getUniqueMessageIdentification())
+        if ($paymentAware->getUniqueMessageIdentification()) {
             return $paymentAware->getUniqueMessageIdentification();
+        }
         $date = new \DateTime();
         return 'dmkclb' . $date->format('YmdHms');
     }
@@ -263,9 +276,9 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
      */
     protected function getResponse(MassActionHandlerArgs $args, $result)
     {
-        $entitiesCount = $result[0];
-        $fileName = $entitiesCount ? $result[1] : '';
-        $bytes = $entitiesCount ? $result[2] : 0;
+        $entitiesCount = $result[self::RESULT_PROCESSED];
+        $fileName = $entitiesCount ? $result[self::RESULT_FILE_NAME] : '';
+        $bytes = $entitiesCount ? $result[self::RESULT_FILE_BYTES] : 0;
 
         $massAction = $args->getMassAction();
 
@@ -274,14 +287,14 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
         $successful = $entitiesCount > 0;
         $url = '';
         if ($entitiesCount > 0) {
-            $url = $this->router->generate('oro_importexport_export_download', [
+            $url = $this->router->generate('dmkclub_basics_export_download', [
                 'fileName' => basename($fileName)
             ]);
         }
         $responseData = [
             'count' => $entitiesCount,
             'bytes' => $bytes,
-            'bytes_hr' => $this->attachmentManager->getFileSize($bytes),
+            'bytes_hr' => BytesFormatter::format($bytes),
             'url' => $url
         ];
 

@@ -1,16 +1,13 @@
 services:
-    dmkclub_payment.datagrid.mass_action.sepadebitxml:
-        class: DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction\SepaDebitXmlAction
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false 
+
+    DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction\SepaDebitXmlAction:
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmksepadebitxml }
-    dmkclub_payment.datagrid.mass_action.sepadebitxml_handler:
-        class: DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction\SepaDebitXmlHandler
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@translator"
-            - "@logger"
-            - "@router"
-            - "@dmkclub.payment.sepa.direct_debit_builder"
-            - "@oro_importexport.file.file_manager"
-            - "@oro_attachment.manager"
+
+    DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction\SepaDebitXmlHandler:
+        public: true

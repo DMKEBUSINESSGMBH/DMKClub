@@ -30,7 +30,7 @@ class SepaDebitXmlAction extends AbstractMassAction
         }
 
         if (empty($options['handler'])) {
-            $options['handler'] = 'dmkclub_payment.datagrid.mass_action.sepadebitxml_handler';
+            $options['handler'] = SepaDebitXmlHandler::class;
         }
 
         if (empty($options['frontend_type'])) {

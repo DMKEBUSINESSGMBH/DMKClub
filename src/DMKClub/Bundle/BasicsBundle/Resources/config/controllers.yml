@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        public: true
+
+    DMKClub\Bundle\BasicsBundle\Controller\ExportController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    DMKClub\Bundle\BasicsBundle\Controller\TwigTemplateController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

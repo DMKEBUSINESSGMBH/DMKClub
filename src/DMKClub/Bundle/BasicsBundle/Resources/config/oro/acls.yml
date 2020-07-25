@@ -1,0 +1,7 @@
+acls:
+    dmkclub_basics_export_download:
+        label: dmkclub.basics.privilege.export.download
+        type: action
+        group_name: ""
+        bindings: ~
+        category: "dmkclub_data"

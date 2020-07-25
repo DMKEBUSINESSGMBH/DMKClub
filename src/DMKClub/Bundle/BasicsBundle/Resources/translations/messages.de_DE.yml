@@ -8,6 +8,7 @@ dmkclub:
           generator.label:     PDF Generator
         privilege:
             category.dmkclub_data.label: DMKClub Daten
+            export.download: Dateien herunterladen
 
         datagrid:
             action:

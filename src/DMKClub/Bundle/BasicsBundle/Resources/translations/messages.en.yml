@@ -15,6 +15,7 @@ dmkclub:
             message.saved:       Saved
         privilege:
             category.dmkclub_data.label: DMKClub Data
+            export.download: Download files
 
         datagrid:
             action.success_message: "{0} No entities were exported|{1} One PDF was exported|]1,Inf[ %count% PDFs were exported"
