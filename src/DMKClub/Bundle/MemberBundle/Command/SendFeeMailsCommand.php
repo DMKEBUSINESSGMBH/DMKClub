@@ -1,25 +1,27 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Command;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Psr\Log\LoggerInterface;
+
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
-use Symfony\Component\VarDumper\VarDumper;
-use Psr\Log\LoggerInterface;
 
 /**
  * Send membership fees to member by email.
  */
-class SendFeeMailsCommand extends ContainerAwareCommand
+class SendFeeMailsCommand extends Command
 {
 
     const NAME = 'dmkclub:send:fee';
@@ -27,6 +29,42 @@ class SendFeeMailsCommand extends ContainerAwareCommand
     const FLUSH_BATCH_SIZE = 100;
 
     protected $output;
+
+    /**
+     *
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /** @var \Psr\Log\LoggerInterface */
+    private $logger;
+
+    private $processor;
+
+    private $localSettings;
+
+    /**
+     *
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        Processor $processor,
+        LocaleSettings $localSettings,
+        TranslatorInterface $translator,
+        LoggerInterface $logger
+    )
+    {
+        parent::__construct();
+        $this->entityManager = $entityManager;
+        $this->processor = $processor;
+        $this->localSettings = $localSettings;
+        $this->translator = $translator;
+        $this->logger = $logger;
+    }
 
     /**
      *
@@ -41,11 +79,11 @@ class SendFeeMailsCommand extends ContainerAwareCommand
 
     /**
      *
-     * @return EntityManager
+     * @return EntityManagerInterface
      */
     protected function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        return $this->entityManager;
     }
 
     /**
@@ -54,7 +92,7 @@ class SendFeeMailsCommand extends ContainerAwareCommand
      */
     protected function getMailer()
     {
-        return $this->getContainer()->get(Processor::class);
+        return $this->processor;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -112,16 +150,11 @@ class SendFeeMailsCommand extends ContainerAwareCommand
 
     protected function log($msg)
     {
-        /* @var $logger LoggerInterface */
-        $logger = $this->getContainer()->get('logger');
-        $logger->critical($msg);
+        $this->logger->critical($msg);
     }
 
     protected function initLanguage()
     {
-        /* @var \Oro\Bundle\ConfigBundle\Config\ConfigManager */
-        $configManager = $this->getContainer()->get('oro_config.global');
-        $t = $this->getContainer()->get('translator');
-//        $t->setLocale($configManager->get('oro_locale.language'));
+        $this->translator->setLocale($this->localSettings->getLanguage());
     }
 }
