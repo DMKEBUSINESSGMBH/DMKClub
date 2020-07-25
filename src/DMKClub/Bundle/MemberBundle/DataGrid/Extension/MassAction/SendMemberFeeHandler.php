@@ -102,28 +102,20 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
      */
     protected function handleSendMemberFee($options, $data, IterableResultInterface $results)
     {
-        $isAllSelected = $this->isAllSelected($data);
         $iteration = 0;
-        if (array_key_exists('values', $data) && !empty($data['values'])) {
-            $idBag = explode(',', $data['values']);
-            $iteration = count($idBag);
-            $this->scheduleSendCommand($idBag);
-        }
-        elseif ($isAllSelected) {
-            $idBag = [];
-            foreach ($results as $result) {
-                $iteration ++;
-                $entityId = $result->getValue('id');
-                $idBag[] = $entityId;
+        $idBag = [];
+        foreach ($results as $result) {
+            $iteration ++;
+            $entityId = $result->getValue('id');
+            $idBag[] = $entityId;
 
-                if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
-                    $this->scheduleSendCommand($idBag);
-                    $idBag = [];
-                }
-            }
-            if (!empty($idBag)) {
+            if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
                 $this->scheduleSendCommand($idBag);
+                $idBag = [];
             }
+        }
+        if (!empty($idBag)) {
+            $this->scheduleSendCommand($idBag);
         }
 
         return $iteration;
@@ -154,15 +146,6 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
         // "oro:cron:run_command:dmkclub:send:fee-ids=32560,3244 => max 255 Zeichen
         $cmd = sprintf('oro:cron:run_command:%s-%s', SendFeeMailsCommand::NAME, 'ids='.implode(',', $ids));
         return strlen($cmd) < 255;
-    }
-    /**
-     *
-     * @param array $data
-     * @return bool
-     */
-    protected function isAllSelected($data)
-    {
-        return array_key_exists('inset', $data) && $data['inset'] === '0';
     }
 
     /**

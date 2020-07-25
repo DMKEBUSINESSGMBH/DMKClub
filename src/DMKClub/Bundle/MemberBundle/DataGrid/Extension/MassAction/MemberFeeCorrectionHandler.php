@@ -108,32 +108,17 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
     protected function handleFeeCorrection($options, $data, IterableResultInterface $results)
     {
         $markType = $options['mark_type'];
-        $isAllSelected = $this->isAllSelected($data);
         $iteration = 0;
-        if (array_key_exists('values', $data) && !empty($data['values'])) {
-            $feeIds = explode(',', $data['values']);
-            foreach ($feeIds as $feeId) {
-                $this->updateFee($feeId, $markType);
-                if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
-                    $this->entityManager->flush();
-                    $this->entityManager->clear();
-                }
-                $iteration ++;
-            }
-        }
-        // FIXME: wir benötigen noch den aktuellen memberBilling
-        elseif ($isAllSelected) {
-            foreach ($results as $result) {
-                /** @var MemberFee $entity */
-                $entityId = $result->getValue('id');
-                $this->updateFee($entityId, $markType);
+        foreach ($results as $result) {
+            /** @var MemberFee $entity */
+            $entityId = $result->getValue('id');
+            $this->updateFee($entityId, $markType);
 
-                if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
-                    $this->entityManager->flush();
-                    $this->entityManager->clear();
-                }
-                $iteration ++;
+            if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
+                $this->entityManager->flush();
+                $this->entityManager->clear();
             }
+            $iteration ++;
         }
         $this->entityManager->flush();
 
@@ -153,16 +138,6 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
         }
 
         $this->entityManager->persist($entity);
-    }
-
-    /**
-     *
-     * @param array $data
-     * @return bool
-     */
-    protected function isAllSelected($data)
-    {
-        return array_key_exists('inset', $data) && $data['inset'] === '0';
     }
 
     /**

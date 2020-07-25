@@ -8,7 +8,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
@@ -40,7 +39,9 @@ class ExportPdfHandler implements MassActionHandlerInterface
     /**
      *
      * @param TranslatorInterface $translator
-     * @param ServiceLink $securityFacadeLink
+     * @param LoggerInterface $logger
+     * @param MessageProducerInterface $messageProducer
+     * @param MemberFeeManager $feeManager
      */
     public function __construct(TranslatorInterface $translator, LoggerInterface $logger, MessageProducerInterface $messageProducer, MemberFeeManager $feeManager)
     {
@@ -79,42 +80,23 @@ class ExportPdfHandler implements MassActionHandlerInterface
      */
     protected function handleExport($options, $data, IterableResultInterface $results)
     {
-        $isAllSelected = $this->isAllSelected($data);
-        $iteration = 0;
-
         $jobData = [
             'entity_name' => $options['entity_name']
         ];
 
-        if (array_key_exists('values', $data) && ! empty($data['values'])) {
-            $jobData['entity_ids'] = $data['values'];
-            $iteration = count(explode(',', $data['values']));
-        } elseif ($isAllSelected) {
-            $entityIds = [];
-            foreach ($results as $result) {
-                $entityIds[] = $result->getValue('id');
-            }
-            $jobData['entity_ids'] = implode(',', $entityIds);
-
-            $iteration ++;
+        $entityIds = [];
+        foreach ($results as $result) {
+            $entityIds[] = $result->getValue('id');
         }
-        if (array_key_exists('entity_ids', $jobData)) {
-            $jobType = 'export';
-            $jobName = 'dmkexportpdf';
+        $jobData['entity_ids'] = implode(',', $entityIds);
+
+        if (count($entityIds) > 0) {
+//             $jobType = 'export';
+//             $jobName = 'dmkexportpdf';
             $this->messageProducer->send(Topics::EXPORT_PDF, $jobData); //($jobType, $jobName, $jobData, true);
         }
 
-        return $iteration;
-    }
-
-    /**
-     *
-     * @param array $data
-     * @return bool
-     */
-    protected function isAllSelected($data)
-    {
-        return array_key_exists('inset', $data) && $data['inset'] === '0';
+        return count($entityIds);
     }
 
     /**

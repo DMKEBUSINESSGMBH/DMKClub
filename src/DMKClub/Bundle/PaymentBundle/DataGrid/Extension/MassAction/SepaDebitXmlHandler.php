@@ -87,6 +87,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
     public function handle(MassActionHandlerArgs $args)
     {
         $data = $args->getData();
+
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
 
@@ -117,36 +118,25 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
      */
     protected function handleExport($options, $data, IterableResultInterface $results)
     {
-        $isAllSelected = $this->isAllSelected($data);
-        $iteration = 0;
+        $processed = 0;
         $totalSelected = 0;
 
         // $data_identifier = $options['data_identifier'];
         $entity_name = $options['entity_name'];
 
-        if (array_key_exists('values', $data) && ! empty($data['values'])) {
-            $entity_ids = explode(',', $data['values']);
-            $totalSelected = count($entity_ids);
-            foreach ($entity_ids as $entityId) {
-                if ($this->handleItem($entityId, $entity_name)) {
-                    $iteration ++;
-                }
-            }
-        } elseif ($isAllSelected) {
-            foreach ($results as $result) {
-                $totalSelected++;
-                $entityId = $result->getValue('id');
-                if ($this->handleItem($entityId, $entity_name)) {
-                    $iteration ++;
-                }
+        foreach ($results as $result) {
+            $totalSelected++;
+            $entityId = $result->getValue('id');
+            if ($this->handleItem($entityId, $entity_name)) {
+                $processed++;
             }
         }
         $ret = [
             self::RESULT_SELECTED_TOTAL => $totalSelected,
-            self::RESULT_PROCESSED => $iteration,
+            self::RESULT_PROCESSED => $processed,
         ];
 
-        if ($iteration > 0) {
+        if ($processed > 0) {
             $xml = $this->sepaBuilder->buildXML();
             $outputFormat = 'xml';
             $fileName = $this->fileManager->generateFileName('sepadirectdebit', $outputFormat);
@@ -160,7 +150,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
             $this->logger->alert('SEPA xml file created', [
                 'file' => $localFile,
                 'bytes' => $bytes,
-                'items' => $iteration,
+                'items' => $processed,
                 'selected' => $totalSelected,
             ]);
         }
@@ -255,16 +245,6 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
     {
         $repo = $this->entityManager->getRepository($entityName);
         return $repo->findOneById($entityId);
-    }
-
-    /**
-     *
-     * @param array $data
-     * @return bool
-     */
-    protected function isAllSelected($data)
-    {
-        return array_key_exists('inset', $data) && $data['inset'] === '0';
     }
 
     /**

@@ -90,27 +90,19 @@ class DownloadPdfHandler implements MassActionHandlerInterface
      */
     protected function handleExport($options, $data, IterableResultInterface $results)
     {
-        $isAllSelected = $this->isAllSelected($data);
-        $iteration = 0;
-
         $jobData = [
             'data_identifier' => $options['data_identifier'],
             'entity_name' => $options['entity_name']
         ];
 
-        if (array_key_exists('values', $data) && ! empty($data['values'])) {
-            $jobData['entity_ids'] = $data['values'];
-            $iteration = count(explode(',', $data['values']));
-        } elseif ($isAllSelected) {
-            $entityIds = [];
-            foreach ($results as $result) {
-                $entityIds[] = $result->getValue('id');
-            }
-            $jobData['entity_ids'] = implode(',', $entityIds);
-
-            // $this->entityManager->flush();
-            $iteration ++;
+        $entityIds = [];
+        foreach ($results as $result) {
+            $entityIds[] = $result->getValue('id');
         }
+        $jobData['entity_ids'] = implode(',', $entityIds);
+
+        // $this->entityManager->flush();
+
         if (array_key_exists('entity_ids', $jobData)) {
 
             $ids = explode(',', $jobData['entity_ids']);
@@ -127,7 +119,7 @@ class DownloadPdfHandler implements MassActionHandlerInterface
         }
 
         return [
-            'items' => $iteration,
+            'items' => count($entityIds),
             'filename' => $file->getKey()
         ];
     }
