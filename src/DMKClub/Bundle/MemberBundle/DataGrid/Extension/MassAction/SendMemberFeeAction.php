@@ -22,7 +22,7 @@ class SendMemberFeeAction extends AbstractMassAction
     public function setOptions(ActionConfiguration $options)
     {
         if (empty($options['handler'])) {
-            $options['handler'] = 'dmkclub_member.datagrid.mass_action.send_memberfee_handler';
+            $options['handler'] = SendMemberFeeHandler::class;
         }
 
         if (empty($options['frontend_type'])) {

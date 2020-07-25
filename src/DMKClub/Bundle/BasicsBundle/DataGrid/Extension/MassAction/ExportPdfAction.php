@@ -30,7 +30,7 @@ class ExportPdfAction extends AbstractMassAction
         }
 
         if (empty($options['handler'])) {
-            $options['handler'] = 'dmkclub_basics.datagrid.mass_action.dmkexportpdf_handler';
+            $options['handler'] = ExportPdfHandler::class;
         }
 
         if (empty($options['frontend_type'])) {

@@ -30,7 +30,7 @@ class DownloadPdfAction extends AbstractMassAction
         }
 
         if (empty($options['handler'])) {
-            $options['handler'] = 'dmkclub_basics.datagrid.mass_action.dmkdownloadpdf_handler';
+            $options['handler'] = DownloadPdfHandler::class;
         }
 
         if (empty($options['frontend_type'])) {

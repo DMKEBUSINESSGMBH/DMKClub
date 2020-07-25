@@ -12,8 +12,7 @@ services:
           - '@knp_gaufrette.filesystem_map'
           - 'dmkclub_pdfexport'
 
-    dmkclub_basics.pdf.manager:
-        class: DMKClub\Bundle\BasicsBundle\PDF\Manager
+    DMKClub\Bundle\BasicsBundle\PDF\Manager:
         public: true
         arguments:
             - "@white_october.tcpdf"
@@ -44,7 +43,7 @@ services:
         arguments:
             - '@oro_message_queue.job.runner'
             - "@doctrine.orm.entity_manager"
-            - "@dmkclub_basics.pdf.manager"
+            - '@DMKClub\Bundle\BasicsBundle\PDF\Manager'
             - "@knp_gaufrette.filesystem_map"
             - "@logger"
         tags:

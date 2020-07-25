@@ -1,13 +1,11 @@
 
 services:
-    dmkclub_member.datagrid.mass_action.mark_fee_correction:
-        class: DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionAction
+    DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionAction:
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: markfeecorrection }
 
-    dmkclub_member.datagrid.mass_action.unmark_fee_correction:
-        class: DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionUnmarkAction
+    DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\MemberFeeCorrectionUnmarkAction:
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: unmarkfeecorrection }
@@ -22,19 +20,17 @@ services:
             - "@dmkclub_member.memberfee.manager"
             - "@logger"
 
-    dmkclub_member.datagrid.mass_action.send_memberfee:
-        class: DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\SendMemberFeeAction
+    DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\SendMemberFeeAction:
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmksendmemberfee }
 
-    dmkclub_member.datagrid.mass_action.send_memberfee_handler:
-        class: DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\SendMemberFeeHandler
+    DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\SendMemberFeeHandler:
         public: true
         arguments:
             - "@translator"
             - "@security.authorization_checker"
             - "@dmkclub_member.memberfee.manager"
-            - "@dmkclub_member.mailer.processor"
+            - '@DMKClub\Bundle\MemberBundle\Mailer\Processor'
             - "@oro_cron.async.command_runner"
             - "@logger"

@@ -11,6 +11,8 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
+use Symfony\Component\Routing\RouterInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Generic handler to download a combined PDF. The source of PDF is created by callback.
@@ -45,7 +47,9 @@ class DownloadPdfHandler implements MassActionHandlerInterface
      * @param EntityManager $entityManager
      * @param TranslatorInterface $translator
      */
-    public function __construct(EntityManager $entityManager, TranslatorInterface $translator, LoggerInterface $logger, Manager $pdfManager, $router)
+    public function __construct(
+        EntityManagerInterface $entityManager, TranslatorInterface $translator, LoggerInterface $logger,
+        Manager $pdfManager, RouterInterface $router)
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
@@ -166,7 +170,7 @@ class DownloadPdfHandler implements MassActionHandlerInterface
 
         $url = '';
         if ($entitiesCount > 0) {
-            $url = $this->router->generate('oro_importexport_export_download', [
+            $url = $this->router->generate('dmkclub_basics_export_download', [
                 'fileName' => basename($fileName)
             ]);
         }

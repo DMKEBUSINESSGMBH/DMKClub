@@ -13,12 +13,33 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Form\Form;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use DMKClub\Bundle\MemberBundle\Form\EntityField\Handler\MemberFeeHandler;
+use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
 /**
  * @Route("/memberfee")
  */
 class MemberFeeController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TranslatorInterface::class,
+            MemberFeeHandler::class,
+            Manager::class,
+//            'dmkclub_member.memberfee.form' => Form::class,
+            UpdateHandler::class,
+            RouterInterface::class,
+        ]);
+    }
+
 	/**
 	 * @Route("/", name="dmkclub_memberfee_index")
 	 * @AclAncestor("dmkclub_memberfee_view")
@@ -59,7 +80,7 @@ class MemberFeeController extends AbstractController
 		];
 
 		/* @var $pdfManager \DMKClub\Bundle\BasicsBundle\PDF\Manager */
-		$pdfManager = $this->container->get('dmkclub_basics.pdf.manager');
+		$pdfManager = $this->container->get(Manager::class);
 
 		try {
 			$file = $pdfManager->buildPdf($entity);
@@ -101,23 +122,23 @@ class MemberFeeController extends AbstractController
 	 */
 	protected function update(MemberFee $entity)
 	{
-		return $this->get('oro_form.model.update_handler')->handleUpdate(
+		return $this->get(UpdateHandler::class)->handleUpdate(
 				$entity,
 				$this->get('dmkclub_member.memberfee.form'),
 				function (MemberFee $entity) {
-					return array(
-							'route' => 'dmkclub_memberfee_update',
-							'parameters' => array('id' => $entity->getId())
-					);
+					return [
+						'route' => 'dmkclub_memberfee_update',
+						'parameters' => ['id' => $entity->getId()]
+					];
 				},
 				function (MemberFee $entity) {
-					return array(
-							'route' => 'dmkclub_memberfee_view',
-							'parameters' => array('id' => $entity->getId())
-					);
+					return [
+						'route' => 'dmkclub_memberfee_view',
+						'parameters' => ['id' => $entity->getId()]
+					];
 				},
-				$this->get('translator')->trans('dmkclub.memberfee.message.saved'),
-				$this->get('dmkclub_member.memberfee.form.handler')
+				$this->get(TranslatorInterface::class)->trans('dmkclub.memberfee.message.saved'),
+				$this->get(MemberFeeHandler::class)
 		);
 	}
 

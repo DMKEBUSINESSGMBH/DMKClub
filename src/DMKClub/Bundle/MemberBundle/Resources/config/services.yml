@@ -7,7 +7,6 @@ parameters:
 
     dmkclub_member.memberproposal.entity.class:            DMKClub\Bundle\MemberBundle\Entity\MemberProposal
 
-    dmkclub_member.mailer.processor.class:                 DMKClub\Bundle\MemberBundle\Mailer\Processor
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
     # datagrid helpers
     dmkclub_member.country.datagrid_helper.class:          Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
@@ -55,8 +54,8 @@ services:
             - "%dmkclub_member.memberfee.entity.class%"
             - "@doctrine.orm.entity_manager"
 
-    dmkclub_member.mailer.processor:
-        class: "%dmkclub_member.mailer.processor.class%"
+    DMKClub\Bundle\MemberBundle\Mailer\Processor:
+        public: true
         arguments:
             - '@event_dispatcher'
             - '@doctrine'
@@ -65,7 +64,7 @@ services:
             - '@oro_email.email_holder_helper'
             - '@oro_email.mailer.processor'
 #            - '@oro_email.direct_mailer'
-            - '@dmkclub_basics.pdf.manager'
+            - '@DMKClub\Bundle\BasicsBundle\PDF\Manager'
 
     # Wird das verwendet??
     dmkclub_member.country.datagrid_helper:

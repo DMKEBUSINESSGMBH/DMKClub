@@ -14,6 +14,7 @@ namespace DMKClub\Bundle\BasicsBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
 /**
  * Adds tagged dmkclub_basics.pdfgenerator services to pdf service.
@@ -21,7 +22,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class PdfGeneratorPass implements CompilerPassInterface
 {
 	const TAG = 'dmkclub_basics.pdfgenerator';
-	const MANAGER = 'dmkclub_basics.pdf.manager';
+	const MANAGER = Manager::class;
 
 	public function process(ContainerBuilder $container)
 	{

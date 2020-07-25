@@ -1,31 +1,26 @@
 parameters:
-    dmkclub_basics.mass_action.dmkexportpdf_handler.class:           DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfHandler
-    dmkclub_basics.mass_action.dmkdownloadpdf_handler.class:         DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfHandler
 
 services:
-    dmkclub_basics.datagrid.mass_action.dmkexportpdf:
-        class: DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfAction
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false 
+
+    DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfAction:
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmkexportpdf }
-    dmkclub_basics.datagrid.mass_action.dmkexportpdf_handler:
-        class: "%dmkclub_basics.mass_action.dmkexportpdf_handler.class%"
+    DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\ExportPdfHandler:
+        public: true
         arguments:
             - "@translator"
             - "@logger"
             - '@oro_message_queue.message_producer'
             - "@dmkclub_member.memberfee.manager"
 
-    dmkclub_basics.datagrid.mass_action.dmkdownloadpdf:
-        class: DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfAction
+    DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfAction:
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: dmkdownloadpdf }
-    dmkclub_basics.datagrid.mass_action.dmkdownloadpdf_handler:
-        class: "%dmkclub_basics.mass_action.dmkdownloadpdf_handler.class%"
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@translator"
-            - "@logger"
-            - "@dmkclub_basics.pdf.manager"
-            - "@router"
+    DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfHandler:
+        public: true
