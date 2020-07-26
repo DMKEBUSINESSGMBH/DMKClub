@@ -34,7 +34,7 @@ class MemberFeeRepository extends EntityRepository {
 
 	/**
 	 * @param QueryBuilder $queryBuilder
-	 * @param User         $user
+	 * @param MemberBilling $billing
 	 *
 	 * @return $this
 	 */

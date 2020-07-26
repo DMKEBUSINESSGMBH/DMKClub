@@ -9,6 +9,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * Class TwigTemplate
@@ -187,8 +188,8 @@ class TwigTemplate {
 	/**
 	 * Set id
 	 *
-	 * @param \int $id
-	 * @return Member
+	 * @param int $id
+	 * @return TwigTemplate
 	 */
 	public function setId($id) {
 		$this->id = $id;

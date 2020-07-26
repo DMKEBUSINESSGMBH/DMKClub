@@ -14,6 +14,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
+use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager;
 
 /**
  * @NamePrefix("dmkclub_api_")
@@ -45,7 +46,7 @@ class MemberController extends RestController implements ClassResourceInterface
     /**
      * Get entity Manager
      *
-     * @return ApiEntityManager
+     * @return MemberManager
      */
     public function getManager()
     {

@@ -16,6 +16,8 @@ use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use DMKClub\Bundle\BasicsBundle\Model\LifecycleTrait;
 use DMKClub\Bundle\MemberBundle\Model\ExtendMemberProposal;
 use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
  * Class MemberProposal

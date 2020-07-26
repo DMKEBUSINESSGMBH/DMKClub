@@ -4,12 +4,6 @@ namespace DMKClub\Bundle\MemberBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
-use Oro\Bundle\DataAuditBundle\Entity\AbstractAudit;
-use GVLCRM\Bundle\BusinessPartnerBundle\Entity\BusinessPartner;
-use GVLCRM\Bundle\ContractBundle\Entity\Contract;
-use GVLCRM\Bundle\BasicsBundle\Service\StatusReporting;
-use GVLCRM\Bundle\ContractBundle\Entity\Mandate;
-use GVLCRM\Bundle\UsageMediumBundle\Entity\UsageMedium;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy;
 

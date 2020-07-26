@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\Rest\Util\Codes;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
@@ -15,6 +14,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @NamePrefix("oro_api_")
@@ -44,17 +44,6 @@ class TwigTemplateController extends RestController implements ClassResourceInte
     }
 
     /**
-     * Get entity Manager
-     *
-     * @return ApiEntityManager
-     */
-    public function getManager()
-    {
-    	// FIXME: missing
-    	return $this->get('dmkclub_basics.twigtemplate.manager.api');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getForm()
@@ -68,5 +57,10 @@ class TwigTemplateController extends RestController implements ClassResourceInte
     public function getFormHandler()
     {
         throw new \BadMethodCallException('FormHandler is not available.');
+    }
+
+    public function getManager()
+    {
+        throw new \BadMethodCallException('Manager is not available.');
     }
 }
