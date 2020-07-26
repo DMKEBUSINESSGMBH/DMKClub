@@ -17,11 +17,12 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * Send membership fees to member by email.
  */
-class SendFeeMailsCommand extends Command
+class SendFeeMailsCommand extends ContainerAwareCommand
 {
 
     const NAME = 'dmkclub:send:fee';
@@ -30,18 +31,9 @@ class SendFeeMailsCommand extends Command
 
     protected $output;
 
-    /**
-     *
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
 
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
-
-    private $processor;
-
-    private $localSettings;
 
     /**
      *
@@ -49,22 +41,6 @@ class SendFeeMailsCommand extends Command
      */
     private $translator;
 
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        Processor $processor,
-        LocaleSettings $localSettings,
-        TranslatorInterface $translator,
-        LoggerInterface $logger
-    )
-    {
-        parent::__construct();
-        $this->entityManager = $entityManager;
-        $this->processor = $processor;
-        $this->localSettings = $localSettings;
-        $this->translator = $translator;
-        $this->logger = $logger;
-    }
 
     /**
      *
@@ -83,7 +59,7 @@ class SendFeeMailsCommand extends Command
      */
     protected function getEntityManager()
     {
-        return $this->entityManager;
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -92,7 +68,7 @@ class SendFeeMailsCommand extends Command
      */
     protected function getMailer()
     {
-        return $this->processor;
+        return $this->getContainer()->get(Processor::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -150,11 +126,16 @@ class SendFeeMailsCommand extends Command
 
     protected function log($msg)
     {
+        if (!$this->logger) {
+            $this->logger = $this->getContainer()->get('logger');
+        }
         $this->logger->critical($msg);
     }
 
     protected function initLanguage()
     {
+        $this->translator = $this->getContainer()->get('translator');
+        $this->localSettings = $this->getContainer()->get('oro_locale.settings');
         $this->translator->setLocale($this->localSettings->getLanguage());
     }
 }

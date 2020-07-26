@@ -1,13 +1,9 @@
-parameters:
-    dmkclub_basics.form.type.twigtemplate.class:        DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateType
-    dmkclub_basics.form.type.twigtemplate_select.class: DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateSelectType
-    dmkclub_basics.form.twigtemplate.handler.class:     DMKClub\Bundle\BasicsBundle\Form\Handler\TwigTemplateHandler
 services:
 # ####
 # FormTypes
 # ####
     dmkclub_basics.twigtemplate.form.type:
-        class: "%dmkclub_basics.form.type.twigtemplate.class%"
+        class: DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateType
         arguments:
             - "@translator"
             - '@DMKClub\Bundle\BasicsBundle\PDF\Manager'
@@ -27,8 +23,7 @@ services:
 # ####
 # FormHandler
 # ####
-    dmkclub_basics.twigtemplate.form.handler:
-        class: "%dmkclub_basics.form.twigtemplate.handler.class%"
+    DMKClub\Bundle\BasicsBundle\Form\Handler\TwigTemplateHandler:
         public: true
         arguments:
             - "@dmkclub_basics.twigtemplate.form"
@@ -40,6 +35,6 @@ services:
 # ####
 
     dmkclub_basics.form.type.twigtemplate_select:
-        class: "%dmkclub_basics.form.type.twigtemplate_select.class%"
+        class: DMKClub\Bundle\BasicsBundle\Form\Type\TwigTemplateSelectType
         tags:
             - { name: form.type, alias: "dmkclub_basics_twigtemplate_select" }
