@@ -146,7 +146,7 @@ class PRCategory extends ExtendPRCategory {
 	 * Set id
 	 *
 	 * @param int $id
-	 * @return Category
+	 * @return PRCategory
 	 */
 	public function setId($id)
 	{
@@ -169,7 +169,7 @@ class PRCategory extends ExtendPRCategory {
 	 * Set endDate
 	 *
 	 * @param \DateTime $endDate
-	 * @return Category
+	 * @return PRCategory
 	 */
 	public function setName($id)
 	{
@@ -267,7 +267,7 @@ class PRCategory extends ExtendPRCategory {
 	 * Set organization
 	 *
 	 * @param Organization $organization
-	 * @return Customer
+	 * @return PRCategory
 	 */
 	public function setOrganization(Organization $organization = null)
 	{

@@ -4,13 +4,12 @@ namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
-use Oro\Bundle\FormBundle\Form\Type\Select2EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\VarDumper\VarDumper;
-use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\FormBundle\Form\Type\Select2EntityType;
 
 /**
  * Class MemberSegmentSelectType
@@ -59,11 +58,11 @@ class MemberSegmentSelectType extends AbstractType
         );
 
         $resolver->setNormalizer(
-            'choices', 
+            'choices',
             function (Options $options, $value) {
                 /** @var EntityManager $em */
                 $em = $options['em'];
-                
+
                 /** @var EntityRepository $repository */
                 $repository = $em->getRepository('OroSegmentBundle:Segment');
                 $entities   = $options['entities'];

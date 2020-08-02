@@ -2,10 +2,9 @@
 
 namespace DMKClub\Bundle\PaymentBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 
-use Oro\Bundle\UserBundle\Provider\GenderProvider;
 use DMKClub\Bundle\PaymentBundle\Provider\PaymentOptionsProvider;
 
 class PaymentOptionsType extends AbstractType
@@ -42,18 +41,18 @@ class PaymentOptionsType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'choices'     => $this->paymentOptionsProvider->getChoices(),
                 'multiple'    => false,
                 'expanded'    => false,
                 'empty_value' => 'dmkclub.payment_option.form.choose',
                 'translatable_options' => false
-            )
+            ]
         );
     }
 }

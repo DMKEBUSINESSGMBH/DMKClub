@@ -1,114 +1,119 @@
 <?php
-
 namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Oro\Bundle\TagBundle\Entity\TagManager;
 use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
-
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class MemberBillingHandler
 {
-	/** @var FormInterface */
-	protected $form;
 
-	/** @var RequestStack */
-	protected $request;
+    /** @var FormInterface */
+    protected $form;
 
-	/** @var ObjectManager */
-	protected $manager;
+    /** @var RequestStack */
+    protected $request;
 
-	/* @var \DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager */
-	protected $memberBillingManager;
-	/**
-	 * @param FormInterface          $form
-	 * @param RequestStack           $request
-	 * @param ObjectManager          $manager
-	 * @param RequestChannelProvider $requestChannelProvider
-	 */
-	public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager,
-			MemberBillingManager $memberBillingManager) {
-	    $this->form              = $form;
-	    $this->request           = $request;
-	    $this->manager           = $manager;
-	    $this->memberBillingManager = $memberBillingManager;
-	}
+    /** @var ObjectManager */
+    protected $manager;
 
-	/**
-	 * Process form
-	 *
-	 * @param  MemberBilling $entity
-	 *
-	 * @return bool True on successful processing, false otherwise
-	 */
-	public function process(MemberBilling $entity)
-	{
-		$this->restoreProcessorSettings($entity);
+    /* @var \DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager */
+    protected $memberBillingManager;
 
-		$this->form->setData($entity);
+    /**
+     *
+     * @param FormInterface $form
+     * @param RequestStack $request
+     * @param ObjectManager $manager
+     * @param RequestChannelProvider $requestChannelProvider
+     */
+    public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager, MemberBillingManager $memberBillingManager)
+    {
+        $this->form = $form;
+        $this->request = $request;
+        $this->manager = $manager;
+        $this->memberBillingManager = $memberBillingManager;
+    }
 
-		$request = $this->request->getCurrentRequest();
-		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-		    $this->form->handleRequest($request);
+    /**
+     * Process form
+     *
+     * @param MemberBilling $entity
+     *
+     * @return bool True on successful processing, false otherwise
+     */
+    public function process(MemberBilling $entity)
+    {
+        $this->restoreProcessorSettings($entity);
 
-		    if ($this->form->isValid()) {
-		        $this->onSuccess($entity);
+        $this->form->setData($entity);
 
-		        return true;
-		    }
-		}
+        $request = $this->request->getCurrentRequest();
+        if (in_array($request->getMethod(), [
+            'POST',
+            'PUT'
+        ])) {
+            $this->form->handleRequest($request);
 
-		return false;
-	}
+            if ($this->form->isValid()) {
+                $this->onSuccess($entity);
 
-	/**
-	 * "Success" form handler
-	 *
-	 * @param MemberBilling $entity
-	 */
-	protected function onSuccess(MemberBilling $entity) {
-		// TODO: Hier die Daten aus dem VO serialisieren!
-		$this->saveProcessorConfig($entity);
-		$this->manager->persist($entity);
-		$this->manager->flush();
-		$this->tagManager->saveTagging($entity);
-	}
+                return true;
+            }
+        }
 
-	protected function saveProcessorConfig(MemberBilling $entity) {
-		// Die alte, serialisierte Config für alle Prozessoren holen
-		$configData = $entity->getProcessorConfig();
-		$configData = $configData ? unserialize($configData) : [];
-		// Die Daten für den aktuellen Prozessor neu schreiben
-		$configData[$entity->getProcessor()] = $entity->getProcessorSettings();
+        return false;
+    }
 
-		$entity->setProcessorConfig(serialize($configData));
+    /**
+     * "Success" form handler
+     *
+     * @param MemberBilling $entity
+     */
+    protected function onSuccess(MemberBilling $entity)
+    {
+        // TODO: Hier die Daten aus dem VO serialisieren!
+        $this->saveProcessorConfig($entity);
+        $this->manager->persist($entity);
+        $this->manager->flush();
+        $this->tagManager->saveTagging($entity);
+    }
 
-	}
+    protected function saveProcessorConfig(MemberBilling $entity)
+    {
+        // Die alte, serialisierte Config für alle Prozessoren holen
+        $configData = $entity->getProcessorConfig();
+        $configData = $configData ? unserialize($configData) : [];
+        // Die Daten für den aktuellen Prozessor neu schreiben
+        $configData[$entity->getProcessor()] = $entity->getProcessorSettings();
 
-	/**
-	 *
-	 * @param MemberBilling $entity
-	 */
-	protected function restoreProcessorSettings(MemberBilling $entity) {
-		// Hier müssen wir eingreifen. Die Storedaten sind serialisiert in der
-		// processorConfig drin. Sie müssen in ein VO überführt und dann in
-		// processorSetting gesetzt werden.
-		// Beim Wechsel des processortypes muss man aber aufpassen, damit die Config noch passt!
-		$entity->setProcessorSettings($this->memberBillingManager->getProcessorSettings($entity));
-	}
+        $entity->setProcessorConfig(serialize($configData));
+    }
 
-	/**
-	 * Setter for tag manager
-	 *
-	 * @param TagManager $tagManager
-	 */
-	public function setTagManager(TagManager $tagManager) {
-		$this->tagManager = $tagManager;
-	}
+    /**
+     *
+     * @param MemberBilling $entity
+     */
+    protected function restoreProcessorSettings(MemberBilling $entity)
+    {
+        // Hier müssen wir eingreifen. Die Storedaten sind serialisiert in der
+        // processorConfig drin. Sie müssen in ein VO überführt und dann in
+        // processorSetting gesetzt werden.
+        // Beim Wechsel des processortypes muss man aber aufpassen, damit die Config noch passt!
+        $entity->setProcessorSettings($this->memberBillingManager->getProcessorSettings($entity));
+    }
+
+    /**
+     * Setter for tag manager
+     *
+     * @param TagManager $tagManager
+     */
+    public function setTagManager(TagManager $tagManager)
+    {
+        $this->tagManager = $tagManager;
+    }
 }

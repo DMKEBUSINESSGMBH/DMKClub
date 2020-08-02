@@ -267,7 +267,7 @@ class Category extends ExtendCategory {
 	 * Set organization
 	 *
 	 * @param Organization $organization
-	 * @return Customer
+	 * @return Category
 	 */
 	public function setOrganization(Organization $organization = null)
 	{

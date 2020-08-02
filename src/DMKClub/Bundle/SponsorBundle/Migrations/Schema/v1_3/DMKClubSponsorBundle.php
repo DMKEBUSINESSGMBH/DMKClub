@@ -6,7 +6,6 @@ use Doctrine\DBAL\Schema\Schema;
 
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 
@@ -14,7 +13,7 @@ class DMKClubSponsorBundle implements Migration, ActivityExtensionAwareInterface
 {
 	/** @var ActivityExtension */
 	protected $activityExtension;
-	
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -22,7 +21,7 @@ class DMKClubSponsorBundle implements Migration, ActivityExtensionAwareInterface
 	{
 		$this->activityExtension = $activityExtension;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)

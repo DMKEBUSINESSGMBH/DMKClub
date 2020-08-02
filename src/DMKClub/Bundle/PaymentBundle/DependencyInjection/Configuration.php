@@ -18,8 +18,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('dmk_club_payment');
+        $treeBuilder = new TreeBuilder('dmk_club_payment');
+        $rootNode = $treeBuilder->getRootNode();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

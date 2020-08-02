@@ -2,9 +2,6 @@
 namespace DMKClub\Bundle\MemberBundle\Accounting;
 
 use DMKClub\Bundle\MemberBundle\Form\Type\DefaultProcessorSettingsType;
-use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
-use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
-use Doctrine\ORM\EntityManager;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;

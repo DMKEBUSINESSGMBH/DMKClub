@@ -1,69 +1,73 @@
 <?php
-
 namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
-
-use Doctrine\Common\Persistence\ObjectManager;
-use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Doctrine\Common\Persistence\ObjectManager;
+
+use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 
 class MemberFeeDiscountHandler
 {
-	/** @var FormInterface */
-	protected $form;
 
-	/** @var RequestStack */
-	protected $request;
+    /** @var FormInterface */
+    protected $form;
 
-	/** @var ObjectManager */
-	protected $manager;
+    /** @var RequestStack */
+    protected $request;
 
-	/**
-	 * @param FormInterface          $form
-	 * @param RequestStack           $request
-	 * @param ObjectManager          $manager
-	 */
-	public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager) {
-	    $this->form              = $form;
-	    $this->request           = $request;
-	    $this->manager           = $manager;
-	}
+    /** @var ObjectManager */
+    protected $manager;
 
-	/**
-	 * Process form
-	 *
-	 * @param  MemberFeeDiscount $entity
-	 *
-	 * @return bool True on successful processing, false otherwise
-	 */
-	public function process(MemberFeeDiscount $entity)
-	{
-		$this->form->setData($entity);
+    /**
+     *
+     * @param FormInterface $form
+     * @param RequestStack $request
+     * @param ObjectManager $manager
+     */
+    public function __construct(FormInterface $form, RequestStack $request, ObjectManager $manager)
+    {
+        $this->form = $form;
+        $this->request = $request;
+        $this->manager = $manager;
+    }
 
-		$request = $this->request->getCurrentRequest();
-		if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-		    $this->form->handleRequest($request);
+    /**
+     * Process form
+     *
+     * @param MemberFeeDiscount $entity
+     *
+     * @return bool True on successful processing, false otherwise
+     */
+    public function process(MemberFeeDiscount $entity)
+    {
+        $this->form->setData($entity);
 
-		    if ($this->form->isValid()) {
-		        $this->onSuccess($entity);
+        $request = $this->request->getCurrentRequest();
+        if (in_array($request->getMethod(), [
+            'POST',
+            'PUT'
+        ])) {
+            $this->form->handleRequest($request);
 
-		        return true;
-		    }
-		}
+            if ($this->form->isValid()) {
+                $this->onSuccess($entity);
 
-		return false;
-	}
+                return true;
+            }
+        }
 
-	/**
-	 * "Success" form handler
-	 *
-	 * @param MemberFeeDiscount $entity
-	 */
-	protected function onSuccess(MemberFeeDiscount $entity) {
-		$this->manager->persist($entity);
-		$this->manager->flush();
-	}
+        return false;
+    }
 
+    /**
+     * "Success" form handler
+     *
+     * @param MemberFeeDiscount $entity
+     */
+    protected function onSuccess(MemberFeeDiscount $entity)
+    {
+        $this->manager->persist($entity);
+        $this->manager->flush();
+    }
 }

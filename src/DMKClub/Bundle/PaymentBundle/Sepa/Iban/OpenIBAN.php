@@ -2,7 +2,6 @@
 namespace DMKClub\Bundle\PaymentBundle\Sepa\Iban;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use DMKClub\Bundle\PaymentBundle\Sepa\Iban\OpenIBANException;
 
 /**
  * IBAN validation with service from https://openiban.com/

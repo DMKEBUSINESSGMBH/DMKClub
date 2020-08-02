@@ -29,20 +29,20 @@ class DirectDebitBuilder
     public function addPaymentInfo(Payment $payment)
     {
         $this->assertInited();
-        $this->directDebit->addPaymentInfo($payment->getId(), array(
+        $this->directDebit->addPaymentInfo($payment->getId(), [
             'id' => $payment->getId(),
             'creditorName' => $payment->getCreditorName(),
             'creditorAccountIBAN' => $payment->getCreditorAccountIBAN(),
             'creditorAgentBIC' => $payment->getCreditorAgentBIC(),
             'seqType' => $payment->getSeqType(),
             'creditorId' => $payment->getCreditorId()
-        ));
+        ]);
     }
 
     public function addPaymentTransaction(Transaction $transaction)
     {
         $this->directDebit->addTransfer($transaction->getPayment()
-            ->getId(), array(
+            ->getId(), [
             'amount' => $transaction->getAmount(),
             'debtorIban' => $transaction->getDebtorIban(),
             'debtorBic' => $transaction->getDebtorBic(),
@@ -51,7 +51,7 @@ class DirectDebitBuilder
             // TODO: check date!
             'debtorMandateSignDate' => $transaction->getDebtorMandateSignDate(),
             'remittanceInformation' => $transaction->getRemittanceInformation()
-        ));
+        ]);
     }
 
     public function buildXml()
@@ -61,7 +61,7 @@ class DirectDebitBuilder
 
     /**
      *
-     * @return whether or not init() was called
+     * @return boolean whether or not init() was called
      */
     public function isInited()
     {

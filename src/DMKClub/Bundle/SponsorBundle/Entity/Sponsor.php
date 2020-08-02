@@ -14,6 +14,8 @@ use DMKClub\Bundle\SponsorBundle\Model\ExtendSponsor;
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
+use Oro\Bundle\ContactBundle\Entity\Contact;
+use Oro\Bundle\AccountBundle\Entity\Account;
 
 /**
  * Class Sponsor
@@ -162,6 +164,7 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface {
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $contact;
+
     /**
      * @var Account
      *
@@ -304,7 +307,7 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface {
     /**
      * @param Contact $contact
      *
-     * @return Customer
+     * @return Sponsor
      */
     public function setContact($contact)
     {
@@ -324,7 +327,7 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface {
     /**
      * @param Account $account
      *
-     * @return Customer
+     * @return Sponsor
      */
     public function setAccount($account) {
     	$this->account = $account;
@@ -435,7 +438,7 @@ class Sponsor extends ExtendSponsor implements ChannelAwareInterface {
      * Set organization
      *
      * @param Organization $organization
-     * @return Customer
+     * @return Sponsor
      */
     public function setOrganization(Organization $organization = null)
     {

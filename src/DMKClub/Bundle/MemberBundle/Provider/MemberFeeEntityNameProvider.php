@@ -4,7 +4,6 @@ namespace DMKClub\Bundle\MemberBundle\Provider;
 
 
 use Oro\Bundle\EntityBundle\Provider\EntityNameProviderInterface;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 
 class MemberFeeEntityNameProvider implements EntityNameProviderInterface

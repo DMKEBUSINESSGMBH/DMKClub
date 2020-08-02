@@ -2,10 +2,13 @@
 namespace DMKClub\Bundle\PaymentBundle\DataGrid\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
 
+use Oro\Component\PhpUtils\Formatter\BytesFormatter;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
@@ -18,11 +21,6 @@ use DMKClub\Bundle\PaymentBundle\Sepa\SepaException;
 use DMKClub\Bundle\PaymentBundle\Sepa\Transaction;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
-use Oro\Bundle\ImportExportBundle\Handler\ExportHandler;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\VarDumper\VarDumper;
-use Oro\Component\PhpUtils\Formatter\BytesFormatter;
 
 class SepaDebitXmlHandler implements MassActionHandlerInterface
 {

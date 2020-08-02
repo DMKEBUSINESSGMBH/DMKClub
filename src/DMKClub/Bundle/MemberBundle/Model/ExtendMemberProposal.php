@@ -2,16 +2,14 @@
 
 namespace DMKClub\Bundle\MemberBundle\Model;
 
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
-
 /**
  *
- * @method AbstractEnumValue getStatus()
- * @method ExtendMember setStatus(AbstractEnumValue $status)
- * @method AbstractEnumValue getPaymentOption()
- * @method ExtendMember setPaymentOption(AbstractEnumValue $status)
- * @method AbstractEnumValue getPaymentInterval()
- * @method ExtendMember setPaymentInterval(AbstractEnumValue $status)
+ * @method \Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue getStatus()
+ * @method ExtendMember setStatus(\Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue $status)
+ * @method \Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue getPaymentOption()
+ * @method ExtendMember setPaymentOption(\Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue $status)
+ * @method \Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue getPaymentInterval()
+ * @method ExtendMember setPaymentInterval(\Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue $status)
  */
 class ExtendMemberProposal
 {

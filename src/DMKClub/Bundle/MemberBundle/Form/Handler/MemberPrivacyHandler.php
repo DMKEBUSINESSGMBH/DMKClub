@@ -2,10 +2,10 @@
 namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
-use DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Doctrine\Common\Persistence\ObjectManager;
+
+use DMKClub\Bundle\MemberBundle\Entity\MemberPrivacy;
 
 class MemberPrivacyHandler
 {

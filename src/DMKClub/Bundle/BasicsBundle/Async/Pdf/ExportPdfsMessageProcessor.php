@@ -12,7 +12,6 @@ use Oro\Component\MessageQueue\Job\Job;
 use Oro\Component\MessageQueue\Job\JobRunner;
 
 use DMKClub\Bundle\BasicsBundle\Async\Topics;
-use DMKClub\Bundle\BasicsBundle\Async\Pdf\ExportPdfProcessor;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 
 /**

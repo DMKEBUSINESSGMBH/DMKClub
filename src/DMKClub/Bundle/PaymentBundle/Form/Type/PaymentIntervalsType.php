@@ -2,10 +2,10 @@
 
 namespace DMKClub\Bundle\PaymentBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
 use DMKClub\Bundle\PaymentBundle\Provider\PaymentIntervalsProvider;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PaymentIntervalsType extends AbstractType
 {
@@ -17,7 +17,7 @@ class PaymentIntervalsType extends AbstractType
     protected $paymentIntervalsProvider;
 
     /**
-     * @param PaymentOptionsProvider $paymentIntervalProvider
+     * @param PaymentIntervalsProvider $paymentIntervalProvider
      */
     public function __construct(PaymentIntervalsProvider $paymentIntervalProvider)
     {
@@ -41,18 +41,18 @@ class PaymentIntervalsType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'choices'     => $this->paymentIntervalsProvider->getChoices(),
                 'multiple'    => false,
                 'expanded'    => false,
                 'empty_value' => 'dmkclub.payment_interval.form.choose',
                 'translatable_options' => false
-            )
+            ]
         );
     }
 }

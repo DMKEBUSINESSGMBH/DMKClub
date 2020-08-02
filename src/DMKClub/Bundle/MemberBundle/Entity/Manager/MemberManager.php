@@ -1,7 +1,5 @@
 <?php
-
 namespace DMKClub\Bundle\MemberBundle\Entity\Manager;
-
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\ORM\EntityManager;
@@ -17,92 +15,103 @@ use DMKClub\Bundle\MemberBundle\Model\MemberStatus;
 use DMKClub\Bundle\MemberBundle\Entity\Repository\MemberRepository;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount;
 
-class MemberManager implements ContainerAwareInterface {
-	/**
-	 * @var \Doctrine\ORM\EntityManager
-	 */
-	private $em;
+class MemberManager implements ContainerAwareInterface
+{
 
-	/**
-	 * @var ContainerInterface
-	 */
-	protected $container;
+    /**
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
 
-	public function __construct(EntityManager $em, ContainerInterface $container) {
-		$this->em = $em;
-		$this->setContainer($container);
-	}
+    /**
+     *
+     * @var ContainerInterface
+     */
+    protected $container;
 
-	/**
-	 * The next possible memberCode
-	 * @return number
-	 */
-	public function nextMemberCode()
-	{
-	    $qb = $this->getMemberRepository()->createQueryBuilder('m');
-	    $qb->select('max(m.memberCodeInt) mc');
-	    $data = $qb->getQuery()->getArrayResult();
-	    $data = reset($data);
-	    return (int) ($data['mc'] + 1);
-	}
-	/**
-	 *
-	 * @param MemberProposal $entity
-	 * @return \DMKClub\Bundle\MemberBundle\Entity\Member
-	 */
-	public function buildMemberByProposal(MemberProposal $entity)
-	{
-	    $member = new Member();
+    public function __construct(EntityManager $em, ContainerInterface $container)
+    {
+        $this->em = $em;
+        $this->setContainer($container);
+    }
+
+    /**
+     * The next possible memberCode
+     *
+     * @return number
+     */
+    public function nextMemberCode()
+    {
+        $qb = $this->getMemberRepository()->createQueryBuilder('m');
+        $qb->select('max(m.memberCodeInt) mc');
+        $data = $qb->getQuery()->getArrayResult();
+        $data = reset($data);
+        return (int) ($data['mc'] + 1);
+    }
+
+    /**
+     *
+     * @param MemberProposal $entity
+     * @return \DMKClub\Bundle\MemberBundle\Entity\Member
+     */
+    public function buildMemberByProposal(MemberProposal $entity)
+    {
+        $member = new Member();
         $contact = new Contact();
         // contact
-        if($entity->getEmail()) {
+        if ($entity->getEmail()) {
             $email = new ContactEmail($entity->getEmail());
             $email->setPrimary(true);
             $contact->addEmail($email);
         }
-        if($entity->getPhone()) {
+        if ($entity->getPhone()) {
             $phone = new ContactPhone($entity->getPhone());
             $phone->setPrimary(true);
             $contact->addPhone($phone);
         }
-        if($proposalAddress = $entity->getPostalAddress()) {
+        if ($proposalAddress = $entity->getPostalAddress()) {
             $address = new Address();
-            $address->setCity($entity->getPostalAddress()->getCity());
-            $address->setCountry($entity->getPostalAddress()->getCountry());
+            $address->setCity($entity->getPostalAddress()
+                ->getCity());
+            $address->setCountry($entity->getPostalAddress()
+                ->getCountry());
 
-            $useMemberName = (!$proposalAddress->getFirstName() && !$proposalAddress->getLastName());
-            $address->setFirstName(
-                $useMemberName ? $entity->getFirstName() : $proposalAddress->getFirstName()
-            );
-            $address->setLabel($entity->getPostalAddress()->getLabel());
-            $address->setLastName(
-                $useMemberName ? $entity->getLastName() : $proposalAddress->getLastName()
-            );
-            $address->setMiddleName(
-                $useMemberName ? $entity->getMiddleName() : $proposalAddress->getMiddleName()
-            );
-            $address->setNamePrefix(
-                $useMemberName ? $entity->getNamePrefix() : $proposalAddress->getNamePrefix()
-            );
-            $address->setNameSuffix(
-                $useMemberName ? $entity->getNameSuffix() : $proposalAddress->getNameSuffix()
-            );
-            $address->setPostalCode($entity->getPostalAddress()->getPostalCode());
-            $address->setRegion($entity->getPostalAddress()->getRegion());
-            $address->setRegionText($entity->getPostalAddress()->getRegionText());
-            $address->setStreet($entity->getPostalAddress()->getStreet());
-            $address->setStreet2($entity->getPostalAddress()->getStreet2());
-            $address->setCity($entity->getPostalAddress()->getCity());
+            $useMemberName = (! $proposalAddress->getFirstName() && ! $proposalAddress->getLastName());
+            $address->setFirstName($useMemberName ? $entity->getFirstName() : $proposalAddress->getFirstName());
+            $address->setLabel($entity->getPostalAddress()
+                ->getLabel());
+            $address->setLastName($useMemberName ? $entity->getLastName() : $proposalAddress->getLastName());
+            $address->setMiddleName($useMemberName ? $entity->getMiddleName() : $proposalAddress->getMiddleName());
+            $address->setNamePrefix($useMemberName ? $entity->getNamePrefix() : $proposalAddress->getNamePrefix());
+            $address->setNameSuffix($useMemberName ? $entity->getNameSuffix() : $proposalAddress->getNameSuffix());
+            $address->setPostalCode($entity->getPostalAddress()
+                ->getPostalCode());
+            $address->setRegion($entity->getPostalAddress()
+                ->getRegion());
+            $address->setRegionText($entity->getPostalAddress()
+                ->getRegionText());
+            $address->setStreet($entity->getPostalAddress()
+                ->getStreet());
+            $address->setStreet2($entity->getPostalAddress()
+                ->getStreet2());
+            $address->setCity($entity->getPostalAddress()
+                ->getCity());
 
             $member->setPostalAddress($address);
         }
-        if($entity->getBankAccount()) {
+        if ($entity->getBankAccount()) {
             $bankAccount = new BankAccount();
-            $bankAccount->setAccountOwner($entity->getBankAccount()->getAccountOwner());
-            $bankAccount->setBankName($entity->getBankAccount()->getBankName());
-            $bankAccount->setBic($entity->getBankAccount()->getBic());
-            $bankAccount->setIban($entity->getBankAccount()->getIban());
-            $bankAccount->setDirectDebitValidFrom($entity->getBankAccount()->getDirectDebitValidFrom());
+            $bankAccount->setAccountOwner($entity->getBankAccount()
+                ->getAccountOwner());
+            $bankAccount->setBankName($entity->getBankAccount()
+                ->getBankName());
+            $bankAccount->setBic($entity->getBankAccount()
+                ->getBic());
+            $bankAccount->setIban($entity->getBankAccount()
+                ->getIban());
+            $bankAccount->setDirectDebitValidFrom($entity->getBankAccount()
+                ->getDirectDebitValidFrom());
 
             $member->setBankAccount($bankAccount);
         }
@@ -114,8 +123,7 @@ class MemberManager implements ContainerAwareInterface {
 
             $member->addMemberFeeDiscount($feeDiscount);
         }
-        $contact
-            ->setBirthday($entity->getBirthday())
+        $contact->setBirthday($entity->getBirthday())
             ->setFirstName($entity->getFirstName())
             ->setLastName($entity->getLastName())
             ->setJobTitle($entity->getJobTitle())
@@ -142,26 +150,30 @@ class MemberManager implements ContainerAwareInterface {
      */
     public function findMemberByContact(Contact $contact)
     {
-        return $this->getMemberRepository()->findOneBy(['contact' => $contact->getId()]);
+        return $this->getMemberRepository()->findOneBy([
+            'contact' => $contact->getId()
+        ]);
     }
 
     /**
      *
      * @return MemberRepository
      */
-	public function getMemberRepository() {
-		return $this->em->getRepository('DMKClubMemberBundle:Member');
-	}
-	/**
-	 * Sets the Container.
-	 *
-	 * @param ContainerInterface|null $container
-	 *            A ContainerInterface instance or null
-	 *
-	 *            @api
-	 */
-	public function setContainer(ContainerInterface $container = null)
-	{
-	    $this->container = $container;
-	}
+    public function getMemberRepository()
+    {
+        return $this->em->getRepository('DMKClubMemberBundle:Member');
+    }
+
+    /**
+     * Sets the Container.
+     *
+     * @param ContainerInterface|null $container
+     *            A ContainerInterface instance or null
+     *
+     *            @api
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 }

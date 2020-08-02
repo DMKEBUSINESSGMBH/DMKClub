@@ -1,8 +1,6 @@
 <?php
 namespace DMKClub\Bundle\PaymentBundle\Sepa;
 
-use Digitick\Sepa\PaymentInformation;
-
 class Transaction
 {
 

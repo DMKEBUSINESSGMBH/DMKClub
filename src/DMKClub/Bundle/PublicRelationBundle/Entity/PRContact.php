@@ -13,6 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use DMKClub\Bundle\PublicRelationBundle\Model\ExtendPRContact;
 use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
+use Oro\Bundle\AccountBundle\Entity\Account;
 
 /**
  * Class P/R Contact
@@ -176,7 +177,7 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface {
 	 * Set id
 	 *
 	 * @param int $id
-	 * @return Category
+	 * @return PRContact
 	 */
 	public function setId($id)
 	{
@@ -199,7 +200,7 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface {
 	 * Set endDate
 	 *
 	 * @param \DateTime $endDate
-	 * @return Category
+	 * @return PRContact
 	 */
 	public function setName($id)
 	{
@@ -221,7 +222,7 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface {
 	/**
 	 * Gets the Category related to contact
 	 *
-	 * @return PRCategory
+	 * @return PRContact
 	 */
 	public function getCategory()
 	{
@@ -242,7 +243,7 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface {
 	/**
 	 * @param Account $account
 	 *
-	 * @return Customer
+	 * @return PRContact
 	 */
 	public function setAccount($account) {
 		$this->account = $account;
@@ -336,7 +337,7 @@ class PRContact extends ExtendPRContact implements ChannelAwareInterface {
 	 * Set organization
 	 *
 	 * @param Organization $organization
-	 * @return Customer
+	 * @return PRContact
 	 */
 	public function setOrganization(Organization $organization = null)
 	{

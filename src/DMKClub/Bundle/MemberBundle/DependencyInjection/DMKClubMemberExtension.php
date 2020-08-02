@@ -28,7 +28,6 @@ class DMKClubMemberExtension extends Extension
         $loader->load('mass_action.yml');
 
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
+        $this->processConfiguration($configuration, $configs);
     }
 }

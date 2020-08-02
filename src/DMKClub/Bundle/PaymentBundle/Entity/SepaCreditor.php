@@ -4,9 +4,10 @@ namespace DMKClub\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use DMKClub\Bundle\PaymentBundle\Model\ExtendSepaCreditor;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use DMKClub\Bundle\PaymentBundle\Model\ExtendSepaCreditor;
 
 /**
  * Class SepaCreditor
@@ -188,7 +189,7 @@ class SepaCreditor extends ExtendSepaCreditor
      * Set id
      *
      * @param int $id
-     * @return AbstractAddress
+     * @return SepaCreditor
      */
     public function setId($id)
     {
@@ -264,7 +265,7 @@ class SepaCreditor extends ExtendSepaCreditor
      * Set organization
      *
      * @param Organization $organization
-     * @return Member
+     * @return SepaCreditor
      */
     public function setOrganization(Organization $organization = null)
     {
@@ -296,7 +297,7 @@ class SepaCreditor extends ExtendSepaCreditor
      * Set address created date/time
      *
      * @param \DateTime $created
-     * @return AbstractAddress
+     * @return SepaCreditor
      */
     public function setCreated($created)
     {
@@ -319,7 +320,7 @@ class SepaCreditor extends ExtendSepaCreditor
      * Set address updated date/time
      *
      * @param \DateTime $updated
-     * @return AbstractAddress
+     * @return SepaCreditor
      */
     public function setUpdated($updated)
     {

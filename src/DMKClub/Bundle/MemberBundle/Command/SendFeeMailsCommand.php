@@ -6,12 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Psr\Log\LoggerInterface;
-
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;

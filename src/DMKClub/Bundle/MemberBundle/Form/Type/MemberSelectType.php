@@ -2,14 +2,15 @@
 namespace DMKClub\Bundle\MemberBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 
 class MemberSelectType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -27,13 +28,21 @@ class MemberSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_entity_create_or_select_inline_channel_aware';
+        return OroEntitySelectOrCreateInlineType::class;
     }
 
     /**
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'dmkclub_member_member_select';
     }

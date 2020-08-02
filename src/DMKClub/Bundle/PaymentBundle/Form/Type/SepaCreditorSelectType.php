@@ -3,7 +3,6 @@ namespace DMKClub\Bundle\PaymentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Oro\Bundle\FormBundle\Form\Type\OroEntityCreateOrSelectChoiceType;
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 
 class SepaCreditorSelectType extends AbstractType

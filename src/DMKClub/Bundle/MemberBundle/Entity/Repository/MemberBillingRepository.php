@@ -2,10 +2,9 @@
 
 namespace DMKClub\Bundle\MemberBundle\Entity\Repository;
 
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use Doctrine\ORM\EntityRepository;
 
-class MemberBillingRepository extends EntityRepository {
+class MemberBillingRepository extends EntityRepository
+{
 
 }

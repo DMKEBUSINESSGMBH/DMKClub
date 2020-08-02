@@ -4,7 +4,6 @@ namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
 
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 

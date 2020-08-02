@@ -87,7 +87,7 @@ abstract class AbstractBankAccount
 
     /**
      *
-     * @var \Date
+     * @var \DateTime
      * @ORM\Column(name="direct_debit_valid_from", type="date", nullable=true)
      * @ConfigField(
      *    defaultValues={
@@ -150,7 +150,7 @@ abstract class AbstractBankAccount
      * Set id
      *
      * @param int $id
-     * @return AbstractAddress
+     * @return AbstractBankAccount
      */
     public function setId($id)
     {
@@ -228,7 +228,7 @@ abstract class AbstractBankAccount
      * Set address created date/time
      *
      * @param \DateTime $created
-     * @return AbstractAddress
+     * @return AbstractBankAccount
      */
     public function setCreated($created)
     {
@@ -251,7 +251,7 @@ abstract class AbstractBankAccount
      * Set address updated date/time
      *
      * @param \DateTime $updated
-     * @return AbstractAddress
+     * @return AbstractBankAccount
      */
     public function setUpdated($updated)
     {
