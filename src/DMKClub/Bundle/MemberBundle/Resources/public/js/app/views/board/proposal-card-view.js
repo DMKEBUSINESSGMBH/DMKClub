@@ -11,8 +11,7 @@ define(function(require) {
          * @inheritDoc
          */
         constructor: function ProposalCardView(options) {
-	console.info({parent: ProposalCardView.__super__});
-            ProposalCardView.__super__.constructor.apply(this, options);
+            ProposalCardView.__super__.constructor.call(this, options);
         }
 
     });
