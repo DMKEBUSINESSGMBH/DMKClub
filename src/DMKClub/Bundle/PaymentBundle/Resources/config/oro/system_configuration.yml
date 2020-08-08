@@ -12,7 +12,7 @@ system_configuration:
         dmk_club_payment.openiban_enable:
             ui_only: true
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: dmkclub_payment.system_configuration.fields.openiban_enable.label
                 required: false
@@ -20,7 +20,7 @@ system_configuration:
         dmk_club_payment.openiban_baseuri:
             ui_only: true
             data_type: string
-            type: text
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
             options:
                 label: dmkclub_payment.system_configuration.fields.openiban_baseuri.label
                 required: false
