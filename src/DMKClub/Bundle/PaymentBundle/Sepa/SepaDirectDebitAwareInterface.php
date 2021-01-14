@@ -53,4 +53,10 @@ interface SepaDirectDebitAwareInterface
      * @return \DateTime
      */
     public function getDebtorMandateSignDate();
+
+    /**
+     *
+     * @return string
+     */
+    public function getDebtorMandate();
 }

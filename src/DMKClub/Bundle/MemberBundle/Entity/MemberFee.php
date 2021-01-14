@@ -228,7 +228,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
     public function __construct()
     {
         parent::__construct();
-        $this->positions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->positions = new ArrayCollection();
     }
 
     /**
@@ -455,7 +455,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 
     /**
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition]
+     * @return ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition]
      */
     public function getPositions()
     {
@@ -651,11 +651,26 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 
     /*
      * (non-PHPdoc)
+     * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getDebtorMandate()
+     */
+    public function getDebtorMandate()
+    {
+        $billDate = $this->getBillDate();
+        $mandate = sprintf('%s/%s/%d',
+            $billDate->format('dm'),
+            str_pad($this->getMember()->getMemberCode(), 6, 'x', STR_PAD_LEFT),
+            $billDate->format('Y')
+        );
+        return $mandate;
+    }
+
+    /*
+     * (non-PHPdoc)
      * @see \DMKClub\Bundle\PaymentBundle\PDF\SepaDirectDebitAwareInterface::getDebtorMandateSignDate()
      */
     public function getDebtorMandateSignDate()
     {
-        return $this->getBillDate() ? $this->getBillDate() : new \DateTime();
+        return $this->getBankAccount() ? $this->getBankAccount()->getDirectDebitValidFrom() : null;
     }
 
     /*

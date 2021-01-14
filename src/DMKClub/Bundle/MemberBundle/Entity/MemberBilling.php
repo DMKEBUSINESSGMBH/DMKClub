@@ -268,7 +268,7 @@ FEECORRECTION fee correction";
     public function __construct()
     {
         parent::__construct();
-        $this->memberFees = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->memberFees = new ArrayCollection();
     }
 
     /**
@@ -416,7 +416,7 @@ FEECORRECTION fee correction";
 
     /**
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFee]
+     * @return ArrayCollection [\DMKClub\Bundle\MemberBundle\Entity\MemberFee]
      */
     public function getMemberFees()
     {
@@ -713,7 +713,7 @@ FEECORRECTION fee correction";
      */
     public function getPaymentId()
     {
-        return 'bill' . ($this->getId());
+        return 'bill-' . ($this->getId());
     }
 
     /*

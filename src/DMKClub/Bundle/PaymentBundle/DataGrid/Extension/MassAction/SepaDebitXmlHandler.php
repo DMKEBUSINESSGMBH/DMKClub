@@ -174,7 +174,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
             ]);
 
             $this->payment = new Payment();
-            $this->payment->setId($paymentAware->getPaymentId())
+            $this->payment->setId($paymentAware->getPaymentId()) // PaymentInfID – eindeutige Referenz der log. Datei
                 ->setCreditorName($paymentAware->getCreditorName())
                 ->setCreditorAccountIBAN($paymentAware->getCreditorIban())
                 ->setCreditorAgentBIC($paymentAware->getCreditorBic())
@@ -191,6 +191,7 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
                 ->setDebtorName($sepaItem->getDebtorName())
                 ->setDebtorBic($sepaItem->getDebtorBic())
                 ->setDebtorIban($sepaItem->getDebtorIban())
+                ->setDebtorMandate($sepaItem->getDebtorMandate()) // Mandatsreferenz MndtId
                 ->setDebtorMandateSignDate($sepaItem->getDebtorMandateSignDate())
                 ->setRemittanceInformation($sepaItem->getRemittanceInformation());
             $this->sepaBuilder->addPaymentTransaction($transaction);
@@ -230,7 +231,10 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
      */
     protected function isSepaDirectDebitPossible(SepaDirectDebitAwareInterface $sepaItem)
     {
-        return $sepaItem->isSepaDirectDebitPossible() && $sepaItem->getDebtorIban() && $sepaItem->getDebtorBic();
+        return $sepaItem->isSepaDirectDebitPossible() &&
+            $sepaItem->getDebtorIban() &&
+            $sepaItem->getDebtorBic() &&
+            $sepaItem->getDebtorMandateSignDate();
     }
 
     /**
