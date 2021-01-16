@@ -12,6 +12,7 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\BasicsBundle\Async\Topics;
+use DMKClub\Bundle\BasicsBundle\Datasource\ORM\NoOrderingIterableResult;
 
 /**
  * Generic handler to export a combined PDF to a defined filesystem. The source of PDF is created by callback.
@@ -60,10 +61,13 @@ class ExportPdfHandler implements MassActionHandlerInterface
         $data = $args->getData();
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
+        $queryBuilder = $args->getResults()->getSource();
+        $results      = new NoOrderingIterableResult($queryBuilder);
+        $results->setBufferSize(self::FLUSH_BATCH_SIZE);
 
         try {
             set_time_limit(0);
-            $iteration = $this->handleExport($options, $data, $args->getResults());
+            $iteration = $this->handleExport($options, $data, $results);
         } catch (\Exception $e) {
             throw $e;
         }

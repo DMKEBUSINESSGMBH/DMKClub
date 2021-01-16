@@ -15,6 +15,7 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
+use DMKClub\Bundle\BasicsBundle\Datasource\ORM\NoOrderingIterableResult;
 
 class MemberFeeCorrectionHandler implements MassActionHandlerInterface
 {
@@ -78,11 +79,14 @@ class MemberFeeCorrectionHandler implements MassActionHandlerInterface
         $data = $args->getData();
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
+        $queryBuilder = $args->getResults()->getSource();
+        $results      = new NoOrderingIterableResult($queryBuilder);
+        $results->setBufferSize(self::FLUSH_BATCH_SIZE);
 
         $this->entityManager->beginTransaction();
         try {
             set_time_limit(0);
-            $iteration = $this->handleFeeCorrection($options, $data, $args->getResults());
+            $iteration = $this->handleFeeCorrection($options, $data, $results);
             $this->entityManager->commit();
         } catch (\Exception $e) {
             $this->logger->error('Mark/unmark fee for correction failed.', [

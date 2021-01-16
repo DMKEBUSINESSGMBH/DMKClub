@@ -17,6 +17,7 @@ use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager;
 use DMKClub\Bundle\MemberBundle\Mailer\Processor;
 use DMKClub\Bundle\MemberBundle\Command\SendFeeMailsCommand;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use DMKClub\Bundle\BasicsBundle\Datasource\ORM\NoOrderingIterableResult;
 
 class SendMemberFeeHandler implements MassActionHandlerInterface
 {
@@ -76,10 +77,13 @@ class SendMemberFeeHandler implements MassActionHandlerInterface
         $data = $args->getData();
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
+        $queryBuilder = $args->getResults()->getSource();
+        $results      = new NoOrderingIterableResult($queryBuilder);
+        $results->setBufferSize(self::FLUSH_BATCH_SIZE);
 
         try {
             set_time_limit(0);
-            $result = $this->handleSendMemberFee($options, $data, $args->getResults());
+            $result = $this->handleSendMemberFee($options, $data, $results);
         } catch (\Exception $e) {
             $this->logger->error('Send member fee failed.', [
                 'exception' => $e,

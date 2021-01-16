@@ -21,6 +21,7 @@ use DMKClub\Bundle\PaymentBundle\Sepa\SepaException;
 use DMKClub\Bundle\PaymentBundle\Sepa\Transaction;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface;
 use DMKClub\Bundle\PaymentBundle\Sepa\SepaPaymentAwareInterface;
+use DMKClub\Bundle\BasicsBundle\Datasource\ORM\NoOrderingIterableResult;
 
 class SepaDebitXmlHandler implements MassActionHandlerInterface
 {
@@ -88,11 +89,14 @@ class SepaDebitXmlHandler implements MassActionHandlerInterface
 
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
+        $queryBuilder = $args->getResults()->getSource();
+        $results      = new NoOrderingIterableResult($queryBuilder);
+        $results->setBufferSize(self::FLUSH_BATCH_SIZE);
 
         $this->entityManager->beginTransaction();
         try {
             set_time_limit(0);
-            $result = $this->handleExport($options, $data, $args->getResults());
+            $result = $this->handleExport($options, $data, $results);
             $this->entityManager->commit();
         } catch (\Exception $e) {
             $this->logger->error('Building SEPA file failed.', [

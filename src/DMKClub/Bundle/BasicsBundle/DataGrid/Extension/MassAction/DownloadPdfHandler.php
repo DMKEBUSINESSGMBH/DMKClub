@@ -13,6 +13,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use DMKClub\Bundle\BasicsBundle\Datasource\ORM\NoOrderingIterableResult;
 
 /**
  * Generic handler to download a combined PDF. The source of PDF is created by callback.
@@ -67,11 +68,14 @@ class DownloadPdfHandler implements MassActionHandlerInterface
         $data = $args->getData();
         $massAction = $args->getMassAction();
         $options = $massAction->getOptions()->toArray();
+        $queryBuilder = $args->getResults()->getSource();
+        $results      = new NoOrderingIterableResult($queryBuilder);
+        $results->setBufferSize(self::FLUSH_BATCH_SIZE);
 
         $this->entityManager->beginTransaction();
         try {
             set_time_limit(0);
-            $data = $this->handleExport($options, $data, $args->getResults());
+            $data = $this->handleExport($options, $data, $results);
             $this->entityManager->commit();
         } catch (\Exception $e) {
             $this->logger->error('Downloading pdf failed.', [
