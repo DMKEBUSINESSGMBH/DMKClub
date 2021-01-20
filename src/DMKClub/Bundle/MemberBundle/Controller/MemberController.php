@@ -4,16 +4,19 @@ namespace DMKClub\Bundle\MemberBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use DMKClub\Bundle\MemberBundle\Entity\Member;
 use Oro\Bundle\AccountBundle\Entity\Account;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler;
-use Oro\Bundle\FormBundle\Model\UpdateHandler;
 use Symfony\Component\Form\Form;
+
+use DMKClub\Bundle\MemberBundle\Entity\Member;
+use DMKClub\Bundle\MemberBundle\Form\Handler\MemberHandler;
 
 /**
  *
@@ -30,7 +33,7 @@ class MemberController extends AbstractController
             TranslatorInterface::class,
             MemberHandler::class,
             'dmkclub_member.member.form' => Form::class,
-            UpdateHandler::class,
+            UpdateHandlerFacade::class,
         ]);
     }
 
@@ -92,7 +95,8 @@ class MemberController extends AbstractController
     protected function update(Member $entity)
     {
         /* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandlerFacade */
-        $handler = $this->get(UpdateHandler::class);
+        $handler = $this->get(UpdateHandlerFacade::class);
+
         $data = $handler->update(
             $entity,
             $this->get('dmkclub_member.member.form'),
