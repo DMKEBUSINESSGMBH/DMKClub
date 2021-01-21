@@ -3,19 +3,19 @@
 namespace DMKClub\Bundle\MemberBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposal;
 use DMKClub\Bundle\MemberBundle\Entity\MemberProposalAddress;
 use DMKClub\Bundle\MemberBundle\Form\Handler\MemberProposalHandler;
 use DMKClub\Bundle\MemberBundle\Form\Handler\CreateMemberByProposalHandler;
-use Symfony\Component\Form\Form;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/member/proposal")
@@ -33,7 +33,7 @@ class MemberProposalController extends AbstractController
             CreateMemberByProposalHandler::class,
             'dmkclub_member.memberproposal.form' => Form::class,
             'dmkclub_member.memberproposal.createmember.form' => Form::class,
-            UpdateHandler::class,
+            UpdateHandlerFacade::class,
         ]);
     }
 
@@ -98,7 +98,7 @@ class MemberProposalController extends AbstractController
     protected function update(MemberProposal $entity)
     {
     	/* @var $handler  \Oro\Bundle\FormBundle\Model\UpdateHandlerFacade */
-    	$handler = $this->get(UpdateHandler::class);
+        $handler = $this->get(UpdateHandlerFacade::class);
     	$data = $handler->update(
     	    $entity,
 			$this->get('dmkclub_member.memberproposal.form'),
