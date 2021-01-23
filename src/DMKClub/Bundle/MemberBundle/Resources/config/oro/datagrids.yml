@@ -863,9 +863,8 @@ datagrids:
                     data_name: m.endDate
                 email:
                     data_name: email.email
-# Führt zu Fehler bei MassActions
-#            default:
-#                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+            default:
+                name:  ASC
         filters:
             columns:
                 name:
@@ -1046,8 +1045,8 @@ datagrids:
             columns:
                 name:
                     data_name: b.name
-#            default:
-#                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+            default:
+                name:  ASC
         filters:
             columns:
                 name:
