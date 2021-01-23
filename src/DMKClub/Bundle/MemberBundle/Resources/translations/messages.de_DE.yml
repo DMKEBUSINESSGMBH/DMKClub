@@ -191,6 +191,7 @@ dmkclub:
             owner.label:         Owner
             payed_total.label:   Bezahlt
             price_total.label:   Beitrag
+            payed_full.label:    Vollständig bezahlt
             start_date.label:    Startdatum
             action:
                 mark_feecorrection: Korrektur markieren

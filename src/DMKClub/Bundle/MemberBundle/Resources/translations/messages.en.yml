@@ -203,6 +203,7 @@ dmkclub:
             payed_total.label:   Paid
             positions.label:     Positions
             price_total.label:   Fee
+            payed_full.label:    Fully paid
             start_date.label:    Start date
             action:
                 mark_feecorrection: Mark fee correction

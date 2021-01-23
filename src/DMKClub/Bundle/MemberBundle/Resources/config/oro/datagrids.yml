@@ -831,10 +831,10 @@ datagrids:
                 type:       url
                 route:      dmkclub_memberfee_createpdf
                 params:     [ id ]
-#            update_link:
-#                type:       url
-#                route:      dmkclub_memberbilling_update
-#                params:     [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_memberfee_update
+                params:     [ id ]
         sorters:
             columns:
                 memberCode:
@@ -928,9 +928,9 @@ datagrids:
                             title:  "@translator->trans(dmkclub.member.memberfee.entity_label)"
                             modal:  true
                             allowMaximize: true
-                            allowMinimize': true
-                            dblclick': 'maximize'
-                            maximizedHeightDecreaseBy': 'minimize-bar'
+                            allowMinimize: true
+                            dblclick: maximize
+                            maximizedHeightDecreaseBy: minimize-bar
                             width:  900
             pdf:
                 type: dmkgetpdf
@@ -938,6 +938,23 @@ datagrids:
                 label: dmkclub.member.memberfee.action.download_bill
                 icon: file-pdf-o
                 link: pdf_link
+            update:
+                type: dialog
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                rowAction: true
+                widgetOptions:
+                    reload-grid-name: dmkclub-memberfees-grid-billing
+                    options:
+                        dialogOptions:
+                            title:  "@translator->trans(dmkclub.member.memberfee.entity_label)"
+                            modal:  true
+                            allowMaximize: true
+                            allowMinimize: false
+                            dblclick: maximize
+                            maximizedHeightDecreaseBy: minimize-bar
+                            width:  900
         mass_actions:
             exportpdf:
                 type: dmkexportpdf
@@ -1135,6 +1152,7 @@ datagrids:
                 label: oro.grid.action.update
                 icon: edit
                 link: update_link
+                rowAction:    true
                 widgetOptions:
                     reload-grid-name: dmkclub-memberfeediscounts-grid-member
                     options:

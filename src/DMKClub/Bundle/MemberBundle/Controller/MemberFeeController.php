@@ -5,19 +5,18 @@ namespace DMKClub\Bundle\MemberBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Symfony\Component\Form\Form;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Form\Form;
-use Oro\Bundle\FormBundle\Model\UpdateHandler;
-use DMKClub\Bundle\MemberBundle\Form\EntityField\Handler\MemberFeeHandler;
+use DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeHandler;
 use DMKClub\Bundle\BasicsBundle\PDF\Manager;
 
 /**
@@ -34,8 +33,7 @@ class MemberFeeController extends AbstractController
             TranslatorInterface::class,
             MemberFeeHandler::class,
             Manager::class,
-//            'dmkclub_member.memberfee.form' => Form::class,
-            UpdateHandler::class,
+            'dmkclub_member.memberfee.form' => Form::class,
             RouterInterface::class,
         ]);
     }
@@ -122,24 +120,20 @@ class MemberFeeController extends AbstractController
 	 */
 	protected function update(MemberFee $entity)
 	{
-		return $this->get(UpdateHandler::class)->handleUpdate(
-				$entity,
-				$this->get('dmkclub_member.memberfee.form'),
-				function (MemberFee $entity) {
-					return [
-						'route' => 'dmkclub_memberfee_update',
-						'parameters' => ['id' => $entity->getId()]
-					];
-				},
-				function (MemberFee $entity) {
-					return [
-						'route' => 'dmkclub_memberfee_view',
-						'parameters' => ['id' => $entity->getId()]
-					];
-				},
-				$this->get(TranslatorInterface::class)->trans('dmkclub.memberfee.message.saved'),
-				$this->get(MemberFeeHandler::class)
-		);
+	    $responseData = [
+	        'saved' => false,
+	    ];
+
+
+	    if ($this->get(MemberFeeHandler::class)->process($entity)) {
+	        $this->getDoctrine()->getManager()->flush();
+	        $responseData['entity'] = $entity;
+	        $responseData['saved'] = true;
+	    }
+	    /* @var $form \Symfony\Component\Form\Form */
+	    $form = $this->get('dmkclub_member.memberfee.form');
+	    $responseData['form'] = $form->createView();
+	    return $responseData;
 	}
 
 	/**

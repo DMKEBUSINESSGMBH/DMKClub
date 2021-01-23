@@ -72,6 +72,13 @@ services:
         tags:
             - { name: form.type, alias: dmkclub_member_memberbilling }
 
+    DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeType:
+        class: 'DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeType'
+        arguments:
+            - "@translator"
+        tags:
+            - { name: form.type, alias: dmkclub_member_memberfee }
+
     dmkclub_member.memberfeediscount.form.type:
         class: "%dmkclub_member.memberfeediscount.form.type.class%"
         arguments:
@@ -159,6 +166,15 @@ services:
             - DMKClub\Bundle\MemberBundle\Form\Type\MemberBillingType
             - null
 
+    dmkclub_member.memberfee.form:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        public: true
+        arguments:
+            - "dmkclub_member_memberfee"
+            - DMKClub\Bundle\MemberBundle\Form\Type\MemberFeeType
+            - null
+
     dmkclub_member.memberfeediscount.form:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
@@ -229,6 +245,13 @@ services:
             - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager'
         tags:
             - { name: oro_tag.tag_manager }
+
+    DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeHandler:
+        public: true
+        arguments:
+            - "@dmkclub_member.memberfee.form"
+            - "@request_stack"
+            - "@doctrine.orm.entity_manager"
 
     DMKClub\Bundle\MemberBundle\Form\Handler\MemberFeeDiscountHandler:
         public: true

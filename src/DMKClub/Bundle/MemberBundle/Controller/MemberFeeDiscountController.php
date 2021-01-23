@@ -88,10 +88,10 @@ class MemberFeeDiscountController extends AbstractController
 	 */
 	protected function update(Member $member, MemberFeeDiscount $discount)
 	{
-		$responseData = array(
+		$responseData = [
 			'saved' => false,
 			'member' => $member
-		);
+		];
 
 
 		if ($this->get(MemberFeeDiscountHandler::class)->process($discount)) {

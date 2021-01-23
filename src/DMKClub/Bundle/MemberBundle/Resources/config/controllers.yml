@@ -37,7 +37,7 @@ services:
             - ['setContainer', ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
-#            - { name: container.service_subscriber, id: 'dmkclub_member.memberfee.form' }
+            - { name: container.service_subscriber, id: 'dmkclub_member.memberfee.form' }
 
     DMKClub\Bundle\MemberBundle\Controller\MemberFeeDiscountController:
         calls:
