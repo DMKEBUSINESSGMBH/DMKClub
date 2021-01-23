@@ -306,7 +306,7 @@ class MemberBillingManager implements ContainerAwareInterface
      * @param MemberBilling $memberBilling
      * @return boolean
      */
-    public function getFee4Billing(Member $member, MemberBilling $memberBilling)
+    public function getFee4Billing(Member $member, MemberBilling $memberBilling) : ?MemberFee
     {
         $fee = $this->getMemberFeeRepository()->findOneBy([
             'billing' => $memberBilling->getId(),

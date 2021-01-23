@@ -104,6 +104,7 @@ class FeeMessageProcessor implements MessageProcessorInterface, TopicSubscriberI
     protected function calculateBill($memberId, $memberBillingId, \DateTime $billDate)
     {
         // Member laden
+        /* @var $member \DMKClub\Bundle\MemberBundle\Entity\Member */
         $member = $this->billingManager->getMemberRepository()->findOneById($memberId);
         if (! $member) {
             throw new \InvalidArgumentException('Cannot resolve member with id [' . $memberId . '] .');
@@ -113,19 +114,19 @@ class FeeMessageProcessor implements MessageProcessorInterface, TopicSubscriberI
         if (! $memberBilling) {
             throw new \InvalidArgumentException('Cannot resolve member billing with id [' . $memberBillingId . '] .');
         }
-
         // Gibt es für den Member schon eine Fee?
         if (! $this->billingManager->hasFee4Billing($member, $memberBilling)) {
             $memberFee = $this->billingManager->calculateMemberFee($memberBilling, $member);
             if ($memberFee->getPriceTotal() == 0) {
                 // Ohne Beitrag muss kein Datensatz angelegt werden
+                $this->logger->warning('Calculated fee is zero', ['mbr' => $member->getId(), 'billing' => $memberBilling->getId()]);
                 return null;
             }
             $memberFee->setBillDate($billDate);
             $memberFee->setOrganization($memberBilling->getOrganization());
             $memberFee->setOwner($memberBilling->getOwner());
-
             $this->em->persist($memberFee);
+            $this->em->flush();
         }
     }
 
