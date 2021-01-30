@@ -1,0 +1,87 @@
+datagrids:
+# ###
+# MemberFeeDiscount grid in member
+# ###
+    dmkclub-memberfeediscounts-grid-member:
+        acl_resource: dmkclub_member_view
+        source:
+            type: orm
+            query:
+                select:
+                    - f.id
+                    - f.startDate
+                    - f.endDate
+                    - f.reason
+                    - m.id as memberId
+                from:
+                    - { table: "%dmkclub_member.memberfeediscount.entity.class%", alias: f }
+                join:
+                    left:
+                        - { join: f.member, alias: m }
+                where:
+                    and:
+                        - f.member = :member
+            bind_parameters:
+                - member
+        columns:
+            startDate:
+                label:         dmkclub.member.memberfeediscount.start_date.label
+                frontend_type: date
+            endDate:
+                label:         dmkclub.member.memberfeediscount.end_date.label
+                frontend_type: date
+            reason:
+                label:         dmkclub.member.memberfeediscount.reason.label
+        properties:
+            id: ~
+            memberId: ~
+            delete_link:
+                type: url
+                route: dmkclub_api_delete_memberfeediscount
+                params: [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_member_memberfeediscount_update
+                params:     [ memberId, id ]
+        sorters:
+            columns:
+                startDate:
+                    data_name: f.startDate
+                endDate:
+                    data_name: f.endDate
+                reason:
+                    data_name: f.reason
+            default:
+                startDate:  ASC
+        filters:
+            columns:
+                reason:
+                    type: string
+                    data_name: f.reason
+                startDate:
+                    type:      datetime
+                    data_name: f.startDate
+                endDate:
+                    type:      datetime
+                    data_name: f.endDate
+        actions:
+            update:
+                type: dialog
+                acl_resource: dmkclub_member_update
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                rowAction:    true
+                widgetOptions:
+                    reload-grid-name: dmkclub-memberfeediscounts-grid-member
+                    options:
+                        dialogOptions:
+                            title:  "@translator->trans(dmkclub.member.memberfeediscount.action.update.title)"
+                            modal:  true
+                            width:  700
+            delete:
+                type:         delete
+                acl_resource: dmkclub_member_delete
+                label:        oro.grid.action.delete
+                icon:         trash
+                link:         delete_link

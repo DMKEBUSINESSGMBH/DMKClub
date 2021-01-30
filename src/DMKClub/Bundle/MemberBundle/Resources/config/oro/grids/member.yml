@@ -1,0 +1,261 @@
+datagrids:
+    dmkclub-members-grid:
+        extended_entity_name: "%dmkclub_member.member.entity.class%"
+        acl_resource: dmkclub_member_view
+        source:
+            type: orm
+            query:
+                select:
+                    - m.id
+                    - m.memberCode
+                    - m.memberCodeInt
+                    - c.firstName
+                    - c.lastName
+                    - CONCAT_WS(' ', lc.firstName, lc.lastName) as legalContactName
+                    - m.isHonorary
+                    - m.isActive
+                    - m.status
+                    - po.id as paymentOption
+                    - po.name as paymentOptionLabel
+                    - pi.id as paymentInterval
+                    - pi.name as paymentIntervalLabel
+                    - a.city
+                    - c.birthday
+                    - email.email
+                    - b.iban
+                    - b.bic
+                    - m.startDate
+                    - m.endDate
+                    - m.createdAt
+                    - m.updatedAt
+                from:
+                    - { table: "%dmkclub_member.member.entity.class%", alias: m }
+                join:
+                    left:
+                        - { join: m.contact, alias: c }
+                        - { join: m.legalContact, alias: lc }
+                        - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
+                        - { join: m.postalAddress, alias: a }
+                        - { join: m.bankAccount, alias: b }
+                        - { join: m.payment_option, alias: po }
+                        - { join: m.payment_interval, alias: pi }
+        columns:
+            id:
+                label:         dmkclub.member.id.label
+                renderable:    false
+            memberCode:
+                label:         dmkclub.member.member_code.label
+                renderable:    false
+            memberCodeInt:
+                label:         dmkclub.member.member_code_int.label
+            firstName:
+                label:         oro.contact.first_name.label
+            lastName:
+                label:         oro.contact.last_name.label
+            legalContactName:
+                label:         dmkclub.member.legal_contact.label
+                renderable:    false
+            isHonorary:
+                label:         dmkclub.member.is_honorary.label
+                frontend_type: boolean
+            isActive:
+                label:         dmkclub.member.is_active.label
+                frontend_type: boolean
+            status:
+                label:         dmkclub.member.status.label
+                type:          translatable
+            paymentOption:
+                label:         dmkclub.member.payment_option.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
+                frontend_type: select
+            paymentInterval:
+                label:         dmkclub.member.payment_interval.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentintval')"
+                frontend_type: select
+            city:
+                label:         oro.address.city.label
+            birthday:
+                label:         oro.contact.birthday.label
+                frontend_type: date
+            email:
+                renderable:    false
+                label:         oro.contact.email.label
+            iban:
+                label:         dmkclub.payment.bankaccount.iban.label
+                renderable:    false
+            bic:
+                label:         dmkclub.payment.bankaccount.bic.label
+                renderable:    false
+            startDate:
+                label:         dmkclub.member.start_date.label
+                frontend_type: date
+            endDate:
+                label:         dmkclub.member.end_date.label
+                frontend_type: date
+                renderable:    false
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+                renderable:    false
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+                renderable:    false
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      dmkclub_member_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_member_update
+                params:     [ id ]
+        sorters:
+            columns:
+                id:
+                    data_name: m.id
+                memberCode:
+                    data_name: m.memberCode
+                memberCodeInt:
+                    data_name: m.memberCodeInt
+                lastName:
+                    data_name: c.lastName
+                firstName:
+                    data_name: c.firstName
+                legalContactName:
+                    data_name: legalContactName
+                isHonorary:
+                    data_name: m.isHonorary
+                isActive:
+                    data_name: m.isActive
+                status:
+                    data_name: m.status
+                paymentOption:
+                    data_name: paymentOptionLabel
+                paymentInterval:
+                    data_name: paymentIntervalLabel
+                city:
+                    data_name: a.city
+                birthday:
+                    data_name: c.birthday
+                email:
+                    data_name: email.email
+                iban:
+                    data_name: b.iban
+                bic:
+                    data_name: b.bic
+                startDate:
+                    data_name: m.startDate
+                endDate:
+                    data_name: m.endDate
+                createdAt:
+                    data_name: m.createdAt
+                updatedAt:
+                    data_name: m.updatedAt
+            default:
+                lastName:  ASC
+        filters:
+            columns:
+                memberCode:
+                    type: string
+                    data_name: m.memberCode
+                memberCodeInt:
+                    type: number
+                    data_name: m.memberCodeInt
+                    enabled: false
+                firstName:
+                    type: string
+                    enabled: false
+                    data_name: c.firstName
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                legalContactName:
+                    type:      string
+                    data_name: legalContactName
+                    enabled: false
+                isHonorary:
+                    type: boolean
+                    enabled: false
+                    data_name: m.isHonorary
+                isActive:
+                    type: boolean
+                    enabled: false
+                    data_name: m.isActive
+                status:
+                    type: choice
+                    data_name: m.status
+                    options:
+                        field_options:
+                            multiple:             true
+                            choices:              '@dmkclub_member.member.status_provider->getChoices'
+                            translatable_options: false
+                paymentOption:
+                    type:      enum
+                    data_name: m.payment_option
+                    enum_code: dmkclb_paymentoption
+
+                paymentInterval:
+                    type:      enum
+                    data_name: m.payment_interval
+                    enum_code: dmkclb_paymentintval
+                city:
+                    type: string
+                    data_name: a.city
+                birthday:
+                    type:      date
+                    data_name: c.birthday
+                email:
+                    enabled: false
+                    type: string
+                    data_name: email.email
+                iban:
+                    type: string
+                    enabled: false
+                    data_name: b.iban
+                bic:
+                    type: string
+                    enabled: false
+                    data_name: b.bic
+                startDate:
+                    type:      datetime
+                    enabled: false
+                    data_name: m.startDate
+                endDate:
+                    type:      datetime
+                    data_name: m.endDate
+                    enabled: false
+                createdAt:
+                    type:      datetime
+                    data_name: m.createdAt
+                    enabled: false
+                updatedAt:
+                    type:      datetime
+                    data_name: m.updatedAt
+                    enabled: false
+            default:
+                status: { value: 'active', type: Oro\Bundle\FilterBundle\Form\Type\TextFilterType::TYPE_EQUAL }
+        actions:
+            view:
+                type: navigate
+                acl_resource: dmkclub_member_view
+                label: oro.grid.action.view
+                icon: eye
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                acl_resource: dmkclub_member_update
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+        inline_editing:
+            enable:       true
+            behaviour:    enable_selected
+        options:
+#            entityHint: member
+            export: true
+            entity_pagination: true
+#        views_list: '@orocrm_contact.contacts_view_list'
+

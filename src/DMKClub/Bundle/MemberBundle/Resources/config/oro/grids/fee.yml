@@ -1,0 +1,486 @@
+datagrids:
+# ###
+# MemberFee grid base grid
+# ###
+    dmkclub-memberfees-grid-base:
+        extended_entity_name: "%dmkclub_member.memberfee.entity.class%"
+        acl_resource: dmkclub_memberfee_view
+        source:
+            type: orm
+            query:
+                select:
+                    - f.id
+                    - f.priceTotal As priceTotal
+                    - f.payedTotal As payedTotal
+                    - >
+                        (SELECT count(p.flag) FROM DMKClubMemberBundle:MemberFeePosition p 
+                        WHERE p.flag = 'FEECORRECTION' AND p.memberFee = f) As corrected
+                    - f.startDate
+                    - f.endDate
+                    - f.billDate
+                    - f.createdAt
+                    - f.updatedAt
+                    - f.correctionStatus
+                from:
+                    - { table: "%dmkclub_member.memberfee.entity.class%", alias: f }
+        inline_editing:
+            enable:       true
+            entity_name:  "%dmkclub_member.memberfee.entity.class%"
+            behaviour:    enable_selected
+        columns:
+            id:
+                label:         dmkclub.member.memberfee.id.label
+                frontend_type: number
+                renderable:    false
+            priceTotal:
+                label:         dmkclub.member.memberfee.price_total.label
+                frontend_type: currency
+                divisor:       100
+                data_name:     priceTotal
+            payedTotal:
+                label:         dmkclub.member.memberfee.payed_total.label
+#                frontend_type: currency
+#                divisor:       100
+                type:          callback
+                callable:      "@dmkclub_basics.utility.datagrids->cent2float"
+                data_name:     payedTotal
+                inline_editing:
+                    enable:    true
+                    editor:
+#                        view:  oroform/js/app/views/editor/number-editor-view
+                        view:  dmkclubbasics/js/app/views/editor/cent-editor-view
+            billDate:
+                label:         dmkclub.member.memberfee.bill_date.label
+                frontend_type: date
+                inline_editing:
+                    enable:    true
+            startDate:
+                label:         dmkclub.member.memberfee.start_date.label
+                frontend_type: date
+            endDate:
+                label:         dmkclub.member.memberfee.end_date.label
+                frontend_type: date
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+                renderable:    false
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+                renderable:    false
+
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: f.id
+                    enabled: false
+                priceTotal:
+                    type:      number
+                    data_name: f.priceTotal
+                    divisor:   100
+                payedTotal:
+                    type:      number
+                    data_name: f.payedTotal
+                    divisor:   100
+                createdAt:
+                    type:      datetime
+                    data_name: f.createdAt
+                    enabled: false
+                updatedAt:
+                    type:      datetime
+                    data_name: f.updatedAt
+                    enabled: false
+                billDate:
+                    type:      date
+                    data_name: f.billDate
+                    enabled: false
+                startDate:
+                    type:      date
+                    data_name: f.startDate
+                endDate:
+                    type:      date
+                    data_name: f.endDate
+                    enabled: false
+
+        sorters:
+            columns:
+                id:
+                    data_name: f.id
+                priceTotal:
+                    data_name: f.priceTotal
+                payedTotal:
+                    data_name: f.payedTotal
+                billDate:
+                    data_name: f.billDate
+                startDate:
+                    data_name: f.startDate
+                endDate:
+                    data_name: f.endDate
+                createdAt:
+                    type:      datetime
+                    data_name: f.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: f.updatedAt
+
+
+# ###
+# MemberFee grid in billing
+# ###
+    dmkclub-memberfees-grid-billing:
+        extends: dmkclub-memberfees-grid-base
+        source:
+            query:
+                select:
+                    - m.id as mid
+                    - m.memberCode
+                    - m.memberCodeInt
+                    - m.name
+                    - c.firstName
+                    - c.lastName
+                    - po.id as paymentOption
+                    - po.name as paymentOptionLabel
+                    - pi.id as paymentInterval
+                    - pi.name as paymentIntervalLabel
+                    - m.isActive
+                    - m.startDate As mbrStart
+                    - m.endDate As mbrEnd
+                    - email.email
+                    - ('DMKClub_Bundle_MemberBundle_Entity_MemberFee') as entity
+                where:
+                    and:
+                        - f.billing = :billing
+                join:
+                    left:
+                        - { join: f.member, alias: m }
+                        - { join: m.payment_option, alias: po }
+                        - { join: m.payment_interval, alias: pi }
+                        - { join: m.contact, alias: c }
+                        - { join: c.emails, alias: email, conditionType: WITH, condition: 'email.primary = true' }
+            bind_parameters:
+                - billing
+        totals:
+            grand_total:
+                columns:
+                    priceTotal:
+                        formatter: currency
+                        divisor: 100
+                        expr: 'SUM(f.priceTotal)'
+                    payedTotal:
+                        formatter: currency
+                        divisor: 100
+                        expr: 'SUM(f.payedTotal)'
+        columns:
+            memberCode:
+                label:         dmkclub.member.member_code_short.label
+                renderable:    false
+            memberCodeInt:
+                label:         dmkclub.member.member_code_int_short.label
+            name:
+                type:          link
+                route:         dmkclub_member_view
+                params:        {id: mid}
+                label:         dmkclub.member.name.label
+                frontend_type: html
+            firstName:
+                label:         oro.contact.first_name.label
+                renderable:    false
+            lastName:
+                label:         oro.contact.last_name.label
+                renderable:    false
+            correctionStatus:
+                label:         dmkclub.member.memberfee.correction_status.label
+                frontend_type: boolean
+            corrected:
+                label:         dmkclub.member.memberfee.corrected.label
+                frontend_type: number
+            isActive:
+                label:         dmkclub.member.is_active.label
+                frontend_type: boolean
+            mbrStart:
+                label:         dmkclub.member.start_date.label
+                frontend_type: date
+                renderable:    false
+            mbrEnd:
+                label:         dmkclub.member.end_date.label
+                frontend_type: datetime
+                renderable:    false
+            paymentOptionLabel:
+                label:         dmkclub.member.payment_option.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentoption')"
+                type:          translatable
+            paymentIntervalLabel:
+                label:         dmkclub.member.payment_interval.label
+                choices:       "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('dmkclb_paymentintval')"
+                type:          translatable
+            email:
+                renderable:    false
+                label:         oro.contact.email.label
+        properties:
+            id: ~
+            entity: ~
+            delete_link:
+                type: url
+                route: dmkclub_api_delete_memberfee
+                params: [ id ]
+            history_link:
+                type:       url
+                route:      oro_dataaudit_history
+                params:     [ entity , id ]
+
+#            correction_link:
+#                type: url
+#                route: dmkclub_api_delete_memberfee
+#                params: [ id ]
+            pdf_link:
+                type:       url
+                route:      dmkclub_memberfee_createpdf
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      dmkclub_memberfee_update
+                params:     [ id ]
+        sorters:
+            columns:
+                memberCode:
+                    data_name: m.memberCode
+                memberCodeInt:
+                    data_name: m.memberCodeInt
+                name:
+                    data_name: m.name
+                lastName:
+                    data_name: c.lastName
+                firstName:
+                    data_name: c.firstName
+                isActive:
+                    data_name: m.isActive
+                mbrStart:
+                    data_name: m.startDate
+                correctionStatus:
+                    data_name: f.correctionStatus
+                paymentOptionLabel:
+                    data_name: paymentOptionLabel
+                paymentIntervalLabel:
+                    data_name: paymentIntervalLabel
+                corrected:
+                    data_name: corrected
+                mbrEnd:
+                    data_name: m.endDate
+                email:
+                    data_name: email.email
+            default:
+                name:  ASC
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: m.name
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                    enabled: false
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                    enabled: false
+                memberCode:
+                    type: string
+                    data_name: m.memberCode
+                memberCodeInt:
+                    type: number
+                    data_name: m.memberCodeInt
+                    enabled: false
+                isActive:
+                    type: boolean
+                    data_name: m.isActive
+                email:
+                    type: string
+                    data_name: email.email
+                    enabled: false
+                paymentOptionLabel:
+                    type:      enum
+                    data_name: m.payment_option
+                    enum_code: dmkclb_paymentoption
+                paymentIntervalLabel:
+                    type:      enum
+                    data_name: m.payment_interval
+                    enum_code: dmkclb_paymentintval
+                mbrStart:
+                    type: date
+                    data_name: m.startDate
+                    enabled: false
+                mbrEnd:
+                    type:      date
+                    data_name: m.endDate
+                    enabled: false
+        actions:
+            delete:
+                type:         delete
+                acl_resource: dmkclub_member_memberfee_delete
+                label:        oro.grid.action.delete
+                icon:         trash
+                link:         delete_link
+            history:
+                type: dialog
+                label: oro.grid.action.view
+                icon: history
+                link: history_link
+                rowAction: false
+                widgetOptions:
+                    options:
+                        dialogOptions:
+                            title:  "@translator->trans(dmkclub.member.memberfee.entity_label)"
+                            modal:  true
+                            allowMaximize: true
+                            allowMinimize: true
+                            dblclick: maximize
+                            maximizedHeightDecreaseBy: minimize-bar
+                            width:  900
+            pdf:
+                type: dmkgetpdf
+                acl_resource: dmkclub_memberfee_view
+                label: dmkclub.member.memberfee.action.download_bill
+                icon: file-pdf-o
+                link: pdf_link
+            update:
+                type: dialog
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                rowAction: true
+                widgetOptions:
+                    reload-grid-name: dmkclub-memberfees-grid-billing
+                    options:
+                        dialogOptions:
+                            title:  "@translator->trans(dmkclub.member.memberfee.entity_label)"
+                            modal:  true
+                            allowMaximize: true
+                            allowMinimize: false
+                            dblclick: maximize
+                            maximizedHeightDecreaseBy: minimize-bar
+                            width:  900
+        mass_actions:
+            exportpdf:
+                type: dmkexportpdf
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.export_bill
+                icon: cloud-download
+            downloadpdf:
+                type: dmkdownloadpdf
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.download_bill
+                icon: file-pdf-o
+            dmksendmemberfee:
+                type: dmksendmemberfee
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.send_memberfee.label
+                icon: envelope
+            sepadebitxml:
+                type: dmksepadebitxml
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.payment.datagrid.action.sepa_direct_debit
+                icon: eur
+            markfeecorrection:
+                type: markfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.mark_feecorrection
+                icon: retweet
+            unmarkfeecorrection:
+                type: unmarkfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.unmark_feecorrection
+                icon: minus
+        options:
+            export: true
+
+# ###
+# MemberFee grid in member
+# ###
+    dmkclub-memberfees-grid-member:
+        extends: dmkclub-memberfees-grid-base
+        source:
+            query:
+                select:
+                    - b.id as bid
+                    - b.name
+                where:
+                    and:
+                        - f.member = :member
+                join:
+                    left:
+                        - { join: f.billing, alias: b }
+#                groupBy:  f.id, bid
+                
+            bind_parameters:
+                - member
+        inline_editing:
+            enable:       true
+        columns:
+            name:
+                type:          link
+                route:         dmkclub_memberbilling_view
+                params: {id: bid}
+                label:         dmkclub.member.memberbilling.name.label
+                frontend_type: html
+            corrected:
+                label:         dmkclub.member.memberfee.corrected.label
+                frontend_type: number
+            startDate:
+                renderable:    false
+            endDate:
+                renderable:    false
+
+        properties:
+            id: ~
+            delete_link:
+                type: url
+                route: dmkclub_api_delete_memberfee
+                params: [ id ]
+            pdf_link:
+                type:       url
+                route:      dmkclub_memberfee_createpdf
+                params:     [ id ]
+        sorters:
+            columns:
+                name:
+                    data_name: b.name
+            default:
+                billDate:  DESC
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: b.name
+        actions:
+            delete:
+                type:         delete
+                acl_resource: dmkclub_member_memberfee_delete
+                label:        oro.grid.action.delete
+                icon:         trash
+                link:         delete_link
+            pdf:
+                type: dmkgetpdf
+                acl_resource: dmkclub_memberfee_view
+                label: PDF
+                icon: file-pdf-o
+                link: pdf_link
+        mass_actions:
+            markfeecorrection:
+                type: markfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.mark_feecorrection
+                icon: retweet
+            unmarkfeecorrection:
+                type: unmarkfeecorrection
+                entity_name: "%dmkclub_member.memberfee.entity.class%"
+                data_identifier: f.id
+                label: dmkclub.member.memberfee.action.unmark_feecorrection
+                icon: minus
