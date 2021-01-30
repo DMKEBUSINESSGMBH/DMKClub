@@ -8,6 +8,14 @@
 Wird in der Detailansicht der Abrechnung verwendet
  #}
 
+{% set sepa_creditor %}
+    {% if (entity.sepaCreditor) %}
+    <span title="IBAN: {{ entity.sepaCreditor.iban }}">
+    {{ entity.sepaCreditor.name}} ({{ entity.sepaCreditor.creditorId ?: '-' }})
+    </span>
+    {% endif %}
+{% endset %}
+
 <div class="widget-content">
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
@@ -17,10 +25,13 @@ Wird in der Detailansicht der Abrechnung verwendet
             {{ UI.renderProperty('dmkclub.member.memberbilling.segment.label'|trans, entity.segment ? entity.segment.name : null ) }}
         </div>
         <div class="responsive-block">
-            {{ UI.renderProperty('dmkclub.member.memberbilling.sepa_creditor.label'|trans, entity.sepaCreditor ? entity.sepaCreditor.name : null ) }}
-        		{{ UI.renderProperty('dmkclub.member.memberbilling.processor.label'|trans, entity.processor) }}
-        		{{ UI.renderProperty('dmkclub.member.memberbilling.template.label'|trans, entity.template ? entity.template.name : null ) }}
-        		{{ entityConfig.renderDynamicFields(entity) }}
+            {% if (entity.sepaCreditor) %}
+            {{ UI.renderHtmlProperty('dmkclub.member.memberbilling.sepa_creditor.label'|trans, sepa_creditor ) }}
+            {% endif %}
+
+    		{{ UI.renderProperty('dmkclub.member.memberbilling.processor.label'|trans, entity.processor) }}
+    		{{ UI.renderProperty('dmkclub.member.memberbilling.template.label'|trans, entity.template ? entity.template.name : null ) }}
+    		{{ entityConfig.renderDynamicFields(entity) }}
           </div>
     </div>
 </div>

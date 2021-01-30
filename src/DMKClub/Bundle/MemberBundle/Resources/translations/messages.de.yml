@@ -131,9 +131,9 @@ dmkclub:
             age_child.tooltip:    Das Alter, ab dem das Mitglied den vollen Beitrag bezahlen muss.
             block.processor_settings: Einstellungen
             data_channel.label:   Kanal
-            fee_total.label:     Gesamtsumme
-            start_date.label:    Startdatum
-            end_date.label:      Enddatum
+            fee_total.label:      Gesamtsumme
+            start_date.label:     Startdatum
+            end_date.label:       Enddatum
             export_filesystem.label: Ziel für PDF-Export
             export_filesystem.tooltip: An diesen Ort werden PDF Dateien beim Export der Rechnungen über eine Massenoperation abgelegt. 
             fee.label:            Mitgliedsbeitrag
@@ -141,10 +141,10 @@ dmkclub:
             fee_admission.label:  Aufnahmegebühr für neue Mitglieder
             fee_child.label:      Beitrag für Kinder
             member_fees.label:    Mitgliedsbeiträge
-            name.label:          Name
+            name.label:           Name
             organization.label:   Organisation
-            owner.label:         Owner
-            processor.label:     Prozessor
+            owner.label:          Owner
+            processor.label:      Prozessor
             processor_config.label: Prozessor Einstellung
             position_labels.label: Texte für Positionen
             position_labels.default: >
@@ -159,7 +159,7 @@ dmkclub:
                 FEECORRECTION Beitragskorrektur<br/>
                 </pre>
             segment.label:        Mitgliedersegment
-            sepa_creditor.label:  SEPA Mandat
+            sepa_creditor.label:  SEPA Gläubiger
             template.label:       PDF Template
             template.tooltip:     PDF Template für die Generierung des Rechnungsdokuments
             message.saved:        Einstellungen gespeichert

@@ -6,6 +6,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
 
 class SepaCreditorType extends AbstractType
 {
@@ -24,7 +25,7 @@ class SepaCreditorType extends AbstractType
                 'required' => false,
                 'label' => 'dmkclub.payment.sepacreditor.name.label'
             ])
-                ->add('iban', TextType::class, [
+            ->add('iban', TextType::class, [
                 'required' => false,
                 'label' => 'dmkclub.payment.sepacreditor.iban.label'
             ])
@@ -45,7 +46,7 @@ class SepaCreditorType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor',
+            'data_class' => SepaCreditor::class,
             'intention' => 'sepacreditor',
             'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
             'single_form' => true

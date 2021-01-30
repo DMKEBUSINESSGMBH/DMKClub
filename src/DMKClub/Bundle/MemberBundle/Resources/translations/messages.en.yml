@@ -164,7 +164,7 @@ dmkclub:
                 ADMISSION  admission fee<br/>
                 FEECORRECTION fee correction<br/>
                 </pre>
-            sepa_creditor.label:       SEPA account
+            sepa_creditor.label:       SEPA creditor
             start_date.label:          Start date
             segment.label:             Member segment
             template.label:            PDF Template

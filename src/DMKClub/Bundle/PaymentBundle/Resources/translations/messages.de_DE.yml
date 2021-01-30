@@ -7,19 +7,19 @@ dmkclub:
             entity_plural_label: Bankverbindungen
             entity_description:  Represents a banking account
             account_owner.label: Kontoinhaber
-            bank_name.label: Name der Bank
+            bank_name.label:     Name der Bank
             direct_debit_valid_from.label: Lastschrift gültig ab
         sepacreditor:
-            entity_label:        SEPA Mandat
-            entity_plural_label: SEPA Mandate
+            entity_label:        SEPA Gläubiger
+            entity_plural_label: SEPA Gläubiger
             entity_description:  Represents a sepa creditor party
             id.label:            Id
-            name.label:          Name des Mandats
+            name.label:          Name des Gläubigers
             iban.label:          IBAN
             bic.label:           BIC
-            creditor_id.label:   Mandats ID
+            creditor_id.label:   Gläubiger ID
             owner.label:         Owner
-            form.choose: Wähle SEPA Mandat
+            form.choose:         Wähle SEPA Gläubiger
         bill:
             billfor: Rechnung für
             billnumber.label: Rechnungsnummer
@@ -56,7 +56,7 @@ creditcard: Kreditkarte
 cash: Barzahlung
 none: Keine
 accounting: Abrechnung
-"Sepa creditor data not valid":   Die Daten des SEPA-Mandats wurden nicht gefunden. Bitte prüfen Sie die SEPA-Einstellungen.
+"Sepa creditor data not valid":   Die Daten des SEPA-Gläubigers wurden nicht gefunden. Bitte prüfen Sie die SEPA-Einstellungen.
 
 
 yearly: jährlich
