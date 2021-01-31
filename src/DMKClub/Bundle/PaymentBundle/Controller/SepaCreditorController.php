@@ -66,10 +66,10 @@ class SepaCreditorController extends AbstractController
      *
      * @Template
      * @Acl(
-     * id="dmkclub_sepacreditor_update",
-     * type="entity",
-     * permission="EDIT",
-     * class="DMKClubPaymentBundle:SepaCreditor"
+     *   id="dmkclub_sepacreditor_update",
+     *   type="entity",
+     *   permission="EDIT",
+     *   class="DMKClubPaymentBundle:SepaCreditor"
      * )
      */
     public function updateAction(SepaCreditor $entity)

@@ -2,9 +2,6 @@ parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
     dmkclub_member.memberfee.manager.class:                DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager
 
-    dmkclub_member.memberfeediscount.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    dmkclub_member.memberfee.manager.api.class:            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-
     dmkclub_member.memberproposal.entity.class:            DMKClub\Bundle\MemberBundle\Entity\MemberProposal
 
 #    dmk_club_member.example.class: DMKClub\Bundle\MemberBundle\Example
@@ -42,13 +39,15 @@ services:
             - "@service_container"
 
     dmkclub_member.memberfeediscount.manager.api:
-        class: "%dmkclub_member.memberfeediscount.manager.api.class%"
+        public: true
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - "%dmkclub_member.memberfeediscount.entity.class%"
             - "@doctrine.orm.entity_manager"
     dmkclub_member.memberfee.manager.api:
-        class: "%dmkclub_member.memberfee.manager.api.class%"
+        public: true
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - "%dmkclub_member.memberfee.entity.class%"

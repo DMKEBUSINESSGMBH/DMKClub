@@ -3,7 +3,6 @@ parameters:
     dmkclub.payment.intervals_provider.class:         DMKClub\Bundle\PaymentBundle\Provider\PaymentIntervalsProvider
     dmkclub.payment.sepacreditor.entity.class:        DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor
     dmkclub.payment.bankaccount.entity.class:         DMKClub\Bundle\PaymentBundle\Entity\BankAccount
-    dmkclub.payment.sepacreditor.manager.api.class:   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
 services:
     dmkclub.payment.options_provider:
@@ -20,7 +19,6 @@ services:
         arguments:
             - '@oro_config.user'
 
-
     dmkclub.payment.form.autocomplete.sepacreditor.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
@@ -30,7 +28,8 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: dmkclub_sepacreditors, acl_resource: dmkclub_sepacreditor_view }
 
     dmkclub.payment.sepacreditor.manager.api:
-        class: "%dmkclub.payment.sepacreditor.manager.api.class%"
+        public: true
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - "%dmkclub.payment.sepacreditor.entity.class%"

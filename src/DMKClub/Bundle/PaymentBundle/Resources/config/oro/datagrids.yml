@@ -34,4 +34,34 @@ datagrids:
                 renderable:    false
         properties:
             id: ~
-                
+            update_link:
+                type:       url
+                route:      dmkclub_sepacreditor_update
+                params:     [ id ]
+            delete_link:
+                type: url
+                route: dmkclub_api_delete_sepacreditor
+                params: [ id ]
+        actions:
+            delete:
+                type:         delete
+                acl_resource: dmkclub_member_sepacreditor_delete
+                label:        oro.grid.action.delete
+                icon:         trash
+                link:         delete_link
+            update:
+                type: dialog
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                widgetOptions:
+                    reload-grid-name: dmkclub-sepacreditor-grid
+                    options:
+                        dialogOptions:
+                            title:  "@translator->trans(dmkclub.payment.sepacreditor.entity_label)"
+                            modal:  true
+                            allowMaximize: true
+                            allowMinimize: false
+                            dblclick: maximize
+                            maximizedHeightDecreaseBy: minimize-bar
+                            width:  700
