@@ -3,12 +3,12 @@ parameters:
     dmkclub.sponsorcategory.entity.class:       DMKClub\Bundle\SponsorBundle\Entity\Category
 
 services:
-    dmkclub_sponsor.sponsor.manager:
-        class: '%dmkclub_sponsor.sponsor.manager.api.class%'
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%dmkclub.sponsor.entity.class%'
-            - '@doctrine.orm.entity_manager'
+#    dmkclub_sponsor.sponsor.manager:
+#        class: '%dmkclub_sponsor.sponsor.manager.api.class%'
+#        parent: oro_soap.manager.entity_manager.abstract
+#        arguments:
+#            - '%dmkclub.sponsor.entity.class%'
+#            - '@doctrine.orm.entity_manager'
 
     # Sponsor API
     dmkclub_sponsor.sponsor.manager.api:
