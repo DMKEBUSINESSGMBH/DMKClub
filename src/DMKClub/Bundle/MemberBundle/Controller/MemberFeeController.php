@@ -83,7 +83,7 @@ class MemberFeeController extends AbstractController
 		try {
 			$file = $pdfManager->buildPdf($entity);
 			$url = $this->get('router')->generate(
-					'oro_importexport_export_download',
+					'dmkclub_basics_export_download',
 					['fileName' => $file->getKey()]
 			);
 			$responseData['url'] = $url;
