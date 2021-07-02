@@ -3,7 +3,7 @@ namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;

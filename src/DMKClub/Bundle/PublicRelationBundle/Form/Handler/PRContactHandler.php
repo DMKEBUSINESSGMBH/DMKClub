@@ -5,7 +5,7 @@ namespace DMKClub\Bundle\PublicRelationBundle\Form\Handler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use DMKClub\Bundle\PublicRelationBundle\Entity\PRContact;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
