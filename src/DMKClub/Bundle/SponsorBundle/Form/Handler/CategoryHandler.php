@@ -5,7 +5,7 @@ namespace DMKClub\Bundle\SponsorBundle\Form\Handler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;

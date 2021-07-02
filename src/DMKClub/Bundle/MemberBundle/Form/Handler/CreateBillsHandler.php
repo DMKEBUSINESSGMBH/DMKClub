@@ -5,7 +5,7 @@ use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
 
 use Symfony\Component\Form\FormInterface;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
 use DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager;

@@ -5,7 +5,7 @@ namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\TagBundle\Entity\TagManager;

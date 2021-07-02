@@ -3,7 +3,7 @@ namespace DMKClub\Bundle\MemberBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 use Oro\Bundle\ChannelBundle\Provider\RequestChannelProvider;
 use DMKClub\Bundle\MemberBundle\Entity\MemberBilling;
