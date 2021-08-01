@@ -93,6 +93,11 @@ class MemberBillingType extends AbstractType
                 'required' => true,
                 'label' => 'dmkclub.member.memberbilling.name.label'
             ])
+            ->add('sign', TextType::class, [
+                'required' => true,
+                'label' => 'dmkclub.member.memberbilling.sign.label',
+                'tooltip' => 'dmkclub.member.memberbilling.sign.tooltip',
+            ])
             ->add('startDate', OroDateType::class, [
                 'required' => true,
                 'label' => 'dmkclub.member.memberbilling.start_date.label'

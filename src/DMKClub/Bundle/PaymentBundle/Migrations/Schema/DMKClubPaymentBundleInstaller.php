@@ -23,7 +23,7 @@ class DMKClubPaymentBundleInstaller implements Installation, ExtendExtensionAwar
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -76,6 +76,10 @@ class DMKClubPaymentBundleInstaller implements Installation, ExtendExtensionAwar
         $table->addColumn('updated', 'datetime', []);
         $table->addColumn('direct_debit_valid_from', 'date', [
             'notnull' => false
+        ]);
+        $table->addColumn('direct_debit_mandate_id', 'string', [
+            'notnull' => false,
+            'length' => 50
         ]);
         $table->setPrimaryKey([
             'id'

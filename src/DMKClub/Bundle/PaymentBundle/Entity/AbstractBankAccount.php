@@ -35,6 +35,9 @@ abstract class AbstractBankAccount
      * @ORM\Column(name="account_owner", type="string", length=255, nullable=true)
      * @ConfigField(
      *    defaultValues={
+     *      "dataaudit"={
+     *        "auditable"=true
+     *      },
      *      "importexport"={
      *        "order"=10
      *      }
@@ -49,6 +52,9 @@ abstract class AbstractBankAccount
      * @ORM\Column(name="iban", type="string", length=255, nullable=true)
      * @ConfigField(
      *    defaultValues={
+     *      "dataaudit"={
+     *        "auditable"=true
+     *      },
      *      "importexport"={
      *        "order"=20
      *      }
@@ -63,6 +69,9 @@ abstract class AbstractBankAccount
      * @ORM\Column(name="bic", type="string", length=255, nullable=true)
      * @ConfigField(
      *    defaultValues={
+     *      "dataaudit"={
+     *        "auditable"=true
+     *      },
      *      "importexport"={
      *        "order"=30
      *      }
@@ -77,6 +86,9 @@ abstract class AbstractBankAccount
      * @ORM\Column(name="bank_name", type="string", length=255, nullable=true)
      * @ConfigField(
      *    defaultValues={
+     *      "dataaudit"={
+     *        "auditable"=true
+     *      },
      *      "importexport"={
      *        "order"=40
      *      }
@@ -101,6 +113,24 @@ abstract class AbstractBankAccount
      * )
      */
     protected $directDebitValidFrom;
+
+    /**
+     * Default SEPA direct debit mandate id
+     *
+     * @var string
+     * @ORM\Column(name="direct_debit_mandate_id", type="string", length=50, nullable=true)
+     * @ConfigField(
+     *    defaultValues={
+     *      "dataaudit"={
+     *        "auditable"=true
+     *      },
+     *      "importexport"={
+     *        "order"=60
+     *      }
+     *    }
+     * )
+     */
+    protected $directDebitMandateId;
 
     /**
      *
@@ -212,6 +242,22 @@ abstract class AbstractBankAccount
     {
         $this->directDebitValidFrom = $value;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirectDebitMandateId()
+    {
+        return $this->directDebitMandateId;
+    }
+
+    /**
+     * @param string $directDebitMandateId
+     */
+    public function setDirectDebitMandateId($directDebitMandateId)
+    {
+        $this->directDebitMandateId = $directDebitMandateId;
     }
 
     /**

@@ -149,6 +149,8 @@ dmkclub:
             fee_total.label:           Fee total
             member_fees.label:         Member fees
             name.label:                Name
+            sign.label:                Short sign
+            sign.tooltip:              Used as part of remittance information
             owner.label:               Owner
             processor.label:           Processor
             processor_config.label:    Processor config
@@ -205,6 +207,8 @@ dmkclub:
             price_total.label:   Fee
             payed_full.label:    Fully paid
             start_date.label:    Start date
+            remittance_information.label:   Remittance information
+            direct_debit_mandate_id.label:  SEPA mandate id
             action:
                 mark_feecorrection: Mark fee correction
                 unmark_feecorrection: Unmark fee correction

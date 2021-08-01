@@ -57,6 +57,8 @@
         form_row(form.iban),
         form_row(form.bic),
         form_row(form.creditorId),
+        form_row(form.directDebitMandateId),
+        form_row(form.directDebitValidFrom),
     ]) %}
     {% if form.owner is defined %}
         {% set formFields = formFields|merge([form_row(form.owner)]) %}
