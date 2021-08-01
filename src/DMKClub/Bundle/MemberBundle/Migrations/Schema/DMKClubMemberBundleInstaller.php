@@ -420,6 +420,10 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
             'notnull' => false,
             'length' => 255
         ]);
+        $table->addColumn('direct_debit_mandate_id', 'string', [
+            'notnull' => false,
+            'length' => 50
+        ]);
         $table->addColumn('direct_debit_valid_from', 'date', [
             'notnull' => false,
             'comment' => '(DC2Type:date)'

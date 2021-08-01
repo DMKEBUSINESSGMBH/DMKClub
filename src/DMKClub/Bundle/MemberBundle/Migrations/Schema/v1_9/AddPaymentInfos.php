@@ -32,5 +32,13 @@ class AddPaymentInfos implements Migration
                 'length' => 50
             ]);
         }
+        $table = $schema->getTable('dmkclub_member_proposal_bank');
+        if (!$table->hasColumn('direct_debit_mandate_id')) {
+            $table->addColumn('direct_debit_mandate_id', 'string', [
+                'notnull' => false,
+                'length' => 50
+            ]);
+        }
+
     }
 }
