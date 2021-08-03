@@ -138,14 +138,14 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
     /**
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberBilling", inversedBy="memberFees")
      * @ORM\JoinColumn(name="billing", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=false}})
      */
     protected $billing;
 
     /**
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFees")
      * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=false}})
      */
     protected $member;
 

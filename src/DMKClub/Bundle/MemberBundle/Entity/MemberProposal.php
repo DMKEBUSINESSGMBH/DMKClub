@@ -321,7 +321,7 @@ class MemberProposal extends ExtendMemberProposal implements
 	 * @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
 	 * @ConfigField(
 	 *  defaultValues={
-	 *      "dataaudit"={"auditable"=true},
+	 *      "dataaudit"={"auditable"=false},
 	 *      "importexport"={
 	 *          "order"=160,
 	 *          "short"=true
