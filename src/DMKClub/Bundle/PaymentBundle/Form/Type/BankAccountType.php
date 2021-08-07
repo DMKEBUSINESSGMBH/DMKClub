@@ -44,6 +44,10 @@ class BankAccountType extends AbstractType
                 'required' => false,
                 'label' => 'dmkclub.payment.bankaccount.bank_name.label'
             ])
+            ->add('directDebitMandateId', TextType::class, [
+                'required' => false,
+                'label' => 'dmkclub.payment.bankaccount.direct_debit_mandate_id.label'
+            ])
             ->add('directDebitValidFrom', OroDateType::class, [
                 'required' => false,
                 'label' => 'dmkclub.payment.bankaccount.direct_debit_valid_from.label'

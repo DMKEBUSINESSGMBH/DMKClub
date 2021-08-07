@@ -24,6 +24,7 @@ datagrids:
                     - email.email
                     - b.iban
                     - b.bic
+                    - b.directDebitMandateId
                     - m.startDate
                     - m.endDate
                     - m.createdAt
@@ -86,6 +87,9 @@ datagrids:
             bic:
                 label:         dmkclub.payment.bankaccount.bic.label
                 renderable:    false
+            directDebitMandateId:
+                label:         dmkclub.payment.bankaccount.direct_debit_mandate_id.label
+                renderable:    false
             startDate:
                 label:         dmkclub.member.start_date.label
                 frontend_type: date
@@ -145,6 +149,8 @@ datagrids:
                     data_name: b.iban
                 bic:
                     data_name: b.bic
+                directDebitMandateId:
+                    data_name: b.directDebitMandateId
                 startDate:
                     data_name: m.startDate
                 endDate:
@@ -218,6 +224,10 @@ datagrids:
                     type: string
                     enabled: false
                     data_name: b.bic
+                directDebitMandateId:
+                    type: string
+                    enabled: false
+                    data_name: b.directDebitMandateId
                 startDate:
                     type:      datetime
                     enabled: false

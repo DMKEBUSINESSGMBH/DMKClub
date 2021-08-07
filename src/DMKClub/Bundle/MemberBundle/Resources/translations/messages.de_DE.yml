@@ -142,6 +142,8 @@ dmkclub:
             fee_child.label:      Beitrag für Kinder
             member_fees.label:    Mitgliedsbeiträge
             name.label:           Name
+            sign.label:           Zeichen
+            sign.tooltip:         Wird als Teil des Verwendungszwecks bei Überweisungen und Lastschriften verwendet.
             organization.label:   Organisation
             owner.label:          Owner
             processor.label:      Prozessor
@@ -193,6 +195,8 @@ dmkclub:
             price_total.label:   Beitrag
             payed_full.label:    Vollständig bezahlt
             start_date.label:    Startdatum
+            remittance_information.label:   Verwendungszweck
+            direct_debit_mandate_id.label:  SEPA Mandatsreferenz
             action:
                 mark_feecorrection: Korrektur markieren
                 unmark_feecorrection: Korrektur entfernen

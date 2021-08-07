@@ -8,6 +8,7 @@ dmkclub:
             entity_description:  Represents a banking account
             account_owner.label: Kontoinhaber
             bank_name.label:     Name der Bank
+            direct_debit_mandate_id.label: Default SEPA Mandatsreferenz
             direct_debit_valid_from.label: Lastschrift gültig ab
         sepacreditor:
             entity_label:        SEPA Gläubiger

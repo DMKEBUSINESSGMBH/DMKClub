@@ -26,6 +26,9 @@ use DMKClub\Bundle\PaymentBundle\Model\ExtendBankAccount;
  *          },
  *          "attachment"={
  *              "immutable"=true
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )

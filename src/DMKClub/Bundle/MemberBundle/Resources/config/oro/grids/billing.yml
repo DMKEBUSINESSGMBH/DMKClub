@@ -11,6 +11,7 @@ datagrids:
                 select:
                     - mb.id
                     - mb.name
+                    - mb.sign
                     - mb.feeTotal/100 As feeTotal
                     - mb.startDate
                     - mb.endDate
@@ -21,6 +22,8 @@ datagrids:
         columns:
             name:
                 label:         dmkclub.member.memberbilling.name.label
+            sign:
+                label:         dmkclub.member.memberbilling.sign.label
             feeTotal:
                 label:         dmkclub.member.memberbilling.fee_total.label
                 frontend_type: currency
@@ -50,6 +53,8 @@ datagrids:
             columns:
                 name:
                     data_name: mb.name
+                sign:
+                    data_name: mb.sign
                 feeTotal:
                     data_name: mb.feeTotal
                 startDate:
@@ -67,6 +72,10 @@ datagrids:
                 name:
                     type: string
                     data_name: mb.name
+                sign:
+                    type: string
+                    data_name: mb.sign
+                    enabled: false
                 feeTotal:
                     type: number
                     data_name: mb.feeTotal

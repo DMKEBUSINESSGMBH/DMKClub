@@ -10,6 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MemberFeeType extends AbstractType
 {
@@ -53,7 +54,17 @@ class MemberFeeType extends AbstractType
 	        'label' => 'dmkclub.member.memberfee.payed_full.label'
 	    ]);
 
+	    $builder->add('directDebitMandateId', TextType::class, [
+	        'required' => false,
+	        'label' => 'dmkclub.member.memberfee.direct_debit_mandate_id.label'
+	    ]);
+
+	    $builder->add('remittance_information', TextType::class, [
+	        'required' => false,
+	        'label' => 'dmkclub.member.memberfee.remittance_information.label'
+	    ]);
 	}
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -62,6 +73,7 @@ class MemberFeeType extends AbstractType
     public function buildRelationFields(FormBuilderInterface $builder, array $options)
     {
     }
+
     /**
      * @param OptionsResolver $resolver
      */

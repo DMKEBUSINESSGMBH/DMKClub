@@ -55,7 +55,7 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
      */
     public function getMigrationVersion()
     {
-        return 'v1_8';
+        return 'v1_10';
     }
 
     /**
@@ -239,6 +239,10 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
             'notnull' => false,
             'length' => 255
         ]);
+        $table->addColumn('sign', 'string', [
+            'notnull' => false,
+            'length' => 50
+        ]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', []);
         $table->addColumn('processor', 'string', [
@@ -298,6 +302,8 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
         $table->addColumn('price_total', 'integer', ['notnull' => false]);
         $table->addColumn('payed_total', 'integer', ['notnull' => false]);
         $table->addColumn('correction_status', 'integer', ['notnull' => false]);
+        $table->addColumn('remittance_information', 'string', ['notnull' => false, 'length' => 120]);
+        $table->addColumn('direct_debit_mandate_id', 'string', ['notnull' => false, 'length' => 50]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', []);
 
@@ -413,6 +419,10 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
         $table->addColumn('bank_name', 'string', [
             'notnull' => false,
             'length' => 255
+        ]);
+        $table->addColumn('direct_debit_mandate_id', 'string', [
+            'notnull' => false,
+            'length' => 50
         ]);
         $table->addColumn('direct_debit_valid_from', 'date', [
             'notnull' => false,

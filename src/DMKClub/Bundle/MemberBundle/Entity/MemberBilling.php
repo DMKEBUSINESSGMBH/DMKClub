@@ -113,6 +113,21 @@ class MemberBilling extends ExtendMemberBilling implements SepaPaymentAwareInter
      *
      * @var string
      *
+     * @ORM\Column(name="sign", type="string", length=50, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $sign;
+
+    /**
+     *
+     * @var string
+     *
      * @ORM\Column(name="processor", type="string", length=255, nullable=true)
      * @ConfigField(
      *      defaultValues={
@@ -754,5 +769,21 @@ FEECORRECTION fee correction";
     {
         if ($this->getSepaCreditor())
             return $this->getSepaCreditor()->getCreditorId();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSign()
+    {
+        return $this->sign;
+    }
+
+    /**
+     * @param string $sign
+     */
+    public function setSign($sign)
+    {
+        $this->sign = $sign;
     }
 }

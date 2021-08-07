@@ -34,6 +34,7 @@ Wird im Account verwendet
               {{ UI.renderProperty('dmkclub.payment.bankaccount.iban.label'|trans, entity.bankAccount.iban) }}
               {{ UI.renderProperty('dmkclub.payment.bankaccount.bic.label'|trans, entity.bankAccount.bic) }}
               {{ UI.renderProperty('dmkclub.payment.bankaccount.bank_name.label'|trans, entity.bankAccount.bankName) }}
+              {{ UI.renderProperty('dmkclub.payment.bankaccount.direct_debit_mandate_id.label'|trans, entity.bankAccount.directDebitMandateId) }}
               {{ UI.renderProperty('dmkclub.payment.bankaccount.direct_debit_valid_from.label'|trans, entity.bankAccount.directDebitValidFrom ? entity.bankAccount.directDebitValidFrom|oro_format_date : null) }}
             {% endif %}
 

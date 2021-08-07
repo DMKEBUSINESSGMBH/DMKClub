@@ -3,7 +3,6 @@ namespace DMKClub\Bundle\MemberBundle\Accounting;
 
 use DMKClub\Bundle\MemberBundle\Form\Type\DefaultProcessorSettingsType;
 use DMKClub\Bundle\MemberBundle\Entity\Member;
-use DMKClub\Bundle\MemberBundle\Entity\MemberFee;
 use DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition;
 use DMKClub\Bundle\MemberBundle\Accounting\Time\TimeCalculator;
 use Psr\Log\LoggerInterface;
@@ -129,19 +128,14 @@ class DefaultProcessor extends AbstractProcessor
 
         $this->writeLog("Fee: " . $fee . " from " . $startDate->format('Y-m-d') . ' to ' . $endDate->format('Y-m-d'));
 
-        // $descriptionFeePosition = 'Beitrag vom [STARTDATE] bis [ENDDATE]';
-        $descriptionFeePosition = isset($labelMap[MemberFeePosition::FLAG_FEE]) ? $labelMap[MemberFeePosition::FLAG_FEE] : 'MemberFeePosition::FLAG_FEE';
-
-        $dateFormat = 'd.m.Y';
         // Bei unterjährigem Ein- und Austritt das passende Datum verwenden
         $labelStartDate = $firstMonth2Pay ? $firstMonth2Pay : $startDate;
         $labelEndDate = $lastMonth2Pay ? $lastMonth2Pay : $endDate;
-        $descriptionFeePosition = str_replace('[STARTDATE]', $labelStartDate->format($dateFormat), $descriptionFeePosition);
-        $descriptionFeePosition = str_replace('[ENDDATE]', $labelEndDate->format($dateFormat), $descriptionFeePosition);
+        // $descriptionFeePosition = 'Beitrag vom [STARTDATE] bis [ENDDATE]';
+        $descriptionFeePosition = isset($labelMap[MemberFeePosition::FLAG_FEE]) ? $labelMap[MemberFeePosition::FLAG_FEE] : 'MemberFeePosition::FLAG_FEE';
+        $descriptionFeePosition = $this->prepareDescriptionFeePosition($descriptionFeePosition, $labelStartDate, $labelEndDate);
 
-        $memberFee = new MemberFee();
-        $memberFee->setStartDate($labelStartDate);
-        $memberFee->setEndDate($labelEndDate);
+        $memberFee = $this->createMemberFee($member, $memberBilling, $labelStartDate, $labelEndDate);
 
         $position = new MemberFeePosition();
         $memberFee->addPosition($position);

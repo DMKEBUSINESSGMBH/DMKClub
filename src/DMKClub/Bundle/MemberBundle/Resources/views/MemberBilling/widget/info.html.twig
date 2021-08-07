@@ -20,6 +20,7 @@ Wird in der Detailansicht der Abrechnung verwendet
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
             {{ UI.renderProperty('dmkclub.member.memberbilling.name.label'|trans, entity.name) }}
+            {{ UI.renderProperty('dmkclub.member.memberbilling.sign.label'|trans, entity.sign) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.start_date.label'|trans, entity.startDate ? entity.startDate|oro_format_date : null) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.end_date.label'|trans, entity.endDate ? entity.endDate|oro_format_date : null) }}
             {{ UI.renderProperty('dmkclub.member.memberbilling.segment.label'|trans, entity.segment ? entity.segment.name : null ) }}

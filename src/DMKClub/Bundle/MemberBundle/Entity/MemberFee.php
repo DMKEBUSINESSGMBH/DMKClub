@@ -138,14 +138,14 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
     /**
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\MemberBilling", inversedBy="memberFees")
      * @ORM\JoinColumn(name="billing", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=false}})
      */
     protected $billing;
 
     /**
      * @ORM\ManyToOne(targetEntity="\DMKClub\Bundle\MemberBundle\Entity\Member", inversedBy="memberFees")
      * @ORM\JoinColumn(name="member", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
+     * @ConfigField(defaultValues={"dataaudit"={"auditable"=false}})
      */
     protected $member;
 
@@ -177,6 +177,36 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * @ConfigField(defaultValues={"dataaudit"={"auditable"=true}})
      */
     private $correctionStatus;
+
+    /**
+     * Used SEPA direct debit mandate id
+     *
+     * @var string
+     * @ORM\Column(name="direct_debit_mandate_id", type="string", length=50, nullable=true)
+     * @ConfigField(
+     *    defaultValues={
+     *      "dataaudit"={
+     *        "auditable"=true
+     *      }
+     *    }
+     * )
+     */
+    private $directDebitMandateId;
+
+    /**
+     *
+     *
+     * @var string
+     * @ORM\Column(name="remittance_information", type="string", length=120, nullable=true)
+     * @ConfigField(
+     *    defaultValues={
+     *      "dataaudit"={
+     *        "auditable"=true
+     *      }
+     *    }
+     * )
+     */
+    private $remittanceInformation;
 
     /**
      *
@@ -507,6 +537,31 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
     }
 
     /**
+     * @return string
+     */
+    public function getDirectDebitMandateId()
+    {
+        if (!$this->directDebitMandateId) {
+            // Fallback, TODO: find some better solution
+            $billDate = $this->getBillDate();
+            return sprintf('%s/%s/%d',
+                $billDate->format('dm'),
+                str_pad($this->getMember()->getMemberCode(), 6, 'x', STR_PAD_LEFT),
+                $billDate->format('Y')
+            );
+        }
+        return $this->directDebitMandateId;
+    }
+
+    /**
+     * @param string $directDebitMandateId
+     */
+    public function setDirectDebitMandateId($directDebitMandateId)
+    {
+        $this->directDebitMandateId = $directDebitMandateId;
+    }
+
+    /**
      *
      * @return \DateTime
      */
@@ -655,13 +710,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      */
     public function getDebtorMandate()
     {
-        $billDate = $this->getBillDate();
-        $mandate = sprintf('%s/%s/%d',
-            $billDate->format('dm'),
-            str_pad($this->getMember()->getMemberCode(), 6, 'x', STR_PAD_LEFT),
-            $billDate->format('Y')
-        );
-        return $mandate;
+        return $this->getDirectDebitMandateId();
     }
 
     /*
@@ -682,13 +731,22 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
         return $this->getBilling();
     }
 
+    /**
+     * @param string $remittanceInformation
+     */
+    public function setRemittanceInformation($remittanceInformation)
+    {
+        $this->remittanceInformation = $remittanceInformation;
+    }
+
     /*
      * (non-PHPdoc)
      * @see \DMKClub\Bundle\PaymentBundle\Sepa\SepaDirectDebitAwareInterface::getRemittanceInformation()
      */
     public function getRemittanceInformation()
     {
-        return $this->getBilling()->getName() . ' - ' . $this->getId();
+        // Verwendungszweck
+        return $this->remittanceInformation;
     }
 
     /*

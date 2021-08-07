@@ -18,6 +18,8 @@ datagrids:
                     - f.startDate
                     - f.endDate
                     - f.billDate
+                    - f.directDebitMandateId
+                    - f.remittanceInformation
                     - f.createdAt
                     - f.updatedAt
                     - f.correctionStatus
@@ -60,6 +62,13 @@ datagrids:
             endDate:
                 label:         dmkclub.member.memberfee.end_date.label
                 frontend_type: date
+            directDebitMandateId:
+                label:         dmkclub.member.memberfee.direct_debit_mandate_id.label
+                renderable:    false
+            remittanceInformation:
+                label:         dmkclub.member.memberfee.remittance_information.label
+                renderable:    false
+
             updatedAt:
                 label:         oro.ui.updated_at
                 frontend_type: datetime
@@ -117,6 +126,10 @@ datagrids:
                     data_name: f.startDate
                 endDate:
                     data_name: f.endDate
+                remittanceInformation:
+                    data_name: f.remittanceInformation
+                directDebitMandateId:
+                    data_name: f.directDebitMandateId
                 createdAt:
                     type:      datetime
                     data_name: f.createdAt

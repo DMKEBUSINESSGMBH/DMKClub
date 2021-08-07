@@ -25,6 +25,8 @@ interface SepaDirectDebitAwareInterface
     public function getSepaAmount();
 
     /**
+     * Value of RmtInf > Ustrd
+     * SEPA Verwendungszweck
      *
      * @return string
      */
@@ -49,13 +51,13 @@ interface SepaDirectDebitAwareInterface
     public function getDebtorIban();
 
     /**
-     *
+     * Value of MndtRltdInf > DtOfSgntr
      * @return \DateTime
      */
     public function getDebtorMandateSignDate();
 
     /**
-     *
+     * Value of MndtRltdInf > MndtId
      * @return string
      */
     public function getDebtorMandate();
