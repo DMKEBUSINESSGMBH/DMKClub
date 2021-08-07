@@ -2,7 +2,7 @@
 
 namespace DMKClub\Bundle\MemberBundle\Mailer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateInterface;
@@ -25,8 +25,8 @@ use DMKClub\Bundle\BasicsBundle\Model\TemplateNotFoundException;
  */
 class BaseProcessor
 {
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var ConfigManager */
     protected $configManager;
@@ -45,7 +45,7 @@ class BaseProcessor
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry $managerRegistry
+     * @param ObjectManager $objectManager
      * @param ConfigManager $configManager
      * @param EmailRenderer $renderer
      * @param EmailHolderHelper $emailHolderHelper
@@ -53,14 +53,14 @@ class BaseProcessor
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $managerRegistry,
+        ObjectManager $objectManager,
         ConfigManager $configManager,
         EmailRenderer $renderer,
         EmailHolderHelper $emailHolderHelper,
         Processor $mailer
     ) {
         $this->eventDispatcher   = $eventDispatcher;
-        $this->managerRegistry   = $managerRegistry;
+        $this->objectManager   = $objectManager;
         $this->configManager     = $configManager;
         $this->renderer          = $renderer;
         $this->emailHolderHelper = $emailHolderHelper;
@@ -123,8 +123,7 @@ class BaseProcessor
      */
     protected function findEmailTemplateByName($emailTemplateName)
     {
-        return $this->managerRegistry
-            ->getManagerForClass('OroEmailBundle:EmailTemplate')
+        return $this->objectManager
             ->getRepository('OroEmailBundle:EmailTemplate')
             ->findByName($emailTemplateName);
     }

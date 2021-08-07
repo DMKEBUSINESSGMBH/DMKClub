@@ -57,7 +57,7 @@ services:
         public: true
         arguments:
             - '@event_dispatcher'
-            - '@doctrine'
+            - '@doctrine.orm.entity_manager'
             - '@oro_config.global'
             - '@oro_email.email_renderer'
             - '@oro_email.email_holder_helper'

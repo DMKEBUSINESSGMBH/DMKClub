@@ -4,6 +4,7 @@ namespace DMKClub\Bundle\BasicsBundle\PDF;
 use Monolog\Logger;
 use Gaufrette\File;
 use Oro\Bundle\ImportExportBundle\File\FileManager;
+use Oro\Bundle\GaufretteBundle\FileManager as GaufretteFileManager;
 
 use DMKClub\Bundle\BasicsBundle\Entity\TwigTemplate;
 use Twig\Environment;
@@ -27,6 +28,9 @@ class Manager
     /** @var FileManager */
     protected $fileManager;
 
+    /** @var GaufretteFileManager */
+    private $gaufretteFileManager;
+
     /** @var Logger */
     protected $logger;
 
@@ -37,11 +41,12 @@ class Manager
      *
      * @param \TCPDF $tcpdf
      */
-    public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdf, Environment $twig, FileManager $fm, Logger $logger)
+    public function __construct(\WhiteOctober\TCPDFBundle\Controller\TCPDFController $tcpdf, Environment $twig, FileManager $fm, GaufretteFileManager $gaufretteFileManager, Logger $logger)
     {
         $this->tcpdf = $tcpdf;
         $this->twig = clone $twig;
         $this->fileManager = $fm;
+        $this->gaufretteFileManager = $gaufretteFileManager;
         $this->logger = $logger;
     }
 
@@ -78,10 +83,10 @@ class Manager
                 unlink($localFile);
             }
         }
-        return $this->fileManager->getFileSystem()->get($fileName);
+        return $this->gaufretteFileManager->getFile($fileName);
     }
 
-    public function buildPdfCombined($nextEntity):File
+    public function buildPdfCombined($nextEntity): File
     {
         $twigTemplate = null;
         $pdfGenerator = null;
@@ -112,7 +117,7 @@ class Manager
             unlink($localFile);
         }
 
-        return $this->fileManager->getFileSystem()->get($fileName);
+        return $this->gaufretteFileManager->getFile($fileName);
     }
 
     /**
@@ -145,7 +150,6 @@ class Manager
         // Zuerst das HTML erzeugen
         $template = $this->twig->createTemplate($twigTemplate->getTemplate());
         $html = $template->render($context);
-//        $html = $this->twig->render($twigTemplate->getTemplate(), $context);
 
         // mit Daten aus Template initialisieren
         $orientation = $twigTemplate->getOrientation() ? $twigTemplate->getOrientation() : 'P';
@@ -226,4 +230,3 @@ class Manager
         return $choices;
     }
 }
-
