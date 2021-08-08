@@ -15,14 +15,14 @@
 	},
 	"repositories" : [{
 			"type" : "composer",
-			"url" : "http://packagist.orocrm.com"
+			"url" : "https://packagist.orocrm.com"
 		}
 	],
 	"require" : {
 		"php" : ">=7.1.0",
 		"whiteoctober/tcpdf-bundle" : "*",
 		"digitick/sepa-xml" : "1.1.*",
-		"oro/crm" : "~4.1.0"
+		"oro/crm" : "~4.2.0"
 	},
 	"minimum-stability" : "dev",
 	"prefer-stable" : true

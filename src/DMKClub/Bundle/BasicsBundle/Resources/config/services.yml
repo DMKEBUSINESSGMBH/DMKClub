@@ -18,6 +18,7 @@ services:
             - "@white_october.tcpdf"
             - "@twig"
             - "@oro_importexport.file.file_manager"
+            - '@oro_importexport.file_manager'
             - "@logger"
 
     dmkclub_basics.provider.privilege_category_provider:

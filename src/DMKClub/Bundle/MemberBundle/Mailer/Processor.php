@@ -2,7 +2,7 @@
 
 namespace DMKClub\Bundle\MemberBundle\Mailer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Gaufrette\File;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
@@ -22,14 +22,14 @@ class Processor extends BaseProcessor
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $managerRegistry,
+        ObjectManager $objectManager,
         ConfigManager $configManager,
         EmailRenderer $renderer,
         EmailHolderHelper $emailHolderHelper,
         \Oro\Bundle\EmailBundle\Mailer\Processor $mailer,
         Manager $pdfManager)
     {
-        parent::__construct($eventDispatcher, $managerRegistry, $configManager, $renderer, $emailHolderHelper, $mailer);
+        parent::__construct($eventDispatcher, $objectManager, $configManager, $renderer, $emailHolderHelper, $mailer);
         $this->pdfManager = $pdfManager;
     }
     /**

@@ -4,7 +4,7 @@ namespace DMKClub\Bundle\SponsorBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Sponsor;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 use Symfony\Component\HttpFoundation\RequestStack;

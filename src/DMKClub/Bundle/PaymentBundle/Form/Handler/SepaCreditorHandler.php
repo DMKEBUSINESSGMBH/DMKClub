@@ -2,7 +2,7 @@
 namespace DMKClub\Bundle\PaymentBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use DMKClub\Bundle\SponsorBundle\Entity\Category;
 use DMKClub\Bundle\PaymentBundle\Entity\SepaCreditor;
 use Symfony\Component\HttpFoundation\RequestStack;
