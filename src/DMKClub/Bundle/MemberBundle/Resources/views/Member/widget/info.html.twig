@@ -41,8 +41,8 @@ Wird in der Detailansicht des Mitglieds verwendet
             {% if entity.postalAddress is not empty %}
                 {{ UI.renderHtmlProperty('oro.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(entity.postalAddress)) }}
             {% endif %}
-            {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, entity.paymentOption.name) }}
-            {{ UI.renderProperty('dmkclub.member.payment_interval.label'|trans, entity.paymentInterval.name) }}
+            {{ UI.renderProperty('dmkclub.member.payment_option.label'|trans, entity.paymentOption ? entity.paymentOption.name : '-') }}
+            {{ UI.renderProperty('dmkclub.member.payment_interval.label'|trans, entity.paymentInterval ? entity.paymentInterval.name : '-') }}
 
         </div>
         <div class="responsive-block">
