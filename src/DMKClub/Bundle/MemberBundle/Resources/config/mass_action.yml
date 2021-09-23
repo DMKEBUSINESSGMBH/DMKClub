@@ -17,7 +17,7 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@translator"
             - "@security.authorization_checker"
-            - "@dmkclub_member.memberfee.manager"
+            - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager'
             - "@logger"
 
     DMKClub\Bundle\MemberBundle\DataGrid\Extension\MassAction\SendMemberFeeAction:
@@ -30,7 +30,7 @@ services:
         arguments:
             - "@translator"
             - "@security.authorization_checker"
-            - "@dmkclub_member.memberfee.manager"
+            - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager'
             - '@DMKClub\Bundle\MemberBundle\Mailer\Processor'
             - "@oro_cron.async.command_runner"
             - "@logger"

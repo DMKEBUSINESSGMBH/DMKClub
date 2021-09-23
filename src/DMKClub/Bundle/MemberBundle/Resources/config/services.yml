@@ -1,6 +1,5 @@
 parameters:
     dmkclub_member.member.entity.class:                    DMKClub\Bundle\MemberBundle\Entity\Member
-    dmkclub_member.memberfee.manager.class:                DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager
 
     dmkclub_member.memberproposal.entity.class:            DMKClub\Bundle\MemberBundle\Entity\MemberProposal
 
@@ -32,12 +31,11 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@service_container"
 
-    dmkclub_member.memberfee.manager:
-        class:     "%dmkclub_member.memberfee.manager.class%"
+    DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@service_container"
-
+        
     dmkclub_member.memberfeediscount.manager.api:
         public: true
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
@@ -111,8 +109,8 @@ services:
             - "@logger"
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
-    dmkclub_member.async.accounting.summaryprocessor:
-        class: 'DMKClub\Bundle\MemberBundle\Async\Accounting\BillingSummaryMessageProcessor'
+
+    DMKClub\Bundle\MemberBundle\Async\Accounting\BillingSummaryMessageProcessor:
         arguments:
             - "@doctrine.orm.entity_manager"
             - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberBillingManager'
@@ -120,19 +118,18 @@ services:
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
-    dmkclub_member.provider.member_entity_name_provider:
-        class: DMKClub\Bundle\MemberBundle\Provider\MemberEntityNameProvider
-        public: false
-        tags:
-            - { name: oro_entity.name_provider, priority: 100 }
-    dmkclub_member.provider.member_fee_entity_name_provider:
-        class: DMKClub\Bundle\MemberBundle\Provider\MemberFeeEntityNameProvider
+    DMKClub\Bundle\MemberBundle\Provider\MemberEntityNameProvider:
+        class: 
         public: false
         tags:
             - { name: oro_entity.name_provider, priority: 100 }
 
-    dmkclub_member.eventlistener.add_member_email_context:
-        class: 'DMKClub\Bundle\MemberBundle\EventListener\AddMember2EmailContextListener'
+    DMKClub\Bundle\MemberBundle\Provider\MemberFeeEntityNameProvider:
+        public: false
+        tags:
+            - { name: oro_entity.name_provider, priority: 100 }
+
+    DMKClub\Bundle\MemberBundle\EventListener\AddMember2EmailContextListener:
         arguments:
             - '@oro_email.email.activity.manager'
             - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberManager'
@@ -140,8 +137,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_activity.add_activity, method: addMember2EmailContext }
 
-    dmkclub_member.eventlistener.membercreate:
-        class:  'DMKClub\Bundle\MemberBundle\EventListener\MemberChangeListener'
+    DMKClub\Bundle\MemberBundle\EventListener\MemberChangeListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
 

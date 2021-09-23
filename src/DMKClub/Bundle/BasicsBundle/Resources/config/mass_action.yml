@@ -16,7 +16,7 @@ services:
             - "@translator"
             - "@logger"
             - '@oro_message_queue.message_producer'
-            - "@dmkclub_member.memberfee.manager"
+            - '@DMKClub\Bundle\MemberBundle\Entity\Manager\MemberFeeManager'
 
     DMKClub\Bundle\BasicsBundle\DataGrid\Extension\MassAction\DownloadPdfAction:
         shared: false
