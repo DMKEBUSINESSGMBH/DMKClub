@@ -1,0 +1,8 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+<div class="widget-content">
+
+    {% set memberFeeGrid = 'dmkclub-memberfeepositions-grid' %}
+    {{ dataGrid.renderGrid(memberFeeGrid, {fee: entity.id}, { cssClass: 'inner-grid' }) }}
+
+</div>

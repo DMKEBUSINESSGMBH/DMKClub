@@ -113,6 +113,7 @@ class MemberFeeController extends AbstractController
 	{
 		return $this->update($entity);
 	}
+
 	/**
 	 * @param MemberFee $entity
 	 *
@@ -134,6 +135,18 @@ class MemberFeeController extends AbstractController
 	    $form = $this->get('dmkclub_member.memberfee.form');
 	    $responseData['form'] = $form->createView();
 	    return $responseData;
+	}
+
+	/**
+	 * Show positions grid
+	 * @Route("/{id}/positions", name="dmkclub_memberfee_listpositions", requirements={"id"="\d+"}, defaults={"id"=0})
+	 *
+	 * @Template
+	 * @AclAncestor("dmkclub_memberfee_view")
+	 */
+	public function listPositionsAction(MemberFee $entity)
+	{
+	    return ['entity' => $entity];
 	}
 
 	/**

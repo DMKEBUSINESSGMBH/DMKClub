@@ -11,6 +11,7 @@ parameters:
     dmkclub_member.memberbilling.entity.class:             DMKClub\Bundle\MemberBundle\Entity\MemberBilling
     dmkclub_member.memberfee.entity.class:                 DMKClub\Bundle\MemberBundle\Entity\MemberFee
     dmkclub_member.memberfeediscount.entity.class:         DMKClub\Bundle\MemberBundle\Entity\MemberFeeDiscount
+    dmkclub_member.memberfeeposition.entity.class:         DMKClub\Bundle\MemberBundle\Entity\MemberFeePosition
 
     dmkclub_member.memberfee.pdf.simplegenerator.class:    DMKClub\Bundle\MemberBundle\Accounting\PDF\SimpleMemberFeePdf
 

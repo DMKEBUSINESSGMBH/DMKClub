@@ -205,6 +205,7 @@ dmkclub:
                     success_message:  "{0} Es wurden keine Rechnungen markiert.|{1} Eine Rechnung zum Versand angemeldet. |]1,Inf[ %count% Rechnungen wurden zum Versand angemeldet."
                 download_bill:   Rechnung herunterladen
                 export_bill:     Rechnung exportieren
+                show_positions:  Positionen anzeigen
         memberfeeposition:
             entity_label:        Position für Mitgliedsbeitrag
             entity_plural_label: Position für Mitgliedsbeiträge

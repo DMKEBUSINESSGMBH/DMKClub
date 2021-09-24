@@ -254,6 +254,10 @@ datagrids:
                 type:       url
                 route:      dmkclub_memberfee_update
                 params:     [ id ]
+            positions_link:
+                type:       url
+                route:      dmkclub_memberfee_listpositions
+                params:     [ id ]
         sorters:
             columns:
                 memberCode:
@@ -373,6 +377,23 @@ datagrids:
                             dblclick: maximize
                             maximizedHeightDecreaseBy: minimize-bar
                             width:  900
+            positions:
+                type: dialog
+                label: dmkclub.member.memberfee.action.show_positions
+                icon: list
+                link: positions_link
+                rowAction: false
+                widgetOptions:
+                    reload-grid-name: dmkclub-memberfees-grid-billing
+                    options:
+                        dialogOptions:
+                            title:  "@translator->trans(dmkclub.member.memberfee.entity_label)"
+                            modal:  true
+                            allowMaximize: true
+                            allowMinimize: false
+                            dblclick: maximize
+                            maximizedHeightDecreaseBy: minimize-bar
+                            width:  900
         mass_actions:
             exportpdf:
                 type: dmkexportpdf
@@ -439,7 +460,7 @@ datagrids:
             name:
                 type:          link
                 route:         dmkclub_memberbilling_view
-                params: {id: bid}
+                params:        {id: bid}
                 label:         dmkclub.member.memberbilling.name.label
                 frontend_type: html
             corrected:
@@ -497,3 +518,47 @@ datagrids:
                 data_identifier: f.id
                 label: dmkclub.member.memberfee.action.unmark_feecorrection
                 icon: minus
+
+# Positions Grid
+
+    dmkclub-memberfeepositions-grid:
+        extended_entity_name: "%dmkclub_member.memberfeeposition.entity.class%"
+#        acl_resource: dmkclub_memberfee_view
+        source:
+            type: orm
+            query:
+                select:
+                    - fp.id
+                    - fp.priceTotal As priceTotal
+                    - fp.description
+                    - fp.quantity
+                    - fp.flag
+                    - fp.unit
+                from:
+                    - { table: "%dmkclub_member.memberfeeposition.entity.class%", alias: fp }
+                where:
+                    and:
+                        - fp.memberFee = :fee
+            bind_parameters:
+                - fee
+        inline_editing:
+            enable:       true
+            behaviour:    enable_selected  # Spalten explizit aktivieren
+        columns:
+            id:
+                label:         dmkclub.member.memberfeeposition.id.label
+                frontend_type: number
+                renderable:    false
+            flag:
+                label:         dmkclub.member.memberfeeposition.flag.label
+            quantity:
+                label:         dmkclub.member.memberfeeposition.quantity.label
+            description:
+                label:         dmkclub.member.memberfeeposition.description.label
+                inline_editing:
+                    enable:    true
+            priceTotal:
+                label:         dmkclub.member.memberfeeposition.price_total.label
+                frontend_type: currency
+                divisor:       100
+                data_name:     priceTotal
