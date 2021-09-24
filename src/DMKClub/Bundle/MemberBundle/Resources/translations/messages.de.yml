@@ -184,6 +184,7 @@ dmkclub:
             entity_description:  Represent a fee for membership
             id.label:            Id
             bill_date.label:     Rechnungsdatum
+            due_date.label:      Fälligkeit
             corrected.label:     korrigiert
             correction_status.label:  Korrektur
             data_channel.label:  Kanal

@@ -32,6 +32,11 @@ class CreateBillsType extends AbstractType {
     	        'required' => true,
     	        'label' => 'dmkclub.member.memberfee.bill_date.label']
     	    );
+	    $builder
+            ->add('dueDate', OroDateType::class, [
+    	        'required' => true,
+    	        'label' => 'dmkclub.member.memberfee.due_date.label']
+    	    );
 	}
 
 	/**

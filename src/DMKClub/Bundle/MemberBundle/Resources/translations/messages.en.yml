@@ -192,11 +192,12 @@ dmkclub:
             entity_plural_label: Membership fees
             entity_description:  Represent a fee for membership
             id.label:            Id
-            bill_date.label:      Bill date
+            bill_date.label:     Bill date
+            due_date.label:      Due date
             billing.label:       Billing
-            corrected.label:  corrected
+            corrected.label:     corrected
             correction_status.label:  Correction
-            data_channel.label: Data channel
+            data_channel.label:  Data channel
             end_date.label:      End date
             member.label:        Member
             name.label:          Name

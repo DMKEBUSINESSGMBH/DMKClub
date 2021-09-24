@@ -34,6 +34,7 @@
             
                 {% set formFields = formFields|merge([
                     form_row(form.billDate, { 'id': 'billdate' }),
+                    form_row(form.dueDate, { 'id': 'duedate' }),
                 ]) %}
             
                 {% set dataBlocks = [{

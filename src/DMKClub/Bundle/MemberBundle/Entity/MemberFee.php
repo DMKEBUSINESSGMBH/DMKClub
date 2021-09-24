@@ -121,6 +121,21 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
 
     /**
      *
+     * @var \DateTime
+     * @ORM\Column(name="due_date", type="date", nullable=true)
+     * @ConfigField(
+     * defaultValues={
+     *   "dataaudit"={"auditable"=true},
+     *   "importexport"={
+     *     "order"=87
+     *   }
+     * }
+     * )
+     */
+    protected $dueDate;
+
+    /**
+     *
      * @var string
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      * @ConfigField(
@@ -265,7 +280,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * Set endDate
      *
      * @param \DateTime $endDate
-     * @return Member
+     * @return MemberFee
      */
     public function setId($id)
     {
@@ -288,7 +303,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * Set endDate
      *
      * @param \DateTime $endDate
-     * @return Member
+     * @return MemberFee
      */
     public function setName($id)
     {
@@ -384,7 +399,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * Set organization
      *
      * @param Organization $organization
-     * @return Member
+     * @return MemberFee
      */
     public function setOrganization(Organization $organization = null)
     {
@@ -407,7 +422,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * Set startDate
      *
      * @param \DateTime $startDate
-     * @return Member
+     * @return MemberFee
      */
     public function setStartDate($startDate)
     {
@@ -430,7 +445,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * Set endDate
      *
      * @param \DateTime $endDate
-     * @return Member
+     * @return MemberFee
      */
     public function setEndDate($endDate)
     {
@@ -453,7 +468,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
      * Set bill date
      *
      * @param \DateTime $date
-     * @return Member
+     * @return MemberFee
      */
     public function setBillDate($date)
     {
@@ -470,6 +485,29 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
     public function getBillDate()
     {
         return $this->billDate;
+    }
+
+    /**
+     * Set due date
+     *
+     * @param \DateTime $date
+     * @return MemberFee
+     */
+    public function setDueDate($date)
+    {
+        $this->dueDate = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get due date
+     *
+     * @return \DateTime
+     */
+    public function getDueDate()
+    {
+        return $this->dueDate;
     }
 
     public function getPositionsByFlag($flag)
@@ -495,6 +533,7 @@ class MemberFee extends ExtendMemberFee implements PdfAwareInterface, SepaDirect
     /**
      *
      * @param MemberFeePosition[] $value
+     * @return MemberFee
      */
     public function setPositions($value)
     {

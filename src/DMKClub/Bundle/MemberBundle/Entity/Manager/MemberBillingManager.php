@@ -211,6 +211,7 @@ class MemberBillingManager implements ContainerAwareInterface
         $ids = [];
 
         $billDate = isset($options['billDate']) ? $options['billDate'] : new DateTime();
+        $dueDate = isset($options['dueDate']) ? $options['dueDate'] : new DateTime();
 
         $dummyMember = new Member();
         foreach ($result as $row) {
@@ -235,6 +236,7 @@ class MemberBillingManager implements ContainerAwareInterface
                     $memberFee->setBilling($memberBilling);
                     $memberFee->setMember($member);
                     $memberFee->setBillDate($billDate);
+                    $memberFee->setBillDate($dueDate);
                     $this->em->persist($memberFee);
                 } catch (AccountingException $exception) {
                     $errors[] = 'Member ' . $member->getId() . ' - ' . $exception->getMessage();
@@ -258,6 +260,7 @@ class MemberBillingManager implements ContainerAwareInterface
             $jobData[FeesMessageProcessor::OPTION_MEMBERBILLING] = $memberBilling->getId();
             $jobData[FeesMessageProcessor::OPTION_ENTITIES] = implode(',', $ids);
             $jobData[FeesMessageProcessor::OPTION_BILLDATE] = $billDate->format('c');
+            $jobData[FeesMessageProcessor::OPTION_DUEDATE] = $dueDate->format('c');
 
             $this->messageProducer->send(FeesMessageProcessor::TOPIC_FEES_CALCULATION, $jobData);
         }

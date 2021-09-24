@@ -1,6 +1,7 @@
 <?php
 namespace DMKClub\Bundle\MemberBundle\Async\Accounting;
 
+use DateTime;
 use Psr\Log\LoggerInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -45,6 +46,7 @@ class FeeMessageProcessor implements MessageProcessorInterface, TopicSubscriberI
     const OPTION_MEMBERID = 'member_id';
 
     const OPTION_BILLDATE = 'bill_date';
+    const OPTION_DUEDATE = 'due_date';
 
     public function __construct(JobRunner $jobRunner, EntityManager $em, MemberBillingManager $billingManager, LoggerInterface $logger)
     {
@@ -88,7 +90,8 @@ class FeeMessageProcessor implements MessageProcessorInterface, TopicSubscriberI
         $result = $this->jobRunner->runDelayed($data['jobId'], function () use ($data) {
             try {
                 $billDate = new \DateTime(isset($data[self::OPTION_BILLDATE]) ? $data[self::OPTION_BILLDATE] : '');
-                $this->calculateBill($data[self::OPTION_MEMBERID], $data[self::OPTION_MEMBERBILLING], $billDate);
+                $dueDate = new \DateTime(isset($data[self::OPTION_DUEDATE]) ? $data[self::OPTION_DUEDATE] : '');
+                $this->calculateBill($data[self::OPTION_MEMBERID], $data[self::OPTION_MEMBERBILLING], $billDate, $dueDate);
             } catch (\Exception $e) {
                 $this->logger->critical('Fee calculation failed', [
                     'Exception' => $e->getMessage(),
@@ -101,7 +104,7 @@ class FeeMessageProcessor implements MessageProcessorInterface, TopicSubscriberI
         return $result ? self::ACK : self::REJECT;
     }
 
-    protected function calculateBill($memberId, $memberBillingId, \DateTime $billDate)
+    protected function calculateBill($memberId, $memberBillingId, DateTime $billDate, DateTime $dueDate)
     {
         // Member laden
         /* @var $member \DMKClub\Bundle\MemberBundle\Entity\Member */
@@ -123,6 +126,7 @@ class FeeMessageProcessor implements MessageProcessorInterface, TopicSubscriberI
                 return null;
             }
             $memberFee->setBillDate($billDate);
+            $memberFee->setDueDate($dueDate);
             $memberFee->setOrganization($memberBilling->getOrganization());
             $memberFee->setOwner($memberBilling->getOwner());
             $this->em->persist($memberFee);

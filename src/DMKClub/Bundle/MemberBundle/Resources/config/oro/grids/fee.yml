@@ -18,6 +18,7 @@ datagrids:
                     - f.startDate
                     - f.endDate
                     - f.billDate
+                    - f.dueDate
                     - f.directDebitMandateId
                     - f.remittanceInformation
                     - f.createdAt
@@ -56,12 +57,20 @@ datagrids:
                 frontend_type: date
                 inline_editing:
                     enable:    true
+            dueDate:
+                label:         dmkclub.member.memberfee.due_date.label
+                frontend_type: date
+                renderable:    false
+                inline_editing:
+                    enable:    true
             startDate:
                 label:         dmkclub.member.memberfee.start_date.label
                 frontend_type: date
+                renderable:    false
             endDate:
                 label:         dmkclub.member.memberfee.end_date.label
                 frontend_type: date
+                renderable:    false
             directDebitMandateId:
                 label:         dmkclub.member.memberfee.direct_debit_mandate_id.label
                 renderable:    false
@@ -104,6 +113,10 @@ datagrids:
                     type:      date
                     data_name: f.billDate
                     enabled: false
+                dueDate:
+                    type:      date
+                    data_name: f.dueDate
+                    enabled: false
                 startDate:
                     type:      date
                     data_name: f.startDate
@@ -122,6 +135,8 @@ datagrids:
                     data_name: f.payedTotal
                 billDate:
                     data_name: f.billDate
+                dueDate:
+                    data_name: f.dueDate
                 startDate:
                     data_name: f.startDate
                 endDate:

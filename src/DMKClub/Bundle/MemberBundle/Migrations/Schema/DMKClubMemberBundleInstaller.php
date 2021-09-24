@@ -55,7 +55,7 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
      */
     public function getMigrationVersion()
     {
-        return 'v1_10';
+        return 'v1_11';
     }
 
     /**
@@ -298,6 +298,7 @@ class DMKClubMemberBundleInstaller implements Installation, ExtendExtensionAware
         $table->addColumn('start_date', 'date', ['notnull' => false]);
         $table->addColumn('end_date', 'date', ['notnull' => false]);
         $table->addColumn('bill_date', 'date', ['notnull' => false]);
+        $table->addColumn('due_date', 'date', ['notnull' => false]);
         $table->addColumn('name', 'string', ['notnull' => false,'length' => 255]);
         $table->addColumn('price_total', 'integer', ['notnull' => false]);
         $table->addColumn('payed_total', 'integer', ['notnull' => false]);

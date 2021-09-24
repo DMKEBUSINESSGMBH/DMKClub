@@ -49,6 +49,7 @@ class FeesMessageProcessor implements MessageProcessorInterface, TopicSubscriber
     const OPTION_MEMBERBILLING = 'memberbilling_id';
     const OPTION_ENTITIES = 'entity_ids';
     const OPTION_BILLDATE = 'bill_date';
+    const OPTION_DUEDATE = 'due_date';
 
     public function __construct(MessageProducerInterface $producer, JobRunner $jobRunner, DependentJobService $dependentJob, LoggerInterface $logger)
     {
@@ -99,6 +100,7 @@ class FeesMessageProcessor implements MessageProcessorInterface, TopicSubscriber
                         FeeMessageProcessor::OPTION_MEMBERID => $id,
                         FeeMessageProcessor::OPTION_MEMBERBILLING => $data[self::OPTION_MEMBERBILLING],
                         FeeMessageProcessor::OPTION_BILLDATE => $data[self::OPTION_BILLDATE],
+                        FeeMessageProcessor::OPTION_DUEDATE => $data[self::OPTION_DUEDATE],
                         'jobId' => $child->getId() // the created child jobs ids are passing as message body params
                     ]);
                 });
