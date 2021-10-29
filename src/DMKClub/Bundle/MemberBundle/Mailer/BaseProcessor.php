@@ -82,6 +82,9 @@ class BaseProcessor
         $senderName  = $this->configManager->get('oro_notification.email_notification_sender_name');
 
         $toEmail = $this->emailHolderHelper->getEmail($object);
+        if ($toEmail === null) {
+            throw new \Exception('Email must not be null');
+        }
         $toName = $toEmail; // FIXME
 
         $emailModel = new EmailModel();
