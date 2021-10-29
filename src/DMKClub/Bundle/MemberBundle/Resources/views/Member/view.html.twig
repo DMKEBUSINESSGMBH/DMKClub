@@ -15,6 +15,13 @@
             'entity_label': 'dmkclub.member.entity_label'|trans
         }) }}
     {% endif %}
+    {% if is_granted('EDIT', entity.contact) %}
+        {{ UI.editButton({
+            'path' : path('oro_contact_update', { 'id': entity.contact.id }),
+            'entity_label': 'orocrm.contact.entity_label'|trans,
+            'label': 'orocrm.contact.entity_label'|trans
+}) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
