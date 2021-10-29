@@ -9,13 +9,10 @@ class MemberBillingTest extends TestCase
 {
 
     /**
+     * @dataProvider getLabels
      */
-    public function testGetPositionLabelMap()
+    public function testGetPositionLabelMap($labels)
     {
-        $labels = "FEE Beitrag vom [STARTDATE] bis [ENDDATE]
-ADMISSION Einmalige Aufnahmegebühr
-FEECORRECTION Korrektur Ihres Beitrags
-";
         $billing = new MemberBilling();
         $billing->setPositionLabels($labels);
         $labels = $billing->getPositionLabelMap();
@@ -25,5 +22,23 @@ FEECORRECTION Korrektur Ihres Beitrags
         $this->assertEquals('Beitrag vom [STARTDATE] bis [ENDDATE]', $labels[MemberFeePosition::FLAG_FEE]);
         $this->assertEquals('Einmalige Aufnahmegebühr', $labels[MemberFeePosition::FLAG_ADMISSON]);
         $this->assertEquals('Korrektur Ihres Beitrags', $labels[MemberFeePosition::FLAG_CORRECTION]);
+    }
+    public function getLabels()
+    {
+        return [
+            [
+                "FEE Beitrag vom [STARTDATE] bis [ENDDATE]
+ADMISSION Einmalige Aufnahmegebühr
+FEECORRECTION Korrektur Ihres Beitrags
+",
+            ],
+            [
+                "FEE Beitrag vom [STARTDATE] bis [ENDDATE] ADMISSION Einmalige Aufnahmegebühr FEECORRECTION Korrektur Ihres Beitrags",
+            ],
+            [
+                "FEE Beitrag vom [STARTDATE] bis [ENDDATE] ADMISSION Einmalige Aufnahmegebühr
+FEECORRECTION Korrektur Ihres Beitrags",
+            ],
+        ];
     }
 }

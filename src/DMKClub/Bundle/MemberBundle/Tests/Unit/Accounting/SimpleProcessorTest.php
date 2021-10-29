@@ -3,19 +3,21 @@ namespace DMKClub\Bundle\MemberBundle\Tests\Unit\Accounting;
 
 use DMKClub\Bundle\MemberBundle\Accounting\SimpleProcessor;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class SimpleProcessorTest extends TestCase
 {
 
-    public function testGetLabel()
+    private $logger;
+
+    public function setUp(): void
     {
-        $emMock = $this->getEMMockBuilder()->getMock();
-        $processor = new SimpleProcessor($emMock);
-        $this->assertEquals('dmkclub.member.accounting.processor.simple', $processor->getLabel(), 'Label is wrong');
+        $this->logger = new NullLogger();
     }
 
-    protected function getEMMockBuilder()
+    public function testGetLabel()
     {
-        return $this->getMockBuilder('\Doctrine\ORM\EntityManager')->disableOriginalConstructor();
+        $processor = new SimpleProcessor($this->logger);
+        $this->assertEquals('dmkclub.member.accounting.processor.simple', $processor->getLabel(), 'Label is wrong');
     }
 }

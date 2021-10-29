@@ -15,7 +15,7 @@ class DefaultProcessorTest extends TestCase
 
     private $logger;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->logger = new NullLogger();
     }

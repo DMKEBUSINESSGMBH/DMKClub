@@ -621,7 +621,7 @@ FEECORRECTION fee correction";
     public function getPositionLabelMap()
     {
         $labels = [];
-        $lines = explode("\n", $this->positionLabels);
+        $lines = $this->parseLines($this->positionLabels);
         foreach ($lines as $line) {
             if (trim($line)) {
                 list ($key, $label) = explode(' ', $line, 2);
@@ -629,6 +629,36 @@ FEECORRECTION fee correction";
             }
         }
         return $labels;
+    }
+    private function parseLines($line)
+    {
+        $keys = [
+            MemberFeePosition::FLAG_ADMISSON,
+            MemberFeePosition::FLAG_FEE,
+            MemberFeePosition::FLAG_CORRECTION,
+        ];
+        $posArr = [];
+        foreach ($keys as $key) {
+            $posArr[$key] = mb_strpos($line, $key.' ');
+        }
+
+        $posArr = array_flip($posArr);
+        ksort($posArr);
+        $labelPositions = [];
+        foreach ($posArr as $pos => $key) {
+            $labelPositions[] = ['pos' => $pos, 'key' => $key];
+        }
+        $result = [];
+        $isLast = false;
+        foreach ($labelPositions as $idx => $posData) {
+            $isLast = !isset($labelPositions[$idx+1]);
+            $startPos = $posData['pos'];
+            $nextStart = $isLast ? mb_strlen($line) : $labelPositions[$idx + 1]['pos'];
+            $length = $nextStart - $startPos;
+            $result[] = trim(mb_substr($line, $startPos, $length));
+
+        }
+        return $result;
     }
 
     public function setPositionLabels($value)
